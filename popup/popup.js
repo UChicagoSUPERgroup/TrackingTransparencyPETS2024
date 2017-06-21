@@ -4,7 +4,7 @@ async function onReady() {
   if (title.length >= 30) {
     title = title.substring(0,30).concat("...");
   }
-  $('#tt_hook_origin_title').text(title);
+  $('#pagetitle').text(title);
 }
 
 $('document').ready(onReady());
