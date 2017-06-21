@@ -1,0 +1,31 @@
+{
+    "manifest_version": 2,
+    "name": "Tracking Transparency",
+    "version": "1.0.0",
+    "description": "Provides information about online tracking",
+    "permissions": ["tabs"],
+    "browser_action": {
+        "default_icon": {
+        "19": "icons/super-19.png",
+        "38": "icons/super-38.png"
+        },
+        "default_popup": "popup/popup.html",
+        "default_title": "Tracking Transparency"
+    },
+    "background": {
+        "scripts": [
+            "lib/browser-polyfill.min.js",
+            "background_scripts/background.js"
+        ]
+    },
+    "icons": {
+        "128": "icons/super-128.png",
+        "16": "icons/super-16.png",
+        "170": "icons/super-170.png",
+        "19": "icons/super-19.png",
+        "24": "icons/super-24.png",
+        "32": "icons/super-32.png",
+        "38": "icons/super-38.png",
+        "48": "icons/super-48.png"
+  }
+}
