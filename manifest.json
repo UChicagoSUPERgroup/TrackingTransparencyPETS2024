@@ -15,7 +15,8 @@
     "background": {
         "scripts": [
             "lib/browser-polyfill.min.js",
-            "background_scripts/background.js"
+            "lib/lovefield.min.js",
+            "background_scripts/datastore.js"
         ]
     },
     "icons": {
