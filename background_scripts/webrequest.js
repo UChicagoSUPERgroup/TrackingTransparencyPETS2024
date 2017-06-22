@@ -2,16 +2,16 @@
   The categories and third parties, titlecased, and URL of their homepage and
   domain names they phone home with, lowercased.
 */
-var services = {};
+let services = {};
 
 /* The supplementary domain names, regexes, and categories. */
-var filteringRules = {};
+let filteringRules = {};
 
 /* The matching regexes and replacement strings. */
-var hardeningRules = [];
+let hardeningRules = [];
 
 /* The rest of the matching regexes and replacement strings. */
-var moreRules = [];
+let moreRules = [];
 
 /* Destringifies an object. */
 function deserialize(object) {
@@ -22,23 +22,23 @@ function deserialize(object) {
 /* Formats the blacklist. */
 function processServices(data) {
   data = deserialize(data);
-  var categories = data.categories;
+  const categories = data.categories;
 
-  for (var categoryName in categories) {
-    var category = categories[categoryName];
-    var serviceCount = category.length;
+  for (let categoryName in categories) {
+    const category = categories[categoryName];
+    const serviceCount = category.length;
 
-    for (var i = 0; i < serviceCount; i++) {
-      var service = category[i];
+    for (let i = 0; i < serviceCount; i++) {
+      const service = category[i];
 
-      for (var serviceName in service) {
-        var urls = service[serviceName];
+      for (let serviceName in service) {
+        const urls = service[serviceName];
 
-        for (var homepage in urls) {
-          var domains = urls[homepage];
-          var domainCount = domains.length;
+        for (let homepage in urls) {
+          const domains = urls[homepage];
+          const domainCount = domains.length;
 
-          for (var j = 0; j < domainCount; j++)
+          for (let j = 0; j < domainCount; j++)
               services[domains[j]] = {
                 category: categoryName,
                 name: serviceName,
@@ -69,15 +69,27 @@ function readTextFile(file, callback) {
 
 readTextFile('lib/disconnect.json', function(data) {
   processServices(data);
-  // console.log(services);
 });
 
 function logRequest(details) {
-  let parser = document.createElement('a');
-  parser.href = details.url;
+  let parsedRequest = document.createElement('a');
+  parsedRequest.href = details.url;
+
+  // are first-parties trackers?
+  // if they aren't, we'll want to do something like this below
+  /*
+  // get hostname for active tab
+  let activeTabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
+  let tab = activeTabs[0];
+  let parsedTab = document.createElement('a');
+  parsedTab.href = tab.url;
+  // some more code goes here…
+  // compare domain of tab with domain of request
+  */
+
   let match = null;
   if (services.hasOwnProperty(parser.hostname)) {
-    match = parser.hostname;
+    match = parsedRequest.hostname;
   } else {
     let arr = parser.hostname.split('.');
     let domain = arr[arr.length -2] + '.' + arr[arr.length - 1]

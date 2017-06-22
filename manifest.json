@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "description": "Provides information about online tracking",
     "permissions": [
-        "activeTab",
+        "tabs",
         "webRequest",
         "<all_urls>"
         ],
