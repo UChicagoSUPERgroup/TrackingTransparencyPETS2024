@@ -4,10 +4,10 @@ schemaBuilder.createTable('Pages').
     addColumn('id', lf.Type.INTEGER).
     addColumn('title', lf.Type.STRING).
     addColumn('domain', lf.Type.STRING).
-    addColumn('trackerdomain', lf.Type.STRING).
     addColumn('path', lf.Type.STRING).
     addColumn('protocol', lf.Type.STRING).
     addColumn('time', lf.Type.DATE_TIME).
+    addColumn('trackers', lf.Type.OBJECT).
     addColumn('categoryinference', lf.Type.STRING).
     addPrimaryKey(['id'], true).
     addIndex('idxTime', ['time'], false, lf.Order.DESC);
@@ -39,11 +39,11 @@ function storePage(info) {
   var row = item.createRow({
     'title': info.title,
     'domain': info.domain,
-    'trackerdomain': info.trackerdomain,
     'path': info.path,
     'protocol': info.protocol,
     'time': new Date(),
-    'categoryinference': ''
+    'categoryinference': '',
+    'trackers': info.trackers
   });
 
   return ttDb.insertOrReplace().into(item).values([row]).exec();

@@ -13,6 +13,9 @@ let hardeningRules = [];
 /* The rest of the matching regexes and replacement strings. */
 let moreRules = [];
 
+/* The web requests that have been recorded, to be processed and cleared out after page loads */
+let recordedRequests = [];
+
 /* Destringifies an object. */
 function deserialize(object) {
   return typeof object == 'string' ? JSON.parse(object) : object;
@@ -71,19 +74,19 @@ readTextFile('lib/disconnect.json', function(data) {
   processServices(data);
 });
 
-async function logRequest(details) {
+function processRequest(details) {
+  if (details.tabId == browser.tabs.TAB_ID_NONE || details.tabId == -1) {
+    return;
+  }
+
   let parsedRequest = document.createElement('a');
   parsedRequest.href = details.url;
 
   // are first-parties trackers?
-  // if they aren't, we'll want to do something like this below
-  // get hostname for active tab
-  let activeTabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
-  let tab = activeTabs[0];
+
   let parsedTab = document.createElement('a');
-  parsedTab.href = tab.url;
-  // some more code goes here…
-  // compare domain of tab with domain of request
+  parsedTab.href = details.tabURL;
+  // get hostname for active tab
 
   let match = null;
   if (parsedRequest.hostname in services) {
@@ -96,16 +99,49 @@ async function logRequest(details) {
     }
   }
   
-  if (match) {
-    console.log("we have a tracker! " + match);
+  return match;
+}
+
+function logRequest(details) {
+  recordedRequests.push(details);
+}
+
+/*
+ * Runs after request completed, processes recorded requests
+ */
+
+// there are probably bugs with certain edge cases such as closing tab before page load finishes
+// if all items in matches array's aren't cleared out when they should be they might end up in the wrong place
+async function onLoadFinish(tabId, changeInfo, tab) {
+  if (changeInfo.status && changeInfo.status == 'complete') {
+
+    let tab = await browser.tabs.get(tabId);
+
+    let parsedTab = document.createElement('a');
+    parsedTab.href = tab.url;
+
+    let matches = [];
+    for (request of recordedRequests) {
+      // if (request.tabId === tabId) {
+        const match = processRequest(request);
+        if (match && matches.indexOf(match) === -1) {
+          matches.push(match);
+        }
+      // }
+    }
+    // console.log(matches);
+    recordedRequests = [];
+
     let dbInfo = {
       title: tab.title,
       domain: parsedTab.hostname,
-      trackerdomain: match,
       path: parsedTab.pathname,
-      protocol: parsedTab.protocol
+      protocol: parsedTab.protocol,
+      trackers: matches
     }
     storePage(dbInfo);
+
+    return;
   }
 }
 
@@ -113,3 +149,5 @@ browser.webRequest.onBeforeRequest.addListener(
   logRequest,
   {urls: ["<all_urls>"]}
 );
+
+browser.tabs.onUpdated.addListener(onLoadFinish);
