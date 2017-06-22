@@ -122,15 +122,15 @@ async function onLoadFinish(tabId, changeInfo, tab) {
 
     let matches = [];
     for (request of recordedRequests) {
-      // if (request.tabId === tabId) {
+      if (request.tabId === tabId) {
         const match = processRequest(request);
         if (match && matches.indexOf(match) === -1) {
           matches.push(match);
         }
-      // }
+      }
     }
     // console.log(matches);
-    recordedRequests = [];
+    recordedRequests = recordedRequests.filter(x => x.tabId !== tabId);
 
     let dbInfo = {
       title: tab.title,
