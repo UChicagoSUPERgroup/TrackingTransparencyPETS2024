@@ -3,7 +3,11 @@
     "name": "Tracking Transparency",
     "version": "1.0.0",
     "description": "Provides information about online tracking",
-    "permissions": ["tabs"],
+    "permissions": [
+        "activeTab",
+        "webRequest",
+        "<all_urls>"
+        ],
     "browser_action": {
         "default_icon": {
         "19": "icons/super-19.png",
@@ -15,7 +19,8 @@
     "background": {
         "scripts": [
             "lib/browser-polyfill.min.js",
-            "background_scripts/background.js"
+            "lib/jquery-3.2.1.min.js",
+            "background_scripts/webrequest.js"
         ]
     },
     "icons": {
