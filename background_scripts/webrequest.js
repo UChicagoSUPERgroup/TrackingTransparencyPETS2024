@@ -71,13 +71,12 @@ readTextFile('lib/disconnect.json', function(data) {
   processServices(data);
 });
 
-function logRequest(details) {
+async function logRequest(details) {
   let parsedRequest = document.createElement('a');
   parsedRequest.href = details.url;
 
   // are first-parties trackers?
   // if they aren't, we'll want to do something like this below
-  /*
   // get hostname for active tab
   let activeTabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
   let tab = activeTabs[0];
@@ -85,21 +84,28 @@ function logRequest(details) {
   parsedTab.href = tab.url;
   // some more code goes here…
   // compare domain of tab with domain of request
-  */
 
   let match = null;
-  if (services.hasOwnProperty(parser.hostname)) {
+  if (parsedRequest.hostname in services) {
     match = parsedRequest.hostname;
   } else {
-    let arr = parser.hostname.split('.');
+    let arr = parsedRequest.hostname.split('.');
     let domain = arr[arr.length -2] + '.' + arr[arr.length - 1]
-    if (services.hasOwnProperty(domain)) {
+    if (domain in services) {
       match = domain;
     }
   }
   
   if (match) {
     console.log("we have a tracker! " + match);
+    let dbInfo = {
+      title: tab.title,
+      domain: parsedTab.hostname,
+      trackerdomain: match,
+      path: parsedTab.pathname,
+      protocol: parsedTab.protocol
+    }
+    storePage(dbInfo);
   }
 }
 
