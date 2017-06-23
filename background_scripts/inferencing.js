@@ -9,9 +9,13 @@ function inferencingMessageListener(message, sender) {
     return;
   }
 
-  console.log(message);
+  const mainFrameReqId = tabRequestMap[sender.tab.id];
+  if (mainFrameReqId && mainFrameRequestInfo[mainFrameReqId].title === "") {
+    mainFrameRequestInfo[mainFrameReqId].title = sender.tab.title;
+  }
+  // console.log(message);
 
-  inferredData[sender.url] = "Hello!"
+  mainFrameRequestInfo[mainFrameReqId].inference = "Hello!"
 }
 
 browser.runtime.onMessage.addListener(inferencingMessageListener);

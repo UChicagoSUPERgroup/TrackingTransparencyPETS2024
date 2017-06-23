@@ -42,7 +42,7 @@ function storePage(info) {
     'path': info.path,
     'protocol': info.protocol,
     'time': new Date(),
-    'categoryinference': '',
+    'categoryinference': info.categoryinference,
     'trackers': info.trackers
   });
 
