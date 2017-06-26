@@ -133,21 +133,17 @@ async function logRequest(details) {
       return;
     }
     const tab = await browser.tabs.get(details.tabId);
-    mainFrameRequestInfo[mainFrameReqId] = {
-      url: tab.url,
-      title: "",
-      trackers: []
-    }
     let parsedURL = document.createElement('a');
     parsedURL.href = tab.url;
-    let pageInfo = {
+    mainFrameRequestInfo[mainFrameReqId] = {
+      url: tab.url,
       pageId: mainFrameReqId,
-      title: mainFrameRequestInfo[mainFrameReqId].title,
       domain: parsedURL.hostname,
       path: parsedURL.pathname,
-      protocol: parsedURL.protocol
+      protocol: parsedURL.protocol,
+      title: "", // title isn't defined at this point in request
     }
-    storePage(pageInfo);
+    storePage(mainFrameRequestInfo[mainFrameReqId]);
 
   }
 

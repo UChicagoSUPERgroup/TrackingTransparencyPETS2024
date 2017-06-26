@@ -56,7 +56,7 @@ function storePage(info) {
     //'trackerdomain': info.trackerdomain,
     'path': info.path,
     'protocol': info.protocol,
-    'time': new Date(),
+    'time': new Date(info.pageId),
     'categoryinference': ''
   });
   return ttDb.insertOrReplace().into(pageItem).values([page]).exec();

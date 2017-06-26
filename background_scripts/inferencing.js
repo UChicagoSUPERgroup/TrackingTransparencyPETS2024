@@ -40,13 +40,22 @@ async function inferencingMessageListener(message, sender) {
   }
 
   const mainFrameReqId = tabRequestMap[sender.tab.id];
-  if (mainFrameReqId && mainFrameRequestInfo[mainFrameReqId].title === "") {
-    mainFrameRequestInfo[mainFrameReqId].title = sender.tab.title;
+  
+  if (!mainFrameReqId) {
+    return;
+  }
+  const info = mainFrameRequestInfo[mainFrameReqId];
+
+  if (message.article.title) {
+    // readability gives us a better title
+    info.title = message.article.title;
+  } else {
+     info.title = sender.tab.title
   }
 
   const category = infer(message.article, tr);
   console.log(category[0].name);
-  mainFrameRequestInfo[mainFrameReqId].inference = category[0].name;
+  info.inference = category[0].name;
 
   let inferenceInfo = {
     inference: category[0].name,
@@ -54,6 +63,7 @@ async function inferencingMessageListener(message, sender) {
     threshold: category[1],
     pageID: mainFrameReqId
   }
+  storePage(info); // stores page info again with good title
   storeInference(inferenceInfo);
 
 
