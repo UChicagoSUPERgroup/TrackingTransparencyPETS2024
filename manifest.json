@@ -6,6 +6,7 @@
     "permissions": [
         "tabs",
         "webRequest",
+        "webRequestBlocking",
         "<all_urls>"
         ],
     "browser_action": {
@@ -22,10 +23,20 @@
             "lib/jquery-3.2.1.min.js",
             "lib/lovefield.min.js",
             "background_scripts/datastore.js",
-            "background_scripts/webrequest.js",
-	    "background_scripts/inferencing.js"
+            "background_scripts/inferencing.js",
+            "background_scripts/webrequest.js"
         ]
     },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": [
+                "lib/browser-polyfill.min.js", 
+                "content_scripts/content_script.js"
+            ],
+            "run_at": "document_idle"
+        }
+    ],
     "icons": {
         "128": "icons/super-128.png",
         "16": "icons/super-16.png",
