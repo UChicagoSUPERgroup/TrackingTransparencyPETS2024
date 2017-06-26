@@ -4,7 +4,7 @@ schemaBuilder.createTable('Pages').
     addColumn('id', lf.Type.INTEGER).
     addColumn('title', lf.Type.STRING).
     addColumn('domain', lf.Type.STRING).
-    addColumn('trackerdomain', lf.Type.STRING).
+    //addColumn('trackerdomain', lf.Type.STRING).
     addColumn('path', lf.Type.STRING).
     addColumn('protocol', lf.Type.STRING).
     addColumn('time', lf.Type.DATE_TIME).
@@ -52,7 +52,7 @@ function storePage(info) {
   var page = pageItem.createRow({
     'title': info.title,
     'domain': info.domain,
-    'trackerdomain': info.trackerdomain,
+    //'trackerdomain': info.trackerdomain,
     'path': info.path,
     'protocol': info.protocol,
     'time': new Date(),
@@ -60,8 +60,6 @@ function storePage(info) {
   });
   return ttDb.insertOrReplace().into(pageItem).values([page]).exec();
 }
-
-
 function storeTracker(info) {
   var tracker = trackerItem.createRow({
     'tracker': info.trackerdomain,

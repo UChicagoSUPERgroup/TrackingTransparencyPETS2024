@@ -14,6 +14,8 @@ let hardeningRules = [];
 let moreRules = [];
 
 let requestsQueue = [];
+let tabRequestMap = {};
+let mainFrameRequestInfo = {};
 
 var pageID;
 /* Destringifies an object. */
@@ -119,23 +121,9 @@ function processQueuedRequests() {
 }
 
 
-function processQueuedRequests() {
-  let unmatched = [];
-  while (true) {
-    req = requestsQueue.pop();
-    if (!req) break;
-
-    let match = trackerMatch(req);
-    let info = mainFrameRequestInfo[req.parentRequestId];
-    if (match && info && info.trackers && info.trackers.indexOf(match) === -1) {
-      info.trackers.push(match);
-    }
-  }
-}
-
 async function logRequest(details) {
 
-  /*
+
   let mainFrameReqId;
   if (details.type === "main_frame") {
     console.log("main frame request", "url:", details.url, "originUrl:", details.originUrl, "requestId:", details.requestId);
@@ -147,16 +135,14 @@ async function logRequest(details) {
       title: "",
       trackers: []
     }
-  }
-  details.parentRequestId = tabRequestMap[details.tabId];
-
-  requestsQueue.push(details);
-  */
 
 
 
 
-
+  // Get Mock Data from Inferencing.js
+  // This does not use the listener and should be deleted when we have real data
+  // Pass data to inference object below
+  mockData();
 
   let parsedRequest = document.createElement('a');
   parsedRequest.href = details.url;
@@ -166,13 +152,13 @@ async function logRequest(details) {
   // if they aren't, we'll want to do something like this below
   // get hostname for active tab
   let activeTabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
-  let tab = activeTabs[0];
+  let browsertab = activeTabs[0];
   let parsedTab = document.createElement('a');
-  parsedTab.href = tab.url;
+  parsedTab.href = browsertab.url;
   // some more code goes here…
   // compare domain of tab with domain of request
 
-  let match = null;
+  //let match = null;
   if (parsedRequest.hostname in services) {
     match = parsedRequest.hostname;
   } else {
@@ -186,8 +172,8 @@ async function logRequest(details) {
   if (match) {
     console.log("we have a tracker! " + match);
     let pageInfo = {
-      title: tab.title,
-      domain: parsedTab.hostname,
+      title: mainFrameRequestInfo[mainFrameReqId].title,
+      domain: details.url,
       trackerdomain: match,
       path: parsedTab.pathname,
       protocol: parsedTab.protocol
@@ -197,13 +183,12 @@ async function logRequest(details) {
         trackerdomain: match,
         pageID: pageID = results[0]['id']
       }
-
       // THIS IS NOT REAL DATA, yet
 
       let inferenceInfo = {
-        inference: "some inference",
-        inferenceCategory: "some inference category",
-        threshold: .20,
+        inference: _inference,
+        inferenceCategory: _inferenceCat,
+        threshold: _inferenceThreshold,
         pageID: pageID = results[0]['id']
       }
     storeTracker(trackerInfo);
@@ -213,6 +198,11 @@ async function logRequest(details) {
 
 
   }
+
+  details.parentRequestId = tabRequestMap[details.tabId];
+
+  requestsQueue.push(details);
+ }
 }
 
 async function getTrackers(tabId) {
@@ -231,26 +221,9 @@ async function getTrackers(tabId) {
   return(matches);
 }
 
-// function storeDatabaseInfo(parentRequestId) {
-//   // get tab info and fill into database
-//   let parsedTab = document.createElement('a');
-//   parsedTab.href = tab.url;
-
-//   // let dbInfo = {
-//   //   title: tab.title,
-//   //   domain: parsedTab.hostname,
-//   //   path: parsedTab.pathname,
-//   //   protocol: parsedTab.protocol,
-//   //   trackers: await trackers,
-//   //   categoryinference: await inferredData
-//   // }
-//   // storePage(dbInfo);
-// }
 
 browser.webRequest.onBeforeRequest.addListener(
   logRequest,
   {urls: ["<all_urls>"]}
 
 );
-
-setInterval(processQueuedRequests, 5000)

@@ -1,7 +1,19 @@
+
 /* inferred data stored as object with structure:
  * url: inference
  */
 let inferredData = {}
+var _inference = ""
+var _inferenceCat = ""
+var _inferenceThreshold = 0
+
+
+function mockData () {
+  _inference = "Hello";
+  _inferenceCat = "Hello again";
+  _inferenceThreshold = 1;
+
+}
 
 function inferencingMessageListener(message, sender) {
   if (!sender.tab || !sender.url) {
@@ -15,7 +27,7 @@ function inferencingMessageListener(message, sender) {
   }
   // console.log(message);
 
-  mainFrameRequestInfo[mainFrameReqId].inference = "Hello!"
+  mainFrameRequestInfo[mainFrameReqId].inference = "Hello!";
 }
 
 browser.runtime.onMessage.addListener(inferencingMessageListener);
