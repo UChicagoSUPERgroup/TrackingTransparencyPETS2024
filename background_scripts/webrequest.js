@@ -124,7 +124,6 @@ function processQueuedRequests() {
 
 async function logRequest(details) {
 
-
   let mainFrameReqId;
   if (details.type === "main_frame") {
     // console.log("main frame request", "url:", details.url, "originUrl:", details.originUrl, "requestId:", details.requestId);
@@ -139,40 +138,9 @@ async function logRequest(details) {
       title: "",
       trackers: []
     }
-
-
-
-
-  // Get Mock Data from Inferencing.js
-  // This does not use the listener and should be deleted when we have real data
-  // Pass data to inference object below
-  // mockData();
-
-  let parsedRequest = document.createElement('a');
-  parsedRequest.href = details.url;
-
-
-  // are first-parties trackers?
-  // if they aren't, we'll want to do something like this below
-  // get hostname for active tab
-  let activeTabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
-  let browsertab = activeTabs[0];
-  let parsedTab = document.createElement('a');
-  parsedTab.href = browsertab.url;
-  // some more code goes here…
-  // compare domain of tab with domain of request
-
-  //let match = null;
-  if (parsedRequest.hostname in services) {
-    match = parsedRequest.hostname;
-  } else {
-    let arr = parsedRequest.hostname.split('.');
-    let domain = arr[arr.length -2] + '.' + arr[arr.length - 1]
-    if (domain in services) {
-      match = domain;
-    }
   }
 
+  /*
   if (match) {
     console.log("we have a tracker! " + match);
     let pageInfo = {
@@ -189,34 +157,14 @@ async function logRequest(details) {
       }
       storeTracker(trackerInfo);
     });
-
   }
-
+  */
   details.parentRequestId = tabRequestMap[details.tabId];
 
   requestsQueue.push(details);
- }
 }
-
-// async function getTrackers(tabId) {
-//   let matches = [];
-//   for (request of requestsQueue) {
-//     if (request.tabId === tabId) {
-//       const match = processRequest(request);
-//       if (match && matches.indexOf(match) === -1) {
-//         matches.push(match);
-//       }
-//     }
-//   }
-//   // console.log(matches);
-//   requestsQueue = requestsQueue.filter(x => x.parentRequestId !== parentRequestId);
-
-//   return(matches);
-// }
-
 
 browser.webRequest.onBeforeRequest.addListener(
   logRequest,
   {urls: ["<all_urls>"]}
-
 );
