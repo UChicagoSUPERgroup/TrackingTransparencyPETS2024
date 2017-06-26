@@ -50,7 +50,7 @@ async function inferencingMessageListener(message, sender) {
     // readability gives us a better title
     info.title = message.article.title;
   } else {
-     info.title = sender.tab.title
+    info.title = sender.tab.title
   }
 
   const category = infer(message.article, tr);

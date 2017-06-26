@@ -3,21 +3,22 @@ port.postMessage({greeting: "hello from popup"});
 
 port.onMessage.addListener(m => {
   switch (m.type) {
-    case "inference_current_page":
-      $('#inference').text(m.inference);
+    case "info_current_page":
+      $('#pagetitle').text(m.info.title);
+      $('#inference').text(m.info.inference);
+      break;
   }
 });
 
 async function onReady() {
-  let tabs = await browser.tabs.query({active: true, lastFocusedWindow: true})
-  let title = tabs[0].title;
-  if (title.length >= 30) {
-    title = title.substring(0,30).concat("...");
-  }
-  $('#pagetitle').text(title);
+  // let tabs = await browser.tabs.query({active: true, lastFocusedWindow: true})
+  // let title = tabs[0].title;
+  // if (title.length >= 30) {
+  //   title = title.substring(0,30).concat("...");
+  // }
+  // $('#pagetitle').text(title);
 
-  port.postMessage({ type: "request_inference_current_page" });
-
+  port.postMessage({ type: "request_info_current_page" });
 
 }
 
