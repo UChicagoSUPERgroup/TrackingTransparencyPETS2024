@@ -6,6 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
     "build": "webpack",
+    "watch": "webpack -w",
     "start": "web-ext run"
   },
   "devDependencies": {
