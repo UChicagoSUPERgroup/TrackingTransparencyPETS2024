@@ -9,50 +9,6 @@ import {AllHtmlEntities as Entities} from "html-entities"
 // import read from "node-readability"
 // import Readability from "readability"
 
-// returns an array of words located on given webpage
-// and make lowercase
-function parseWordsFromPage(pageHTML) {
-  var words, text, data, tokenizer, tokens;
-
-  if (pageHTML === undefined) {
-    return [];
-  }
-
-  /* data = extractor(pageHTML, "en");
-
-  console.log(data);
-  text = [
-    data.title,
-    data.publisher,
-    data.description,
-    data.tags,
-    data.text
-  ];
-  */
-
-  read(pageHTML, function (err, article, meta) {
-    text = [
-      article.title,
-      article.content,
-    ];
-
-    // join list and decode html
-
-    const entities = new Entities();
-    text = entities.decode(text.join(" "));
-
-    // striptags
-    text = striptags(text, [], " ");
-
-    // tokenize
-    tokenizer = new Tokenizer();
-    tokens = tokenizer.words()(text);
-
-    words = tokens.map((token) => token.value.toLowerCase());
-
-    return words;
-  });
-}
 
 function scoreCategory(category, words) {
   var total = words.length;
@@ -61,7 +17,7 @@ function scoreCategory(category, words) {
     return category.keywords.indexOf(n) !== -1;
   });
 
-  console.log(words.length);
+  // console.log(words.length);
 
   return (words.length / total);
 }
@@ -81,7 +37,7 @@ function findBestChild(category, words, parentScore) {
       bestChild = category.children[i];
     }
 
-    console.log([curScore, category.children[i].name]);
+    // console.log([curScore, category.children[i].name]);
   }
 
   if (highestScore >= parentScore) {
@@ -120,32 +76,30 @@ function findBestCategory(root, words, rootScore) {
 export default function (article, tree) {
   var words, text, tokenizer, tokens;
 
+  text = [
+    article.title,
+    article.content,
+  ];
 
-  // read(html, function (err, article, meta) {
-    text = [
-      article.title,
-      article.content,
-    ];
+  // join list and decode html
 
-    // join list and decode html
+  const entities = new Entities();
+  text = entities.decode(text.join(" "));
 
-    const entities = new Entities();
-    text = entities.decode(text.join(" "));
+  // striptags
+  text = striptags(text, [], " ");
 
-    // striptags
-    text = striptags(text, [], " ");
+  // tokenize
+  tokenizer = new Tokenizer();
+  tokens = tokenizer.words()(text);
 
-    // tokenize
-    tokenizer = new Tokenizer();
-    tokens = tokenizer.words()(text);
+  words = tokens.map((token) => token.value.toLowerCase());
 
-    words = tokens.map((token) => token.value.toLowerCase());
+  // console.log(words);
+  // findBestCategory(tree, words, 0);
 
-    console.log(words);
-    // findBestCategory(tree, words, 0);
+  const cat = (findBestCategory(tree, words, 0));
+  // console.log(cat);
+  return cat;
 
-    console.log(findBestCategory(tree, words, 0));
-
-    // article.close();
-  // });
 }

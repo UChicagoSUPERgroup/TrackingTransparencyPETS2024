@@ -6,9 +6,11 @@ import infer from "infer.js";
  */
 let inferredData = {}
 
-var tree = buildCategoryTree("../inferencing/data/categories.json");
+let tree = buildCategoryTree("../inferencing/data/categories.json");
 
-function inferencingMessageListener(message, sender) {
+async function inferencingMessageListener(message, sender) {
+
+  let tr = await tree;
 
   if (!sender.tab || !sender.url || sender.frameId !== 0) {
     // message didn't come from a tab, so we ignore
@@ -20,9 +22,9 @@ function inferencingMessageListener(message, sender) {
     mainFrameRequestInfo[mainFrameReqId].title = sender.tab.title;
   }
 
-  infer(message.article, tree);
-
-  mainFrameRequestInfo[mainFrameReqId].inference = "Hello!"
+  const category = infer(message.article, tr);
+  console.log(category[0].name);
+  mainFrameRequestInfo[mainFrameReqId].inference = category[0].name;
 }
 
 browser.runtime.onMessage.addListener(inferencingMessageListener);
