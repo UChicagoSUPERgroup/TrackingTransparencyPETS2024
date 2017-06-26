@@ -128,6 +128,9 @@ async function logRequest(details) {
     // console.log("main frame request", "url:", details.url, "originUrl:", details.originUrl, "requestId:", details.requestId);
     mainFrameReqId = details.timeStamp;
     tabRequestMap[details.tabId] = mainFrameReqId;
+    if (details.tabId === -1) {
+      return;
+    }
     const tab = await browser.tabs.get(details.tabId);
     mainFrameRequestInfo[mainFrameReqId] = {
       url: tab.url,

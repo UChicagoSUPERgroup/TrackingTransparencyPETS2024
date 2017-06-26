@@ -9,6 +9,7 @@ let inferredData = {}
 var tree = buildCategoryTree("../inferencing/data/categories.json");
 
 function inferencingMessageListener(message, sender) {
+
   if (!sender.tab || !sender.url || sender.frameId !== 0) {
     // message didn't come from a tab, so we ignore
     return;
@@ -18,9 +19,11 @@ function inferencingMessageListener(message, sender) {
   if (mainFrameReqId && mainFrameRequestInfo[mainFrameReqId].title === "") {
     mainFrameRequestInfo[mainFrameReqId].title = sender.tab.title;
   }
-  // console.log(message);
 
-  infer(message.html, tree);
+  const doc = message.document;
+  console.log(doc);
+
+  infer(doc, tree);
 
   mainFrameRequestInfo[mainFrameReqId].inference = "Hello!"
 }
