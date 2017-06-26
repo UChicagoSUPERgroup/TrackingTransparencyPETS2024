@@ -32,7 +32,7 @@
             "matches": ["<all_urls>"],
             "js": [
                 "lib/browser-polyfill.min.js", 
-                "content_scripts/content_script.js"
+                "dist/content_script.js"
             ],
             "run_at": "document_idle"
         }

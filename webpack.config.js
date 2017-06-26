@@ -10,7 +10,8 @@ module.exports = {
     // background: './src/background.js',
     // infer: './inferencing/src/infer.js',
     // build: './inferencing/src/build.js',
-    inferencing: './background_scripts/inferencing.js'
+    inferencing: './background_scripts/inferencing.js',
+    content_script: './content_scripts/content_script.js'
   },
   output: {
     // This copies each source entry into the extension dist folder named

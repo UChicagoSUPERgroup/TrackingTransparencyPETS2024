@@ -20,10 +20,7 @@ function inferencingMessageListener(message, sender) {
     mainFrameRequestInfo[mainFrameReqId].title = sender.tab.title;
   }
 
-  const doc = message.document;
-  console.log(doc);
-
-  infer(doc, tree);
+  infer(message.article, tree);
 
   mainFrameRequestInfo[mainFrameReqId].inference = "Hello!"
 }

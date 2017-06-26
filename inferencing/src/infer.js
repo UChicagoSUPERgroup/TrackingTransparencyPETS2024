@@ -7,7 +7,7 @@ import request from "then-request";
 import striptags from "striptags";
 import {AllHtmlEntities as Entities} from "html-entities"
 // import read from "node-readability"
-import Readability from "readability"
+// import Readability from "readability"
 
 // returns an array of words located on given webpage
 // and make lowercase
@@ -117,23 +117,11 @@ function findBestCategory(root, words, rootScore) {
   }
 }
 
-export default function (doc, tree) {
+export default function (article, tree) {
   var words, text, tokenizer, tokens;
 
-  var location = doc.location;
-  var uri = {
-    spec: location.href,
-    host: location.host,
-    prePath: location.protocol + "//" + location.host,
-    scheme: location.protocol.substr(0, location.protocol.indexOf(":")),
-    pathBase: location.protocol + "//" + location.host + location.pathname.substr(0, location.pathname.lastIndexOf("/") + 1)
-  };
-  var article = new Readability(uri, doc).parse();
-  console.log(article);
 
-  /*
-  // get html from url
-  read(html, function (err, article, meta) {
+  // read(html, function (err, article, meta) {
     text = [
       article.title,
       article.content,
@@ -158,7 +146,6 @@ export default function (doc, tree) {
 
     console.log(findBestCategory(tree, words, 0));
 
-    article.close();
-  });
-  */
+    // article.close();
+  // });
 }
