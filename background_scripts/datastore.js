@@ -74,7 +74,7 @@ function storeInference(info) {
     'inference': info.inference,
     'inferenceCategory': info.inferenceCategory,
     'threshold': info.threshold,
-    'pageID': pageID
-    });
+    'pageID': info.pageID
+  });
   return ttDb.insertOrReplace().into(inferenceItem).values([inference]).exec();
 }

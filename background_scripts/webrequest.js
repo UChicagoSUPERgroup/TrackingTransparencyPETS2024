@@ -146,7 +146,7 @@ async function logRequest(details) {
   // Get Mock Data from Inferencing.js
   // This does not use the listener and should be deleted when we have real data
   // Pass data to inference object below
-  mockData();
+  // mockData();
 
   let parsedRequest = document.createElement('a');
   parsedRequest.href = details.url;
@@ -187,19 +187,8 @@ async function logRequest(details) {
         trackerdomain: match,
         pageID: pageID = results[0]['id']
       }
-      // THIS IS NOT REAL DATA, yet
-
-      let inferenceInfo = {
-        inference: _inference,
-        inferenceCategory: _inferenceCat,
-        threshold: _inferenceThreshold,
-        pageID: pageID = results[0]['id']
-      }
-    storeTracker(trackerInfo);
-    storeInference(inferenceInfo);
-
-  });
-
+      storeTracker(trackerInfo);
+    });
 
   }
 

@@ -21,7 +21,7 @@ let tree = buildCategoryTree("../src/inferencing/data/categories.json");
 
 async function inferencingMessageListener(message, sender) {
 
-  let tr = await tree;
+  const tr = await tree;
 
   if (!sender.tab || !sender.url || sender.frameId !== 0) {
     // message didn't come from a tab, so we ignore
@@ -35,7 +35,16 @@ async function inferencingMessageListener(message, sender) {
 
   const category = infer(message.article, tr);
   console.log(category[0].name);
-  mainFrameRequestInfo[mainFrameReqId].inference = category[0].name;
+  // mainFrameRequestInfo[mainFrameReqId].inference = category[0].name;
+
+  let inferenceInfo = {
+    inference: category[0].name,
+    inferenceCategory: "",
+    threshold: category[1],
+    pageID: mainFrameReqId
+  }
+  storeInference(inferenceInfo);
+
 }
 
 browser.runtime.onMessage.addListener(inferencingMessageListener);
