@@ -13,12 +13,11 @@ let hardeningRules = [];
 /* The rest of the matching regexes and replacement strings. */
 let moreRules = [];
 
-/* The web requests that have been recorded, to be processed and cleared out after page loads */
 let requestsQueue = [];
-
 let tabRequestMap = {};
 let mainFrameRequestInfo = {};
 
+var pageID;
 /* Destringifies an object. */
 function deserialize(object) {
   return typeof object == 'string' ? JSON.parse(object) : object;
@@ -79,7 +78,7 @@ readTextFile('lib/disconnect.json').then(data => {
   processServices(data);
 });
 
-/* 
+/*
  * given a request object, returns a tracker if the request is
  * to known tracker, otherwise returns null
  */
@@ -106,7 +105,7 @@ function trackerMatch(details) {
   return match;
 }
 
-/* 
+/*
  * reads from requests queue and adds items to main frame visit objects
  */
 function processQueuedRequests() {
@@ -122,7 +121,10 @@ function processQueuedRequests() {
   }
 }
 
+
 async function logRequest(details) {
+
+
   let mainFrameReqId;
   if (details.type === "main_frame") {
     // console.log("main frame request", "url:", details.url, "originUrl:", details.originUrl, "requestId:", details.requestId);
@@ -137,10 +139,74 @@ async function logRequest(details) {
       title: "",
       trackers: []
     }
+
+
+
+
+  // Get Mock Data from Inferencing.js
+  // This does not use the listener and should be deleted when we have real data
+  // Pass data to inference object below
+  mockData();
+
+  let parsedRequest = document.createElement('a');
+  parsedRequest.href = details.url;
+
+
+  // are first-parties trackers?
+  // if they aren't, we'll want to do something like this below
+  // get hostname for active tab
+  let activeTabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
+  let browsertab = activeTabs[0];
+  let parsedTab = document.createElement('a');
+  parsedTab.href = browsertab.url;
+  // some more code goes here…
+  // compare domain of tab with domain of request
+
+  //let match = null;
+  if (parsedRequest.hostname in services) {
+    match = parsedRequest.hostname;
+  } else {
+    let arr = parsedRequest.hostname.split('.');
+    let domain = arr[arr.length -2] + '.' + arr[arr.length - 1]
+    if (domain in services) {
+      match = domain;
+    }
   }
+
+  if (match) {
+    console.log("we have a tracker! " + match);
+    let pageInfo = {
+      title: mainFrameRequestInfo[mainFrameReqId].title,
+      domain: details.url,
+      trackerdomain: match,
+      path: parsedTab.pathname,
+      protocol: parsedTab.protocol
+    }
+    storePage(pageInfo).then(function(results) {
+      let trackerInfo = {
+        trackerdomain: match,
+        pageID: pageID = results[0]['id']
+      }
+      // THIS IS NOT REAL DATA, yet
+
+      let inferenceInfo = {
+        inference: _inference,
+        inferenceCategory: _inferenceCat,
+        threshold: _inferenceThreshold,
+        pageID: pageID = results[0]['id']
+      }
+    storeTracker(trackerInfo);
+    storeInference(inferenceInfo);
+
+  });
+
+
+  }
+
   details.parentRequestId = tabRequestMap[details.tabId];
 
   requestsQueue.push(details);
+ }
 }
 
 // async function getTrackers(tabId) {
@@ -159,26 +225,9 @@ async function logRequest(details) {
 //   return(matches);
 // }
 
-// function storeDatabaseInfo(parentRequestId) {
-//   // get tab info and fill into database
-//   let parsedTab = document.createElement('a');
-//   parsedTab.href = tab.url;
-
-//   // let dbInfo = {
-//   //   title: tab.title,
-//   //   domain: parsedTab.hostname,
-//   //   path: parsedTab.pathname,
-//   //   protocol: parsedTab.protocol,
-//   //   trackers: await trackers,
-//   //   categoryinference: await inferredData
-//   // }
-//   // storePage(dbInfo);
-// }
 
 browser.webRequest.onBeforeRequest.addListener(
   logRequest,
-  {urls: ["<all_urls>"]},
-  ["blocking"]
-);
+  {urls: ["<all_urls>"]}
 
-setInterval(processQueuedRequests, 5000)
+);

@@ -5,6 +5,17 @@ import infer from "infer.js";
  * url: inference
  */
 let inferredData = {}
+var _inference = ""
+var _inferenceCat = ""
+var _inferenceThreshold = 0
+
+
+function mockData () {
+  _inference = "Hello";
+  _inferenceCat = "Hello again";
+  _inferenceThreshold = 1;
+
+}
 
 let tree = buildCategoryTree("../src/inferencing/data/categories.json");
 

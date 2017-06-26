@@ -4,47 +4,77 @@ schemaBuilder.createTable('Pages').
     addColumn('id', lf.Type.INTEGER).
     addColumn('title', lf.Type.STRING).
     addColumn('domain', lf.Type.STRING).
+    //addColumn('trackerdomain', lf.Type.STRING).
     addColumn('path', lf.Type.STRING).
     addColumn('protocol', lf.Type.STRING).
     addColumn('time', lf.Type.DATE_TIME).
-    addColumn('trackers', lf.Type.OBJECT).
     addColumn('categoryinference', lf.Type.STRING).
     addPrimaryKey(['id'], true).
     addIndex('idxTime', ['time'], false, lf.Order.DESC);
 
+
+schemaBuilder.createTable('Trackers').
+    addColumn('id', lf.Type.INTEGER).
+    addColumn('tracker', lf.Type.STRING).
+    addColumn('pageID', lf.Type.INTEGER).
+    addPrimaryKey(['id'], true).
+    addForeignKey('fk_pageId', {
+         local: 'pageID',
+         ref: 'Pages.id'
+       });
+
+schemaBuilder.createTable('Inferences').
+    addColumn('id', lf.Type.INTEGER).
+    addColumn('inference', lf.Type.STRING).
+    addColumn('inferenceCategory', lf.Type.STRING).
+    addColumn('pageID', lf.Type.INTEGER).
+    addColumn('threshold', lf.Type.NUMBER).
+    addPrimaryKey(['id'], true).
+    addForeignKey('fk_pageId', {
+        local: 'pageID',
+        ref: 'Pages.id'
+      }).
+    addIndex('idxThreshold', ['threshold'], false, lf.Order.DESC);
+
 var ttDb;
-var item;
+var pageItem;
+var trackerItem;
+var inferenceItem;
+
 schemaBuilder.connect().then(function(db) {
   ttDb = db;
-  item = db.getSchema().table('Pages');
-//   var row = item.createRow({
-//     'title': 'example page',
-//     'domain': 'example.com',
-//     'path': '/',
-//     'protocol': 'http',
-//     'time': new Date(),
-//     'categoryinference': 'Informational'
-//   });
-
-//   return db.insertOrReplace().into(item).values([row]).exec();
-// }).then(function() {
-//   return ttDb.select().from(item).where(item.time.lt(new Date())).exec();
-// }).then(function(results) {
-//   results.forEach(function(row) {
-//     console.log(row['title'], 'visited at', row['time']);
-//   });
+  pageItem = db.getSchema().table('Pages');
+  trackerItem = db.getSchema().table('Trackers');
+  inferenceItem = db.getSchema().table('Inferences');
 });
 
 function storePage(info) {
-  var row = item.createRow({
+  var page = pageItem.createRow({
     'title': info.title,
     'domain': info.domain,
+    //'trackerdomain': info.trackerdomain,
     'path': info.path,
     'protocol': info.protocol,
     'time': new Date(),
-    'categoryinference': info.categoryinference,
-    'trackers': info.trackers
+    'categoryinference': ''
+  });
+  return ttDb.insertOrReplace().into(pageItem).values([page]).exec();
+}
+function storeTracker(info) {
+  var tracker = trackerItem.createRow({
+    'tracker': info.trackerdomain,
+    'pageID': pageID
   });
 
-  return ttDb.insertOrReplace().into(item).values([row]).exec();
+  return ttDb.insertOrReplace().into(trackerItem).values([tracker]).exec();
+}
+
+function storeInference(info) {
+  var inference = inferenceItem.createRow({
+    'inference': info.inference,
+    'inferenceCategory': info.inferenceCategory,
+    'threshold': info.threshold,
+    'pageID': pageID
+    });
+  return ttDb.insertOrReplace().into(inferenceItem).values([inference]).exec();
 }
