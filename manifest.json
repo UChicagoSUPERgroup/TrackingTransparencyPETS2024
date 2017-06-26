@@ -24,7 +24,8 @@
             "lib/lovefield.min.js",
             "background_scripts/datastore.js",
             "dist/inferencing.js",
-            "background_scripts/webrequest.js"
+            "background_scripts/webrequest.js",
+            "background_scripts/popup_connector.js"
         ]
     },
     "content_scripts": [

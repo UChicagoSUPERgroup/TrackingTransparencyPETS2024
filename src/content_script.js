@@ -14,4 +14,4 @@ var uri = {
 var article = new Readability(uri, doc).parse();
 // console.log(article);
 
-browser.runtime.sendMessage({ article: article });
+browser.runtime.sendMessage({ type: "parsed_page", article: article });

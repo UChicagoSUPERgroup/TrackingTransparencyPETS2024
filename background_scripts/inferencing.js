@@ -19,6 +19,17 @@ function mockData () {
 
 let tree = buildCategoryTree("../src/inferencing/data/categories.json");
 
+async function onMessage(message, sender, sendResponse) {
+  switch (message.type) {
+    case "parsed_page":
+      inferencingMessageListener(message, sender);
+      break;
+    case "current_page_inference_request":
+      popupMessageListener(message, sender, sendResponse);
+      break;
+  }
+}
+
 async function inferencingMessageListener(message, sender) {
 
   const tr = await tree;
@@ -35,7 +46,7 @@ async function inferencingMessageListener(message, sender) {
 
   const category = infer(message.article, tr);
   console.log(category[0].name);
-  // mainFrameRequestInfo[mainFrameReqId].inference = category[0].name;
+  mainFrameRequestInfo[mainFrameReqId].inference = category[0].name;
 
   let inferenceInfo = {
     inference: category[0].name,
@@ -45,6 +56,7 @@ async function inferencingMessageListener(message, sender) {
   }
   storeInference(inferenceInfo);
 
+
 }
 
-browser.runtime.onMessage.addListener(inferencingMessageListener);
+browser.runtime.onMessage.addListener(onMessage);
