@@ -25,6 +25,7 @@
             "background_scripts/datastore.js",
             "dist/inferencing.js",
             "background_scripts/webrequest.js",
+            "background_scripts/query_controller.js",
             "background_scripts/popup_connector.js"
         ]
     },
