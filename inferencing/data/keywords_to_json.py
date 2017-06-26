@@ -12,7 +12,8 @@ def main():
 
         for row in reader:
             keyword_tuples = ast.literal_eval(row["keywords"])
-            keywords = [keyword[0] for keyword in keyword_tuples]
+            keywords = [keyword for keyword in keyword_tuples]
+            # keywords = [keyword[0] for keyword in keyword_tuples]
             result.append(
                 {
                     "category": row["category"],
