@@ -61,19 +61,21 @@ function processServices(data) {
 }
 
 /* https://stackoverflow.com/a/34579496 */
-function readTextFile(file, callback) {
+// function readTextFile(file, callback) {
+function readTextFile(file) {
+  return new Promise((resolve, reject) => {
     let rawFile = new XMLHttpRequest();
     rawFile.overrideMimeType("application/json");
     rawFile.open("GET", file, true);
     rawFile.onreadystatechange = function() {
         if (rawFile.readyState === 4 && rawFile.status == "200") {
-            callback(rawFile.responseText);
+            resolve(rawFile.responseText);
         }
     }
     rawFile.send(null);
-}
+})}
 
-readTextFile('lib/disconnect.json', function(data) {
+readTextFile('lib/disconnect.json').then(data => {
   processServices(data);
 });
 
@@ -108,7 +110,6 @@ function trackerMatch(details) {
  * reads from requests queue and adds items to main frame visit objects
  */
 function processQueuedRequests() {
-  let unmatched = [];
   while (true) {
     req = requestsQueue.pop();
     if (!req) break;
@@ -124,7 +125,7 @@ function processQueuedRequests() {
 async function logRequest(details) {
   let mainFrameReqId;
   if (details.type === "main_frame") {
-    console.log("main frame request", "url:", details.url, "originUrl:", details.originUrl, "requestId:", details.requestId);
+    // console.log("main frame request", "url:", details.url, "originUrl:", details.originUrl, "requestId:", details.requestId);
     mainFrameReqId = details.timeStamp;
     tabRequestMap[details.tabId] = mainFrameReqId;
     const tab = await browser.tabs.get(details.tabId);
@@ -139,21 +140,21 @@ async function logRequest(details) {
   requestsQueue.push(details);
 }
 
-async function getTrackers(tabId) {
-  let matches = [];
-  for (request of requestsQueue) {
-    if (request.tabId === tabId) {
-      const match = processRequest(request);
-      if (match && matches.indexOf(match) === -1) {
-        matches.push(match);
-      }
-    }
-  }
-  // console.log(matches);
-  requestsQueue = requestsQueue.filter(x => x.parentRequestId !== parentRequestId);
+// async function getTrackers(tabId) {
+//   let matches = [];
+//   for (request of requestsQueue) {
+//     if (request.tabId === tabId) {
+//       const match = processRequest(request);
+//       if (match && matches.indexOf(match) === -1) {
+//         matches.push(match);
+//       }
+//     }
+//   }
+//   // console.log(matches);
+//   requestsQueue = requestsQueue.filter(x => x.parentRequestId !== parentRequestId);
 
-  return(matches);
-}
+//   return(matches);
+// }
 
 // function storeDatabaseInfo(parentRequestId) {
 //   // get tab info and fill into database

@@ -23,7 +23,7 @@
             "lib/jquery-3.2.1.min.js",
             "lib/lovefield.min.js",
             "background_scripts/datastore.js",
-            "background_scripts/inferencing.js",
+            "dist/inferencing.js",
             "background_scripts/webrequest.js"
         ]
     },
