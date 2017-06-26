@@ -11,7 +11,7 @@ module.exports = {
     // infer: './inferencing/src/infer.js',
     // build: './inferencing/src/build.js',
     inferencing: './background_scripts/inferencing.js',
-    content_script: './content_scripts/content_script.js'
+    content_script: './src/content_script.js'
   },
   output: {
     // This copies each source entry into the extension dist folder named
@@ -33,7 +33,7 @@ module.exports = {
     modules: [
       'node_modules',
       path.join(__dirname, 'background_scripts'),
-      path.join(__dirname, 'inferencing/src')
+      path.join(__dirname, 'src/inferencing')
     ],
   },
   plugins: [

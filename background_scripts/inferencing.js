@@ -6,7 +6,7 @@ import infer from "infer.js";
  */
 let inferredData = {}
 
-let tree = buildCategoryTree("../inferencing/data/categories.json");
+let tree = buildCategoryTree("../src/inferencing/data/categories.json");
 
 async function inferencingMessageListener(message, sender) {
 
