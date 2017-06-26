@@ -9,7 +9,7 @@ schemaBuilder.createTable('Pages').
     addColumn('protocol', lf.Type.STRING).
     addColumn('time', lf.Type.DATE_TIME).
     addColumn('categoryinference', lf.Type.STRING).
-    addPrimaryKey(['id'], true).
+    addPrimaryKey(['id']).
     addIndex('idxTime', ['time'], false, lf.Order.DESC);
 
 
@@ -50,6 +50,7 @@ schemaBuilder.connect().then(function(db) {
 
 function storePage(info) {
   var page = pageItem.createRow({
+    'id': info.pageId,
     'title': info.title,
     'domain': info.domain,
     //'trackerdomain': info.trackerdomain,

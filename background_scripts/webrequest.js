@@ -138,6 +138,17 @@ async function logRequest(details) {
       title: "",
       trackers: []
     }
+    let parsedURL = document.createElement('a');
+    parsedURL.href = tab.url;
+    let pageInfo = {
+      pageId: mainFrameReqId,
+      title: mainFrameRequestInfo[mainFrameReqId].title,
+      domain: parsedURL.hostname,
+      path: parsedURL.pathname,
+      protocol: parsedURL.protocol
+    }
+    storePage(pageInfo);
+
   }
 
   /*
@@ -153,7 +164,7 @@ async function logRequest(details) {
     storePage(pageInfo).then(function(results) {
       let trackerInfo = {
         trackerdomain: match,
-        pageID: pageID = results[0]['id']
+        pageId: pageId = results[0]['id']
       }
       storeTracker(trackerInfo);
     });
