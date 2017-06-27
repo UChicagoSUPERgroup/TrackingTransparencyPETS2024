@@ -10,13 +10,13 @@ module.exports = {
     // background: './src/background.js',
     // infer: './inferencing/src/infer.js',
     // build: './inferencing/src/build.js',
-    inferencing: './background_scripts/inferencing.js',
+    inferencing: './src/inferencing.js',
     content_script: './src/content_script.js'
   },
   output: {
     // This copies each source entry into the extension dist folder named
     // after its entry config key.
-    path:  path.join(__dirname, 'dist'),
+    path:  path.join(__dirname, 'extension/dist'),
     filename: '[name].js',
   },
   module: {
@@ -32,7 +32,6 @@ module.exports = {
     // This allows you to import modules just like you would in a NodeJS app.
     modules: [
       'node_modules',
-      path.join(__dirname, 'background_scripts'),
       path.join(__dirname, 'src/inferencing')
     ],
   },

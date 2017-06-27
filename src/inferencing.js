@@ -17,7 +17,7 @@ function mockData () {
 
 }
 
-let tree = buildCategoryTree("../src/inferencing/data/categories.json");
+let tree = buildCategoryTree("../lib/inferencing_data/categories.json");
 
 async function onMessage(message, sender, sendResponse) {
   switch (message.type) {

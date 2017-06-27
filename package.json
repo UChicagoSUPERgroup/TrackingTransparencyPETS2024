@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "build": "webpack",
     "watch": "webpack -w",
-    "start": "web-ext run"
+    "start": "web-ext run -s extension/"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
