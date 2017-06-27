@@ -130,55 +130,51 @@ async function logRequest(details) {
 
   let mainFrameReqId;
   if (details.type === "main_frame") {
-    // console.log("main frame request", "url:", details.url, "originUrl:", details.originUrl, "requestId:", details.requestId);
-    mainFrameReqId = details.timeStamp;
-    tabRequestMap[details.tabId] = mainFrameReqId;
-    if (details.tabId === -1) {
-      return;
-    }
-    const tab = await browser.tabs.get(details.tabId);
-    let parsedURL = document.createElement('a');
-    parsedURL.href = tab.url;
-    mainFrameRequestInfo[mainFrameReqId] = {
-      url: tab.url,
-      pageId: mainFrameReqId,
-      domain: parsedURL.hostname,
-      path: parsedURL.pathname,
-      protocol: parsedURL.protocol,
-      title: "", // title isn't defined at this point in request
-      trackers: []
-    }
-    storePage(mainFrameRequestInfo[mainFrameReqId]);
-
+    // // set new page id
+    // mainFrameReqId = details.timeStamp;
+    // tabRequestMap[details.tabId] = mainFrameReqId;
+    // updateMainFrameInfo(details);
+    return;
   }
 
-  /*
-  if (match) {
-    console.log("we have a tracker! " + match);
-    let pageInfo = {
-      title: mainFrameRequestInfo[mainFrameReqId].title,
-      domain: details.url,
-      trackerdomain: match,
-      path: parsedTab.pathname,
-      protocol: parsedTab.protocol
-    }
-    storePage(pageInfo).then(function(results) {
-      let trackerInfo = {
-        trackerdomain: match,
-        pageId: pageId = results[0]['id']
-      }
-      storeTracker(trackerInfo);
-    });
-  }
-  */
   details.parentRequestId = tabRequestMap[details.tabId];
 
   requestsQueue.push(details);
+}
+
+// called by either onBeforeRequest or onDOMContentLoaded listener
+// accepts details object from either one
+async function updateMainFrameInfo(details) {
+
+  if (details.frameId !== 0 || details.tabId === -1) {
+    // console.log("nope");
+    return;
+  }
+  const mainFrameReqId = details.timeStamp;
+  tabRequestMap[details.tabId] = mainFrameReqId;
+  console.log("webNavigation onCommitted - url:", details.url, "id:", mainFrameReqId);
+
+  const tab = await browser.tabs.get(details.tabId);
+
+  let parsedURL = document.createElement('a');
+  parsedURL.href = details.url;
+  mainFrameRequestInfo[mainFrameReqId] = {
+    url: details.url,
+    pageId: mainFrameReqId,
+    domain: parsedURL.hostname,
+    path: parsedURL.pathname,
+    protocol: parsedURL.protocol,
+    title: tab.title,
+    trackers: []
+  }
+  storePage(mainFrameRequestInfo[mainFrameReqId]);
 }
 
 browser.webRequest.onBeforeRequest.addListener(
   logRequest,
   {urls: ["<all_urls>"]}
 );
+
+browser.webNavigation.onCommitted.addListener(updateMainFrameInfo);
 
 setInterval(processQueuedRequests, 5000);
