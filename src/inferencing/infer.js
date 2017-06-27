@@ -1,13 +1,9 @@
 /*
  * Infer ad interest category given the webpage a user visits.
  */
-// import extractor from "unfluff";
 import Tokenizer from "tokenize-text";
-import request from "then-request";
 import striptags from "striptags";
 import {AllHtmlEntities as Entities} from "html-entities"
-// import read from "node-readability"
-// import Readability from "readability"
 
 
 function scoreCategory(category, words) {
