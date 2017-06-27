@@ -34,13 +34,13 @@ schemaBuilder.createTable('Inferences').
       }).
     addIndex('idxThreshold', ['threshold'], false, lf.Order.DESC);
 
-let db = schemaBuilder.connect();
+let dbPromise = schemaBuilder.connect();
 var pageItem;
 var trackerItem;
 var inferenceItem;
 
 async function storePage(info) {
-  let ttDb = await db;
+  let ttDb = await dbPromise;
   pageItem = ttDb.getSchema().table('Pages');
 
   var page = pageItem.createRow({
@@ -54,7 +54,7 @@ async function storePage(info) {
   return ttDb.insertOrReplace().into(pageItem).values([page]).exec();
 }
 async function storeTracker(info) {
-  let ttDb = await db;
+  let ttDb = await dbPromise;
   trackerItem = ttDb.getSchema().table('Trackers');
 
   var tracker = trackerItem.createRow({
@@ -66,7 +66,7 @@ async function storeTracker(info) {
 }
 
 async function storeInference(info) {
-  let ttDb = await db;
+  let ttDb = await dbPromise;
   inferenceItem = ttDb.getSchema().table('Inferences');
 
   var inference = inferenceItem.createRow({
