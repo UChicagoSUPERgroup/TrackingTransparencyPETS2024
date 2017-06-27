@@ -61,7 +61,7 @@ async function inferencingMessageListener(message, sender) {
     inference: category[0].name,
     inferenceCategory: "",
     threshold: category[1],
-    pageID: mainFrameReqId
+    pageId: mainFrameReqId
   }
   storePage(info); // stores page info again with good title
   storeInference(inferenceInfo);

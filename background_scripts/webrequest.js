@@ -17,7 +17,7 @@ let requestsQueue = [];
 let tabRequestMap = {};
 let mainFrameRequestInfo = {};
 
-var pageID;
+var pageId;
 /* Destringifies an object. */
 function deserialize(object) {
   return typeof object == 'string' ? JSON.parse(object) : object;
@@ -110,13 +110,17 @@ function trackerMatch(details) {
  */
 function processQueuedRequests() {
   while (true) {
-    req = requestsQueue.pop();
+    const req = requestsQueue.pop();
     if (!req) break;
 
-    let match = trackerMatch(req);
-    let info = mainFrameRequestInfo[req.parentRequestId];
+    const match = trackerMatch(req);
+    const info = mainFrameRequestInfo[req.parentRequestId];
     if (match && info && info.trackers && info.trackers.indexOf(match) === -1) {
       info.trackers.push(match);
+      storeTracker({
+        trackerdomain: match,
+        pageId: req.parentRequestId
+      })
     }
   }
 }
@@ -142,6 +146,7 @@ async function logRequest(details) {
       path: parsedURL.pathname,
       protocol: parsedURL.protocol,
       title: "", // title isn't defined at this point in request
+      trackers: []
     }
     storePage(mainFrameRequestInfo[mainFrameReqId]);
 
@@ -175,3 +180,5 @@ browser.webRequest.onBeforeRequest.addListener(
   logRequest,
   {urls: ["<all_urls>"]}
 );
+
+setInterval(processQueuedRequests, 5000);
