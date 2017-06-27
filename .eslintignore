@@ -1,1 +1,3 @@
-lib/
+extension/lib/
+extension/dist/
+webpack.config.js
