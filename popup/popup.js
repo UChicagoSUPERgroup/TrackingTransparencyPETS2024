@@ -7,6 +7,10 @@ port.onMessage.addListener(m => {
       $('#pagetitle').text(m.info.title);
       $('#inference').text(m.info.inference);
       break;
+    case "tracker_most_pages":
+      $('#mosttrackername').text(m.tracker);
+      $('#mosttrackercount').text(m.count - 1);
+      break;
   }
 });
 
@@ -19,6 +23,7 @@ async function onReady() {
   // $('#pagetitle').text(title);
 
   port.postMessage({ type: "request_info_current_page" });
+  port.postMessage({ type: "get_tracker_most_pages" });
 
 }
 

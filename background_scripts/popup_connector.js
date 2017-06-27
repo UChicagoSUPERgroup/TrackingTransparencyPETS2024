@@ -10,6 +10,7 @@ async function connected(p) {
     const mainFrameReqId = tabRequestMap[activeTab.id];
     const info =  mainFrameRequestInfo[mainFrameReqId];
 
+    let msg;
     switch (m.type) {
       case "request_info_current_page":
         if (!info.title) {
@@ -19,8 +20,32 @@ async function connected(p) {
           type: "info_current_page",
           info: info
         });
+        break;
+      case "get_tracker_most_pages":
+        msg = await getTrackerMostPages(info)
+        portFromPopup.postMessage(msg);
+        break;
     }
   });
 }
+
+async function getTrackerMostPages(info) {
+  let domain;
+  let count = 0;
+  for (let tracker of info.trackers) {
+    const query = await getPageVisitCountByTracker(tracker);
+    const ct = query[0].Pages["COUNT(domain)"];
+    if (ct > count) {
+      domain = tracker;
+      count = ct;
+    }
+  }
+  return {
+    type: "tracker_most_pages",
+    tracker: domain,
+    count: count
+  }
+}
+
 
 browser.runtime.onConnect.addListener(connected);
