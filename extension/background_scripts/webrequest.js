@@ -1,7 +1,14 @@
 let tabRequestMap = {};
 let mainFrameRequestInfo = {};
 
-let trackersWorker = new Worker('/background_scripts/trackers_worker.js')
+/* web workers setup */
+
+let trackersWorker = new Worker('/web_workers/trackers_worker.js');
+let databaseWorker = new Worker('/web_workers/database_worker.js');
+
+const channel = new MessageChannel();
+trackersWorker.postMessage({type: "database_worker_port", port: channel.port1}, [channel.port1]);
+databaseWorker.postMessage({type: "trackers_worker_port", port: channel.port2}, [channel.port2]);
 
 async function logRequest(details) {
 
@@ -50,7 +57,11 @@ async function updateMainFrameInfo(details) {
     title: tab.title,
     trackers: []
   }
-  storePage(mainFrameRequestInfo[mainFrameReqId]);
+  databaseWorker.postMessage({
+    type: "store_page",
+    info: mainFrameRequestInfo[mainFrameReqId]
+  });
+  console.log("message posted to database worker");
 }
 
 browser.webRequest.onBeforeRequest.addListener(
@@ -65,4 +76,9 @@ browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
   // console.log("webNavigation onDOMContentLoaded");
 // });
 
-
+trackersWorker.onmessage = function(e) {
+  console.log('Message received from trackers worker');
+}
+databaseWorker.onmessage = function(e) {
+  console.log('Message received from database worker');
+}

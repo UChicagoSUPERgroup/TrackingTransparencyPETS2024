@@ -1,3 +1,7 @@
+importScripts('/lib/parseUri.js'); 
+
+console.log("trackers worker running");
+let databaseWorkerPort;
 
 /*
   The categories and third parties, titlecased, and URL of their homepage and
@@ -105,18 +109,25 @@ function processQueuedRequests() {
     const info = mainFrameRequestInfo[req.parentRequestId];
     if (match && info && info.trackers && info.trackers.indexOf(match) === -1) {
       info.trackers.push(match);
-      storeTracker({
-        trackerdomain: match,
-        pageId: req.parentRequestId
-      })
+      console.log("sending message to database worker");
+      databaseWorkerPort.postMessage({
+        type: "store_tracker",
+        info: {
+          trackerdomain: match,
+          pageId: req.parentRequestId
+        }
+      });
     }
   }
 }
 
 onmessage = function(m) {
-  console.log('Message received from main script');
   switch (m.data.type) {
+    case "database_worker_port":
+      databaseWorkerPort = m.data.port;
+      break;
     case "new_webrequest":
+      console.log('trackers_worker received new_webrequest msg');
       requestsQueue.push(m.data.details);
       break;
   }
