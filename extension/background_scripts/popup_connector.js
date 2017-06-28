@@ -1,32 +1,41 @@
-var portFromPopup;
+let portFromPopup;
+let portFromInfopage;
 
 async function connected(p) {
-  portFromPopup = p;
-  // portFromPopup.postMessage({greeting: "connected"});
-  portFromPopup.onMessage.addListener(async function(m) {
-    let activeTabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
-    let activeTab = activeTabs[0];
 
-    const mainFrameReqId = tabRequestMap[activeTab.id];
-    const info =  mainFrameRequestInfo[mainFrameReqId];
+  if (p.name === "port-from-popup") {
+    portFromPopup = p;
+    portFromPopup.onMessage.addListener(messageListener);
+  } else if (p.name === "port-from-infopage") {
+    portFromInfopage = p;
+    portFromInfopage.onMessage.addListener(messageListener);
+  }
+    
+}
 
-    let msg;
-    switch (m.type) {
-      case "request_info_current_page":
-        if (!info.title) {
-          info.title = activeTab.title;
-        }
-        portFromPopup.postMessage({
-          type: "info_current_page",
-          info: info
-        });
-        break;
-      case "get_tracker_most_pages":
-        msg = await getTrackerMostPages(info)
-        portFromPopup.postMessage(msg);
-        break;
-    }
-  });
+async function messageListener(m) {
+  let activeTabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
+  let activeTab = activeTabs[0];
+
+  const mainFrameReqId = tabRequestMap[activeTab.id];
+  const info =  mainFrameRequestInfo[mainFrameReqId];
+
+  let msg;
+  switch (m.type) {
+    case "request_info_current_page":
+      if (!info.title) {
+        info.title = activeTab.title;
+      }
+      portFromPopup.postMessage({
+        type: "info_current_page",
+        info: info
+      });
+      break;
+    case "get_tracker_most_pages":
+      msg = await getTrackerMostPages(info)
+      portFromPopup.postMessage(msg);
+      break;
+  }
 }
 
 async function getTrackerMostPages(info) {

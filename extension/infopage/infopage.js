@@ -1,5 +1,4 @@
-var port = browser.runtime.connect({name:"port-from-popup"});
-port.postMessage({greeting: "hello from popup"});
+var port = browser.runtime.connect({name:"port-from-infopage"});
 
 port.onMessage.addListener(m => {
   switch (m.type) {
@@ -34,11 +33,6 @@ document.addEventListener("click", (e) => {
   if (e.target.classList.contains("show-more-btn")) {
 
     // document.getElementById("more").style.display = "inline";
-    let infopageData = {
-      active: true,
-      url: "../infopage/index.html"
-      };
-    browser.tabs.create(infopageData);
 
   }
 });
