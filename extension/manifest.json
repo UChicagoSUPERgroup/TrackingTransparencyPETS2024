@@ -26,6 +26,7 @@
     "background": {
         "scripts": [
             "lib/browser-polyfill.min.js",
+            "lib/parseUri.js",
             "lib/jquery-3.2.1.min.js",
             "lib/lovefield.min.js",
             "background_scripts/datastore.js",
@@ -40,6 +41,7 @@
             "matches": ["<all_urls>"],
             "js": [
                 "lib/browser-polyfill.min.js", 
+                "lib/parseUri.js",
                 "dist/content_script.js"
             ],
             "run_at": "document_idle"
