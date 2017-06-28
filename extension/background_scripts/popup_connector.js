@@ -34,10 +34,9 @@ async function getTrackerMostPages(info) {
   let count = 0;
   for (let tracker of info.trackers) {
     const query = await getPageVisitCountByTracker(tracker);
-    const ct = query[0].Pages["COUNT(domain)"];
-    if (ct > count) {
+    if (query > count) {
       domain = tracker;
-      count = ct;
+      count = query;
     }
   }
   return {
