@@ -39,10 +39,13 @@ async function getTrackerMostPages(info) {
       count = query;
     }
   }
+  const inferences = await getInferencesByTracker(domain);
   return {
     type: "tracker_most_pages",
     tracker: domain,
-    count: count
+    trackerName: services[domain].name,
+    count: count,
+    inferences: inferences
   }
 }
 

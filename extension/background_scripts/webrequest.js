@@ -4,15 +4,6 @@
 */
 let services = {};
 
-/* The supplementary domain names, regexes, and categories. */
-let filteringRules = {};
-
-/* The matching regexes and replacement strings. */
-let hardeningRules = [];
-
-/* The rest of the matching regexes and replacement strings. */
-let moreRules = [];
-
 let requestsQueue = [];
 let tabRequestMap = {};
 let mainFrameRequestInfo = {};
@@ -53,10 +44,6 @@ function processServices(data) {
       }
     }
   }
-
-  filteringRules = data.filteringRules;
-  hardeningRules = data.hardeningRules;
-  moreRules = data.moreRules;
 }
 
 /* https://stackoverflow.com/a/34579496 */

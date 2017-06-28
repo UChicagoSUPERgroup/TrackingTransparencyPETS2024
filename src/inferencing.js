@@ -1,31 +1,12 @@
 import buildCategoryTree from "build.js";
 import infer from "infer.js";
 
-/* inferred data stored as object with structure:
- * url: inference
- */
-let inferredData = {}
-var _inference = ""
-var _inferenceCat = ""
-var _inferenceThreshold = 0
-
-
-function mockData () {
-  _inference = "Hello";
-  _inferenceCat = "Hello again";
-  _inferenceThreshold = 1;
-
-}
-
-let tree = buildCategoryTree("../lib/inferencing_data/categories.json");
+const tree = buildCategoryTree("../lib/inferencing_data/categories.json");
 
 async function onMessage(message, sender, sendResponse) {
   switch (message.type) {
     case "parsed_page":
       inferencingMessageListener(message, sender);
-      break;
-    case "current_page_inference_request":
-      popupMessageListener(message, sender, sendResponse);
       break;
   }
 }

@@ -8,8 +8,9 @@ port.onMessage.addListener(m => {
       $('#inference').text(m.info.inference);
       break;
     case "tracker_most_pages":
-      $('#mosttrackername').text(m.tracker);
+      $('#mosttrackername').text(m.trackerName);
       $('#mosttrackercount').text(m.count - 1);
+      $('#mostrackerinferences').text(m.inferences.join(", "));
       break;
   }
 });
@@ -22,7 +23,7 @@ async function onReady() {
   // }
   // $('#pagetitle').text(title);
 
-  port.postMessage({ type: "request_info_current_page" });
+  // port.postMessage({ type: "request_info_current_page" });
   port.postMessage({ type: "get_tracker_most_pages" });
 
 }
