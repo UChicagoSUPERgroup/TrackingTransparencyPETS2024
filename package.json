@@ -12,6 +12,8 @@
   "devDependencies": {
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.0",
+    "babel-plugin-transform-eval": "^6.22.0",
+    "babel-preset-env": "^1.5.2",
     "eslint": "^4.0.0",
     "html-entities": "^1.2.1",
     "readability": "github:mozilla/readability",
