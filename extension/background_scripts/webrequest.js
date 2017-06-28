@@ -146,8 +146,10 @@ async function logRequest(details) {
 // accepts details object from either one
 async function updateMainFrameInfo(details) {
 
-  if (details.frameId !== 0 || details.tabId === -1) {
-    // console.log("nope");
+  if (details.frameId !== 0 || 
+      details.tabId === -1  || 
+      details.tabId === browser.tabs.TAB_ID_NONE ||
+      !details.url.startsWith("http")) {
     return;
   }
   const mainFrameReqId = details.timeStamp;
@@ -176,5 +178,11 @@ browser.webRequest.onBeforeRequest.addListener(
 );
 
 browser.webNavigation.onCommitted.addListener(updateMainFrameInfo);
+browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
+
+// browser.webNavigation.onDOMContentLoaded.addListener(details => {
+  // console.log("webNavigation onDOMContentLoaded");
+// });
+
 
 setInterval(processQueuedRequests, 5000);
