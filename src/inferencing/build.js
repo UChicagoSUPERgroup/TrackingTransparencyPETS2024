@@ -1,3 +1,6 @@
+import "babel-polyfill";
+
+
 /*
  * Build tree from given JSON file listing nodes with keywords.
  */
