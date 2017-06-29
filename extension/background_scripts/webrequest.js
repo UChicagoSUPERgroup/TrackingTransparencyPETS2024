@@ -1,3 +1,5 @@
+let tabRequestMap = {};
+let mainFrameRequestInfo = {};
 
 /* web workers setup */
 
@@ -19,6 +21,8 @@ async function logRequest(details) {
     return;
   }
 
+  details.parentRequestId = tabRequestMap[details.tabId];
+
   // requestsQueue.push(details);
   trackersWorker.postMessage({
     type: "new_webrequest",
@@ -37,12 +41,32 @@ async function updateMainFrameInfo(details) {
     return;
   }
 
+  const mainFrameReqId = details.timeStamp;
+  tabRequestMap[details.tabId] = mainFrameReqId;
+
   const tab = await browser.tabs.get(details.tabId);
 
-  trackersWorker.postMessage({
-    type: "main_frame_update",
-    details: details,
-    tabTitle: tab.title,
+  // let parsedURL = document.createElement('a');
+  let parsedURL = parseUri(details.url);
+  // console.log(parsedURL);
+  mainFrameRequestInfo[mainFrameReqId] = {
+    url: details.url,
+    pageId: mainFrameReqId,
+    domain: parsedURL.host,
+    path: parsedURL.path,
+    protocol: parsedURL.protocol,
+    title: tab.title,
+    trackers: []
+  }
+
+  // trackersWorker.postMessage({
+  //   type: "main_frame_update",
+  //   details: details
+  // });
+
+  databaseWorker.postMessage({
+    type: "store_page",
+    info: mainFrameRequestInfo[mainFrameReqId]
   });
 
 }

@@ -11,8 +11,7 @@ let services = {};
 
 let requestsQueue = [];
 
-let tabRequestMap = {};
-let mainFrameRequestInfo = {};
+let trackerInfo = {};
 
 
 // var pageId;
@@ -110,7 +109,7 @@ function processQueuedRequests() {
     if (!req) break;
 
     const match = trackerMatch(req);
-    const info = mainFrameRequestInfo[req.parentRequestId];
+    const info = trackerInfo[req.parentRequestId];
     if (match && info && info.trackers && info.trackers.indexOf(match) === -1) {
       info.trackers.push(match);
       // console.log("sending message to database worker");
@@ -125,43 +124,28 @@ function processQueuedRequests() {
   }
 }
 
-async function updateMainFrameInfo(details, tabTitle) {
-  const mainFrameReqId = details.timeStamp;
-  tabRequestMap[details.tabId] = mainFrameReqId;
+// async function updateMainFrameInfo(details) {
+  
   // console.log("webNavigation onCommitted - url:", details.url, "id:", mainFrameReqId);
 
-  // let parsedURL = document.createElement('a');
-  let parsedURL = parseUri(details.url);
-  // console.log(parsedURL);
-  mainFrameRequestInfo[mainFrameReqId] = {
-    url: details.url,
-    pageId: mainFrameReqId,
-    domain: parsedURL.host,
-    path: parsedURL.path,
-    protocol: parsedURL.protocol,
-    title: tabTitle,
-    trackers: []
-  }
-  databaseWorkerPort.postMessage({
-    type: "store_page",
-    info: mainFrameRequestInfo[mainFrameReqId]
-  });
+
+  
   // console.log("message posted to database worker");
-}
+// }
 
 onmessage = function(m) {
   switch (m.data.type) {
     case "database_worker_port":
       databaseWorkerPort = m.data.port;
       break;
-    case "main_frame_update":
-      updateMainFrameInfo(m.data.details, m.data.tabTitle);
-      break;
+    // case "main_frame_update":
+    //   updateMainFrameInfo(m.data.details);
+    //   break;
     case "new_webrequest":
       // console.log('trackers_worker received new_webrequest msg');
-      m.data.details.parentRequestId = tabRequestMap[m.data.details.tabId];
       requestsQueue.push(m.data.details);
       break;
+
   }
 }
 
