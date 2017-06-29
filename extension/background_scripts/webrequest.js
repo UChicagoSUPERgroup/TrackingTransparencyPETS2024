@@ -1,5 +1,3 @@
-let tabRequestMap = {};
-let mainFrameRequestInfo = {};
 
 /* web workers setup */
 
@@ -21,8 +19,6 @@ async function logRequest(details) {
     return;
   }
 
-  details.parentRequestId = tabRequestMap[details.tabId];
-
   // requestsQueue.push(details);
   trackersWorker.postMessage({
     type: "new_webrequest",
@@ -40,28 +36,15 @@ async function updateMainFrameInfo(details) {
       !details.url.startsWith("http")) {
     return;
   }
-  const mainFrameReqId = details.timeStamp;
-  tabRequestMap[details.tabId] = mainFrameReqId;
-  console.log("webNavigation onCommitted - url:", details.url, "id:", mainFrameReqId);
 
   const tab = await browser.tabs.get(details.tabId);
 
-  let parsedURL = document.createElement('a');
-  parsedURL.href = details.url;
-  mainFrameRequestInfo[mainFrameReqId] = {
-    url: details.url,
-    pageId: mainFrameReqId,
-    domain: parsedURL.hostname,
-    path: parsedURL.pathname,
-    protocol: parsedURL.protocol,
-    title: tab.title,
-    trackers: []
-  }
-  databaseWorker.postMessage({
-    type: "store_page",
-    info: mainFrameRequestInfo[mainFrameReqId]
+  trackersWorker.postMessage({
+    type: "main_frame_update",
+    details: details,
+    tabTitle: tab.title,
   });
-  console.log("message posted to database worker");
+
 }
 
 browser.webRequest.onBeforeRequest.addListener(
