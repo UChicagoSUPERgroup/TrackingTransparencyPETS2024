@@ -27,13 +27,6 @@ async function inferencingMessageListener(message, sender) {
   }
   const info = mainFrameRequestInfo[mainFrameReqId];
 
-  if (message.article.title) {
-    // readability gives us a better title
-    info.title = message.article.title;
-  } else {
-    info.title = sender.tab.title
-  }
-
   const category = infer(message.article, tr);
   console.log(category[0].name);
   info.inference = category[0].name;
@@ -44,8 +37,12 @@ async function inferencingMessageListener(message, sender) {
     threshold: category[1],
     pageId: mainFrameReqId
   }
-  storePage(info); // stores page info again with good title
-  storeInference(inferenceInfo);
+  console.log("sending inference to database");
+  databaseWorker.postMessage({
+    type: "store_inference",
+    info: inferenceInfo
+  });
+  // storeInference(inferenceInfo);
 
 
 }

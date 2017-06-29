@@ -56,7 +56,6 @@ async function updateMainFrameInfo(details) {
     path: parsedURL.path,
     protocol: parsedURL.protocol,
     title: tab.title,
-    trackers: []
   }
 
   // trackersWorker.postMessage({
