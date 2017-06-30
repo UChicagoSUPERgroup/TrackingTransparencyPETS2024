@@ -1,8 +1,15 @@
 var port = browser.runtime.connect({name:"port-from-popup"});
 port.postMessage({greeting: "hello from popup"});
 
+let pendingQueries = {};
+
 port.onMessage.addListener(m => {
   switch (m.type) {
+    case "database_query_response":
+      // resolve pending query promise
+      pendingQueries[m.id](m.response);
+      break;
+
     case "info_current_page":
       $('#pagetitle').text(m.info.title);
       $('#inference').text(m.info.inference);
@@ -28,12 +35,33 @@ async function onReady() {
 
 }
 
+
+let queryId = 0;
+async function queryDatabase(query, args) {
+  let queryPromise = new Promise((resolve, reject) => {
+    pendingQueries[queryId] = resolve;
+  })
+  // pendingQueries[queryId].promise = queryPromise;
+  
+  port.postMessage({
+    type: "database_query",
+    src: "popup",
+    id: queryId,
+    query: query,
+    args: args
+  });
+  queryId++;
+
+  let res = await queryPromise;
+  return res;
+}
+
+
 $('document').ready(onReady());
 
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("show-more-btn")) {
 
-    // document.getElementById("more").style.display = "inline";
     let infopageData = {
       active: true,
       url: "../infopage/index.html"

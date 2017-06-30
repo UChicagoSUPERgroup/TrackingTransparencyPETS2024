@@ -1,6 +1,6 @@
 // Background Script to manage methods that query database
 // Skeleton for types of queries that we can reshape and parse when we know exactly what we want
-
+/*
 // var db;
 var Inferences = schemaBuilder.getSchema().table('Inferences');
 var Trackers = schemaBuilder.getSchema().table('Trackers');
@@ -84,3 +84,19 @@ async function getTitlesByDomain(Domain) {
   let query = await ttDb.select(lf.fn.distinct(Pages.title).as("Title")).from(Pages).where(Pages.domain.eq(Domain)).exec();
   return query.map(x => x.Pages.title);
 }
+
+async function queryOnMessage(m) {
+  switch (m.data.type) {
+    case "query_get_inferences":
+      const res = await getInferences(m.data.tracker);
+      break;
+    default:
+      // likely a query
+      queryOnMessage(m);
+  }
+}
+
+function sendQueryResult(res) {
+  return;
+}
+*/

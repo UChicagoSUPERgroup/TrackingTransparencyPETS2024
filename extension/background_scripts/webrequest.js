@@ -85,6 +85,7 @@ browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
 trackersWorker.onmessage = function(e) {
   console.log('Message received from trackers worker');
 }
-databaseWorker.onmessage = function(e) {
-  console.log('Message received from database worker');
-}
+
+
+// TODO: clean data out of memory when tab closed
+// also for trackers worker
