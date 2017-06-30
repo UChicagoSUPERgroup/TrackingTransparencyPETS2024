@@ -58,10 +58,13 @@ async function updateMainFrameInfo(details) {
     title: tab.title,
   }
 
-  // trackersWorker.postMessage({
-  //   type: "main_frame_update",
-  //   details: details
-  // });
+  trackersWorker.postMessage({
+    type: "main_frame_update",
+    details: {
+      tabId: details.tabId,
+      mainFrameReqId: mainFrameReqId
+    }
+  });
 
   databaseWorker.postMessage({
     type: "store_page",
