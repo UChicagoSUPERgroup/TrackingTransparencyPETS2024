@@ -10,20 +10,28 @@ port.onMessage.addListener(m => {
       pendingQueries[m.id](m.response);
       break;
 
-    case "info_current_page":
-      $('#pagetitle').text(m.info.title);
-      $('#inference').text(m.info.inference);
-      break;
-    case "tracker_most_pages":
-      $('#mosttrackername').text(m.trackerName);
-      $('#mosttrackercount').text(m.count - 1);
-      $('#mostrackerinferences').text(m.inferences.join(", "));
-      break;
+    // case "info_current_page":
+    //   $('#pagetitle').text(m.info.title);
+    //   $('#inference').text(m.info.inference);
+    //   break;
+    // case "tracker_most_pages":
+    //   $('#mosttrackername').text(m.trackerName);
+    //   $('#mosttrackercount').text(m.count - 1);
+    //   $('#mostrackerinferences').text(m.inferences.join(", "));
+    //   break;
   }
 });
 
 async function onReady() {
-  // let tabs = await browser.tabs.query({active: true, lastFocusedWindow: true})
+  const tabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
+  const tab = tabs[0];
+
+  const parsedURL = parseUri(tab.url);
+  const trackers = await queryDatabase("get_trackers_by_page_visited", {domain: parsedURL.host});
+  console.log(trackers);
+  $('#mosttrackername').text(trackers[0]);
+  // $('#mosttrackercount').text(m.count - 1);
+  // $('#mostrackerinferences').text(m.inferences.join(", "));
   // let title = tabs[0].title;
   // if (title.length >= 30) {
   //   title = title.substring(0,30).concat("...");
@@ -31,7 +39,7 @@ async function onReady() {
   // $('#pagetitle').text(title);
 
   // port.postMessage({ type: "request_info_current_page" });
-  port.postMessage({ type: "get_tracker_most_pages" });
+  // port.postMessage({ type: "get_tracker_most_pages" });
 
 }
 

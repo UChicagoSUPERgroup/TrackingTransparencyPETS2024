@@ -240,6 +240,9 @@ async function handleQuery(id, dst, query, args) {
     case "get_trackers_by_inference":
       res = await getTrackersByInference(args.inference);
       break;
+    case "get_trackers_by_page_visited":
+      res = await getTrackersByPageVisited(args.domain);
+      break;
   }
 
   if (res) {

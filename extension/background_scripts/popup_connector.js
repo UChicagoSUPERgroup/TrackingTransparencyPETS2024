@@ -28,7 +28,7 @@ async function messageListener(m) {
     if (m.src === "popup") {
       let queryPromise = new Promise((resolve, reject) => {
         pendingPopupQueries[m.id] = resolve;
-      })
+      });
 
       databaseWorker.postMessage({
         id: m.id,
