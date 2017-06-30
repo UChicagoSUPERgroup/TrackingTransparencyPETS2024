@@ -82,5 +82,5 @@ async function getPageVisitTracker(tracker) {
 async function getTitlesByDomain(Domain) {
   let ttDb = await dbPromise; // db is defined in datastore.js
   let query = await ttDb.select(lf.fn.distinct(Pages.title).as("Title")).from(Pages).where(Pages.domain.eq(Domain)).exec();
-  return query.map(x => Pages.title);
+  return query.map(x => x.Pages.title);
 }
