@@ -200,7 +200,7 @@ async function getTitlesByDomain(Domain) {
                         .from(Pages)
                         .where(Pages.domain.eq(Domain))
                         .exec();
-  return query.map(x => x.Pages.title);
+  return query.map(x => x.Title);
 }
 
 /* WEB WORKER MESSAGES */
@@ -236,16 +236,6 @@ async function onMessage(m) {
     case "store_inference":
       console.log('database_worker received store_inference msg');
       storeInference(m.data.info);
-      break;
-
-    // QUERIES
-
-    case "query_get_inferences":
-      const res = await getInferences(m.data.tracker);
-      postMessage({
-        type: "response_query_get_inferences",
-        inferences: res
-      });
       break;
 
     default:
