@@ -109,10 +109,10 @@ async function getInferences() {
 async function getPageVisitCountByTracker(tracker) {
   let ttDb = await dbPromise; // db is defined in datastore.js
   let query = await ttDb.select(lf.fn.count(Pages.domain))
-                          .from(Pages, Trackers)
-                          .where(lf.op.and(Trackers.pageId.eq(Pages.id),
-                                           Trackers.tracker.eq(tracker)))
-                          .exec();
+                        .from(Pages, Trackers)
+                        .where(lf.op.and(Trackers.pageId.eq(Pages.id),
+                                          Trackers.tracker.eq(tracker)))
+                        .exec();
   return query[0].Pages["COUNT(domain)"];
 }
 
@@ -120,7 +120,11 @@ async function getPageVisitCountByTracker(tracker) {
 
 async function getInferencesByTracker(tracker) {
   let ttDb = await dbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(Inferences.inference).from(Trackers, Inferences).where(lf.op.and(Trackers.pageId.eq(Inferences.pageId), Trackers.tracker.eq(tracker))).exec()
+  let query = await ttDb.select(Inferences.inference)
+                        .from(Trackers, Inferences)
+                        .where(lf.op.and(Trackers.pageId.eq(Inferences.pageId), 
+                                         Trackers.tracker.eq(tracker)))
+                        .exec()
   return query.map(x => x.Inferences.inference);
 }
 
@@ -128,7 +132,11 @@ async function getInferencesByTracker(tracker) {
 
 async function getTrackersByInference(inference) {
   let ttDb = await dbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(Trackers.tracker).from(Trackers, Inferences).where(lf.op.and(Trackers.pageId.eq(Inferences.pageId), Inferences.inference.eq(inference))).exec();
+  let query = await ttDb.select(Trackers.tracker)
+                        .from(Trackers, Inferences)
+                        .where(lf.op.and(Trackers.pageId.eq(Inferences.pageId), 
+                                         Inferences.inference.eq(inference)))
+                        .exec();
   return query.map(x => x.Trackers.tracker);
 }
 
@@ -136,7 +144,11 @@ async function getTrackersByInference(inference) {
 
 async function getTrackersByPageVisited(domain) {
   let ttDb = await dbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(Trackers.tracker).from(Trackers, Pages).where(lf.op.and(Trackers.pageId.eq(Pages.id), Pages.domain.eq(domain))).exec();
+  let query = await ttDb.select(Trackers.tracker)
+                        .from(Trackers, Pages)
+                        .where(lf.op.and(Trackers.pageId.eq(Pages.id), 
+                                        Pages.domain.eq(domain)))
+                        .exec();
   return query.map(x => x.Trackers.tracker);
 }
 
@@ -144,7 +156,11 @@ async function getTrackersByPageVisited(domain) {
 
 async function getTrackersByInferenceCount() {
   let ttDb = await dbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(Trackers.tracker).from(Trackers, Inferences).groupBy(Trackers.tracker).orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC).exec();
+  let query = await ttDb.select(Trackers.tracker)
+                        .from(Trackers, Inferences)
+                        .groupBy(Trackers.tracker)
+                        .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
+                        .exec();
   return query.map(x => x.Trackers.tracker);
 }
 
@@ -152,8 +168,13 @@ async function getTrackersByInferenceCount() {
 
 async function getDomainsByInferenceAndTracker(Inference, Tracker) {
   let ttDb = await dbPromise; // db is defined in datastore.js
-  let query = ttDb.select(lf.fn.distinct(Pages.domain).as("domain")).from(Trackers, Pages, Inferences).where(lf.op.and(lf.op.and(Trackers.pageId.eq(Pages.id), Trackers.tracker.eq(Tracker)), Inferences.inference.eq(Inference))).exec().then(function(rows) {
-    return rows[0]["domain"]});
+  let query = await ttDb.select(lf.fn.distinct(Pages.domain).as("domain"))
+                  .from(Trackers, Pages, Inferences)
+                  .where(lf.op.and(lf.op.and(Trackers.pageId.eq(Pages.id),
+                                             Trackers.tracker.eq(Tracker)),
+                                             Inferences.inference.eq(Inference)))
+                  .exec();
+  return query[0]["domain"];
 }
 
 // These next two provide the functionality Min presented last week
@@ -163,7 +184,11 @@ async function getDomainsByInferenceAndTracker(Inference, Tracker) {
 
 async function getPageVisitTracker(tracker) {
   let ttDb = await dbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(Pages.domain).from(Pages, Trackers).where(lf.op.and(Trackers.pageId.eq(Pages.id), Trackers.tracker.eq(tracker))).exec();
+  let query = await ttDb.select(Pages.domain)
+                        .from(Pages, Trackers)
+                        .where(lf.op.and(Trackers.pageId.eq(Pages.id),
+                                        Trackers.tracker.eq(tracker)))
+                        .exec();
   return query.map(x => x.Pages.domain);
 }
 
@@ -171,7 +196,10 @@ async function getPageVisitTracker(tracker) {
 
 async function getTitlesByDomain(Domain) {
   let ttDb = await dbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(lf.fn.distinct(Pages.title).as("Title")).from(Pages).where(Pages.domain.eq(Domain)).exec();
+  let query = await ttDb.select(lf.fn.distinct(Pages.title).as("Title"))
+                        .from(Pages)
+                        .where(Pages.domain.eq(Domain))
+                        .exec();
   return query.map(x => x.Pages.title);
 }
 
@@ -242,6 +270,18 @@ async function handleQuery(id, dst, query, args) {
       break;
     case "get_trackers_by_page_visited":
       res = await getTrackersByPageVisited(args.domain);
+      break;
+    case "get_trackers_by_inference_count":
+      res = await getTrackersByInferenceCount();
+      break;
+    case "get_domains_by_inference_and_tracker":
+      res = await getDomainsByInferenceAndTracker(args.inference, args.tracker);
+      break;
+    case "get_page_visit_tracker":
+      res = await getPageVisitTracker(args.tracker);
+      break;
+    case "get_titles_by_domain":
+      res = await getTitlesByDomain(args.domain);
       break;
   }
 
