@@ -5,6 +5,7 @@ importScripts('/web_workers/query_controller.js');
 /* ============= */
 
 let trackersWorkerPort;
+let inferencingWorkerPort;
 
 console.log("database worker running");
 var schemaBuilder = lf.schema.create('datastore', 1);
@@ -234,6 +235,10 @@ async function onMessage(m) {
     case "trackers_worker_port":
       trackersWorkerPort = m.data.port;
       trackersWorkerPort.onmessage = onMessage;
+      break;
+    case "inferencing_worker_port":
+      inferencingWorkerPort = m.data.port;
+      inferencingWorkerPort.onmessage = onMessage;
       break;
 
     // STORAGE

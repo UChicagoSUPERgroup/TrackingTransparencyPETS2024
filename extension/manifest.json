@@ -28,9 +28,6 @@
             "lib/browser-polyfill.min.js",
             "lib/parseUri.js",
             "lib/jquery-3.2.1.min.js",
-            "lib/lovefield.min.js",
-            "background_scripts/datastore.js",
-            "dist/inferencing.js",
             "background_scripts/background.js",
             "background_scripts/popup_connector.js"
         ]

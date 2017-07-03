@@ -5,10 +5,16 @@ let mainFrameRequestInfo = {};
 
 let trackersWorker = new Worker('/web_workers/trackers_worker.js');
 let databaseWorker = new Worker('/web_workers/database_worker.js');
+let inferencingWorker = new Worker('/dist/inferencing.js');
 
-const channel = new MessageChannel();
-trackersWorker.postMessage({type: "database_worker_port", port: channel.port1}, [channel.port1]);
-databaseWorker.postMessage({type: "trackers_worker_port", port: channel.port2}, [channel.port2]);
+
+const trackerDatabaseChannel = new MessageChannel();
+trackersWorker.postMessage({type: "database_worker_port", port: trackerDatabaseChannel.port1}, [trackerDatabaseChannel.port1]);
+databaseWorker.postMessage({type: "trackers_worker_port", port: trackerDatabaseChannel.port2}, [trackerDatabaseChannel.port2]);
+
+const inferencingDatabaseChannel = new MessageChannel();
+inferencingWorker.postMessage({type: "database_worker_port", port: inferencingDatabaseChannel.port1}, [inferencingDatabaseChannel.port1]);
+databaseWorker.postMessage({type: "inferencing_worker_port", port: inferencingDatabaseChannel.port2}, [inferencingDatabaseChannel.port2]);
 
 async function logRequest(details) {
 
@@ -88,6 +94,30 @@ browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
 trackersWorker.onmessage = function(e) {
   console.log('Message received from trackers worker');
 }
+
+// message from content script
+async function onContentScriptMessage(message, sender) {
+  switch (message.type) {
+    case "parsed_page":
+
+        if (!sender.tab || !sender.url || sender.frameId !== 0) {
+        // message didn't come from a tab, so we ignore
+        return;
+      }
+
+      const mainFrameReqId = tabRequestMap[sender.tab.id];
+      // const info = mainFrameRequestInfo[mainFrameReqId];
+
+      inferencingWorker.postMessage({
+        type: "content_script_to_inferencing",
+        article: message.article,
+        mainFrameReqId: mainFrameReqId
+      })
+      break;
+  }
+}
+
+browser.runtime.onMessage.addListener(onContentScriptMessage);
 
 
 // TODO: clean data out of memory when tab closed

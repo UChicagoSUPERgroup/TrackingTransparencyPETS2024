@@ -1,35 +1,31 @@
 import buildCategoryTree from "build.js";
 import infer from "infer.js";
 
-const tree = buildCategoryTree("../lib/inferencing_data/categories.json");
+let databaseWorkerPort;
 
-async function onMessage(message, sender, sendResponse) {
-  switch (message.type) {
-    case "parsed_page":
-      inferencingMessageListener(message, sender);
+onmessage = function(m) {
+  switch (m.data.type) {
+    case "database_worker_port":
+      databaseWorkerPort = m.data.port;
+      break;
+    
+    case "content_script_to_inferencing":
+      inferencingMessageListener(m.data.article, m.data.mainFrameReqId);
       break;
   }
 }
 
-async function inferencingMessageListener(message, sender) {
+const tree = buildCategoryTree("../lib/inferencing_data/categories.json");
+
+
+// TODO: this function needs to be rewritten
+async function inferencingMessageListener(article, mainFrameReqId) {
 
   const tr = await tree;
-
-  if (!sender.tab || !sender.url || sender.frameId !== 0) {
-    // message didn't come from a tab, so we ignore
-    return;
-  }
-
-  const mainFrameReqId = tabRequestMap[sender.tab.id];
   
-  if (!mainFrameReqId) {
-    return;
-  }
-  const info = mainFrameRequestInfo[mainFrameReqId];
-
-  const category = infer(message.article, tr);
+  const category = infer(article, tr);
   console.log(category[0].name);
-  info.inference = category[0].name;
+  // info.inference = category[0].name;
 
   let inferenceInfo = {
     inference: category[0].name,
@@ -38,7 +34,7 @@ async function inferencingMessageListener(message, sender) {
     pageId: mainFrameReqId
   }
   console.log("sending inference to database");
-  databaseWorker.postMessage({
+  databaseWorkerPort.postMessage({
     type: "store_inference",
     info: inferenceInfo
   });
@@ -46,5 +42,3 @@ async function inferencingMessageListener(message, sender) {
 
 
 }
-
-browser.runtime.onMessage.addListener(onMessage);
