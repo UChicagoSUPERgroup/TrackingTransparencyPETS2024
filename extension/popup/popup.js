@@ -27,11 +27,10 @@ async function onReady() {
   const tab = tabs[0];
 
   const parsedURL = parseUri(tab.url);
-  const trackers = await queryDatabase("get_trackers_by_page_visited", {domain: parsedURL.host});
-  console.log(trackers);
-  $('#mosttrackername').text(trackers[0]);
+  const query = await queryDatabase("get_tracker_with_inferences_by_domain", {domain: parsedURL.host});
+  $('#mosttrackername').text(query.tracker);
   // $('#mosttrackercount').text(m.count - 1);
-  // $('#mostrackerinferences').text(m.inferences.join(", "));
+  $('#mostrackerinferences').text(query.inferences.join(", "));
   // let title = tabs[0].title;
   // if (title.length >= 30) {
   //   title = title.substring(0,30).concat("...");

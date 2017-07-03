@@ -125,7 +125,8 @@ async function getInferencesByTracker(tracker) {
                         .where(lf.op.and(Trackers.pageId.eq(Inferences.pageId), 
                                          Trackers.tracker.eq(tracker)))
                         .exec()
-  return query.map(x => x.Inferences.inference);
+  let inferences = query.map(x => x.Inferences.inference);
+  return Array.from(new Set(inferences)); //removes duplicates
 }
 
 // Tracker by inferences (i.e. the following trackers know INFERENCE)
@@ -148,8 +149,11 @@ async function getTrackersByPageVisited(domain) {
                         .from(Trackers, Pages)
                         .where(lf.op.and(Trackers.pageId.eq(Pages.id), 
                                         Pages.domain.eq(domain)))
+                        .groupBy(Trackers.tracker)
+                        .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
                         .exec();
-  return query.map(x => x.Trackers.tracker);
+  let trackers = query.map(x => x.Trackers.tracker);
+  return Array.from(new Set(trackers)); //removes duplicates
 }
 
 // get trackers by inferences count (e.g. use case: find tracker that has made most inferences about user)
@@ -201,6 +205,15 @@ async function getTitlesByDomain(Domain) {
                         .where(Pages.domain.eq(Domain))
                         .exec();
   return query.map(x => x.Title);
+}
+
+async function getTrackerWithInferencesByDomain(domain) {
+  let trackers = await getTrackersByPageVisited(domain);
+  let inferences = await getInferencesByTracker(trackers[0]);
+  return {
+    tracker: trackers[0],
+    inferences: inferences
+  }
 }
 
 /* WEB WORKER MESSAGES */
@@ -272,6 +285,9 @@ async function handleQuery(id, dst, query, args) {
       break;
     case "get_titles_by_domain":
       res = await getTitlesByDomain(args.domain);
+      break;
+    case "get_tracker_with_inferences_by_domain":
+      res = await getTrackerWithInferencesByDomain(args.domain);
       break;
   }
 
