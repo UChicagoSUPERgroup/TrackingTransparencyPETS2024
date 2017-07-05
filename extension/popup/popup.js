@@ -29,7 +29,7 @@ async function onReady() {
   const parsedURL = parseUri(tab.url);
   const query = await queryDatabase("get_tracker_with_inferences_by_domain", {domain: parsedURL.host});
   $('#mosttrackername').text(query.tracker);
-  // $('#mosttrackercount').text(m.count - 1);
+  $('#mosttrackercount').text(query.count - 1);
   $('#mostrackerinferences').text(query.inferences.join(", "));
   // let title = tabs[0].title;
   // if (title.length >= 30) {

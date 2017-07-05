@@ -211,9 +211,11 @@ async function getTitlesByDomain(Domain) {
 async function getTrackerWithInferencesByDomain(domain) {
   let trackers = await getTrackersByPageVisited(domain);
   let inferences = await getInferencesByTracker(trackers[0]);
+  let count = await getPageVisitCountByTracker(trackers[0]);
   return {
     tracker: trackers[0],
-    inferences: inferences
+    inferences: inferences,
+    count: count
   }
 }
 
