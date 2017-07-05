@@ -1,3 +1,8 @@
+importScripts('/lib/parseUri.js'); 
+
+console.log("trackers worker running");
+let databaseWorkerPort;
+
 /*
   The categories and third parties, titlecased, and URL of their homepage and
   domain names they phone home with, lowercased.
@@ -5,10 +10,11 @@
 let services = {};
 
 let requestsQueue = [];
-let tabRequestMap = {};
-let mainFrameRequestInfo = {};
 
-var pageId;
+let trackerInfo = {};
+
+
+// var pageId;
 /* Destringifies an object. */
 function deserialize(object) {
   return typeof object == 'string' ? JSON.parse(object) : object;
@@ -61,7 +67,7 @@ function readTextFile(file) {
     rawFile.send(null);
 })}
 
-readTextFile('lib/disconnect.json').then(data => {
+readTextFile('/lib/disconnect.json').then(data => {
   processServices(data);
 });
 
@@ -71,19 +77,21 @@ readTextFile('lib/disconnect.json').then(data => {
  */
 function trackerMatch(details) {
 
-  let parsedRequest = document.createElement('a');
-  parsedRequest.href = details.url;
+  // let parsedRequest = document.createElement('a');
+  // parsedRequest.href = details.url;
+  let parsedRequest = parseUri(details.url);
 
   // TODO: maybe exclude first parties
 
-  let parsedTab = document.createElement('a');
-  parsedTab.href = details.tabURL;
+  // let parsedTab = document.createElement('a');
+  // parsedTab.href = details.tabURL;
+  // let parsedTab = parseUri(details.tabURL);
 
   let match = null;
-  if (parsedRequest.hostname in services) {
-    match = parsedRequest.hostname;
+  if (parsedRequest.host in services) {
+    match = parsedRequest.host;
   } else {
-    let arr = parsedRequest.hostname.split('.');
+    let arr = parsedRequest.host.split('.');
     let domain = arr[arr.length -2] + '.' + arr[arr.length - 1]
     if (domain in services) {
       match = domain;
@@ -101,75 +109,53 @@ function processQueuedRequests() {
     if (!req) break;
 
     const match = trackerMatch(req);
-    const info = mainFrameRequestInfo[req.parentRequestId];
-    if (match && info && info.trackers && info.trackers.indexOf(match) === -1) {
+    const info = trackerInfo[req.tabId];
+    if (match && 
+        info && 
+        info.mainFrameReqId === req.parentRequestId && 
+        info.trackers && 
+        info.trackers.indexOf(match) === -1) {
       info.trackers.push(match);
-      storeTracker({
-        trackerdomain: match,
-        pageId: req.parentRequestId
-      })
+      // console.log("sending message to database worker");
+      databaseWorkerPort.postMessage({
+        type: "store_tracker",
+        info: {
+          trackerdomain: match,
+          pageId: req.parentRequestId
+        }
+      });
     }
   }
 }
 
-
-async function logRequest(details) {
-
-  let mainFrameReqId;
-  if (details.type === "main_frame") {
-    // // set new page id
-    // mainFrameReqId = details.timeStamp;
-    // tabRequestMap[details.tabId] = mainFrameReqId;
-    // updateMainFrameInfo(details);
-    return;
-  }
-
-  details.parentRequestId = tabRequestMap[details.tabId];
-
-  requestsQueue.push(details);
-}
-
-// called by either onBeforeRequest or onDOMContentLoaded listener
-// accepts details object from either one
 async function updateMainFrameInfo(details) {
+  // TODO: this will associate things with the wrong page
+  
+  // console.log("webNavigation onCommitted - url:", details.url, "id:", mainFrameReqId);
 
-  if (details.frameId !== 0 || 
-      details.tabId === -1  || 
-      details.tabId === browser.tabs.TAB_ID_NONE ||
-      !details.url.startsWith("http")) {
-    return;
-  }
-  const mainFrameReqId = details.timeStamp;
-  tabRequestMap[details.tabId] = mainFrameReqId;
-  console.log("webNavigation onCommitted - url:", details.url, "id:", mainFrameReqId);
-
-  const tab = await browser.tabs.get(details.tabId);
-
-  let parsedURL = document.createElement('a');
-  parsedURL.href = details.url;
-  mainFrameRequestInfo[mainFrameReqId] = {
-    url: details.url,
-    pageId: mainFrameReqId,
-    domain: parsedURL.hostname,
-    path: parsedURL.pathname,
-    protocol: parsedURL.protocol,
-    title: tab.title,
+  // console.log("new main frame request:", details);
+  
+  // console.log("message posted to database worker");
+  trackerInfo[details.tabId] = {
+    mainFrameReqId: details.mainFrameReqId,
     trackers: []
   }
-  storePage(mainFrameRequestInfo[mainFrameReqId]);
 }
 
-browser.webRequest.onBeforeRequest.addListener(
-  logRequest,
-  {urls: ["<all_urls>"]}
-);
+onmessage = function(m) {
+  switch (m.data.type) {
+    case "database_worker_port":
+      databaseWorkerPort = m.data.port;
+      break;
+    case "main_frame_update":
+      updateMainFrameInfo(m.data.details);
+      break;
+    case "new_webrequest":
+      // console.log('trackers_worker received new_webrequest msg');
+      requestsQueue.push(m.data.details);
+      break;
 
-browser.webNavigation.onCommitted.addListener(updateMainFrameInfo);
-browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
-
-// browser.webNavigation.onDOMContentLoaded.addListener(details => {
-  // console.log("webNavigation onDOMContentLoaded");
-// });
-
+  }
+}
 
 setInterval(processQueuedRequests, 5000);
