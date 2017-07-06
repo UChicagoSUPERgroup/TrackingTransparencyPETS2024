@@ -1,5 +1,4 @@
 importScripts('/lib/lovefield.min.js'); 
-importScripts('/web_workers/query_controller.js'); 
 
 /* DATABSE SETUP */
 /* ============= */
