@@ -2,34 +2,32 @@ let tabRequestMap = {};
 let mainFrameRequestInfo = {};
 
 /* web workers setup */
-
 let trackersWorker = new Worker('/web_workers/trackers_worker.js');
 let databaseWorker = new Worker('/web_workers/database_worker.js');
 let inferencingWorker = new Worker('/dist/inferencing.js');
 
-
+/* connect database worker and trackers worker */
+/* this involves creating a MessageChannel and passing a message with
+ * the channel to each worker */
 const trackerDatabaseChannel = new MessageChannel();
 trackersWorker.postMessage({type: "database_worker_port", port: trackerDatabaseChannel.port1}, [trackerDatabaseChannel.port1]);
 databaseWorker.postMessage({type: "trackers_worker_port", port: trackerDatabaseChannel.port2}, [trackerDatabaseChannel.port2]);
 
+/* connect database worker and inferencing worker */
 const inferencingDatabaseChannel = new MessageChannel();
 inferencingWorker.postMessage({type: "database_worker_port", port: inferencingDatabaseChannel.port1}, [inferencingDatabaseChannel.port1]);
 databaseWorker.postMessage({type: "inferencing_worker_port", port: inferencingDatabaseChannel.port2}, [inferencingDatabaseChannel.port2]);
 
 async function logRequest(details) {
 
-  // let mainFrameReqId;
   if (details.type === "main_frame") {
-    // // set new page id
-    // mainFrameReqId = details.timeStamp;
-    // tabRequestMap[details.tabId] = mainFrameReqId;
-    // updateMainFrameInfo(details);
+    // for main frame page loads, ignore
     return;
   }
 
   details.parentRequestId = tabRequestMap[details.tabId];
 
-  // requestsQueue.push(details);
+  // send web request details to trackers worker
   trackersWorker.postMessage({
     type: "new_webrequest",
     details: details
@@ -44,17 +42,18 @@ async function updateMainFrameInfo(details) {
       details.tabId === -1  || 
       details.tabId === browser.tabs.TAB_ID_NONE ||
       !details.url.startsWith("http")) {
+    // not a user-initiated page change
     return;
   }
 
+  // take time stamp and use as ID for main frame page load
+  // store in object to identify with tab
   const mainFrameReqId = details.timeStamp;
   tabRequestMap[details.tabId] = mainFrameReqId;
 
   const tab = await browser.tabs.get(details.tabId);
 
-  // let parsedURL = document.createElement('a');
   let parsedURL = parseUri(details.url);
-  // console.log(parsedURL);
   mainFrameRequestInfo[mainFrameReqId] = {
     url: details.url,
     pageId: mainFrameReqId,
@@ -64,6 +63,8 @@ async function updateMainFrameInfo(details) {
     title: tab.title,
   }
 
+  // tell trackers worker about main frame update
+  // so it can update its tabRequestMap equivalent
   trackersWorker.postMessage({
     type: "main_frame_update",
     details: {
@@ -84,12 +85,9 @@ browser.webRequest.onBeforeRequest.addListener(
   {urls: ["<all_urls>"]}
 );
 
+// listeners to run updateMainFrameInfo when page changes
 browser.webNavigation.onCommitted.addListener(updateMainFrameInfo);
 browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
-
-// browser.webNavigation.onDOMContentLoaded.addListener(details => {
-  // console.log("webNavigation onDOMContentLoaded");
-// });
 
 trackersWorker.onmessage = function(e) {
   console.log('Message received from trackers worker');
