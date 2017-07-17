@@ -6,7 +6,7 @@ importScripts('/lib/lovefield.min.js');
 let trackersWorkerPort;
 let inferencingWorkerPort;
 
-console.log("database worker running");
+// console.log("database worker running");
 var schemaBuilder = lf.schema.create('datastore', 1);
 
 schemaBuilder.createTable('Pages').
@@ -222,8 +222,8 @@ async function getTrackerWithInferencesByDomain(domain) {
 /* =================== */
 
 async function onMessage(m) {
-  console.log('Message received from main script');
-  console.log(m);
+  // console.log('Message received from main script');
+  // console.log(m);
   switch (m.data.type) {
     case "ping":
       console.log("database worker recieved ping");
@@ -245,15 +245,15 @@ async function onMessage(m) {
     // STORAGE
 
     case "store_page":
-      console.log('database_worker received store_page msg');
+      // console.log('database_worker received store_page msg');
       storePage(m.data.info);
       break;
     case "store_tracker":
-      console.log('database_worker received store_tracker msg');
+      // console.log('database_worker received store_tracker msg');
       storeTracker(m.data.info);
       break;
     case "store_inference":
-      console.log('database_worker received store_inference msg');
+      // console.log('database_worker received store_inference msg');
       storeInference(m.data.info);
       break;
 

@@ -72,18 +72,22 @@ function findBestCategory(root, words, rootScore) {
 export default function (article, tree) {
   var words, text, tokenizer, tokens;
 
-  text = [
-    article.title,
-    article.content,
-  ];
+  // text = [
+  //   article.title,
+  //   article.textContent,
+  // ];
 
   // join list and decode html
 
-  const entities = new Entities();
-  text = entities.decode(text.join(" "));
+  // const entities = new Entities();
+  // text = entities.decode(text.join(" "));
 
   // striptags
-  text = striptags(text, [], " ");
+  // text = striptags(text, [], " ");
+  // text = article.title.concat(" ", article.excerpt);
+  text = article.title.concat(" ", article.excerpt, " ", article.textContent);
+  console.log("article text is:", text);
+  // text = article.textContent;
 
   // tokenize
   tokenizer = new Tokenizer();

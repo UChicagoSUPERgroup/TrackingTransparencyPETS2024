@@ -24,7 +24,7 @@ async function inferencingMessageListener(article, mainFrameReqId) {
   const tr = await tree;
   
   const category = infer(article, tr);
-  console.log(category[0].name);
+  console.log("Inference:", category[0].name);
   // info.inference = category[0].name;
 
   let inferenceInfo = {
@@ -33,7 +33,7 @@ async function inferencingMessageListener(article, mainFrameReqId) {
     threshold: category[1],
     pageId: mainFrameReqId
   }
-  console.log("sending inference to database");
+  // console.log("sending inference to database");
   databaseWorkerPort.postMessage({
     type: "store_inference",
     info: inferenceInfo
