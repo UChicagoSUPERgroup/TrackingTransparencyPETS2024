@@ -33,10 +33,10 @@ function findBestChild(category, words, parentScore) {
       bestChild = category.children[i];
     }
 
-    // console.log([curScore, category.children[i].name]);
+    console.log("trying",category.children[i].name , "score", curScore);
   }
 
-  if (highestScore >= parentScore) {
+  if (highestScore >= parentScore + 0.015) {
     return [bestChild, highestScore];
   } else {
     return null;
@@ -64,6 +64,7 @@ function findBestCategory(root, words, rootScore) {
 
     bestChild = result[0];
     bestChildScore = result[1];
+    console.log("going with", bestChild.name, "score", bestChildScore);
 
     return findBestCategory(bestChild, words, bestChildScore);
   }
@@ -86,7 +87,7 @@ export default function (article, tree) {
   // text = striptags(text, [], " ");
   // text = article.title.concat(" ", article.excerpt);
   text = article.title.concat(" ", article.excerpt, " ", article.textContent);
-  console.log("article text is:", text);
+  // console.log("article text is:", text);
   // text = article.textContent;
 
   // tokenize

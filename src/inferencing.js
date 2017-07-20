@@ -22,9 +22,16 @@ const tree = buildCategoryTree("../lib/inferencing_data/categories.json");
 async function inferencingMessageListener(article, mainFrameReqId) {
 
   const tr = await tree;
+  // console.log(tr);
+  // const secondLevelCats = tr.children.concat.apply([], tr.children.map(x => x.children));
+  // console.log(secondLevelCats);
+  // let secondLevelTr = Object.assign({}, tr);
+  // secondLevelTr.children = secondLevelCats;
   
   const category = infer(article, tr);
   console.log("Inference:", category[0].name);
+  // const category2 = infer(article, secondLevelTr);
+  // console.log("Inference:", category2[0].name);
   // info.inference = category[0].name;
 
   let inferenceInfo = {
