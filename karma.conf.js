@@ -15,8 +15,12 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'extension/background_scripts/*.js',
-      'extension/dist/*.js',
+      'node_modules/sinon-chrome/bundle/sinon-chrome-webextensions.min.js',
+      'extension/lib/browser-polyfill.min.js',
+      'extension/lib/parseUri.js',
+      'extension/lib/jquery-3.2.1.min.js',
+      'extension/background_scripts/background.js',
+      'extension/background_scripts/popup_connector.js',
       'test/*.test.js'
     ],
 
