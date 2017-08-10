@@ -1,6 +1,8 @@
+/** @module trackers_worker */
+
 importScripts('/lib/parseUri.js'); 
 
-console.log("trackers worker running");
+// console.log("trackers worker running");
 let databaseWorkerPort;
 
 /*
@@ -13,15 +15,20 @@ let requestsQueue = [];
 
 let trackerInfo = {};
 
-
-// var pageId;
-/* Destringifies an object. */
+/** destringifies an object
+ * @param  {string} object
+ */
 function deserialize(object) {
   return typeof object == 'string' ? JSON.parse(object) : object;
 }
 
-/* from Disconnect services.js */
-/* Formats the blacklist. */
+/** 
+ * takes the disconnect list object and formats it into the services object
+ * 
+ * from Disconnect browser extension code - services.js
+ * 
+ * @param  {Object} data
+ */
 function processServices(data) {
   data = deserialize(data);
   const categories = data.categories;
@@ -52,8 +59,13 @@ function processServices(data) {
   }
 }
 
-/* https://stackoverflow.com/a/34579496 */
-// function readTextFile(file, callback) {
+/** 
+ * reads a json file with given path
+ * 
+ * credits: https://stackoverflow.com/a/34579496
+ * 
+ * @param  {string} path to file
+ */
 function readTextFile(file) {
   return new Promise((resolve, reject) => {
     let rawFile = new XMLHttpRequest();
@@ -71,21 +83,17 @@ readTextFile('/lib/disconnect.json').then(data => {
   processServices(data);
 });
 
-/*
- * given a request object, returns a tracker if the request is
- * to known tracker, otherwise returns null
+
+/** 
+ * determines if a web request was for a tracker
+ * 
+ * @param  {Object} details - request object
+ * @returns {string} domain of tracker, if request is known tracker domain
  */
 function trackerMatch(details) {
-
-  // let parsedRequest = document.createElement('a');
-  // parsedRequest.href = details.url;
   let parsedRequest = parseUri(details.url);
 
   // TODO: maybe exclude first parties
-
-  // let parsedTab = document.createElement('a');
-  // parsedTab.href = details.tabURL;
-  // let parsedTab = parseUri(details.tabURL);
 
   let match = null;
   if (parsedRequest.host in services) {
@@ -100,7 +108,8 @@ function trackerMatch(details) {
   return match;
 }
 
-/*
+
+/** 
  * reads from requests queue and adds items to main frame visit objects
  */
 function processQueuedRequests() {
@@ -128,20 +137,23 @@ function processQueuedRequests() {
   }
 }
 
-async function updateMainFrameInfo(details) {
-  // TODO: this will associate things with the wrong page
-  
-  // console.log("webNavigation onCommitted - url:", details.url, "id:", mainFrameReqId);
 
-  // console.log("new main frame request:", details);
-  
-  // console.log("message posted to database worker");
+/**
+ * called when page is changed, updates mapping between page id and tab id
+ * 
+ * @param  {Object} details
+ * @param {Number} details.tabId - tab id
+ */
+async function updateMainFrameInfo(details) {
   trackerInfo[details.tabId] = {
     mainFrameReqId: details.mainFrameReqId,
     trackers: []
   }
 }
 
+/**
+ * function to run when message is received from background script
+ */
 onmessage = function(m) {
   switch (m.data.type) {
     case "database_worker_port":

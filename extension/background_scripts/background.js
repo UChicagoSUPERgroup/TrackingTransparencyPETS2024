@@ -1,3 +1,5 @@
+/** @module background */
+
 let tabRequestMap = {};
 let mainFrameRequestInfo = {};
 
@@ -18,6 +20,12 @@ const inferencingDatabaseChannel = new MessageChannel();
 inferencingWorker.postMessage({type: "database_worker_port", port: inferencingDatabaseChannel.port1}, [inferencingDatabaseChannel.port1]);
 databaseWorker.postMessage({type: "inferencing_worker_port", port: inferencingDatabaseChannel.port2}, [inferencingDatabaseChannel.port2]);
 
+/** sends a message with information about each outgoing
+ * web request to trackers worker
+ * 
+ * @param  {Object} details - object from onBeforeRequest listener
+ * @param  {string} details.type - type of request (i.e. "main_frame")
+ */
 async function logRequest(details) {
 
   if (details.type === "main_frame") {
@@ -34,8 +42,22 @@ async function logRequest(details) {
   });
 }
 
-// called by either onBeforeRequest or onHistoryStateUpdated listener
-// accepts details object from either one
+browser.webRequest.onBeforeRequest.addListener(
+  logRequest,
+  {urls: ["<all_urls>"]}
+);
+
+
+/** called by listeners when user navigates to a new page
+ * 
+ * creates a new page id, associates page with the current tab, sends info about page to database worker
+ * 
+ * @param  {Object} details - object from onBeforeRequest or onHistoryStateUpdated listener
+ * @param {Number} details.frameId - frame id (should be 0 for main frame)
+ * @param {Number} details.tabId - tab id
+ * @param {string} details.url - url
+ * @param {Number} details.timeStamp - timestamp
+ */
 async function updateMainFrameInfo(details) {
 
   if (details.frameId !== 0 || 
@@ -46,8 +68,8 @@ async function updateMainFrameInfo(details) {
     return;
   }
 
-  // take time stamp and use as ID for main frame page load
-  // store in object to identify with tab
+  /* take time stamp and use as ID for main frame page load
+   * store in object to identify with tab */
   const mainFrameReqId = details.timeStamp;
   tabRequestMap[details.tabId] = mainFrameReqId;
 
@@ -63,8 +85,8 @@ async function updateMainFrameInfo(details) {
     title: tab.title,
   }
 
-  // tell trackers worker about main frame update
-  // so it can update its tabRequestMap equivalent
+  /* tell trackers worker about main frame update
+   * so it can update its tabRequestMap equivalent */
   trackersWorker.postMessage({
     type: "main_frame_update",
     details: {
@@ -80,20 +102,21 @@ async function updateMainFrameInfo(details) {
 
 }
 
-browser.webRequest.onBeforeRequest.addListener(
-  logRequest,
-  {urls: ["<all_urls>"]}
-);
-
-// listeners to run updateMainFrameInfo when page changes
+/* listeners for updateMainFrameInfo */
 browser.webNavigation.onCommitted.addListener(updateMainFrameInfo);
 browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
 
+
+/* message listener for trackers worker */
 trackersWorker.onmessage = function(e) {
   console.log('Message received from trackers worker');
 }
 
-// message from content script
+/** listener function for messages from content script
+ * @param  {Object} message
+ * @param {string} message.type - message type
+ * @param  {Object} sender
+ */
 async function onContentScriptMessage(message, sender) {
   switch (message.type) {
     case "parsed_page":
@@ -114,7 +137,6 @@ async function onContentScriptMessage(message, sender) {
       break;
   }
 }
-
 browser.runtime.onMessage.addListener(onContentScriptMessage);
 
 

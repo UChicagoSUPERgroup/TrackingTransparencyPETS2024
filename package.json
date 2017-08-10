@@ -7,7 +7,8 @@
     "lint": "eslint .",
     "build": "webpack",
     "watch": "webpack -w",
-    "start": "web-ext run -s extension/ -f firefoxdeveloperedition"
+    "start": "web-ext run -s extension/",
+    "jsdoc": "jsdoc -c jsdoc.conf.json -r -d ./doc/jsdoc/ -R ./README.md ."
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -17,6 +18,7 @@
     "babel-preset-env": "^1.5.2",
     "eslint": "^4.0.0",
     "html-entities": "^1.2.1",
+    "jsdoc": "^3.5.4",
     "readability": "github:mozilla/readability",
     "striptags": "^3.0.1",
     "tokenize-text": "^1.1.3",

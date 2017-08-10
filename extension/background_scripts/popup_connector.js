@@ -1,9 +1,18 @@
+/** @module popup_connector */
+
 let portFromPopup;
 let portFromInfopage;
 
 let pendingDirectQueries = {};
 let pendingPopupQueries = {};
 
+/** listener function to run when connection is made with popup or infopage
+ * 
+ * sets up messageListener as listener function for received messages
+ * 
+ * @param  {Object} p - port object
+ * @param {string} p.name - name of port object
+ */
 async function connected(p) {
 
   if (p.name === "port-from-popup") {
@@ -16,7 +25,12 @@ async function connected(p) {
   }
     
 }
+browser.runtime.onConnect.addListener(connected);
 
+/** listener for messags from popup and infopage
+ * 
+ * @param  {Object} m - message
+ */
 async function messageListener(m) {
 
   let activeTabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
@@ -43,6 +57,7 @@ async function messageListener(m) {
 
 }
 
+/* listener for messages recieved from database worker */
 databaseWorker.onmessage = function(m) {
   console.log('Message received from database worker');
   if (m.data.type === "database_query_response") {
@@ -54,10 +69,15 @@ databaseWorker.onmessage = function(m) {
   }
 }
 
-/* functionality to make queries directly from background script
- * currently used only for debugging
- */
+
 let directQueryId = 0;
+/** function to make direct queries to database from background script
+ * 
+ * used for debugging
+ * 
+ * @param  {string} query - name of query
+ * @param  {Object} args - arguments for query
+ */
 async function directQuery(query, args) {
   let queryPromise = new Promise((resolve, reject) => {
     pendingDirectQueries[directQueryId] = resolve;
@@ -76,4 +96,3 @@ async function directQuery(query, args) {
   console.log(res.response);
 }
 
-browser.runtime.onConnect.addListener(connected);

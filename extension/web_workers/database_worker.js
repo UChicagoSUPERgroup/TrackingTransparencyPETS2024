@@ -1,3 +1,6 @@
+/** @module database_worker */
+
+
 importScripts('/lib/lovefield.min.js'); 
 
 /* DATABSE SETUP */
@@ -51,6 +54,16 @@ var inferenceItem;
 /* DATA STORAGE */
 /* ============ */
 
+/**
+ * stores new page visit
+ * 
+ * @param {Object} info - info about the page
+ * @param {Number} info.pageId - page's unique identifer
+ * @param {string} info.title - page's title
+ * @param {string} info.domain - page's domain
+ * @param {string} info.path - page's path
+ * @param {string} info.protocol - page's protocol (e.g. http)
+ */
 async function storePage(info) {
   let ttDb = await primaryDbPromise;
   pageItem = ttDb.getSchema().table('Pages');
@@ -65,6 +78,12 @@ async function storePage(info) {
   });
   return ttDb.insertOrReplace().into(pageItem).values([page]).exec();
 }
+
+/**
+ * stores new tracker record
+ * 
+ * @param  {} info
+ */
 async function storeTracker(info) {
   let ttDb = await primaryDbPromise;
   trackerItem = ttDb.getSchema().table('Trackers');
@@ -77,6 +96,11 @@ async function storeTracker(info) {
   return ttDb.insertOrReplace().into(trackerItem).values([tracker]).exec();
 }
 
+/**
+ * stores new inference
+ * 
+ * @param  {} info
+ */
 async function storeInference(info) {
   let ttDb = await primaryDbPromise;
   inferenceItem = ttDb.getSchema().table('Inferences');
