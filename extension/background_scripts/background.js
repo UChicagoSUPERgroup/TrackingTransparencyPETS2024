@@ -4,9 +4,9 @@ let tabRequestMap = {};
 let mainFrameRequestInfo = {};
 
 /* web workers setup */
-let trackersWorker = new Worker('/web_workers/trackers_worker.js');
-let databaseWorker = new Worker('/web_workers/database_worker.js');
-let inferencingWorker = new Worker('/dist/inferencing.js');
+let trackersWorker = new Worker('../web_workers/trackers_worker.js');
+let databaseWorker = new Worker('../web_workers/database_worker.js');
+let inferencingWorker = new Worker('../dist/inferencing.js');
 
 /* connect database worker and trackers worker */
 /* this involves creating a MessageChannel and passing a message with
