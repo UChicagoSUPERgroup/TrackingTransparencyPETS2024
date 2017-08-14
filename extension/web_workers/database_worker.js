@@ -82,7 +82,9 @@ async function storePage(info) {
 /**
  * stores new tracker record
  * 
- * @param  {} info
+ * @param {Object} info - info about the page
+ * @param {Number} info.pageId - page's unique identifer
+ * @param {string} info.trackerdomain - trackers's domain
  */
 async function storeTracker(info) {
   let ttDb = await primaryDbPromise;
@@ -99,7 +101,12 @@ async function storeTracker(info) {
 /**
  * stores new inference
  * 
- * @param  {} info
+ * @param {Object} info - info about the page
+ * @param {Number} info.pageId - page's unique identifer
+ * @param {string} info.inference - inference made
+ * @param {string} info.inferenceCategory - unused
+ * @param {Number} info.threshold - unused
+ * 
  */
 async function storeInference(info) {
   let ttDb = await primaryDbPromise;
@@ -121,15 +128,23 @@ var Inferences = primarySchemaBuilder.getSchema().table('Inferences');
 var Trackers = primarySchemaBuilder.getSchema().table('Trackers');
 var Pages = primarySchemaBuilder.getSchema().table('Pages');
 
-// Get all inferences // Probably want to use idxThreshold to sort inferences eventually
+/**
+ * gets all inferences
+ * 
+ * @returns {string[]} array of inferences
+ */
 async function getInferences() {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
   let query = await ttDb.select(Inferences.inference).from(Inferences).exec(); // orderBy(Inferences.pageId, lf.Order.DESC) to get most recent
   return query.map(x => x.inference);
 }
 
-// Page visit count by tracker (i.e. TRACKERNAME knows # sites you have visited)
-
+/**
+ * page visit count by tracker (i.e. TRACKERNAME knows # sites you have visited)
+ * 
+ * @param {string} tracker - tracker domain
+ * @returns {Number} number of pages where that tracker was present
+ */
 async function getPageVisitCountByTracker(tracker) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
   let query = await ttDb.select(lf.fn.count(Pages.domain))
@@ -140,8 +155,12 @@ async function getPageVisitCountByTracker(tracker) {
   return query[0].Pages["COUNT(domain)"];
 }
 
-// Inferences by Tracker (i.e. TRACKERNAME has made these inferences about you)
-
+/**
+ * Inferences by Tracker (i.e. TRACKERNAME has made these inferences about you)
+ * 
+ * @param {string} tracker - tracker domain
+ * @returns {string[]} array of inferences
+ */
 async function getInferencesByTracker(tracker) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
   let query = await ttDb.select(Inferences.inference)
@@ -153,8 +172,12 @@ async function getInferencesByTracker(tracker) {
   return Array.from(new Set(inferences)); //removes duplicates
 }
 
-// Tracker by inferences (i.e. the following trackers know INFERENCE)
-
+/**
+ * Tracker by inferences (i.e. the following trackers know INFERENCE)
+ * 
+ * @param {string} inference
+ * @returns {string[]} array of trackers
+ */
 async function getTrackersByInference(inference) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
   let query = await ttDb.select(Trackers.tracker)
@@ -165,8 +188,12 @@ async function getTrackersByInference(inference) {
   return query.map(x => x.Trackers.tracker);
 }
 
-// Trackers by page visit (the following trackers know that you have been to DOMAIN)
-
+/**
+ * Trackers by page visit (the following trackers know that you have been to DOMAIN)
+ * 
+ * @param {string} domain - domain
+ * @returns {string[]} array of trackers
+ */
 async function getTrackersByPageVisited(domain) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
   let query = await ttDb.select(Trackers.tracker)
@@ -180,8 +207,13 @@ async function getTrackersByPageVisited(domain) {
   return Array.from(new Set(trackers)); //removes duplicates
 }
 
-// get trackers by inferences count (e.g. use case: find tracker that has made most inferences about user)
-
+/**
+ * get trackers by inferences count 
+ * 
+ * (e.g. use case: find tracker that has made most inferences about user)
+ * 
+ * @returns {string[]} array of trackers
+ */
 async function getTrackersByInferenceCount() {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
   let query = await ttDb.select(Trackers.tracker)
@@ -192,8 +224,13 @@ async function getTrackersByInferenceCount() {
   return query.map(x => x.Trackers.tracker);
 }
 
-// given an inference and tracker, find domains where tracker made that inference 
-
+/**
+ * given an inference and tracker, find domains where tracker made that inference 
+ * 
+ * @param {string} Inference - inference
+ * @param {string} Tracker - tracker
+ * @returns {string[]} array of domains
+ */
 async function getDomainsByInferenceAndTracker(Inference, Tracker) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
   let query = await ttDb.select(lf.fn.distinct(Pages.domain).as("domain"))
@@ -208,8 +245,12 @@ async function getDomainsByInferenceAndTracker(Inference, Tracker) {
 // These next two provide the functionality Min presented last week
 // e.g. TRACKERNAME knows # sites you have visited > here are those sites > here are the titles within those sites
 
-// Domain visits by tracker (i.e. TRACKERNAME knows you have been to the following sites)
-
+/**
+ * Domain visits by tracker (i.e. TRACKERNAME knows you have been to the following sites)
+ * 
+ * @param {string} tracker - tracker domain
+ * @returns {string[]} array of domains
+ */
 async function getPageVisitTracker(tracker) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
   let query = await ttDb.select(Pages.domain)
@@ -220,8 +261,12 @@ async function getPageVisitTracker(tracker) {
   return query.map(x => x.Pages.domain);
 }
 
-// Titles by Domain (i.e. User has visited TITLES on DOMAIN)
-
+/**
+ * Titles by Domain (i.e. User has visited TITLES on DOMAIN)
+ * 
+ * @param {string} tracker - tracker domain
+ * @returns {string[]} array of page titles
+ */
 async function getTitlesByDomain(Domain) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
   let query = await ttDb.select(lf.fn.distinct(Pages.title).as("Title"))
@@ -244,7 +289,13 @@ async function getTrackerWithInferencesByDomain(domain) {
 
 /* WEB WORKER MESSAGES */
 /* =================== */
-
+/**
+ * message listener from another background script or another worker
+ * 
+ * @param  {Object} m - message
+ * @param {Object} m.data - content of message
+ * @param {string} m.data.type - type of message (set by sender)
+ */
 async function onMessage(m) {
   // console.log('Message received from main script');
   // console.log(m);
@@ -285,7 +336,14 @@ async function onMessage(m) {
       console.log("database worker recieved bad message");
   }
 }
-
+/**
+ * makes sent query and sends reponse
+ * 
+ * @param  {Number} id  - query id (set by sender)
+ * @param  {string} dst - query destination
+ * @param  {string} query - query name
+ * @param  {Object} args - query arguments
+ */
 async function handleQuery(id, dst, query, args) {
   let res;
   switch (query) {
