@@ -81,23 +81,27 @@ async function storePage(info) {
 }
 
 /**
- * stores new tracker record
+ * stores records of trackers for given page
  * 
- * @param {Object} info - info about the page
- * @param {Number} info.pageId - page's unique identifer
- * @param {string} info.trackerdomain - trackers's domain
+ * @param {Object} pageId - identifier for page that trackers come from
+ * @param {Object[]} trackers - array of objects with information about each tracker
  */
-async function storeTracker(info) {
+async function storeTrackerArray(pageId, trackers) {
   let ttDb = await primaryDbPromise;
   trackerItem = ttDb.getSchema().table('Trackers');
+  let rows = []
 
-  var tracker = trackerItem.createRow({
-    'tracker': info.trackername,
-    'trackerCategory': info.trackercategory,
-    'pageId': info.pageId
-  });
-
-  return ttDb.insertOrReplace().into(trackerItem).values([tracker]).exec();
+  for (tracker of trackers) {
+    const row = trackerItem.createRow({
+      'tracker': tracker.trackername,
+      'trackerCategory': tracker.trackercategory,
+      'pageId': pageId
+    });
+    rows.push(row);
+  }
+  console.log(rows);
+  const ins = ttDb.insertOrReplace().into(trackerItem).values(rows).exec();
+  return;
 }
 
 /**
@@ -322,15 +326,12 @@ async function onMessage(m) {
     // STORAGE
 
     case "store_page":
-      // console.log('database_worker received store_page msg');
       storePage(m.data.info);
       break;
-    case "store_tracker":
-      // console.log('database_worker received store_tracker msg');
-      storeTracker(m.data.info);
+    case "store_tracker_array":
+      storeTrackerArray(m.data.pageId, m.data.trackers);
       break;
     case "store_inference":
-      // console.log('database_worker received store_inference msg');
       storeInference(m.data.info);
       break;
 

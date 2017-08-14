@@ -4,7 +4,6 @@ importScripts('/lib/helpers.js');
 importScripts('/lib/parseUri.js'); 
 
 // console.log("trackers worker running");
-//  setInterval(function(){ console.log("Hello"); }, 3000);
 let databaseWorkerPort;
 
 /*
@@ -12,10 +11,6 @@ let databaseWorkerPort;
   domain names they phone home with, lowercased.
 */
 let services = {};
-
-let requestsQueue = [];
-
-let trackerInfo = {};
 
 /** 
  * takes the disconnect list object and formats it into the services object
@@ -66,18 +61,22 @@ readTextFile('../lib/disconnect.json').then(data => {
  * @returns {string} domain of tracker, if request is known tracker domain
  */
 function trackerMatch(details) {
-  let parsedRequest = parseUri(details.url);
+  const parsedRequest = parseUri(details.url);
 
   // TODO: maybe exclude first parties
 
   let match = null;
   if (parsedRequest.host in services) {
-    match = parsedRequest.host;
+    const domain = parsedRequest.host;
+    match = {
+        domain: domain,
+        name: services[domain].name,
+        category: services[domain].category
+      }
   } else {
-    let arr = parsedRequest.host.split('.');
-    let domain = arr[arr.length -2] + '.' + arr[arr.length - 1]
+    const arr = parsedRequest.host.split('.');
+    const domain = arr[arr.length -2] + '.' + arr[arr.length - 1]
     if (domain in services) {
-      match = domain;
       match = {
         domain: domain,
         name: services[domain].name,
@@ -88,49 +87,35 @@ function trackerMatch(details) {
   return match;
 }
 
-
-/** 
- * reads from requests queue and adds items to main frame visit objects
+/**
+ * called when page is changed, recieves tabData from background script, processes webrequests to find trackers and sends to database
+ * 
+ * @param  {Object} tabData
  */
-function processQueuedRequests() {
+async function onReceiveTabData(tabData) {
+  let requestsQueue = tabData.webRequests;
+  let trackers = [];
+
   while (true) {
     const req = requestsQueue.pop();
     if (!req) break;
 
     const match = trackerMatch(req);
-    const info = trackerInfo[req.tabId];
-    if (match && 
-        info && 
-        info.mainFrameReqId === req.parentRequestId && 
-        info.trackers && 
-        info.trackers.indexOf(match) === -1) {
-      info.trackers.push(match);
-      // console.log("sending message to database worker");
-      databaseWorkerPort.postMessage({
-        type: "store_tracker",
-        info: {
-          trackerdomain: match.domain,
-          trackername: match.name,
-          trackercategory: match.category,
-          pageId: req.parentRequestId
-        }
-      });
+    if (match) {
+      trackers.push({
+        trackerdomain: match.domain,
+        trackername: match.name,
+        trackercategory: match.category
+      })
+
     }
   }
-}
 
-
-/**
- * called when page is changed, updates mapping between page id and tab id
- * 
- * @param  {Object} details
- * @param {Number} details.tabId - tab id
- */
-async function updateMainFrameInfo(details) {
-  trackerInfo[details.tabId] = {
-    mainFrameReqId: details.mainFrameReqId,
-    trackers: []
-  }
+  databaseWorkerPort.postMessage({
+    type: "store_tracker_array",
+    pageId: tabData.pageId,
+    trackers: trackers
+  });
 }
 
 /**
@@ -141,15 +126,10 @@ onmessage = function(m) {
     case "database_worker_port":
       databaseWorkerPort = m.data.port;
       break;
-    case "main_frame_update":
-      updateMainFrameInfo(m.data.details);
-      break;
-    case "new_webrequest":
-      // console.log('trackers_worker received new_webrequest msg');
-      requestsQueue.push(m.data.details);
+
+    case "tab_data":
+      onReceiveTabData(m.data.tabData);
       break;
 
   }
 }
-
-setInterval(processQueuedRequests, 5000);

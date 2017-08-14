@@ -1,7 +1,8 @@
 /** @module background */
 
-let tabRequestMap = {};
-let mainFrameRequestInfo = {};
+// let tabRequestMap = {};
+// let mainFrameRequestInfo = {};
+let tabData = {};
 
 /* web workers setup */
 let trackersWorker = new Worker('../web_workers/trackers_worker.js');
@@ -25,6 +26,7 @@ databaseWorker.postMessage({type: "inferencing_worker_port", port: inferencingDa
  * 
  * @param  {Object} details - object from onBeforeRequest listener
  * @param  {string} details.type - type of request (i.e. "main_frame")
+ * @param  {string} details.tabId - tab request originated from
  */
 async function logRequest(details) {
 
@@ -33,13 +35,9 @@ async function logRequest(details) {
     return;
   }
 
-  details.parentRequestId = tabRequestMap[details.tabId];
-
-  // send web request details to trackers worker
-  trackersWorker.postMessage({
-    type: "new_webrequest",
-    details: details
-  });
+  if (tabData[details.tabId]) {
+    tabData[details.tabId].webRequests.push(details);
+  }
 }
 
 browser.webRequest.onBeforeRequest.addListener(
@@ -68,43 +66,58 @@ async function updateMainFrameInfo(details) {
     return;
   }
 
+  /* if we have data from a previous load, send it to trackers
+   * worker and clear out tabData here */
+  if (tabData[details.tabId]) {
+    clearTabData(details.tabId);
+
+  }
+
   /* take time stamp and use as ID for main frame page load
    * store in object to identify with tab */
   const mainFrameReqId = details.timeStamp;
-  tabRequestMap[details.tabId] = mainFrameReqId;
-
-  const tab = await browser.tabs.get(details.tabId);
-
   let parsedURL = parseUri(details.url);
-  mainFrameRequestInfo[mainFrameReqId] = {
-    url: details.url,
+  const tab = await browser.tabs.get(details.tabId);
+  tabData[details.tabId] = {
     pageId: mainFrameReqId,
     domain: parsedURL.host,
     path: parsedURL.path,
     protocol: parsedURL.protocol,
     title: tab.title,
+    webRequests: []
   }
-
-  /* tell trackers worker about main frame update
-   * so it can update its tabRequestMap equivalent */
-  trackersWorker.postMessage({
-    type: "main_frame_update",
-    details: {
-      tabId: details.tabId,
-      mainFrameReqId: mainFrameReqId
-    }
-  });
 
   databaseWorker.postMessage({
     type: "store_page",
-    info: mainFrameRequestInfo[mainFrameReqId]
+    info: tabData[details.tabId]
   });
 
 }
 
-/* listeners for updateMainFrameInfo */
+/**
+ * clears tabData info for a tab
+ * called when page changed/reloaded or tab closed
+ * 
+ * @param  {} tabId - tab's id
+ */
+function clearTabData(tabId) {
+  if (!tabData[tabId]) {
+    console.log("we tried to clear tab data for a tab we didn't have any data about");
+  }
+
+  trackersWorker.postMessage({
+    type: "tab_data",
+    tabData: tabData[tabId]
+  });
+
+  tabData[tabId] = null;
+}
+
+/* set listener functions */
 browser.webNavigation.onCommitted.addListener(updateMainFrameInfo);
 browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
+browser.tabs.onRemoved.addListener(clearTabData);
+
 
 
 /* message listener for trackers worker */
@@ -126,7 +139,7 @@ async function onContentScriptMessage(message, sender) {
         return;
       }
 
-      const mainFrameReqId = tabRequestMap[sender.tab.id];
+      const mainFrameReqId = tabData[sender.tab.id].pageId;
       // const info = mainFrameRequestInfo[mainFrameReqId];
 
       inferencingWorker.postMessage({
