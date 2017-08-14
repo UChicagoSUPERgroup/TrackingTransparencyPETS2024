@@ -1,8 +1,10 @@
 /** @module trackers_worker */
 
+importScripts('/lib/helpers.js'); 
 importScripts('/lib/parseUri.js'); 
 
 // console.log("trackers worker running");
+//  setInterval(function(){ console.log("Hello"); }, 3000);
 let databaseWorkerPort;
 
 /*
@@ -14,13 +16,6 @@ let services = {};
 let requestsQueue = [];
 
 let trackerInfo = {};
-
-/** destringifies an object
- * @param  {string} object
- */
-function deserialize(object) {
-  return typeof object == 'string' ? JSON.parse(object) : object;
-}
 
 /** 
  * takes the disconnect list object and formats it into the services object
@@ -59,27 +54,7 @@ function processServices(data) {
   }
 }
 
-/** 
- * reads a json file with given path
- * 
- * credits: https://stackoverflow.com/a/34579496
- * 
- * @param  {string} path to file
- */
-function readTextFile(file) {
-  return new Promise((resolve, reject) => {
-    let rawFile = new XMLHttpRequest();
-    rawFile.overrideMimeType("application/json");
-    rawFile.open("GET", file, true);
-    rawFile.onreadystatechange = function() {
-        if (rawFile.readyState === 4 && rawFile.status == "200") {
-            resolve(rawFile.responseText);
-        }
-    }
-    rawFile.send(null);
-})}
-
-readTextFile('/lib/disconnect.json').then(data => {
+readTextFile('../lib/disconnect.json').then(data => {
   processServices(data);
 });
 

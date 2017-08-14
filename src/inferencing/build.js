@@ -1,3 +1,5 @@
+importScripts('/lib/helpers.js'); 
+
 /*
  * Build tree from given JSON file listing nodes with keywords.
  */
@@ -24,24 +26,6 @@ function findAndAddChild(name, child, tree) {
       findAndAddChild(name, child, tree.children[i]);
     }
   }
-}
-
-function readTextFile(file) {
-  return new Promise((resolve, reject) => {
-    let rawFile = new XMLHttpRequest();
-    rawFile.overrideMimeType("application/json");
-    rawFile.open("GET", file, true);
-    rawFile.onreadystatechange = function() {
-        if (rawFile.readyState === 4 && rawFile.status == "200") {
-            resolve(rawFile.responseText);
-        }
-    }
-    rawFile.send(null);
-})}
-
-/* Destringifies an object. */
-function deserialize(object) {
-  return typeof object == 'string' ? JSON.parse(object) : object;
 }
 
 export default async function (in_file) {
