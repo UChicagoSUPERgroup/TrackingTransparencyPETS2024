@@ -93,6 +93,6 @@ async function directQuery(query, args) {
   directQueryId++;
 
   let res = await queryPromise;
-  console.log(res.response);
+  return res.response;
 }
 

@@ -21,9 +21,20 @@ module.exports = function(config) {
       'extension/lib/jquery-3.2.1.min.js',
       'extension/background_scripts/background.js',
       'extension/background_scripts/popup_connector.js',
-      'test/*.test.js'
+      'test/*.test.js',
+
+      {pattern: 'extension/web_workers/*.js', included: false, served: true},
+      {pattern: 'extension/dist/*.js', included: false, served: true},
+      {pattern: 'extension/lib/helpers.js', included: false, served: true},
+      {pattern: 'extension/lib/*', included: false, served: true}
     ],
 
+    proxies: {
+      "/web_workers/": "/base/extension/web_workers/",
+      "/dist/": "/base/extension/dist/",
+      "/lib/": "/base/extension/lib/"
+      // "/": "/base/extension/"
+    },
 
     // list of files to exclude
     exclude: [
@@ -54,6 +65,12 @@ module.exports = function(config) {
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
 
+    client: {
+      captureConsole: true,
+      mocha: {
+        bail: true
+      }
+    },
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
