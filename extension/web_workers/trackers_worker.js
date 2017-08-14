@@ -78,6 +78,11 @@ function trackerMatch(details) {
     let domain = arr[arr.length -2] + '.' + arr[arr.length - 1]
     if (domain in services) {
       match = domain;
+      match = {
+        domain: domain,
+        name: services[domain].name,
+        category: services[domain].category
+      }
     }
   }
   return match;
@@ -104,7 +109,9 @@ function processQueuedRequests() {
       databaseWorkerPort.postMessage({
         type: "store_tracker",
         info: {
-          trackerdomain: match,
+          trackerdomain: match.domain,
+          trackername: match.name,
+          trackercategory: match.category,
           pageId: req.parentRequestId
         }
       });

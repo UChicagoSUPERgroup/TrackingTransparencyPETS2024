@@ -25,7 +25,8 @@ primarySchemaBuilder.createTable('Pages').
 
 primarySchemaBuilder.createTable('Trackers').
     addColumn('id', lf.Type.INTEGER).
-    addColumn('tracker', lf.Type.STRING).
+    addColumn('tracker', lf.Type.STRING). // company name
+    addColumn('trackerCategory', lf.Type.STRING).
     addColumn('pageId', lf.Type.INTEGER).
     addPrimaryKey(['id'], true).
     addForeignKey('fk_pageId', {
@@ -91,7 +92,8 @@ async function storeTracker(info) {
   trackerItem = ttDb.getSchema().table('Trackers');
 
   var tracker = trackerItem.createRow({
-    'tracker': info.trackerdomain,
+    'tracker': info.trackername,
+    'trackerCategory': info.trackercategory,
     'pageId': info.pageId
   });
 
