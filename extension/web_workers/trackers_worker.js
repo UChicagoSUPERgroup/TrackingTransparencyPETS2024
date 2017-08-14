@@ -58,12 +58,15 @@ readTextFile('../lib/disconnect.json').then(data => {
  * determines if a web request was for a tracker
  * 
  * @param  {Object} details - request object
+ * @param {string} firstPartyHost - domain of page that originated request
  * @returns {string} domain of tracker, if request is known tracker domain
  */
-function trackerMatch(details) {
+function trackerMatch(details, firstPartyHost) {
   const parsedRequest = parseUri(details.url);
 
-  // TODO: maybe exclude first parties
+  if (parsedRequest.host === firstPartyHost) {
+    return null;
+  }
 
   let match = null;
   if (parsedRequest.host in services) {
@@ -76,6 +79,9 @@ function trackerMatch(details) {
   } else {
     const arr = parsedRequest.host.split('.');
     const domain = arr[arr.length -2] + '.' + arr[arr.length - 1]
+    if (domain === firstPartyHost) {
+      return null;
+    }
     if (domain in services) {
       match = {
         domain: domain,
@@ -93,21 +99,22 @@ function trackerMatch(details) {
  * @param  {Object} tabData
  */
 async function onReceiveTabData(tabData) {
+  const firstPartyHost = tabData.domain;
   let requestsQueue = tabData.webRequests;
-  let trackers = [];
+  let trackers = new Set();
 
   while (true) {
     const req = requestsQueue.pop();
     if (!req) break;
 
-    const match = trackerMatch(req);
+    const match = trackerMatch(req, firstPartyHost);
     if (match) {
-      trackers.push({
-        trackerdomain: match.domain,
-        trackername: match.name,
-        trackercategory: match.category
-      })
-
+      trackers.add(match.name);
+      // {
+      //   trackerdomain: match.domain,
+      //   trackername: match.name,
+      //   trackercategory: match.category
+      // })
     }
   }
 

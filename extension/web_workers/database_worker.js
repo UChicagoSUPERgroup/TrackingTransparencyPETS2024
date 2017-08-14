@@ -91,17 +91,16 @@ async function storeTrackerArray(pageId, trackers) {
   trackerItem = ttDb.getSchema().table('Trackers');
   let rows = []
 
-  for (tracker of trackers) {
+  for (let tracker of trackers) {
     const row = trackerItem.createRow({
-      'tracker': tracker.trackername,
-      'trackerCategory': tracker.trackercategory,
+      'tracker': tracker,
+      'trackerCategory': "",
       'pageId': pageId
     });
     rows.push(row);
   }
-  console.log(rows);
-  const ins = ttDb.insertOrReplace().into(trackerItem).values(rows).exec();
-  return;
+  // console.log(rows);
+  ttDb.insertOrReplace().into(trackerItem).values(rows).exec();
 }
 
 /**
