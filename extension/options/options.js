@@ -1,28 +1,37 @@
 function saveOptions(e) {
   e.preventDefault();
-  let options = {
-    popupCondition: document.querySelector("#popupCondition").value,
-    infopageCondition: document.querySelector("#infopageCondition").value,
-    inferencingCondition: document.querySelector("#inferencingCondition").value
+
+  let popupCondition = document.querySelector("#popupCondition").value;
+  let infopageCondition = document.querySelector("#infopageCondition").value;
+  let inferencingCondition = document.querySelector("#inferencingCondition").value;
+
+  browser.storage.local.set({popupCondition, infopageCondition, inferencingCondition});
+
+
+  switch (popupCondition) {
+    case "none":
+      browser.browserAction.disable();
+      break;
+    case "full":
+      browser.browserAction.setPopup({popup: "/popup/popup.html"});
+      browser.browserAction.enable();
+      break;
+    default:
+      browser.browserAction.disable();
   }
-  browser.storage.local.set({options});
+
 }
 
-function restoreOptions() {
+async function restoreOptions() {
 
-  function setCurrentChoices(result) {
-    let options = result.options;
-    document.querySelector("#popupCondition").value = options.popupCondition;
-    document.querySelector("#infopageCondition").value = options.infopageCondition;
-    document.querySelector("#inferencingCondition").value = options.inferencingCondition;
-  }
+  const popupCondition = await browser.storage.local.get("popupCondition");
+  const infopageCondition = await browser.storage.local.get("infopageCondition");
+  const inferencingCondition = await browser.storage.local.get("inferencingCondition");
 
-  function onError(error) {
-    console.log(`Error: ${error}`);
-  }
 
-  var getting = browser.storage.local.get("options");
-  getting.then(setCurrentChoices, onError);
+  document.querySelector("#popupCondition").value = popupCondition.popupCondition;
+  document.querySelector("#infopageCondition").value = infopageCondition.infopageCondition;
+  document.querySelector("#inferencingCondition").value = inferencingCondition.inferencingCondition;
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
