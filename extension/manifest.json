@@ -9,6 +9,8 @@
     },
     "description": "Provides information about online tracking",
     "permissions": [
+        "storage",
+        "unlimitedStorage",
         "tabs",
         "webRequest",
         "webNavigation",
@@ -42,6 +44,10 @@
             "run_at": "document_idle"
         }
     ],
+    "options_ui": {
+        "page": "options/options.html",
+        "browser_style": true
+    },
     "icons": {
         "128": "icons/super-128.png",
         "16": "icons/super-16.png",
