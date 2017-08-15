@@ -37,12 +37,19 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
+            "css": [
+                "lib/boundary/boundary.css",
+                "your-stylesheet-for-boxes.css"
+            ],
             "js": [
                 "lib/browser-polyfill.min.js", 
                 "lib/parseUri.js",
+                "lib/jquery-3.2.1.min.js",
+                "lib/boundary/boundary.js",
                 "dist/content_script.js"
             ],
-            "run_at": "document_idle"
+            "run_at": "document_idle",
+            "all_frames": false
         }
     ],
     "options_ui": {
