@@ -1,21 +1,59 @@
 body {
 }
-
-.extension-card {
-	width: 400px;
+h1 {
+  margin-bottom: 20px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #eee;
 }
 
-.popup-card {
-	width: 400px;
-    /*min-height: 15rem;*/
-    margin-top: 10px;
-    margin-bottom: 10px;
+
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  border-right: 1px solid #eee;
+	background-color: maroon;
 }
 
-.cards-popup {
-    padding: 20px;
+/* Sidebar navigation */
+.sidebar {
+  padding-left: 0;
+  padding-right: 0;
 }
 
-.hidden {
-    display: none;
+.sidebar .nav {
+  margin-bottom: 15px;
+}
+
+.sidebar .nav-item {
+  width: 100%;
+}
+
+.sidebar .nav-item + .nav-item {
+  margin-left: 0;
+}
+
+.sidebar .nav-link {
+  border-radius: 0;
+}
+
+.nav-title{
+	color: white;
+	font-weight: bold;
+}
+
+
+.nav-link, .nav-link:hover{
+	color: white;
+	font-size: 14px;
 }
