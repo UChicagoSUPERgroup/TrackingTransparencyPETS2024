@@ -1,11 +1,13 @@
-body {
+/* filling up to 100% */
+html, body, .row, .container-fluid {
+    height:100%;
 }
+
 h1 {
   margin-bottom: 20px;
   padding-bottom: 9px;
   border-bottom: 1px solid #eee;
 }
-
 
 
 /*
@@ -23,6 +25,7 @@ h1 {
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
   border-right: 1px solid #eee;
 	background-color: maroon;
+	height: 100%;
 }
 
 /* Sidebar navigation */
@@ -51,7 +54,6 @@ h1 {
 	color: white;
 	font-weight: bold;
 }
-
 
 .nav-link, .nav-link:hover{
 	color: white;

@@ -25,6 +25,8 @@ async function onReady() {
   // port.postMessage({ type: "request_info_current_page" });
   port.postMessage({ type: "get_tracker_most_pages" });
 
+  $('.nav-link').click(function(){ console.log("hello"); });
+
 }
 
 $('document').ready(onReady());
@@ -36,3 +38,5 @@ document.addEventListener("click", (e) => {
 
   }
 });
+
+//New stuff below
