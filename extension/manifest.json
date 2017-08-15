@@ -9,6 +9,8 @@
     },
     "description": "Provides information about online tracking",
     "permissions": [
+        "storage",
+        "unlimitedStorage",
         "tabs",
         "webRequest",
         "webNavigation",
@@ -27,6 +29,7 @@
             "lib/browser-polyfill.min.js",
             "lib/parseUri.js",
             "lib/jquery-3.2.1.min.js",
+            "background_scripts/userstudy.js",
             "background_scripts/background.js",
             "background_scripts/popup_connector.js"
         ]
@@ -42,6 +45,10 @@
             "run_at": "document_idle"
         }
     ],
+    "options_ui": {
+        "page": "options/options.html",
+        "browser_style": true
+    },
     "icons": {
         "128": "icons/super-128.png",
         "16": "icons/super-16.png",

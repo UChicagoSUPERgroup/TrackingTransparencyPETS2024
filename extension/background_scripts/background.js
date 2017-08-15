@@ -151,7 +151,3 @@ async function onContentScriptMessage(message, sender) {
   }
 }
 browser.runtime.onMessage.addListener(onContentScriptMessage);
-
-
-// TODO: clean data out of memory when tab closed
-// also for trackers worker
