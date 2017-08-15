@@ -11,7 +11,8 @@ module.exports = {
     // infer: './inferencing/src/infer.js',
     // build: './inferencing/src/build.js',
     inferencing: './src/inferencing.js',
-    content_script: './src/content_scripts/content_script.js'
+    content_script: './src/content_scripts/content_script.js',
+    overlay: './src/content_scripts/overlay.js'
   },
   output: {
     // This copies each source entry into the extension dist folder named
