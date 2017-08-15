@@ -6,7 +6,7 @@ function sleep(ms) {
 
 async function onReady() {
   var overlay = Boundary.createBox("tt_overlay_64f9de");
-  await sleep(100);
+  await sleep(200);
   Boundary.loadBoxCSS("#tt_overlay_64f9de", browser.extension.getURL('stylesheets/overlay-inner.css'));
 
   Boundary.rewriteBox("#tt_overlay_64f9de", "<div id='message'>Hi there!</div>");
