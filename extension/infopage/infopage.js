@@ -1,15 +1,14 @@
 var port = browser.runtime.connect({name:"port-from-infopage"});
+port.postMessage({greeting: "hello from infopage"});
+
+let pendingQueries = {};
+var query;
 
 port.onMessage.addListener(m => {
   switch (m.type) {
-    case "info_current_page":
-      $('#pagetitle').text(m.info.title);
-      $('#inference').text(m.info.inference);
-      break;
-    case "tracker_most_pages":
-      $('#mosttrackername').text(m.trackerName);
-      $('#mosttrackercount').text(m.count - 1);
-      $('#mostrackerinferences').text(m.inferences.join(", "));
+    case "database_query_response":
+      // resolve pending query promise
+      pendingQueries[m.id](m.response);
       break;
   }
 });
@@ -23,20 +22,63 @@ async function onReady() {
   // $('#pagetitle').text(title);
 
   // port.postMessage({ type: "request_info_current_page" });
-  port.postMessage({ type: "get_tracker_most_pages" });
 
-  $('.nav-link').click(function(){ console.log("hello"); });
+  query = await queryDatabase("get_trackers_by_inference_count", {});
+  console.log(query);
+  for (i=0; i<Math.min(10,10); i++){
+    console.log("hey");
+    $("#frequentTrackerList").append('<li class="list-group-item small">' + query[i] + '</li>');
+  }
+
+
 
 }
+
+
+let queryId = 0;
+async function queryDatabase(query,args) {
+  let queryPromise = new Promise((resolve, reject) => {
+    pendingQueries[queryId] = resolve;
+  })
+  // pendingQueries[queryId].promise = queryPromise;
+
+  port.postMessage({
+    type: "database_query",
+    src: "infopage",
+    id: queryId,
+    query: query,
+    args: args
+  });
+  queryId++;
+
+  let res = await queryPromise;
+  return res;
+}
+
+
+
+
 
 $('document').ready(onReady());
 
 document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("show-more-btn")) {
+  clickTarget = e.target
 
-    // document.getElementById("more").style.display = "inline";
+  if (clickTarget.classList[0]=="nav-link" && clickTarget.href.includes("#")) {
+    chosenContent = clickTarget.href.split("#")[1];
+
+    switch(chosenContent) {
+      case "who-is-tracking":
+        console.log("clicked on who is tracking page");
+        console.log(query);
+        break;
+    }
+
 
   }
-});
 
-//New stuff below
+
+
+
+
+});

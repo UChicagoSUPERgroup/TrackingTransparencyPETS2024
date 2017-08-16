@@ -5,11 +5,13 @@ let portFromInfopage;
 
 let pendingDirectQueries = {};
 let pendingPopupQueries = {};
+let pendingInfopageQueries = {};
+
 
 /** listener function to run when connection is made with popup or infopage
- * 
+ *
  * sets up messageListener as listener function for received messages
- * 
+ *
  * @param  {Object} p - port object
  * @param {string} p.name - name of port object
  */
@@ -23,12 +25,12 @@ async function connected(p) {
     portFromInfopage = p;
     portFromInfopage.onMessage.addListener(messageListener);
   }
-    
+
 }
 browser.runtime.onConnect.addListener(connected);
 
 /** listener for messags from popup and infopage
- * 
+ *
  * @param  {Object} m - message
  */
 async function messageListener(m) {
@@ -52,6 +54,21 @@ async function messageListener(m) {
 
       let res = await queryPromise;
       portFromPopup.postMessage(res);
+    } else if (m.src === "infopage") {
+      let queryPromise = new Promise((resolve, reject) => {
+        pendingInfopageQueries[m.id] = resolve;
+      });
+
+      databaseWorker.postMessage({
+        id: m.id,
+        type: m.type,
+        src: m.src,
+        query: m.query,
+        args: m.args
+      })
+
+      let res = await queryPromise;
+      portFromInfopage.postMessage(res);
     }
   }
 
@@ -65,6 +82,8 @@ databaseWorker.onmessage = function(m) {
       pendingDirectQueries[m.data.id](m.data);
     } else if (m.data.dst === "popup") {
       pendingPopupQueries[m.data.id](m.data);
+    } else if (m.data.dst === "infopage") {
+      pendingInfopageQueries[m.data.id](m.data);
     }
   }
 }
@@ -72,9 +91,9 @@ databaseWorker.onmessage = function(m) {
 
 let directQueryId = 0;
 /** function to make direct queries to database from background script
- * 
+ *
  * used for debugging
- * 
+ *
  * @param  {string} query - name of query
  * @param  {Object} args - arguments for query
  */
@@ -95,4 +114,3 @@ async function directQuery(query, args) {
   let res = await queryPromise;
   return res.response;
 }
-

@@ -29,10 +29,6 @@ h1 {
 }
 
 /* Sidebar navigation */
-.sidebar {
-  padding-left: 0;
-  padding-right: 0;
-}
 
 .sidebar .nav {
   margin-bottom: 15px;
@@ -53,9 +49,22 @@ h1 {
 .nav-title{
 	color: white;
 	font-weight: bold;
+	border-top: 1px solid #eee;
 }
 
 .nav-link, .nav-link:hover{
 	color: white;
 	font-size: 14px;
 }
+
+/*
+ * Cards
+ */
+
+
+ .card-block {
+	 padding-left: 20px;
+	 padding-right: 20px;
+	 padding-top: 20px;
+	 padding-bottom: 20px;
+ }
