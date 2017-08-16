@@ -8,6 +8,12 @@ h1 {
   padding-bottom: 9px;
   border-bottom: 1px solid #eee;
 }
+h6 > a , h3 > a {
+	color: maroon;
+}
+h6 > a:hover , h3 > a:hover {
+	color: black;
+}
 
 
 /*
