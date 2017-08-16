@@ -41,6 +41,7 @@
     "bootstrap": "^4.0.0-beta",
     "jquery": "^3.2.1",
     "lovefield": "^2.1.12",
+    "parseuri": "0.0.5",
     "popper.js": "^1.12.2",
     "webextension-polyfill": "^0.1.1"
   }

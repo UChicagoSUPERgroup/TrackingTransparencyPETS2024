@@ -1,6 +1,6 @@
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import parseUri from 'parseUri.js';
+import parseuri from 'parseuri';
 
 var port = browser.runtime.connect({name:"port-from-popup"});
 
@@ -29,7 +29,7 @@ async function onReady() {
   const tabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
   const tab = tabs[0];
 
-  const parsedURL = parseUri(tab.url);
+  const parsedURL = parseuri(tab.url);
   const query = await queryDatabase("get_tracker_with_inferences_by_domain", {domain: parsedURL.host});
   $('#mosttrackername').text(query.tracker);
   $('#mosttrackercount').text(query.count - 1);

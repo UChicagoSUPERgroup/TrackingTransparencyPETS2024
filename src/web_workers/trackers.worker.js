@@ -1,6 +1,6 @@
 /** @module trackers_worker */
 
-import parseUri from "parseUri.js";
+import parseuri from "parseuri";
 
 importScripts('/lib/helpers.js'); 
 
@@ -63,7 +63,7 @@ readTextFile('../lib/disconnect.json').then(data => {
  * @returns {string} domain of tracker, if request is known tracker domain
  */
 function trackerMatch(details, firstPartyHost) {
-  const parsedRequest = parseUri(details.url);
+  const parsedRequest = parseuri(details.url);
 
   if (parsedRequest.host === firstPartyHost) {
     return null;

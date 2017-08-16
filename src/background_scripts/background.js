@@ -1,6 +1,6 @@
 /** @module background */
 
-import parseUri from "parseUri.js";
+import parseuri from "parseuri";
 
 // let tabRequestMap = {};
 // let mainFrameRequestInfo = {};
@@ -82,7 +82,7 @@ async function updateMainFrameInfo(details) {
   /* take time stamp and use as ID for main frame page load
    * store in object to identify with tab */
   const mainFrameReqId = details.timeStamp;
-  let parsedURL = parseUri(details.url);
+  let parsedURL = parseuri(details.url);
   const tab = await browser.tabs.get(details.tabId);
   tabData[details.tabId] = {
     pageId: mainFrameReqId,
