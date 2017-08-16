@@ -26,9 +26,9 @@ async function onReady() {
   // port.postMessage({ type: "request_info_current_page" });
 
   query = await queryDatabase("get_trackers", {});
+  console.log(query);
   for (let i=0; i<Math.min(query.length,2); i++){
     makeTrackerAccordion(query[i]);
-
   }
 
 
