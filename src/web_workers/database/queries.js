@@ -50,8 +50,7 @@ async function getTopTrackers(n) {
     .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
     .limit(n)
     .exec();
-  return query;
-  // return query.map(x => x.tracker);
+  return query.map(x => x.tracker);
 }
 
 /**
