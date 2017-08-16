@@ -1,12 +1,6 @@
-/** 
- * @module userstudy.js
- * 
- * code related to the execution of the user study
- * 
- * i.e. options/test conditions, usage logging/reporting, etc.
- */
+/** @module userstudy */
 
-import {trackersWorker, databaseWorker, inferencingWorker} from "workers_setup.js";
+// import {trackersWorker, databaseWorker, inferencingWorker} from "workers_setup.js";
 
 const isUserstudy = false;
 

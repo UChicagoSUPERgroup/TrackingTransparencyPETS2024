@@ -1,5 +1,3 @@
-/** @module web_workers/database/setup.js */
-
 import lf from "lovefield";
 
 /* DATABSE SETUP */
