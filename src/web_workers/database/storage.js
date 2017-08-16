@@ -1,4 +1,4 @@
-/** @module web_workers/database/storage.js */
+/** @module storage */
 
 import {primaryDbPromise, primarySchemaBuilder} from "setup.js";
 

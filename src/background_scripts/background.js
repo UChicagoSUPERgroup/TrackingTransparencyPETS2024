@@ -6,7 +6,6 @@ import {trackersWorker, databaseWorker, inferencingWorker} from "workers_setup.j
 
 let tabData = {};
 
-
 /** sends a message with information about each outgoing
  * web request to trackers worker
  * 

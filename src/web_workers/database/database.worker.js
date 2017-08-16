@@ -1,4 +1,4 @@
-/** @module database.worker.js */
+/** @module database_worker */
 
 // import {primaryDbPromise, primarySchemaBuilder} from "setup.js";
 import makeQuery from "queries.js";
@@ -8,9 +8,6 @@ let trackersWorkerPort;
 let inferencingWorkerPort;
 
 onmessage = onMessage; // web worker
-
-
-
 
 /* WEB WORKER MESSAGES */
 /* =================== */
@@ -22,7 +19,6 @@ onmessage = onMessage; // web worker
  * @param {string} m.data.type - type of message (set by sender)
  */
 async function onMessage(m) {
-  // console.log('Message received from main script');
   // console.log(m);
   switch (m.data.type) {
     case "ping":
@@ -79,4 +75,3 @@ async function handleQuery(id, dst, query, args) {
     });
   }
 }
-
