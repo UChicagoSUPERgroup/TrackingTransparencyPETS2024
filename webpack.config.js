@@ -13,7 +13,10 @@ module.exports = {
 
     // content scripts
     inferencing_cs: './src/content_scripts/inferencing_cs.js',
-    overlay_cs: './src/content_scripts/overlay_cs.js'
+    overlay_cs: './src/content_scripts/overlay_cs.js',
+
+    // popup
+    popup: './src/popup/popup.js'
   },
   output: {
     // This copies each source entry into the extension dist folder named
@@ -22,7 +25,7 @@ module.exports = {
     publicPath: '/dist/',
     filename: '[name].js',
   },
-  // module: {
+  module: {
   //   // // This transpiles all code (except for third party modules) using Babel.
   //   // loaders: [{
   //   //   exclude: /node_modules/,
@@ -30,7 +33,16 @@ module.exports = {
   //   //   // Babel options are in .babelrc
   //   //   loaders: ['babel-loader'],
   //   // }]
-  // },
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ]
+  },
   resolve: {
     // This allows you to import modules just like you would in a NodeJS app.
     modules: [
@@ -45,7 +57,13 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
-    new webpack.IgnorePlugin(/jsdom$/)
+    new webpack.IgnorePlugin(/jsdom$/),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      Popper: ['popper.js', 'default']
+    })
   ],
   // This will expose source map files so that errors will point to your
   // original source files instead of the transpiled files.
