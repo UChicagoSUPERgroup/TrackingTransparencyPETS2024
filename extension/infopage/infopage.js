@@ -3,6 +3,8 @@ port.postMessage({greeting: "hello from infopage"});
 
 let pendingQueries = {};
 var query;
+let queryId = 0;
+var getInferences = true;
 
 port.onMessage.addListener(m => {
   switch (m.type) {
@@ -25,16 +27,16 @@ async function onReady() {
 
   query = await queryDatabase("get_trackers_by_inference_count", {});
   for (i=0; i<Math.min(query.length,10); i++){
-    console.log("hey");
-    $("#frequentTrackerList").append('<li class="list-group-item small">' + query[i] + '</li>');
+    //$("#frequentTrackerList").append('<li class="list-group-item small">' + query[i] + '</li>');
+
+    $("#frequentTrackerList2").append(makeTrackerAccordion(query[i]));
+
   }
 
 
 
 }
 
-
-let queryId = 0;
 async function queryDatabase(query,args) {
   let queryPromise = new Promise((resolve, reject) => {
     pendingQueries[queryId] = resolve;
@@ -54,10 +56,6 @@ async function queryDatabase(query,args) {
   return res;
 }
 
-
-
-
-
 $('document').ready(onReady());
 
 document.addEventListener("click", (e) => {
@@ -65,19 +63,42 @@ document.addEventListener("click", (e) => {
 
   if (clickTarget.classList[0]=="nav-link" && clickTarget.href.includes("#")) {
     chosenContent = clickTarget.href.split("#")[1];
-
     switch(chosenContent) {
       case "who-is-tracking":
-        console.log("clicked on who is tracking page");
-        console.log(query);
         break;
     }
-
-
   }
-
-
-
-
-
 });
+
+
+
+function makeTrackerAccordion(trackerName){
+  let heading = 'heading-' + trackerName;
+  let collapse = 'collapse-' + trackerName;
+
+  let htmlStr = '<div class="card"><div class="card-header" role="tab" id="';
+  htmlStr += heading + '">';
+  htmlStr += '<h6><a data-toggle="collapse" data-parent="#accordion"';
+  htmlStr += ' href="#' + collapse + '" aria-expanded="true" aria-controls="' + collapse +'">';
+  htmlStr += trackerName + '</a></h6></div>';
+
+  htmlStr += '<div id="' + collapse + '" class="collapse" role="tabpanel" aria-labelledby="';
+  htmlStr += heading + '">';
+
+  htmlStr += '<div class="card-block">' + trackerName;
+  htmlStr += '</div>';
+
+
+
+  htmlStr+= '</div></div>';
+  console.log(htmlStr);
+
+
+
+
+
+
+
+  return htmlStr;
+
+}
