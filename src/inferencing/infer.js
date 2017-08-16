@@ -33,7 +33,7 @@ function findBestChild(category, words, parentScore) {
       bestChild = category.children[i];
     }
 
-    console.log("trying",category.children[i].name , "score", curScore);
+    // console.log("trying",category.children[i].name , "score", curScore);
   }
 
   if (highestScore >= parentScore + 0.015) {
@@ -64,7 +64,7 @@ function findBestCategory(root, words, rootScore) {
 
     bestChild = result[0];
     bestChildScore = result[1];
-    console.log("going with", bestChild.name, "score", bestChildScore);
+    // console.log("going with", bestChild.name, "score", bestChildScore);
 
     return findBestCategory(bestChild, words, bestChildScore);
   }

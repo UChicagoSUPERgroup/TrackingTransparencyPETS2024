@@ -27,11 +27,9 @@
     "background": {
         "scripts": [
             "lib/browser-polyfill.min.js",
-            "lib/parseUri.js",
-            "lib/jquery-3.2.1.min.js",
-            "background_scripts/userstudy.js",
-            "background_scripts/background.js",
-            "background_scripts/popup_connector.js"
+            "dist/userstudy.js",
+            "dist/background.js",
+            "dist/popup_connector.js"
         ]
     },
     "content_scripts": [
@@ -43,11 +41,9 @@
             ],
             "js": [
                 "lib/browser-polyfill.min.js", 
-                "lib/parseUri.js",
-                "lib/jquery-3.2.1.min.js",
                 "lib/boundary/boundary.js",
-                "dist/overlay.js",
-                "dist/content_script.js"
+                "dist/overlay_cs.js",
+                "dist/inferencing_cs.js"
             ],
             "run_at": "document_idle",
             "all_frames": false

@@ -2,37 +2,52 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  // target: "node",
   entry: {
     // Each entry in here would declare a file that needs to be transpiled
     // and included in the extension source.
-    // For example, you could add a background script like:
-    // background: './src/background.js',
-    // infer: './inferencing/src/infer.js',
-    // build: './inferencing/src/build.js',
-    inferencing: './src/inferencing.js',
-    content_script: './src/content_scripts/content_script.js',
-    overlay: './src/content_scripts/overlay.js'
+
+    // background scripts
+    background: './src/background_scripts/background.js',
+    popup_connector: './src/background_scripts/background.js',
+    userstudy: './src/background_scripts/userstudy.js',
+
+    // content scripts
+    inferencing_cs: './src/content_scripts/inferencing_cs.js',
+    overlay_cs: './src/content_scripts/overlay_cs.js',
+
+    // popup
+    popup: './src/popup/popup.js'
   },
   output: {
     // This copies each source entry into the extension dist folder named
     // after its entry config key.
-    path:  path.join(__dirname, 'extension/dist'),
+    path: path.resolve(__dirname, "extension/dist"),
+    publicPath: '/dist/',
     filename: '[name].js',
   },
   module: {
-    // This transpiles all code (except for third party modules) using Babel.
-    loaders: [{
-      exclude: /node_modules/,
-      test: /\.js$/,
-      // Babel options are in .babelrc
-      loaders: ['babel-loader'],
-    }],
+  //   // // This transpiles all code (except for third party modules) using Babel.
+  //   // loaders: [{
+  //   //   exclude: /node_modules/,
+  //   //   test: /\.js$/,
+  //   //   // Babel options are in .babelrc
+  //   //   loaders: ['babel-loader'],
+  //   // }]
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ]
   },
   resolve: {
     // This allows you to import modules just like you would in a NodeJS app.
     modules: [
       'node_modules',
+      path.join(__dirname, 'src/lib'),
       path.join(__dirname, 'src/inferencing')
     ],
   },
@@ -42,11 +57,17 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
-    new webpack.IgnorePlugin(/jsdom$/)
+    new webpack.IgnorePlugin(/jsdom$/),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      Popper: ['popper.js', 'default']
+    })
   ],
   // This will expose source map files so that errors will point to your
   // original source files instead of the transpiled files.
-  devtool: 'sourcemap',
+  devtool: 'inline-source-map',
   node: {
     fs: "empty",
     net: "empty",

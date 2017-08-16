@@ -1,7 +1,8 @@
 /** @module database_worker */
 
+import lf from "lovefield";
 
-importScripts('/lib/lovefield.min.js'); 
+// importScripts('/lib/lovefield.min.js'); 
 
 /* DATABSE SETUP */
 /* ============= */

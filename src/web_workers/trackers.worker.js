@@ -1,7 +1,8 @@
 /** @module trackers_worker */
 
+import parseUri from "parseUri.js";
+
 importScripts('/lib/helpers.js'); 
-importScripts('/lib/parseUri.js'); 
 
 // console.log("trackers worker running");
 let databaseWorkerPort;

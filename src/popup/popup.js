@@ -1,3 +1,7 @@
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import parseUri from 'parseUri.js';
+
 var port = browser.runtime.connect({name:"port-from-popup"});
 
 let pendingQueries = {};

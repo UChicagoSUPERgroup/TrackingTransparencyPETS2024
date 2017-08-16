@@ -1,13 +1,19 @@
 /** @module background */
 
+import parseUri from "parseUri.js";
+
 // let tabRequestMap = {};
 // let mainFrameRequestInfo = {};
 let tabData = {};
 
 /* web workers setup */
-let trackersWorker = new Worker('../web_workers/trackers_worker.js');
-let databaseWorker = new Worker('../web_workers/database_worker.js');
-let inferencingWorker = new Worker('../dist/inferencing.js');
+import TrackersWorker from "worker-loader?name=trackers.[hash].js!../web_workers/trackers.worker.js";
+import DatabaseWorker from "worker-loader?name=database.[hash].js!../web_workers/database.worker.js";
+import InferencingWorker from "worker-loader?name=inferencing.[hash].js!../web_workers/inferencing.worker.js";
+
+const trackersWorker = new TrackersWorker();
+const databaseWorker = new DatabaseWorker();
+const inferencingWorker = new InferencingWorker();
 
 /* connect database worker and trackers worker */
 /* this involves creating a MessageChannel and passing a message with
