@@ -24,8 +24,7 @@ async function onReady() {
   // port.postMessage({ type: "request_info_current_page" });
 
   query = await queryDatabase("get_trackers_by_inference_count", {});
-  console.log(query);
-  for (i=0; i<Math.min(10,10); i++){
+  for (i=0; i<Math.min(query.length,10); i++){
     console.log("hey");
     $("#frequentTrackerList").append('<li class="list-group-item small">' + query[i] + '</li>');
   }
