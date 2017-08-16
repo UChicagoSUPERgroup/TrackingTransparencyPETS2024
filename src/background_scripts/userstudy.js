@@ -6,7 +6,7 @@
  * i.e. options/test conditions, usage logging/reporting, etc.
  */
 
-const isUserstudy = false;
+const isUserstudy = true;
 
 async function setDefaultOptions() {
   let popupCondition, infopageCondition, inferencingCondition;
