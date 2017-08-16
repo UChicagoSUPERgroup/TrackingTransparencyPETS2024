@@ -1,5 +1,4 @@
 var port = browser.runtime.connect({name:"port-from-popup"});
-port.postMessage({greeting: "hello from popup"});
 
 let pendingQueries = {};
 

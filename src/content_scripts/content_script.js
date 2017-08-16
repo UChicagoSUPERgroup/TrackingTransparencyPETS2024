@@ -1,6 +1,8 @@
-import Readability from "readability"
+import Readability from "readability";
 
-console.log("content script running");
+/* INFERENCING */
+
+// console.log("content script running");
 
 var doc = document.cloneNode(true); 
 var location = document.location;

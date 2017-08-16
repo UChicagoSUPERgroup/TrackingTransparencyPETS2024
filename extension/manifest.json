@@ -37,18 +37,30 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
+            "css": [
+                "lib/boundary/boundary.css",
+                "stylesheets/overlay.css"
+            ],
             "js": [
                 "lib/browser-polyfill.min.js", 
                 "lib/parseUri.js",
+                "lib/jquery-3.2.1.min.js",
+                "lib/boundary/boundary.js",
+                "dist/overlay.js",
                 "dist/content_script.js"
             ],
-            "run_at": "document_idle"
+            "run_at": "document_idle",
+            "all_frames": false
         }
     ],
     "options_ui": {
         "page": "options/options.html",
         "browser_style": true
     },
+    "web_accessible_resources": [
+        "lib/boundary/boundary.css",
+        "stylesheets/overlay-inner.css"
+    ],
     "icons": {
         "128": "icons/super-128.png",
         "16": "icons/super-16.png",
