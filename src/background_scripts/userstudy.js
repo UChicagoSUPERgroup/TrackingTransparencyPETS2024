@@ -6,6 +6,8 @@
  * i.e. options/test conditions, usage logging/reporting, etc.
  */
 
+import {trackersWorker, databaseWorker, inferencingWorker} from "workers_setup.js";
+
 const isUserstudy = false;
 
 async function setDefaultOptions() {

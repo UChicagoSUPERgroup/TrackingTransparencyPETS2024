@@ -1,12 +1,13 @@
 /** @module popup_connector */
 
+import {trackersWorker, databaseWorker, inferencingWorker} from "workers_setup.js";
+
 let portFromPopup;
 let portFromInfopage;
 
 let pendingDirectQueries = {};
 let pendingPopupQueries = {};
 let pendingInfopageQueries = {};
-
 
 /** listener function to run when connection is made with popup or infopage
  *
@@ -76,7 +77,7 @@ async function messageListener(m) {
 
 /* listener for messages recieved from database worker */
 databaseWorker.onmessage = function(m) {
-  console.log('Message received from database worker');
+  // console.log('Message received from database worker', m);
   if (m.data.type === "database_query_response") {
     if (m.data.dst === "background-debug") {
       pendingDirectQueries[m.data.id](m.data);

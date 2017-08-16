@@ -8,7 +8,7 @@ module.exports = {
 
     // background scripts
     background: './src/background_scripts/background.js',
-    popup_connector: './src/background_scripts/background.js',
+    popup_connector: './src/background_scripts/popup_connector.js',
     userstudy: './src/background_scripts/userstudy.js',
 
     // content scripts
@@ -47,6 +47,7 @@ module.exports = {
     // This allows you to import modules just like you would in a NodeJS app.
     modules: [
       'node_modules',
+      path.resolve(__dirname, "src/background_scripts"),
       path.join(__dirname, 'src/lib'),
       path.join(__dirname, 'src/inferencing')
     ],
