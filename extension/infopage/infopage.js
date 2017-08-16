@@ -26,10 +26,8 @@ async function onReady() {
   // port.postMessage({ type: "request_info_current_page" });
 
   query = await queryDatabase("get_trackers", {});
-  for (let i=0; i<Math.min(query.length,10); i++){
-    //$("#frequentTrackerList").append('<li class="list-group-item small">' + query[i] + '</li>');
-
-    $("#frequentTrackerList2").append(makeTrackerAccordion(query[i]));
+  for (let i=0; i<Math.min(query.length,2); i++){
+    makeTrackerAccordion(query[i]);
 
   }
 
@@ -75,30 +73,23 @@ document.addEventListener("click", (e) => {
 function makeTrackerAccordion(trackerName){
   let heading = 'heading-' + trackerName;
   let collapse = 'collapse-' + trackerName;
+  let card = 'card-' + trackerName;
+  let cardblock  = 'cardblock-' + trackerName;
 
-  let htmlStr = '<div class="card"><div class="card-header" role="tab" id="';
-  htmlStr += heading + '">';
-  htmlStr += '<h6><a data-toggle="collapse" data-parent="#accordion"';
-  htmlStr += ' href="#' + collapse + '" aria-expanded="true" aria-controls="' + collapse +'">';
-  htmlStr += trackerName + '</a></h6></div>';
+  //framework of card, card header, and card block
+  $("#frequentTrackerList2").append('<div class="card" id="' + card + '"></div>');
+  let htmlHStr = '<div class="card-header" role="tab" id="' + heading + '"></div>';
+  let htmlCStr = '<div id="' + collapse + '" class="collapse" role="tabpanel" aria-labelledby="';
+  htmlCStr += heading + '"></div>';
+  $('#' + card).html(htmlHStr + htmlCStr);
+  //include the labeled header
+  let htmlheader = '<h6><a data-toggle="collapse" data-parent="#accordion"';
+  htmlheader += ' href="#' + collapse + '" aria-expanded="true" aria-controls="' + collapse +'">';
+  htmlheader += trackerName + '</a></h6>';
+  $('#' + heading).html(htmlheader);
+  //include the card block body elements
+  let htmlBody = '<div class="card-block" id="'+ cardblock +'"></div>';
+  $('#' + collapse).html(htmlBody);
 
-  htmlStr += '<div id="' + collapse + '" class="collapse" role="tabpanel" aria-labelledby="';
-  htmlStr += heading + '">';
-
-  htmlStr += '<div class="card-block">' + trackerName;
-  htmlStr += '</div>';
-
-
-
-  htmlStr+= '</div></div>';
-  console.log(htmlStr);
-
-
-
-
-
-
-
-  return htmlStr;
-
+  $('#' + cardblock).html(trackerName + " was present on x% of the pages you visited today.");
 }
