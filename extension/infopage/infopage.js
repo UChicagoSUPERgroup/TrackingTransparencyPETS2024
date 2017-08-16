@@ -23,8 +23,8 @@ async function onReady() {
 
   // port.postMessage({ type: "request_info_current_page" });
 
-  query = await queryDatabase("get_trackers_by_inference_count", {});
-  for (i=0; i<Math.min(query.length,10); i++){
+  query = await queryDatabase("get_trackers", {});
+  for (let i=0; i<Math.min(query.length,10); i++){
     console.log("hey");
     $("#frequentTrackerList").append('<li class="list-group-item small">' + query[i] + '</li>');
   }
@@ -61,10 +61,10 @@ async function queryDatabase(query,args) {
 $('document').ready(onReady());
 
 document.addEventListener("click", (e) => {
-  clickTarget = e.target
+  const clickTarget = e.target
 
   if (clickTarget.classList[0]=="nav-link" && clickTarget.href.includes("#")) {
-    chosenContent = clickTarget.href.split("#")[1];
+    const chosenContent = clickTarget.href.split("#")[1];
 
     switch(chosenContent) {
       case "who-is-tracking":

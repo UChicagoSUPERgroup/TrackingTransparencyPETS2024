@@ -1,6 +1,6 @@
 /* web workers setup */
 import TrackersWorker from "worker-loader?name=trackers.[hash].js!../web_workers/trackers.worker.js";
-import DatabaseWorker from "worker-loader?name=database.[hash].js!../web_workers/database.worker.js";
+import DatabaseWorker from "worker-loader?name=database.[hash].js!../web_workers/database/database.worker.js";
 import InferencingWorker from "worker-loader?name=inferencing.[hash].js!../web_workers/inferencing.worker.js";
 
 const trackersWorker = new TrackersWorker();
