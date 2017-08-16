@@ -1,138 +1,11 @@
-/** @module database_worker */
-
-import lf from "lovefield";
-
-// importScripts('/lib/lovefield.min.js'); 
-
-/* DATABSE SETUP */
-/* ============= */
-
-let trackersWorkerPort;
-let inferencingWorkerPort;
-
-// console.log("database worker running");
-var primarySchemaBuilder = lf.schema.create('datastore', 1);
-
-primarySchemaBuilder.createTable('Pages').
-    addColumn('id', lf.Type.INTEGER).
-    addColumn('title', lf.Type.STRING).
-    addColumn('domain', lf.Type.STRING).
-    addColumn('path', lf.Type.STRING).
-    addColumn('protocol', lf.Type.STRING).
-    addColumn('time', lf.Type.DATE_TIME).
-    addPrimaryKey(['id']).
-    addIndex('idxTime', ['time'], false, lf.Order.DESC);
-
-
-primarySchemaBuilder.createTable('Trackers').
-    addColumn('id', lf.Type.INTEGER).
-    addColumn('tracker', lf.Type.STRING). // company name
-    addColumn('trackerCategory', lf.Type.STRING).
-    addColumn('pageId', lf.Type.INTEGER).
-    addPrimaryKey(['id'], true).
-    addForeignKey('fk_pageId', {
-         local: 'pageId',
-         ref: 'Pages.id'
-       });
-
-primarySchemaBuilder.createTable('Inferences').
-    addColumn('id', lf.Type.INTEGER).
-    addColumn('inference', lf.Type.STRING).
-    addColumn('inferenceCategory', lf.Type.STRING).
-    addColumn('pageId', lf.Type.INTEGER).
-    addColumn('threshold', lf.Type.NUMBER).
-    addPrimaryKey(['id'], true).
-    addForeignKey('fk_pageId', {
-        local: 'pageId',
-        ref: 'Pages.id'
-      }).
-    addIndex('idxThreshold', ['threshold'], false, lf.Order.DESC);
-
-let primaryDbPromise = primarySchemaBuilder.connect();
-var pageItem;
-var trackerItem;
-var inferenceItem;
-
-/* DATA STORAGE */
-/* ============ */
-
-/**
- * stores new page visit
- * 
- * @param {Object} info - info about the page
- * @param {Number} info.pageId - page's unique identifer
- * @param {string} info.title - page's title
- * @param {string} info.domain - page's domain
- * @param {string} info.path - page's path
- * @param {string} info.protocol - page's protocol (e.g. http)
- */
-async function storePage(info) {
-  let ttDb = await primaryDbPromise;
-  pageItem = ttDb.getSchema().table('Pages');
-
-  var page = pageItem.createRow({
-    'id': info.pageId,
-    'title': info.title,
-    'domain': info.domain,
-    'path': info.path,
-    'protocol': info.protocol,
-    'time': new Date(info.pageId),
-  });
-  return ttDb.insertOrReplace().into(pageItem).values([page]).exec();
-}
-
-/**
- * stores records of trackers for given page
- * 
- * @param {Object} pageId - identifier for page that trackers come from
- * @param {Object[]} trackers - array of objects with information about each tracker
- */
-async function storeTrackerArray(pageId, trackers) {
-  let ttDb = await primaryDbPromise;
-  trackerItem = ttDb.getSchema().table('Trackers');
-  let rows = []
-
-  for (let tracker of trackers) {
-    const row = trackerItem.createRow({
-      'tracker': tracker,
-      'trackerCategory': "",
-      'pageId': pageId
-    });
-    rows.push(row);
-  }
-  // console.log(rows);
-  ttDb.insertOrReplace().into(trackerItem).values(rows).exec();
-}
-
-/**
- * stores new inference
- * 
- * @param {Object} info - info about the page
- * @param {Number} info.pageId - page's unique identifer
- * @param {string} info.inference - inference made
- * @param {string} info.inferenceCategory - unused
- * @param {Number} info.threshold - unused
- * 
- */
-async function storeInference(info) {
-  let ttDb = await primaryDbPromise;
-  inferenceItem = ttDb.getSchema().table('Inferences');
-
-  var inference = inferenceItem.createRow({
-    'inference': info.inference,
-    'inferenceCategory': info.inferenceCategory,
-    'threshold': info.threshold,
-    'pageId': info.pageId
-  });
-  return ttDb.insertOrReplace().into(inferenceItem).values([inference]).exec();
-}
+import {primaryDbPromise, primarySchemaBuilder} from "setup.js";
 
 /* QUERIES */
 /* ======= */
 
-var Inferences = primarySchemaBuilder.getSchema().table('Inferences');
-var Trackers = primarySchemaBuilder.getSchema().table('Trackers');
-var Pages = primarySchemaBuilder.getSchema().table('Pages');
+const Inferences = primarySchemaBuilder.getSchema().table('Inferences');
+const Trackers = primarySchemaBuilder.getSchema().table('Trackers');
+const Pages = primarySchemaBuilder.getSchema().table('Pages');
 
 /**
  * gets all inferences
@@ -143,6 +16,17 @@ async function getInferences() {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
   let query = await ttDb.select(Inferences.inference).from(Inferences).exec(); // orderBy(Inferences.pageId, lf.Order.DESC) to get most recent
   return query.map(x => x.inference);
+}
+
+/**
+ * gets all trackers
+ * 
+ * @returns {string[]} array of inferences
+ */
+async function getTrackers() {
+  let ttDb = await primaryDbPromise; // db is defined in datastore.js
+  let query = await ttDb.select(Trackers.tracker).from(Trackers).exec(); // orderBy(Inferences.pageId, lf.Order.DESC) to get most recent
+  return query.map(x => x.tracker);
 }
 
 /**
@@ -293,63 +177,18 @@ async function getTrackerWithInferencesByDomain(domain) {
   }
 }
 
-/* WEB WORKER MESSAGES */
-/* =================== */
 /**
- * message listener from another background script or another worker
+ * makes a query given string query name and arguments object
  * 
- * @param  {Object} m - message
- * @param {Object} m.data - content of message
- * @param {string} m.data.type - type of message (set by sender)
- */
-async function onMessage(m) {
-  // console.log('Message received from main script');
-  // console.log(m);
-  switch (m.data.type) {
-    case "ping":
-      console.log("database worker recieved ping");
-      break;
-
-    case "database_query":
-      handleQuery(m.data.id, m.data.src, m.data.query, m.data.args);
-      break;
-
-    case "trackers_worker_port":
-      trackersWorkerPort = m.data.port;
-      trackersWorkerPort.onmessage = onMessage;
-      break;
-    case "inferencing_worker_port":
-      inferencingWorkerPort = m.data.port;
-      inferencingWorkerPort.onmessage = onMessage;
-      break;
-
-    // STORAGE
-
-    case "store_page":
-      storePage(m.data.info);
-      break;
-    case "store_tracker_array":
-      storeTrackerArray(m.data.pageId, m.data.trackers);
-      break;
-    case "store_inference":
-      storeInference(m.data.info);
-      break;
-
-    default:
-      console.log("database worker recieved bad message");
-  }
-}
-/**
- * makes sent query and sends reponse
- * 
- * @param  {Number} id  - query id (set by sender)
- * @param  {string} dst - query destination
  * @param  {string} query - query name
  * @param  {Object} args - query arguments
  */
-async function handleQuery(id, dst, query, args) {
+export default async function makeQuery(query, args) {
   let res;
   switch (query) {
+    case "get_trackers":
+      res = await getTrackers();
+      break;
     case "get_inferences":
       res = await getInferences();
       break;
@@ -380,16 +219,7 @@ async function handleQuery(id, dst, query, args) {
     case "get_tracker_with_inferences_by_domain":
       res = await getTrackerWithInferencesByDomain(args.domain);
       break;
-  }
-
-  if (res) {
-    postMessage({
-      type: "database_query_response",
-      id: id,
-      dst: dst,
-      response: res
-    });
-  }
+    }
+    
+  return res;
 }
-
-onmessage = onMessage; // web worker

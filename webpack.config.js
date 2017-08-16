@@ -35,6 +35,7 @@ module.exports = {
     // This allows you to import modules just like you would in a NodeJS app.
     modules: [
       'node_modules',
+      path.resolve(__dirname, "src/web_workers/database"),
       path.resolve(__dirname, "src/background_scripts"),
       path.join(__dirname, 'src/lib'),
       path.join(__dirname, 'src/inferencing')

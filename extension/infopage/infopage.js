@@ -25,12 +25,19 @@ async function onReady() {
 
   // port.postMessage({ type: "request_info_current_page" });
 
+<<<<<<< HEAD
   query = await queryDatabase("get_trackers_by_inference_count", {});
   for (i=0; i<Math.min(query.length,10); i++){
     //$("#frequentTrackerList").append('<li class="list-group-item small">' + query[i] + '</li>');
 
     $("#frequentTrackerList2").append(makeTrackerAccordion(query[i]));
 
+=======
+  query = await queryDatabase("get_trackers", {});
+  for (let i=0; i<Math.min(query.length,10); i++){
+    console.log("hey");
+    $("#frequentTrackerList").append('<li class="list-group-item small">' + query[i] + '</li>');
+>>>>>>> 4cd45b0870154ad2f088a5ed1e66898676d21340
   }
 
 
@@ -59,10 +66,15 @@ async function queryDatabase(query,args) {
 $('document').ready(onReady());
 
 document.addEventListener("click", (e) => {
-  clickTarget = e.target
+  const clickTarget = e.target
 
   if (clickTarget.classList[0]=="nav-link" && clickTarget.href.includes("#")) {
+<<<<<<< HEAD
     chosenContent = clickTarget.href.split("#")[1];
+=======
+    const chosenContent = clickTarget.href.split("#")[1];
+
+>>>>>>> 4cd45b0870154ad2f088a5ed1e66898676d21340
     switch(chosenContent) {
       case "who-is-tracking":
         break;
