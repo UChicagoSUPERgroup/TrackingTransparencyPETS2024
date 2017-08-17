@@ -6,6 +6,19 @@ import {trackersWorker, databaseWorker, inferencingWorker} from "workers_setup.j
 
 let tabData = {};
 
+/* set listener functions */
+browser.webRequest.onBeforeRequest.addListener(
+  logRequest,
+  {urls: ["<all_urls>"]}
+);
+
+browser.webNavigation.onDOMContentLoaded.addListener(updateMainFrameInfo);
+browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
+
+browser.tabs.onRemoved.addListener(clearTabData);
+
+browser.runtime.onMessage.addListener(onContentScriptMessage);
+
 /** sends a message with information about each outgoing
  * web request to trackers worker
  * 
@@ -24,12 +37,6 @@ async function logRequest(details) {
     tabData[details.tabId].webRequests.push(details);
   }
 }
-
-browser.webRequest.onBeforeRequest.addListener(
-  logRequest,
-  {urls: ["<all_urls>"]}
-);
-
 
 /** called by listeners when user navigates to a new page
  * 
@@ -50,6 +57,8 @@ async function updateMainFrameInfo(details) {
     // not a user-initiated page change
     return;
   }
+  // console.log("updateMainFrameInfo", details);
+  // console.log("page has changed, so we make make a new page record");
 
   /* if we have data from a previous load, send it to trackers
    * worker and clear out tabData here */
@@ -60,23 +69,55 @@ async function updateMainFrameInfo(details) {
 
   /* take time stamp and use as ID for main frame page load
    * store in object to identify with tab */
-  const mainFrameReqId = details.timeStamp;
-  let parsedURL = parseuri(details.url);
   const tab = await browser.tabs.get(details.tabId);
-  tabData[details.tabId] = {
-    pageId: mainFrameReqId,
+  // console.log(tab.title);
+  recordNewPage(details.tabId, details.url, tab.title);
+}
+
+
+/// function not used - don't delete just yet until we're sure we don't need to listen to tab events
+// browser.tabs.onUpdated.addListener(onTabUpdate);
+
+// async function onTabUpdate(tabId, changeInfo, tab) {
+//   console.log("onTabUpdate", tabId, changeInfo, tab);
+//   // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/tabs/onUpdated
+
+//   if (tabId === -1  || 
+//       tabId === browser.tabs.TAB_ID_NONE ||
+//       !tab.url.startsWith("http")) {
+//     // not a user-initiated page change
+//     return;
+//   }
+
+//   if (changeInfo.title && tab.url) {
+//     console.log("title change");
+    
+//     // title update, so we update database
+//     tabData[tabId].title = changeInfo.title;
+//     console.log("storing title update to database");
+//     databaseWorker.postMessage({
+//       type: "store_page",
+//       info: tabData[tabId]
+//     });
+//   }
+// }
+
+function recordNewPage(tabId, url, title) {
+  const pageId = Date.now();
+  let parsedURL = parseuri(url);
+  tabData[tabId] = {
+    pageId: pageId,
     domain: parsedURL.host,
     path: parsedURL.path,
     protocol: parsedURL.protocol,
-    title: tab.title,
+    title: title,
     webRequests: []
   }
 
   databaseWorker.postMessage({
     type: "store_page",
-    info: tabData[details.tabId]
+    info: tabData[tabId]
   });
-
 }
 
 /**
@@ -87,7 +128,7 @@ async function updateMainFrameInfo(details) {
  */
 function clearTabData(tabId) {
   if (!tabData[tabId]) {
-    console.log("we tried to clear tab data for a tab we didn't have any data about");
+    // console.log("we tried to clear tab data for a tab we didn't have any data about");
   }
 
   trackersWorker.postMessage({
@@ -98,17 +139,10 @@ function clearTabData(tabId) {
   tabData[tabId] = null;
 }
 
-/* set listener functions */
-browser.webNavigation.onCommitted.addListener(updateMainFrameInfo);
-browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
-browser.tabs.onRemoved.addListener(clearTabData);
-
-
-
 /* message listener for trackers worker */
-trackersWorker.onmessage = function(e) {
-  console.log('Message received from trackers worker');
-}
+// trackersWorker.onmessage = function(m) {
+//   // console.log('Message received from trackers worker');
+// }
 
 /** listener function for messages from content script
  * @param  {Object} message
@@ -116,6 +150,7 @@ trackersWorker.onmessage = function(e) {
  * @param  {Object} sender
  */
 async function onContentScriptMessage(message, sender) {
+  let pageId;
   switch (message.type) {
     case "parsed_page":
 
@@ -124,15 +159,14 @@ async function onContentScriptMessage(message, sender) {
         return;
       }
 
-      const mainFrameReqId = tabData[sender.tab.id].pageId;
+      pageId = tabData[sender.tab.id].pageId;
       // const info = mainFrameRequestInfo[mainFrameReqId];
 
       inferencingWorker.postMessage({
         type: "content_script_to_inferencing",
         article: message.article,
-        mainFrameReqId: mainFrameReqId
+        mainFrameReqId: pageId
       })
       break;
   }
 }
-browser.runtime.onMessage.addListener(onContentScriptMessage);
