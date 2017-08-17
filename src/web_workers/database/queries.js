@@ -194,7 +194,7 @@ async function getDomainsByTracker(tracker, count) {
 }
 
 async function getTrackerWithInferencesByDomain(domain) {
-  let trackers = await getTrackersByPageVisited(domain);
+  let trackers = await getTrackersByDomain(domain);
   let inferences = await getInferencesByTracker(trackers[0]);
   let count = await getPageVisitCountByTracker(trackers[0]);
   return {
