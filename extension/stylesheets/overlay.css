@@ -1,7 +1,7 @@
 /* id must not conflict with anything any web page author might choose */
 #tt_overlay_64f9de {
 	all: initial;
-	z-index: 10000;
+	z-index: 2147483647;
 	position: fixed;
 	bottom: 20px;
 	right: 20px;
