@@ -13,11 +13,32 @@
 
     <div>
         <form>
-        <p><label>Database query name<input type="text" id="queryName" ></label></p>
-        <p><label>Database query args<input type="text" id="queryArgs" ></label></p>
+        <label>query<select id="queryName">
+            <option value="get_trackers">get_trackers</option> 
+            <option value="get_top_trackers" selected>get_top_trackers</option>
+            <option value="get_page_visit_count_by_tracker">get_page_visit_count_by_tracker</option>
+            <option value="get_inferences_by_tracker">get_inferences_by_tracker</option>
+            <option value="get_trackers_by_inference">get_trackers_by_inference</option>
+            <option value="get_trackers_by_domain">get_trackers_by_domain</option>
+            <option value="get_trackers_by_inference_count">get_trackers_by_inference_count</option>
+            <option value="get_domains_by_tracker">get_domains_by_tracker</option>
+            <option value="get_tracker_with_inferences_by_domain">get_tracker_with_inferences_by_domain</option>
+            <option value="get_info_about_tracker">get_info_about_tracker</option>
+        </select></label>
+
+        <p><label>domain<input type="text" id="domain" value="nytimes.com"></label></p>
+        <p><label>tracker<input type="text" id="tracker" value="Google"></label></p>
+        <p><label>inference<input type="text" id="inference" value="News"></label></p>
+        <br>
+        <p><label>count<input type="number" id="count"  value="5"></label></p>
+        <p><label>inferenceCount<input type="number" id="inferenceCount" value="5"></label></p>
+        <p><label>pageCount<input type="number" id="pageCount" value="5"></label></p>
+
+
+
         <p><button type="submit">Query</button></p>
     </form>
-    <p id="queryResult"></p>
+    <pre id="queryResult"></pre>
 </div>
 
         <script src="debugscreen.js"></script>
