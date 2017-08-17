@@ -74,3 +74,13 @@ h6 > a:hover , h3 > a:hover {
 	 padding-top: 20px;
 	 padding-bottom: 20px;
  }
+ .card-header {
+	 padding-bottom: 8px;
+ }
+
+
+
+ .list-group-item {
+	 padding-top: 8px;
+	 padding-bottom: 8px;
+ }
