@@ -44,9 +44,8 @@ async function onReady() {
   let tracker_detailed_queries = [];
   let tracker_list_queries = [];
   for (let i=0; i < tracker_query.length; i++){
-      let args = {tracker: tracker_query[i], inferenceCount: 3, pageCount: 20};
+      let args = {tracker: tracker_query[i], inferenceCount: 3, pageCount: 15};
       tracker_detailed_queries[i] = await queryDatabase("get_info_about_tracker", args)
-      console.log(tracker_detailed_queries[i]);
       makeTrackerProfile(tracker_query[i],
         tracker_detailed_queries[i], true, "frequentTrackerListInferencing");
   }
@@ -56,6 +55,7 @@ async function onReady() {
       makeTrackerProfile(tracker_query[i],
         tracker_list_queries[i], false, "frequentTrackerList");
   }
+  console.log(tracker_detailed_queries);
 
 
 
@@ -162,14 +162,28 @@ function makeTrackerProfile(tracker, trackerObject, inferences, location){
       let domainList = [];
       let relatedPages = [];
       for (let i=0; i<trackerObject[j].pages.length; i++){
-        
         let domainName = trackerObject[j].pages[i].domain;
+        let pageName = trackerObject[j].pages[i].title;
         if (!domainList.includes(domainName)) {
           domainList.push(domainName);
-          listStr += '<li class="list-group-item">' + domainName +
-            '</li>';
+          relatedPages.push([pageName]);
+        } else{
+          let pos = domainList.indexOf(domainName);
+          if (!relatedPages[pos].includes(pageName)){
+            relatedPages[pos].push(trackerObject[j].pages[i].title);
+          }
         }
       }
+      for (let i=0; i<domainList.length; i++){
+        listStr += '<li class="list-group-item">' + domainList[i] + '<br>';
+        for (let k=0; k<relatedPages[i].length; k++){
+          listStr += '<div class="p-pages">'+ relatedPages[i][k] + "<br></div>";
+        }
+        listStr+='</li>';
+      }
+      console.log(domainList);
+      console.log(relatedPages);
+
       listStr += '<br></ul>';
       $('#' + cardblock).append(textStr + listStr);
     }
