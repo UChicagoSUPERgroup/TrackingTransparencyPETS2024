@@ -4,8 +4,10 @@ function saveOptions(e) {
   let popupCondition = document.querySelector("#popupCondition").value;
   let infopageCondition = document.querySelector("#infopageCondition").value;
   let inferencingCondition = document.querySelector("#inferencingCondition").value;
+  let overlayCondition = document.querySelector("#overlayCondition").value;
 
-  browser.storage.local.set({popupCondition, infopageCondition, inferencingCondition});
+
+  browser.storage.local.set({popupCondition, infopageCondition, inferencingCondition, overlayCondition});
 
 
   switch (popupCondition) {
@@ -25,13 +27,16 @@ function saveOptions(e) {
 async function restoreOptions() {
 
   const popupCondition = await browser.storage.local.get("popupCondition");
-  const infopageCondition = await browser.storage.local.get("infopageCondition");
-  const inferencingCondition = await browser.storage.local.get("inferencingCondition");
-
-
   document.querySelector("#popupCondition").value = popupCondition.popupCondition;
+
+  const infopageCondition = await browser.storage.local.get("infopageCondition");
   document.querySelector("#infopageCondition").value = infopageCondition.infopageCondition;
+
+  const inferencingCondition = await browser.storage.local.get("inferencingCondition");
   document.querySelector("#inferencingCondition").value = inferencingCondition.inferencingCondition;
+
+  const overlayCondition = await browser.storage.local.get("overlayCondition");
+  document.querySelector("#overlayCondition").value = overlayCondition.overlayCondition;
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);

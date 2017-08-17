@@ -5,6 +5,12 @@ function sleep(ms) {
 }
 
 async function injectOverlay() {
+  const q = await browser.storage.local.get("overlayCondition");
+
+  if (q.overlayCondition == "none") {
+    return;
+  }
+
   var overlay = document.createElement("div");
   // var p = document.createElement("p");
   // overlay.appendChild(p);

@@ -5,19 +5,21 @@
 const isUserstudy = false;
 
 async function setDefaultOptions() {
-  let popupCondition, infopageCondition, inferencingCondition;
+  let popupCondition, infopageCondition, inferencingCondition, overlayCondition;
 
   if (!isUserstudy) {
     popupCondition = "full";
     infopageCondition = "full";
     inferencingCondition = "full";
+    overlayCondition = "full";
   } else {
     popupCondition = "none";
     infopageCondition = "none";
     inferencingCondition = "none";
+    overlayCondition = "none";
   }
 
-  browser.storage.local.set({popupCondition, infopageCondition, inferencingCondition});
+  browser.storage.local.set({popupCondition, infopageCondition, inferencingCondition, overlayCondition});
 
 
   switch (popupCondition) {
