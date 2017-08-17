@@ -10,14 +10,12 @@
         <script src="../lib/bootstrap.min.js"></script>
         <script src="infopage.js"></script>
     </head>
-  <body>
+    <body>
 
-
-
-  <div class="container-fluid">
-    <div class="row">
-      <nav class="col-sm-3 col-md-2 d-none d-sm-block sidebar">
-        <ul class="nav nav-tabs flex-column">
+      <div class="container-fluid">
+        <div class="row">
+          <nav class="col-sm-3 col-md-2 d-none d-sm-block sidebar">
+            <ul class="nav nav-tabs flex-column">
             <div class="nav-title">Tracking</div>
           <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#who-is-tracking" role="tab" id="myTab">
@@ -59,12 +57,11 @@
       <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
         <h1>Tracking Transparency Dashboard</h1>
           <div class="tab-content">
-
             <div class="tab-pane fade show active" id="home" role="tabpanel">
               <div class="card">
                 <img src="../icons/super.svg" hspace="300">
               </div>
-            </div>
+          </div>
 
             <div class="tab-pane fade" id="who-is-tracking" role="tabpanel">
               <div class="card">
@@ -73,6 +70,12 @@
                   <h6 class="card-title">These are your most frequently encountered trackers</h6>
                     <div id="accordion" role="tablist" aria-multiselectable="true">
                       <div id="frequentTrackerList"></div>
+                    </div>
+                </div>
+                <div class="card-block">
+                  <h6 class="card-title">These are all the trackers you've encountered since installing the extension</h6>
+                    <div id="accordion" role="tablist" aria-multiselectable="true">
+                      <div id="allTrackerList"></div>
                     </div>
                 </div>
               </div>
@@ -90,7 +93,7 @@
                 <div class="card-block">
                 </div>
               </div>
-            </div>
+          </div>
 
             <div class="tab-pane fade" id="what-inferences" role="tabpanel">
               <div class="card">
@@ -102,7 +105,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+          </div>
 
             <div class="tab-pane fade" id="how-to-use" role="tabpanel">
               <div class="card">
@@ -134,19 +137,10 @@
                 </div>
               </div>
             </div>
+
           </div>
-
-      </main>
+        </main>
+      </div>
     </div>
-  </div>
-
-
-
-
-
-
-
-    <div id="status"></div>
-    <img id="image-result" hidden>
   </body>
 </html>

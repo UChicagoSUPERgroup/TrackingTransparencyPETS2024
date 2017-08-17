@@ -32,30 +32,30 @@ async function onReady() {
   //get the top 10 trackers and set up accordion lists on two pages
   tracker_query = await queryDatabase("get_top_trackers", {count: 10});
   for (let i=0; i < tracker_query.length; i++){
-    makeTrackerAccordion(cleanName(tracker_query[i]), "frequentTrackerList");
-    makeTrackerAccordion(cleanName(tracker_query[i]), "frequentTrackerListInferencing");
+    makeTrackerAccordion(tracker_query[i], "frequentTrackerList");
+    makeTrackerAccordion(tracker_query[i], "frequentTrackerListInferencing");
   }
+  //set up list of all trackers
+  let allTrackers = await queryDatabase("get_trackers", {});
+  makeAllTrackerList(allTrackers);
 
 
-  //fill in the accordion lists with trackers and inferences
+  //fill in the accordion lists with trackers and trackers + inferences
   let tracker_detailed_queries = [];
   let tracker_list_queries = [];
   for (let i=0; i < tracker_query.length; i++){
-      let args = {tracker: tracker_query[i], inferenceCount: 3, pageCount: 20};
+      let args = {tracker: tracker_query[i], inferenceCount: 3, pageCount: 15};
       tracker_detailed_queries[i] = await queryDatabase("get_info_about_tracker", args)
-      makeTrackerProfile(cleanName(tracker_query[i]),
+      makeTrackerProfile(tracker_query[i],
         tracker_detailed_queries[i], true, "frequentTrackerListInferencing");
   }
-  query = await queryDatabase("get_top_trackers", {count: 20});
-  query1 = await queryDatabase("get_trackers", {});
-  console.log(query);
-  console.log(query1);
   for (let i=0; i < tracker_query.length; i++){
       args = {tracker: tracker_query[i], count: 20}
       tracker_list_queries[i] = await queryDatabase("get_domains_by_tracker", args);
-      makeTrackerProfile(cleanName(tracker_query[i]),
+      makeTrackerProfile(tracker_query[i],
         tracker_list_queries[i], false, "frequentTrackerList");
   }
+  console.log(tracker_detailed_queries);
 
 
 
@@ -95,7 +95,11 @@ document.addEventListener("click", (e) => {
 });
 
 
+
+//we need to 'clean' tracker names before we use them inside html ids because
+// trackers can have periods or spaces in their names which mess things up
 function cleanName(trackerName){
+  trackerName= trackerName.split(" ").join("");
   if (trackerName.includes(".")){
     return trackerName.split(".")[0];
   }
@@ -111,7 +115,8 @@ console.log(cleanName("google.analytics.com"));
 
 //takes in the name of a tracker and creates a new card inside the accordion on
 //who is tracking me page with a header and block
-function makeTrackerAccordion(trackerName, location){
+function makeTrackerAccordion(tracker, location){
+  let trackerName = cleanName(tracker);
   let heading = 'heading-' + location + "-" + trackerName;
   let collapse = 'collapse-' + location + "-" +  trackerName;
   let card = 'card-' + location + "-" +  trackerName;
@@ -126,38 +131,66 @@ function makeTrackerAccordion(trackerName, location){
   //include the labeled header
   let htmlheader = '<h6><a data-toggle="collapse" data-parent="#accordion"';
   htmlheader += ' href="#' + collapse + '" aria-expanded="true" aria-controls="' + collapse +'">';
-  htmlheader += trackerName + '</a></h6>';
+  htmlheader += tracker + '</a></h6>';
   $('#' + heading).html(htmlheader);
   //include the card block body elements
   let htmlBody = '<div class="card-block" id="'+ cardblock +'"></div>';
   $('#' + collapse).html(htmlBody);
 
-  //$('#' + cardblock).html(trackerName + " was present on x% of the pages you visited today.");
+}
+
+function makeAllTrackerList(trackerList){
+  listStr = '<ul class="list-group list-group-flush">';
+  for (let i=0; i<trackerList.length; i++){
+    listStr += '<li class="list-group-item">' + trackerList[i] + '</li>';
+  }
+  listStr += '</ul>';
+  $('#allTrackerList').html(listStr);
 }
 
 //makes a tracker profile of name, inference and some pages
-function makeTrackerProfile(trackerName, trackerObject, inferences, location){
+function makeTrackerProfile(tracker, trackerObject, inferences, location){
+  let trackerName = cleanName(tracker);
   let cardblock  = 'cardblock-' + location + "-" +  trackerName;
   let textStr, listStr;
+  //show trackers with inferences and pages?
   if (inferences){
     for (let j=0; j<trackerObject.length; j++){
-      textStr = trackerName + " has likely concluded that you are interested in <b>" +
+      textStr = tracker + " has likely concluded that you are interested in <b>" +
         trackerObject[j].inference.toLowerCase() + "</b> based on your visits to these sites:";
       listStr = '<ul class="list-group list-group-flush">';
       let domainList = [];
+      let relatedPages = [];
       for (let i=0; i<trackerObject[j].pages.length; i++){
         let domainName = trackerObject[j].pages[i].domain;
+        let pageName = trackerObject[j].pages[i].title;
         if (!domainList.includes(domainName)) {
           domainList.push(domainName);
-          listStr += '<li class="list-group-item">' + domainName +
-            '</li>';
+          relatedPages.push([pageName]);
+        } else{
+          let pos = domainList.indexOf(domainName);
+          if (!relatedPages[pos].includes(pageName)){
+            relatedPages[pos].push(trackerObject[j].pages[i].title);
+          }
         }
       }
+      for (let i=0; i<domainList.length; i++){
+        listStr += '<li class="list-group-item">' + domainList[i] + '<br>';
+        for (let k=0; k<relatedPages[i].length; k++){
+          listStr += '<div class="p-pages">'+ relatedPages[i][k] + "<br></div>";
+        }
+        listStr+='</li>';
+      }
+      console.log(domainList);
+      console.log(relatedPages);
+
       listStr += '<br></ul>';
       $('#' + cardblock).append(textStr + listStr);
     }
-  } else {
-    textStr = "There were " + trackerName + " trackers on these sites which you've visited:";
+  }
+  //shows all trackers but no inferences
+  else {
+    textStr = "There were " + tracker + " trackers on these sites which you've visited:";
     listStr = '<ul class="list-group list-group-flush">';
     let domainList = [];
     for (let i = 0; i<trackerObject.length; i++){
