@@ -36,12 +36,10 @@
         {
             "matches": ["<all_urls>"],
             "css": [
-                "lib/boundary/boundary.css",
                 "stylesheets/overlay.css"
             ],
             "js": [
-                "lib/browser-polyfill.min.js", 
-                "lib/boundary/boundary.js",
+                "lib/browser-polyfill.min.js",
                 "dist/overlay_cs.js",
                 "dist/inferencing_cs.js"
             ],
@@ -54,8 +52,6 @@
         "browser_style": true
     },
     "web_accessible_resources": [
-        "lib/boundary/boundary.css",
-        "stylesheets/overlay-inner.css"
     ],
     "icons": {
         "128": "icons/super-128.png",

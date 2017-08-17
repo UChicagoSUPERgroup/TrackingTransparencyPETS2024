@@ -1,11 +1,15 @@
 /* id must not conflict with anything any web page author might choose */
 #tt_overlay_64f9de {
+	all: initial;
+	z-index: 10000;
 	position: fixed;
 	bottom: 20px;
 	right: 20px;
 	width: 100px;
 	height:100px;
+    padding: 10px;
 	border: 1px solid black;
 	border-radius: 5px;
-	background: white;
+	background-color: white;
+	font: 2em "Open Sans", sans-serif;
 }

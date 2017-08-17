@@ -1,23 +1,19 @@
-import $ from "jquery";
-
 /* OVERLAY */
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function onReady() {
-  var overlay = Boundary.createBox("tt_overlay_64f9de");
-  await sleep(200);
-  Boundary.loadBoxCSS("#tt_overlay_64f9de", browser.extension.getURL('stylesheets/overlay-inner.css'));
+var overlay = document.createElement("div");
+var p = document.createElement("p");
+overlay.appendChild(p);
+overlay.id = "tt_overlay_64f9de";
 
-  Boundary.rewriteBox("#tt_overlay_64f9de", "<div id='message'>Hi there!</div>");
+var line1 = document.createTextNode("3 third-parties");
+var line2 = document.createTextNode("25 pages");
 
-  // Boundary.appendToBox("#overlay", "<div><button class='button'>Click me first!</button></div>");
-	// /* add some silly interaction to box one */
-	// Boundary.findElemInBox(".button", "#overlay").click(function() {
-	// 	Boundary.appendToElemInBox("#message", "#yourBoxOneID", "<br>Now click on the second button.");
-  // });
-}
+p.appendChild(line1);
+p.appendChild(document.createElement('br'));
+p.appendChild(line2);
 
-$(document).ready(onReady());
+document.body.appendChild(overlay);
