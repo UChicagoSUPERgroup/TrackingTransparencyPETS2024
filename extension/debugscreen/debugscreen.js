@@ -17,16 +17,23 @@ port.onMessage.addListener(m => {
 
 async function saveOptions(e) {
   e.preventDefault();
+  let select = document.getElementById("queryName");
+  let queryName = select.options[select.selectedIndex].text;
 
-  let queryName = document.querySelector("#queryName").value;
-  let queryArgs = document.querySelector("#queryArgs").value;
-  let argsObject = JSON.parse(queryArgs);
+  let argsObject = {
+    domain: document.querySelector("#domain").value,
+    tracker: document.querySelector("#tracker").value,
+    inference: document.querySelector("#inference").value,
+    count: +document.querySelector("#count").value,
+    inferenceCount: +document.querySelector("#inferenceCount").value,
+    pageCount: +document.querySelector("#pageCount").value,
+  }
   console.log(queryName, argsObject);
 
   let query = await queryDatabase(queryName, argsObject);
   console.log(query);
 
-  document.getElementById("queryResult").textContent = query;
+  document.getElementById("queryResult").textContent = JSON.stringify(query, null, 4);
 }
 
 document.querySelector("form").addEventListener("submit", saveOptions);
