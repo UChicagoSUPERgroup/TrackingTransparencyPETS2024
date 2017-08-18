@@ -69,7 +69,7 @@ async function messageListener(m) {
       })
 
       let res = await queryPromise;
-      portFromInfopage.postMessage(res);
+      portFromInfopage.postMessage(JSON.stringify(res));
     }
   }
 

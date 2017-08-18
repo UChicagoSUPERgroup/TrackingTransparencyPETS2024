@@ -6,6 +6,7 @@ var query;
 let queryId = 0;
 
 port.onMessage.addListener(m => {
+  m = JSON.parse(m);
   switch (m.type) {
     case "database_query_response":
       // resolve pending query promise
@@ -69,36 +70,3 @@ document.addEventListener("click", (e) => {
     }
   }
 });
-
-
-
-function makeTrackerAccordion(trackerName){
-  let heading = 'heading-' + trackerName;
-  let collapse = 'collapse-' + trackerName;
-
-  let htmlStr = '<div class="card"><div class="card-header" role="tab" id="';
-  htmlStr += heading + '">';
-  htmlStr += '<h6><a data-toggle="collapse" data-parent="#accordion"';
-  htmlStr += ' href="#' + collapse + '" aria-expanded="true" aria-controls="' + collapse +'">';
-  htmlStr += trackerName + '</a></h6></div>';
-
-  htmlStr += '<div id="' + collapse + '" class="collapse" role="tabpanel" aria-labelledby="';
-  htmlStr += heading + '">';
-
-  htmlStr += '<div class="card-block">' + trackerName;
-  htmlStr += '</div>';
-
-
-
-  htmlStr+= '</div></div>';
-  console.log(htmlStr);
-
-
-
-
-
-
-
-  return htmlStr;
-
-}

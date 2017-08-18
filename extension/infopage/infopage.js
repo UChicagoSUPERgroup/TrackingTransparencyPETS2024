@@ -10,6 +10,7 @@ var query;
 let queryId = 0;
 
 port.onMessage.addListener(m => {
+  m = JSON.parse(m);
   switch (m.type) {
     case "database_query_response":
       // resolve pending query promise
