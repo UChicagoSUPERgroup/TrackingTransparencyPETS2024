@@ -11,6 +11,8 @@ async function injectOverlay() {
     return;
   }
 
+  await sleep(2000);
+
   var overlay = document.createElement("div");
 
   // var p = document.createElement("p");

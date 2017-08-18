@@ -12,7 +12,14 @@
 	border-radius: 5px;
 	background-color: #D6D6CE;
 	opacity: 0.9;
+	animation: fadein 0.5s;
 }
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 0.9; }
+}
+
 
 #trackingtransparency_overlay p {
 	font: 10pt sans-serif;
