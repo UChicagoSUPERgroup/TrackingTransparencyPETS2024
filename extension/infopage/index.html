@@ -11,48 +11,51 @@
         <script src="infopage.js"></script>
     </head>
     <body>
-
       <div class="container-fluid">
         <div class="row">
           <nav class="col-sm-3 col-md-2 d-none d-sm-block sidebar">
             <ul class="nav nav-tabs flex-column">
-            <div class="nav-title">Tracking</div>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#who-is-tracking" role="tab" id="myTab">
-              Who is tracking me?
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#where-are-they" role="tab">
-              Where are the trackers?
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#how-are-they" role="tab">
-              How are they tracking me?
-            </a>
-          </li>
+              <div style="text-align:center;">
+                <img src="../icons/super.svg" width="100" align="center">
+              </div>
+              <br>
+              <div class="nav-title">Tracking</div>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#who-is-tracking" role="tab" id="myTab">
+                  Who is tracking me?
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#where-are-they" role="tab">
+                  Where are the trackers?
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#how-are-they" role="tab">
+                  How are they tracking me?
+                </a>
+              </li>
 
-          <div class="nav-title">Inferencing</div>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#what-inferences" role="tab">
-              What might companies have inferred?
-            </a>
-          </li>
+              <div class="nav-title">Inferencing</div>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#what-inferences" role="tab">
+                  What might companies have inferred?
+                </a>
+              </li>
 
-          <div class="nav-title">About</div>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#how-to-use" role="tab">
-              How do I use this extension?
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#supergroup" role="tab">
-              What is the SUPERgroup?
-            </a>
-          </li>
-        </ul>
-      </nav>
+              <div class="nav-title">About</div>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#how-to-use" role="tab">
+                  How do I use this extension?
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#supergroup" role="tab">
+                  What is the SUPERgroup?
+                </a>
+              </li>
+            </ul>
+          </nav>
 
       <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
         <h1>Tracking Transparency Dashboard</h1>
@@ -67,16 +70,19 @@
               <div class="card">
                 <h3 class="card-header">Who is tracking me?</h3>
                 <div class="card-block">
-                  <h6 class="card-title">These are your most frequently encountered trackers</h6>
-                    <div id="accordion" role="tablist" aria-multiselectable="true">
-                      <div id="frequentTrackerList"></div>
-                    </div>
-                </div>
-                <div class="card-block">
-                  <h6 class="card-title">These are all the trackers you've encountered since installing the extension</h6>
-                    <div id="accordion" role="tablist" aria-multiselectable="true">
-                      <div id="allTrackerList"></div>
-                    </div>
+                  <button type="button" class="btn btn-block btn-primary"
+                    data-toggle="collapse" data-target="#who-is-tracking-accordion">
+                    See your most <b>frequently</b> encountered trackers
+                  </button><br>
+                  <div class="collapse" id="who-is-tracking-accordion" role="tablist">
+                    <div id="frequentTrackerList"></div>
+                  </div>
+                  <br>
+                  <button type="button" class="btn btn-block btn-primary"
+                    data-toggle="collapse" data-target="#allTrackerList">
+                    See <b>all</b> the trackers you've encountered
+                  </button><br>
+                  <div class="collapse" id="allTrackerList" ></div>
                 </div>
               </div>
             </div>
@@ -84,6 +90,8 @@
             <div class="tab-pane fade" id="where-are-they" role="tabpanel">
               <div class="card">
                 <h3 class="card-header">Where are the trackers?</h3>
+                <div class="card-block">
+                </div>
               </div>
             </div>
 
@@ -100,7 +108,7 @@
                 <h3 class="card-header">What might companies have inferred?</h3>
                 <div class="card-block">
                   <h6 class="card-title">These are your most frequently encountered trackers</h6>
-                  <div id="accordion" role="tablist" aria-multiselectable="true">
+                  <div id="what-inferences-accordion" role="tablist">
                     <div id="frequentTrackerListInferencing"></div>
                   </div>
                 </div>
@@ -134,10 +142,10 @@
                        at the University of Chicago.</p>
                   <p>This extension was created by the SUPERgroup Tracking Transparency team of Euirim Choi,
                     Claire Dolin, Aaron Goldman, Chang Min Hahn, Sixiong Shan, and Ben Weinshel. </p>
+                  <img src="../icons/super.svg" hspace="300">
                 </div>
               </div>
             </div>
-
           </div>
         </main>
       </div>
