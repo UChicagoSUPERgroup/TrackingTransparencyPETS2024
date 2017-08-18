@@ -28,8 +28,7 @@
         "scripts": [
             "lib/browser-polyfill.min.js",
             "dist/userstudy.js",
-            "dist/background.js",
-            "dist/popup_connector.js"
+            "dist/background.js"
         ]
     },
     "content_scripts": [
