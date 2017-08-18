@@ -37,6 +37,7 @@ async function onReady() {
     makeTrackerAccordion(tracker_query[i], "frequentTrackerListInferencing");
   }
   //set up list of all trackers
+
   let allTrackers = await queryDatabase("get_trackers", {});
   makeAllTrackerList(allTrackers);
 
@@ -56,7 +57,13 @@ async function onReady() {
       makeTrackerProfile(tracker_query[i],
         tracker_list_queries[i], false, "frequentTrackerList");
   }
+  //let top_inferences = await queryDatabase("get_inferences",{});
   console.log(tracker_detailed_queries);
+  /*for (let i=0; i<top_inferences.length; i++){
+    let temp = await queryDatabase("get_trackers_by_inference", {inference: top_inferences[i], count: 20});
+    console.log("this is the inference " + top_inferences[i] + "    " +temp);
+  }
+  console.log(top_inferences);*/
 
 
 
@@ -114,8 +121,7 @@ console.log(cleanName("google.analytics.com"));
 
 //These are the functions necessary for updating index.html with newly queried information
 
-//takes in the name of a tracker and creates a new card inside the accordion on
-//who is tracking me page with a header and block
+//takes in the name of a tracker and creates a new card inside the accordion at a location
 function makeTrackerAccordion(tracker, location){
   let trackerName = cleanName(tracker);
   let heading = 'heading-' + location + "-" + trackerName;
@@ -126,12 +132,10 @@ function makeTrackerAccordion(tracker, location){
   //framework of card, card header, and card block
   $("#" + location).append('<div class="card" id="' + card + '"></div>');
   let htmlHStr = '<div class="card-header" role="tab" id="' + heading + '"></div>';
-  let htmlCStr = '<div id="' + collapse + '" class="collapse" role="tabpanel" aria-labelledby="';
-  htmlCStr += heading + '"></div>';
+  let htmlCStr = '<div id="' + collapse + '" class="collapse" role="tabpanel"></div>';
   $('#' + card).html(htmlHStr + htmlCStr);
   //include the labeled header
-  let htmlheader = '<h6><a data-toggle="collapse" data-parent="#accordion"';
-  htmlheader += ' href="#' + collapse + '" aria-expanded="true" aria-controls="' + collapse +'">';
+  let htmlheader = '<h6><a data-toggle="collapse" data-parent="#'+ location +'accordion" href="#' + collapse + '">';
   htmlheader += tracker + '</a></h6>';
   $('#' + heading).html(htmlheader);
   //include the card block body elements
@@ -158,33 +162,16 @@ function makeTrackerProfile(tracker, trackerObject, inferences, location){
   if (inferences){
     for (let j=0; j<trackerObject.length; j++){
       textStr = tracker + " has likely concluded that you are interested in <b>" +
-        trackerObject[j].inference.toLowerCase() + "</b> based on your visits to these sites:";
+        trackerObject[j].inference.toLowerCase() + "</b> based on your visits to these pages:";
       listStr = '<ul class="list-group list-group-flush">';
-      let domainList = [];
-      let relatedPages = [];
+      let pageList = [];
       for (let i=0; i<trackerObject[j].pages.length; i++){
-        let domainName = trackerObject[j].pages[i].domain;
         let pageName = trackerObject[j].pages[i].title;
-        if (!domainList.includes(domainName)) {
-          domainList.push(domainName);
-          relatedPages.push([pageName]);
-        } else{
-          let pos = domainList.indexOf(domainName);
-          if (!relatedPages[pos].includes(pageName)){
-            relatedPages[pos].push(trackerObject[j].pages[i].title);
-          }
+        if (!pageList.includes(pageName)) {
+          pageList.push(pageName);
+          listStr += '<li class="list-group-item p-pages" >' + pageName + '</li>';
         }
       }
-      for (let i=0; i<domainList.length; i++){
-        listStr += '<li class="list-group-item">' + domainList[i] + '<br>';
-        for (let k=0; k<relatedPages[i].length; k++){
-          listStr += '<div class="p-pages">'+ relatedPages[i][k] + "<br></div>";
-        }
-        listStr+='</li>';
-      }
-      console.log(domainList);
-      console.log(relatedPages);
-
       listStr += '<br></ul>';
       $('#' + cardblock).append(textStr + listStr);
     }

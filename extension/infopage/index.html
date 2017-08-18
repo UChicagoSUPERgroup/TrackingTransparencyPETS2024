@@ -11,136 +11,179 @@
         <script src="infopage.js"></script>
     </head>
     <body>
-
       <div class="container-fluid">
         <div class="row">
           <nav class="col-sm-3 col-md-2 d-none d-sm-block sidebar">
             <ul class="nav nav-tabs flex-column">
-            <div class="nav-title">Tracking</div>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#who-is-tracking" role="tab" id="myTab">
-              Who is tracking me?
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#where-are-they" role="tab">
-              Where are the trackers?
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#how-are-they" role="tab">
-              How are they tracking me?
-            </a>
-          </li>
-
-          <div class="nav-title">Inferencing</div>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#what-inferences" role="tab">
-              What might companies have inferred?
-            </a>
-          </li>
-
-          <div class="nav-title">About</div>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#how-to-use" role="tab">
-              How do I use this extension?
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#supergroup" role="tab">
-              What is the SUPERgroup?
-            </a>
-          </li>
-        </ul>
-      </nav>
-
-      <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
-        <h1>Tracking Transparency Dashboard</h1>
-          <div class="tab-content">
-            <div class="tab-pane fade show active" id="home" role="tabpanel">
-              <div class="card">
-                <img src="../icons/super.svg" hspace="300">
+              <div style="text-align:center;">
+                <img src="../icons/super.svg" width="100" align="center">
               </div>
-          </div>
+              <br>
+              <div class="nav-title">Tracking</div>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#who-is-tracking" role="tab" id="myTab">
+                  Who is tracking me?
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#where-are-they" role="tab">
+                  Where are the trackers?
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#how-are-they" role="tab">
+                  How are they tracking me?
+                </a>
+              </li>
 
-            <div class="tab-pane fade" id="who-is-tracking" role="tabpanel">
-              <div class="card">
-                <h3 class="card-header">Who is tracking me?</h3>
-                <div class="card-block">
-                  <h6 class="card-title">These are your most frequently encountered trackers</h6>
-                    <div id="accordion" role="tablist" aria-multiselectable="true">
-                      <div id="frequentTrackerList"></div>
+              <div class="nav-title">Inferencing</div>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#what-inferences" role="tab">
+                  What might companies have inferred?
+                </a>
+              </li>
+
+              <div class="nav-title">About</div>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#how-to-use" role="tab">
+                  How do I use this extension?
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#supergroup" role="tab">
+                  What is the SUPERgroup?
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
+            <h1>Tracking Transparency Dashboard</h1>
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="home" role="tabpanel">
+                    <section class="row text-center placeholders">
+                      <div class="col-6 col-sm-3 placeholder">
+                        <div class="card">
+                          <div class="card-block">
+                            <h3 class="card-title">Special title treatment</h3>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6 col-sm-3 placeholder">
+                        <div class="card">
+                          <div class="card-block">
+                            <h3 class="card-title">Special title treatment</h3>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6 col-sm-3 placeholder">
+                        <div class="card">
+                          <div class="card-block">
+                            <h3 class="card-title">Special title treatment</h3>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6 col-sm-3 placeholder">
+                        <div class="card">
+                          <div class="card-block">
+                            <h3 class="card-title">Special title treatment</h3>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                </div>
+
+              <div class="tab-pane fade" id="who-is-tracking" role="tabpanel">
+                  <div class="card">
+                    <h3 class="card-header">Who is tracking me?</h3>
+                    <div class="card-block">
+                      <button type="button" class="btn btn-block btn-primary"
+                        data-toggle="collapse" data-target="#who-is-tracking-accordion">
+                        See your most <b>frequently</b> encountered trackers
+                      </button><br>
+                      <div class="collapse" id="who-is-tracking-accordion" role="tablist">
+                        <div id="frequentTrackerList"></div>
+                      </div>
+                      <br>
+                      <button type="button" class="btn btn-block btn-primary"
+                        data-toggle="collapse" data-target="#allTrackerList">
+                        See <b>all</b> the trackers you've encountered
+                      </button><br>
+                      <div class="collapse" id="allTrackerList" ></div>
                     </div>
-                </div>
-                <div class="card-block">
-                  <h6 class="card-title">These are all the trackers you've encountered since installing the extension</h6>
-                    <div id="accordion" role="tablist" aria-multiselectable="true">
-                      <div id="allTrackerList"></div>
-                    </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="tab-pane fade" id="where-are-they" role="tabpanel">
-              <div class="card">
-                <h3 class="card-header">Where are the trackers?</h3>
-              </div>
-            </div>
-
-            <div class="tab-pane fade" id="how-are-they" role="tabpanel">
-              <div class="card">
-                <h3 class="card-header">How are they tracking me?</h3>
-                <div class="card-block">
-                </div>
-              </div>
-          </div>
-
-            <div class="tab-pane fade" id="what-inferences" role="tabpanel">
-              <div class="card">
-                <h3 class="card-header">What might companies have inferred?</h3>
-                <div class="card-block">
-                  <h6 class="card-title">These are your most frequently encountered trackers</h6>
-                  <div id="accordion" role="tablist" aria-multiselectable="true">
-                    <div id="frequentTrackerListInferencing"></div>
                   </div>
                 </div>
-              </div>
-          </div>
 
-            <div class="tab-pane fade" id="how-to-use" role="tabpanel">
-              <div class="card">
-                <h3 class="card-header">How do I use this extension?</h3>
-                <div class="card-block">
-                  <p>Just browse the internet as you do normally and come back to your <b>Tracking Transparency
-                    Dashboard</b> to see where you've encountered trackers and learn more about how they
-                    could affect your browsing experience.</p>
+              <div class="tab-pane fade" id="where-are-they" role="tabpanel">
+                  <div class="card">
+                    <h3 class="card-header">Where are the trackers?</h3>
+                    <div class="card-block">
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div class="tab-pane fade" id="supergroup" role="tabpanel">
-              <div class="card">
-                <h3 class="card-header">What is the <a href="https://super.cs.uchicago.edu/">SUPERgroup</a>?</h3>
-                <div class="card-block">
-                  <p>
-                    The SUPERgroup (Security, Usability, &amp; Privacy Education &amp; Research group)
-                     is an interdisciplinary research collective comprising over 20 members at the University
-                     of Chicago. We focus on the intersection between computer security, privacy, and
-                     usability, as evidenced by our recent publications. Our current projects focus on using
-                     data-driven methods to improve online security and privacy, as well as improving
-                     interaction aspects of both the Internet of Things and interactive machine learning
-                     systems.</p>
-                  <p>The SUPERgroup is led by Blase Ur, a Neubauer Family Assistant Professor
-                       at the University of Chicago.</p>
-                  <p>This extension was created by the SUPERgroup Tracking Transparency team of Euirim Choi,
-                    Claire Dolin, Aaron Goldman, Chang Min Hahn, Sixiong Shan, and Ben Weinshel. </p>
+              <div class="tab-pane fade" id="how-are-they" role="tabpanel">
+                  <div class="card">
+                    <h3 class="card-header">How are they tracking me?</h3>
+                    <div class="card-block">
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-          </div>
-        </main>
+              <div class="tab-pane fade" id="what-inferences" role="tabpanel">
+                  <div class="card">
+                    <h3 class="card-header">What might companies have inferred?</h3>
+                    <div class="card-block">
+                      <h6 class="card-title">These are your most frequently encountered trackers</h6>
+                      <div id="what-inferences-accordion" role="tablist">
+                        <div id="frequentTrackerListInferencing"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              <div class="tab-pane fade" id="how-to-use" role="tabpanel">
+                  <div class="card">
+                    <h3 class="card-header">How do I use this extension?</h3>
+                    <div class="card-block">
+                      <p>Just browse the internet as you do normally and come back to your <b>Tracking Transparency
+                        Dashboard</b> to see where you've encountered trackers and learn more about how they
+                        could affect your browsing experience.</p>
+                    </div>
+                  </div>
+                </div>
+
+              <div class="tab-pane fade" id="supergroup" role="tabpanel">
+                  <div class="card">
+                    <h3 class="card-header">What is the <a href="https://super.cs.uchicago.edu/">SUPERgroup</a>?</h3>
+                    <div class="card-block">
+                      <p>
+                        The SUPERgroup (Security, Usability, &amp; Privacy Education &amp; Research group)
+                         is an interdisciplinary research collective comprising over 20 members at the University
+                         of Chicago. We focus on the intersection between computer security, privacy, and
+                         usability, as evidenced by our recent publications. Our current projects focus on using
+                         data-driven methods to improve online security and privacy, as well as improving
+                         interaction aspects of both the Internet of Things and interactive machine learning
+                         systems.</p>
+                      <p>The SUPERgroup is led by Blase Ur, a Neubauer Family Assistant Professor
+                           at the University of Chicago.</p>
+                      <p>This extension was created by the SUPERgroup Tracking Transparency team of Euirim Choi,
+                        Claire Dolin, Aaron Goldman, Chang Min Hahn, Sixiong Shan, and Ben Weinshel. </p>
+                      <img src="../icons/super.svg" hspace="300">
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
   </body>
 </html>
