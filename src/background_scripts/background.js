@@ -53,7 +53,8 @@ async function updateMainFrameInfo(details) {
   if (details.frameId !== 0 || 
       details.tabId === -1  || 
       details.tabId === browser.tabs.TAB_ID_NONE ||
-      !details.url.startsWith("http")) {
+      !details.url.startsWith("http") ||
+      details.url.includes("_/chrome/newtab")) {
     // not a user-initiated page change
     return;
   }
@@ -129,6 +130,7 @@ function recordNewPage(tabId, url, title) {
 function clearTabData(tabId) {
   if (!tabData[tabId]) {
     // console.log("we tried to clear tab data for a tab we didn't have any data about");
+    return;
   }
 
   trackersWorker.postMessage({
