@@ -11,7 +11,7 @@ async function setDefaultOptions() {
     popupCondition = "full";
     infopageCondition = "full";
     inferencingCondition = "full";
-    overlayCondition = "full";
+    overlayCondition = "none";
   } else {
     popupCondition = "none";
     infopageCondition = "none";
