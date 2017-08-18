@@ -179,12 +179,10 @@ async function getPagesByTrackerAndInference(tracker, inference, count) {
     .where(lf.op.and(
       lf.op.and(
         Trackers.pageId.eq(Pages.id),
-        Trackers.tracker.eq(tracker)),
-      lf.op.and(
         Inferences.pageId.eq(Pages.id),
-        Inferences.inference.eq(inference)
-      )
-    ))
+      lf.op.and(
+        Trackers.tracker.eq(tracker)),
+        Inferences.inference.eq(inference))))
     .orderBy(Pages.id, lf.Order.DESC)
     .limit(count)
     .exec();
@@ -208,6 +206,33 @@ async function getDomainsByTracker(tracker, count) {
     .limit(count)
     .exec();
   return query.map(x => x.Pages.domain);
+}
+
+/**
+ * given an tracker and domain, give pages on that domain where tracker is present
+ * 
+ * @param {string} tracker - tracker domain
+ * @param {string} domain - first-party domain
+ * @param {Number} count - number of pages to return
+ * 
+ * @returns {PageInfo[]}
+ * 
+ */
+async function getPagesByTrackerAndDomain(tracker, domain, count) {
+  let ttDb = await primaryDbPromise; // db is defined in datastore.js
+  let query = await ttDb.select()
+    .from(Trackers, Pages, Inferences)
+    .where(lf.op.and(
+      lf.op.and(
+        Trackers.pageId.eq(Pages.id),
+        Inferences.pageId.eq(Pages.id)),
+     lf.op.and(
+        Trackers.tracker.eq(tracker),
+        Pages.domain.eq(domain))))
+    .orderBy(Pages.id, lf.Order.DESC)
+    .limit(count)
+    .exec();
+  return query;
 }
 
 async function getTrackerWithInferencesByDomain(domain) {
@@ -282,11 +307,18 @@ export default async function makeQuery(query, args) {
     case "get_trackers_by_domain":
       res = await getTrackersByDomain(args.domain);
       break;
+    case "get_domains_by_tracker":
+      res = await getDomainsByTracker(args.tracker, args.count);
+      break;   
     case "get_trackers_by_inference_count":
       res = await getTrackersByInferenceCount(args.count);
       break;
-    case "get_domains_by_tracker":
-      res = await getDomainsByTracker(args.tracker, args.count);
+    case "get_pages_by_tracker_and_inference":
+      res = await getPagesByTrackerAndInference(args.tracker, args.inference, args.count);
+      break;
+
+    case "get_pages_by_tracker_and_domain":
+      res = await getPagesByTrackerAndDomain(args.tracker, args.domain, args.count);
       break;
     case "get_tracker_with_inferences_by_domain":
       res = await getTrackerWithInferencesByDomain(args.domain);
