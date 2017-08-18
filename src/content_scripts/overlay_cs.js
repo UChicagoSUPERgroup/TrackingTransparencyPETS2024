@@ -12,12 +12,17 @@ async function injectOverlay() {
   }
 
   var overlay = document.createElement("div");
+
   // var p = document.createElement("p");
   // overlay.appendChild(p);
-  overlay.id = "tt_overlay_64f9de";
-  overlay.innerHTML = '<div style="font: 10pt sans-serif; padding: 2px;">Tracking Transparency is tracking the trackers!</div>';
+  overlay.id = "trackingtransparency_overlay";
+  overlay.innerHTML = `<div class="tt_closebutton"></div>
+  <p>Tracking Transparency is tracking the trackers!</p>
+  `;
 
   document.body.appendChild(overlay);
+  overlay.onclick = (() => {
+    overlay.parentElement.removeChild(overlay);
+  });
 }
-
 injectOverlay();

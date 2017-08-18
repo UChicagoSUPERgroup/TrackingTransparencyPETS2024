@@ -1,14 +1,62 @@
 /* id must not conflict with anything any web page author might choose */
-#tt_overlay_64f9de {
+#trackingtransparency_overlay {
 	all: initial;
 	z-index: 2147483647;
 	position: fixed;
 	bottom: 20px;
 	right: 20px;
 	width: 100px;
-	height:100px;
+	height: 100px;
     padding: 10px;
-	border: 1px solid black;
+	border: 1px solid rgba(0,0,0,0.5);
 	border-radius: 5px;
-	background-color: white;
+	background-color: #D6D6CE;
+	opacity: 0.9;
+}
+
+#trackingtransparency_overlay p {
+	font: 10pt sans-serif;
+}
+
+/* credit: https://jsfiddle.net/elin/67sw12rL/ */
+#trackingtransparency_overlay .tt_closebutton {
+    position: fixed;
+	float: right;
+	bottom: 120px;
+	right: 30px;
+    width: 10px;
+	height: 10px;
+	background-color: #D6D6CE;
+	opacity: 0.9;
+}
+
+#trackingtransparency_overlay .tt_closebutton:before {
+    content: "";
+    position: absolute;
+    display: block;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    height: 0;
+    border-top: 1px solid rgba(0,0,0,0.5);
+    transform: rotate(45deg);
+    transform-origin: center;
+}
+#trackingtransparency_overlay .tt_closebutton:after {
+    content: "";
+    position: absolute;
+    display: block;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    height: 0;
+    border-top: 1px solid rgba(0,0,0,0.5);
+    transform: rotate(-45deg);
+    transform-origin: center;
 }
