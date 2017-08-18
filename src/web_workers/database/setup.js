@@ -40,6 +40,6 @@ primarySchemaBuilder.createTable('Inferences').
       }).
     addIndex('idxThreshold', ['threshold'], false, lf.Order.DESC);
 
-let primaryDbPromise = primarySchemaBuilder.connect();
+let primaryDbPromise = primarySchemaBuilder.connect({storeType: lf.schema.DataStoreType.INDEXED_DB});
 
 export {primaryDbPromise, primarySchemaBuilder};

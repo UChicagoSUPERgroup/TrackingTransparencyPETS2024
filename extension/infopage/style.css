@@ -9,7 +9,7 @@ h1 {
   border-bottom: 1px solid #eee;
 }
 h6 > a , h3 > a {
-	color: maroon;
+	color: #800000;
 }
 h6 > a:hover , h3 > a:hover {
 	color: black;

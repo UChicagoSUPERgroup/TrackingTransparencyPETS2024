@@ -35,6 +35,7 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
+            "exclude_matches": ["*://*/_/chrome/newtab*"],
             "css": [
                 "stylesheets/overlay.css"
             ],
