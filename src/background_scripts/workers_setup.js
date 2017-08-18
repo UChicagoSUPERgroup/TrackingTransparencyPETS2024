@@ -1,11 +1,14 @@
 /* web workers setup */
-import TrackersWorker from "worker-loader?name=trackers.[hash].js!../web_workers/trackers.worker.js";
-import DatabaseWorker from "worker-loader?name=database.[hash].js!../web_workers/database/database.worker.js";
-import InferencingWorker from "worker-loader?name=inferencing.[hash].js!../web_workers/inferencing.worker.js";
+// import TrackersWorker from "worker-loader?name=trackers.[hash].js!../web_workers/trackers.worker.js";
+// import DatabaseWorker from "worker-loader?name=database.[hash].js!../web_workers/database/database.worker.js";
+// import InferencingWorker from "worker-loader?name=inferencing.[hash].js!../web_workers/inferencing.worker.js";
 
-const trackersWorker = new TrackersWorker();
-const databaseWorker = new DatabaseWorker();
-const inferencingWorker = new InferencingWorker();
+// const trackersWorker = new TrackersWorker();
+// const databaseWorker = new DatabaseWorker();
+// const inferencingWorker = new InferencingWorker();
+const trackersWorker = new Worker("/dist/trackers_worker.js");
+const databaseWorker = new Worker("/dist/database_worker.js");
+const inferencingWorker = new Worker("/dist/inferencing_worker.js");
 
 /* connect database worker and trackers worker */
 /* this involves creating a MessageChannel and passing a message with

@@ -8,8 +8,12 @@ module.exports = {
 
     // background scripts
     background: './src/background_scripts/background.js',
-    popup_connector: './src/background_scripts/popup_connector.js',
     userstudy: './src/background_scripts/userstudy.js',
+
+    // workers
+    trackers_worker: './src/web_workers/trackers.worker.js',
+    inferencing_worker: './src/web_workers/inferencing.worker.js',
+    database_worker: './src/web_workers/database/database.worker.js',
 
     // content scripts
     inferencing_cs: './src/content_scripts/inferencing_cs.js',
@@ -22,7 +26,7 @@ module.exports = {
     publicPath: '/dist/',
     filename: '[name].js',
   },
-  // module: {
+  module: {
   //   // // This transpiles all code (except for third party modules) using Babel.
   //   // loaders: [{
   //   //   exclude: /node_modules/,
@@ -30,7 +34,13 @@ module.exports = {
   //   //   // Babel options are in .babelrc
   //   //   loaders: ['babel-loader'],
   //   // }]
-  // },
+    // loaders: [ 
+    //   { 
+    //     test: /\.worker.js$/, 
+    //     loader: 'worker-loader' 
+    //   } 
+    // ]
+  },
   resolve: {
     // This allows you to import modules just like you would in a NodeJS app.
     modules: [
