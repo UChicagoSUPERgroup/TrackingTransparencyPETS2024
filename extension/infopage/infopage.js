@@ -32,17 +32,14 @@ async function onReady() {
 
   //get the top 10 trackers and set up accordion lists on two pages
   tracker_query = await queryDatabase("get_top_trackers", {count: 10});
-  console.log("tracker_query");
-  console.log(tracker_query);
   for (let i=0; i < tracker_query.length; i++){
     makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerList");
     makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerListInferencing");
+    $('.numberOfFrequentTrackers').html(tracker_query.length);
   }
-  //set up list of all trackers
 
+  //set up list of all trackers
   let allTrackers = await queryDatabase("get_trackers", {});
-  console.log("get_trackers");
-  console.log(allTrackers);
   makeAllTrackerList(allTrackers);
 
 
@@ -52,26 +49,15 @@ async function onReady() {
   for (let i=0; i < tracker_query.length; i++){
       let args = {tracker: tracker_query[i].tracker, inferenceCount: 3, pageCount: 15};
       tracker_detailed_queries[i] = await queryDatabase("get_info_about_tracker", args)
-      console.log("get_info_about_tracker");
-      console.log(tracker_detailed_queries[i]);
       makeTrackerProfile(tracker_query[i].tracker,
         tracker_detailed_queries[i], true, "frequentTrackerListInferencing");
   }
   for (let i=0; i < tracker_query.length; i++){
       args = {tracker: tracker_query[i].tracker, count: 20}
       tracker_list_queries[i] = await queryDatabase("get_domains_by_tracker", args);
-      console.log("get_domains_by_tracker");
-      console.log(tracker_list_queries[i]);
       makeTrackerProfile(tracker_query[i].tracker,
         tracker_list_queries[i], false, "frequentTrackerList");
   }
-  //let top_inferences = await queryDatabase("get_inferences",{});
-  console.log(tracker_detailed_queries);
-  /*for (let i=0; i<top_inferences.length; i++){
-    let temp = await queryDatabase("get_trackers_by_inference", {inference: top_inferences[i], count: 20});
-    console.log("this is the inference " + top_inferences[i] + "    " +temp);
-  }
-  console.log(top_inferences);*/
 
 
 
@@ -159,6 +145,7 @@ function makeAllTrackerList(trackerList){
   }
   listStr += '</ul>';
   $('#allTrackerList').html(listStr);
+  $('.numberOfTrackers').html(trackerList.length);
 }
 
 //makes a tracker profile of name, inference and some pages

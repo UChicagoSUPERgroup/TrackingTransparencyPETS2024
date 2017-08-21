@@ -105,9 +105,11 @@
                   <div class="card">
                     <h3 class="card-header">Who is tracking me?</h3>
                     <div class="card-block">
+                      Keeping these buttons as an example of how to use and style buttons
                       <button type="button" class="btn btn-block btn-primary"
                         data-toggle="collapse" data-target="#who-is-tracking-accordion">
-                        See your most <b>frequently</b> encountered trackers
+                        See your <b><span class="numberOfFrequentTrackers"></span></b> most 
+                        <b>frequently</b> encountered trackers
                       </button><br>
                       <div class="collapse" id="who-is-tracking-accordion" role="tablist">
                         <div id="frequentTrackerList"></div>
@@ -115,7 +117,8 @@
                       <br>
                       <button type="button" class="btn btn-block btn-primary"
                         data-toggle="collapse" data-target="#allTrackerList">
-                        See <b>all</b> the trackers you've encountered
+                        See <b>all <span class="numberOfTrackers"></span></b>
+                        trackers you've encountered
                       </button><br>
                       <div class="collapse" id="allTrackerList" ></div>
                     </div>
