@@ -12,7 +12,7 @@ const Pages = primarySchemaBuilder.getSchema().table('Pages');
 
 /**
  * gets all inferences
- * 
+ *
  * @returns {string[]} array of inferences
  */
 async function getTopInferences(count) {
@@ -27,7 +27,7 @@ async function getTopInferences(count) {
 
 /**
  * gets all trackers
- * 
+ *
  * @returns {string[]} array of trackers
  */
 async function getTrackers() {
@@ -42,7 +42,7 @@ async function getTrackers() {
 
 /**
  * gets n most frequently encountered trackers
- * 
+ *
  * @param {Number} n - number of trackers
  * @returns {string[]} array of trackers
  */
@@ -59,7 +59,7 @@ async function getTopTrackers(n) {
 
 /**
  * page visit count by tracker (i.e. TRACKERNAME knows # sites you have visited)
- * 
+ *
  * @param {string} tracker - tracker domain
  * @returns {Number} number of pages where that tracker was present
  */
@@ -77,7 +77,7 @@ async function getPageVisitCountByTracker(tracker) {
 
 /**
  * Inferences by Tracker (i.e. TRACKERNAME has made these inferences about you)
- * 
+ *
  * @param {string} tracker - tracker domain
  * @param {Number} count - how many inferences to give
  * @returns {string[]} array of inferences
@@ -87,7 +87,7 @@ async function getInferencesByTracker(tracker, count) {
   let query = await ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
     .from(Trackers, Inferences)
     .where(lf.op.and(
-      Trackers.pageId.eq(Inferences.pageId), 
+      Trackers.pageId.eq(Inferences.pageId),
       Trackers.tracker.eq(tracker)
     ))
     .groupBy(Inferences.inference)
@@ -99,7 +99,7 @@ async function getInferencesByTracker(tracker, count) {
 
 /**
  * Tracker by inferences (i.e. the following trackers know INFERENCE)
- * 
+ *
  * @param {string} inference
  * @param {Number} count
  * @returns {string[]} array of trackers
@@ -109,7 +109,7 @@ async function getTrackersByInference(inference, count) {
   let query = await ttDb.select(Trackers.tracker)
     .from(Trackers, Inferences)
     .where(lf.op.and(
-      Trackers.pageId.eq(Inferences.pageId), 
+      Trackers.pageId.eq(Inferences.pageId),
       Inferences.inference.eq(inference)
     ))
     .limit(count)
@@ -119,7 +119,7 @@ async function getTrackersByInference(inference, count) {
 
 /**
  * Trackers by domain (the following trackers know that you have been to DOMAIN)
- * 
+ *
  * @param {string} domain - domain
  * @returns {string[]} array of trackers
  */
@@ -128,7 +128,7 @@ async function getTrackersByDomain(domain) {
   let query = await ttDb.select(Trackers.tracker, lf.fn.count(Pages.id))
     .from(Trackers, Pages)
     .where(lf.op.and(
-      Trackers.pageId.eq(Pages.id), 
+      Trackers.pageId.eq(Pages.id),
       Pages.domain.eq(domain)
     ))
     .groupBy(Trackers.tracker)
@@ -139,10 +139,10 @@ async function getTrackersByDomain(domain) {
 }
 
 /**
- * get trackers by inferences count 
- * 
+ * get trackers by inferences count
+ *
  * (e.g. use case: find tracker that has made most inferences about user)
- * 
+ *
  * @param {Number} count - count of trackers
  * @returns {string[]} array of trackers
  */
@@ -169,14 +169,14 @@ async function getTrackersByInferenceCount(count) {
  */
 
 /**
- * given an inference and tracker, find pages where tracker made that inference 
- * 
+ * given an inference and tracker, find pages where tracker made that inference
+ *
  * @param {string} tracker - tracker domain
  * @param {string} inference - inference
  * @param {Number} count - number of pages to return
- * 
+ *
  * @returns {PageInfo[]}
- * 
+ *
  */
 async function getPagesByTrackerAndInference(tracker, inference, count) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
@@ -197,7 +197,7 @@ async function getPagesByTrackerAndInference(tracker, inference, count) {
 
 /**
  * Domain visits by tracker (i.e. TRACKERNAME knows you have been to the following sites)
- * 
+ *
  * @param {string} tracker - tracker domain
  * @returns {string[]} array of domains
  */
@@ -216,13 +216,13 @@ async function getDomainsByTracker(tracker, count) {
 
 /**
  * given an tracker and domain, give pages on that domain where tracker is present
- * 
+ *
  * @param {string} tracker - tracker domain
  * @param {string} domain - first-party domain
  * @param {Number} count - number of pages to return
- * 
+ *
  * @returns {PageInfo[]}
- * 
+ *
  */
 async function getPagesByTrackerAndDomain(tracker, domain, count) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
@@ -261,7 +261,7 @@ async function getTrackerWithInferencesByDomain(domain) {
 /**
  * gets a lot of info about a tracker
  * used for infopage
- * 
+ *
  * @param  {} tracker
  * @param  {} inferenceCount
  * @param  {} pageCount
@@ -274,7 +274,7 @@ async function getInfoAboutTracker(tracker, inferenceCount, pageCount) {
   for (let inference of inferences) {
     inferenceInfo.push({
       inference: inference,
-      pages: await getPagesByTrackerAndInference(tracker, inference, pageCount)
+      pages: await getPagesByTrackerAndInference(tracker, inference.inference, pageCount)
     });
   }
   return inferenceInfo;
@@ -282,7 +282,7 @@ async function getInfoAboutTracker(tracker, inferenceCount, pageCount) {
 
 /**
  * gets domains by how many trackers they have
- * 
+ *
  * @param  {} count
  * @returns {Object}
  */
@@ -300,7 +300,7 @@ async function getTrackerCountByDomain(domain) {
 
 /**
  * gets domains by how many trackers they have
- * 
+ *
  * @param  {} count
  * @returns {Object}
  */
@@ -343,7 +343,7 @@ async function getDomainsByTrackerCount(count) {
 
 /**
  * makes a query given string query name and arguments object
- * 
+ *
  * @param  {string} query - query name
  * @param  {Object} args - query arguments
  */
@@ -373,7 +373,7 @@ export default async function makeQuery(query, args) {
       break;
     case "get_domains_by_tracker":
       res = await getDomainsByTracker(args.tracker, args.count);
-      break;   
+      break;
     case "get_trackers_by_inference_count":
       res = await getTrackersByInferenceCount(args.count);
       break;
@@ -394,6 +394,6 @@ export default async function makeQuery(query, args) {
       res = await getDomainsByTrackerCount(args.count);
       break;
     }
-    
+
   return res;
 }

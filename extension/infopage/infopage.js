@@ -32,13 +32,17 @@ async function onReady() {
 
   //get the top 10 trackers and set up accordion lists on two pages
   tracker_query = await queryDatabase("get_top_trackers", {count: 10});
+  console.log("tracker_query");
+  console.log(tracker_query);
   for (let i=0; i < tracker_query.length; i++){
-    makeTrackerAccordion(tracker_query[i], "frequentTrackerList");
-    makeTrackerAccordion(tracker_query[i], "frequentTrackerListInferencing");
+    makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerList");
+    makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerListInferencing");
   }
   //set up list of all trackers
 
   let allTrackers = await queryDatabase("get_trackers", {});
+  console.log("get_trackers");
+  console.log(allTrackers);
   makeAllTrackerList(allTrackers);
 
 
@@ -46,15 +50,19 @@ async function onReady() {
   let tracker_detailed_queries = [];
   let tracker_list_queries = [];
   for (let i=0; i < tracker_query.length; i++){
-      let args = {tracker: tracker_query[i], inferenceCount: 3, pageCount: 15};
+      let args = {tracker: tracker_query[i].tracker, inferenceCount: 3, pageCount: 15};
       tracker_detailed_queries[i] = await queryDatabase("get_info_about_tracker", args)
-      makeTrackerProfile(tracker_query[i],
+      console.log("get_info_about_tracker");
+      console.log(tracker_detailed_queries[i]);
+      makeTrackerProfile(tracker_query[i].tracker,
         tracker_detailed_queries[i], true, "frequentTrackerListInferencing");
   }
   for (let i=0; i < tracker_query.length; i++){
-      args = {tracker: tracker_query[i], count: 20}
+      args = {tracker: tracker_query[i].tracker, count: 20}
       tracker_list_queries[i] = await queryDatabase("get_domains_by_tracker", args);
-      makeTrackerProfile(tracker_query[i],
+      console.log("get_domains_by_tracker");
+      console.log(tracker_list_queries[i]);
+      makeTrackerProfile(tracker_query[i].tracker,
         tracker_list_queries[i], false, "frequentTrackerList");
   }
   //let top_inferences = await queryDatabase("get_inferences",{});
@@ -147,7 +155,7 @@ function makeTrackerAccordion(tracker, location){
 function makeAllTrackerList(trackerList){
   listStr = '<ul class="list-group list-group-flush">';
   for (let i=0; i<trackerList.length; i++){
-    listStr += '<li class="list-group-item">' + trackerList[i] + '</li>';
+    listStr += '<li class="list-group-item">' + trackerList[i].tracker + '</li>';
   }
   listStr += '</ul>';
   $('#allTrackerList').html(listStr);
@@ -162,7 +170,7 @@ function makeTrackerProfile(tracker, trackerObject, inferences, location){
   if (inferences){
     for (let j=0; j<trackerObject.length; j++){
       textStr = tracker + " has likely concluded that you are interested in <b>" +
-        trackerObject[j].inference.toLowerCase() + "</b> based on your visits to these pages:";
+        trackerObject[j].inference.inference.toLowerCase() + "</b> based on your visits to these pages:";
       listStr = '<ul class="list-group list-group-flush">';
       let pageList = [];
       for (let i=0; i<trackerObject[j].pages.length; i++){
