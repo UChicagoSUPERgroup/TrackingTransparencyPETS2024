@@ -99,3 +99,48 @@ h6 > a:hover , h3 > a:hover {
 	background-color: #642822;
 	border-color: #642822;
 }
+
+
+
+
+
+/* Style the buttons that are used to open and close the accordion panel */
+p.faq-accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    border: 2px solid #eee;
+    border-radius: 0px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+p.faq-accordion.active, p.faq-accordion:hover {
+    background-color: #ddd;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+div.panel {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+p.faq-accordion:after {
+    content: '+'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: #777;
+    float: right;
+    margin-left: 5px;
+}
+
+p.faq-accordion.active:after {
+    content: "-"; /* Unicode character for "minus" sign (-) */
+}
