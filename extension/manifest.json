@@ -8,6 +8,7 @@
         }
     },
     "description": "Provides information about online tracking",
+    "author": "University of Chicago SUPERgroup",
     "permissions": [
         "storage",
         "unlimitedStorage",
@@ -28,9 +29,9 @@
         "scripts": [
             "lib/browser-polyfill.min.js",
             "dist/userstudy.js",
-            "dist/background.js",
-            "dist/popup_connector.js"
-        ]
+            "dist/background.js"
+        ],
+        "persistent": true
     },
     "content_scripts": [
         {

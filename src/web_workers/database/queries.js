@@ -15,10 +15,14 @@ const Pages = primarySchemaBuilder.getSchema().table('Pages');
  * 
  * @returns {string[]} array of inferences
  */
-async function getInferences() {
+async function getTopInferences(count) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(Inferences.inference).from(Inferences).exec(); // orderBy(Inferences.pageId, lf.Order.DESC) to get most recent
-  return query.map(x => x.inference);
+  let query = await ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
+  .from(Inferences)
+  .groupBy(Inferences.inference)
+  .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC)
+  .exec();
+  return query;
 }
 
 /**
@@ -28,12 +32,12 @@ async function getInferences() {
  */
 async function getTrackers() {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(Trackers.tracker)
+  let query = await ttDb.select(Trackers.tracker, lf.fn.count(Trackers.tracker))
     .from(Trackers)
     .groupBy(Trackers.tracker)
     .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
     .exec();
-  return query.map(x => x.tracker);
+  return query;
 }
 
 /**
@@ -44,13 +48,13 @@ async function getTrackers() {
  */
 async function getTopTrackers(n) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(Trackers.tracker)
+  let query = await ttDb.select(Trackers.tracker, lf.fn.count(Trackers.tracker))
     .from(Trackers)
     .groupBy(Trackers.tracker)
     .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
     .limit(n)
     .exec();
-  return query.map(x => x.tracker);
+  return query;
 }
 
 /**
@@ -80,7 +84,7 @@ async function getPageVisitCountByTracker(tracker) {
  */
 async function getInferencesByTracker(tracker, count) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(Inferences.inference)
+  let query = await ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
     .from(Trackers, Inferences)
     .where(lf.op.and(
       Trackers.pageId.eq(Inferences.pageId), 
@@ -90,8 +94,7 @@ async function getInferencesByTracker(tracker, count) {
     .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC)
     .limit(count)
     .exec()
-  let inferences = query.map(x => x.Inferences.inference);
-  return Array.from(new Set(inferences)); //removes duplicates
+  return query.map(x => x.Inferences);
 }
 
 /**
@@ -122,7 +125,7 @@ async function getTrackersByInference(inference, count) {
  */
 async function getTrackersByDomain(domain) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(Trackers.tracker)
+  let query = await ttDb.select(Trackers.tracker, lf.fn.count(Pages.id))
     .from(Trackers, Pages)
     .where(lf.op.and(
       Trackers.pageId.eq(Pages.id), 
@@ -131,7 +134,7 @@ async function getTrackersByDomain(domain) {
     .groupBy(Trackers.tracker)
     .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
     .exec();
-  return query.map(x => x.Trackers.tracker);
+  return query;
   // return Array.from(new Set(trackers)); //removes duplicates
 }
 
@@ -145,13 +148,16 @@ async function getTrackersByDomain(domain) {
  */
 async function getTrackersByInferenceCount(count) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(Trackers.tracker)
-    .from(Trackers, Inferences)
+  let query = await ttDb.select(Trackers.tracker, lf.fn.count(Inferences.inference))
+    .from(Trackers, Inferences, Pages)
+    .where(lf.op.and(
+      Trackers.pageId.eq(Pages.id),
+      Inferences.pageId.eq(Pages.id)))
     .groupBy(Trackers.tracker)
     .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
     .limit(count)
     .exec();
-  return query.map(x => x.Trackers.tracker);
+  return query;
 }
 
 /**
@@ -300,34 +306,36 @@ async function getTrackerCountByDomain(domain) {
  */
 async function getDomainsByTrackerCount(count) {
 
-  // TODO: this function is both inefficent and wrong
+  // TODO: this function is wrong
 
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
-  let domainsq = await ttDb.select(Pages.domain)
-    .from(Pages)
-    .groupBy(Pages.domain)
+  let query = await ttDb.select(Pages.domain, lf.fn.count(Trackers.tracker))
+    .from(Pages, Trackers)
+    .where(Trackers.pageId.eq(Pages.id))
+    .groupBy(Pages.domain, lf.fn.distinct(Trackers.tracker))
     .exec();
+  return query;
   // console.log(domainsq);
 
-  const res = domainsq.map(async x => {
-    const tc = await getTrackerCountByDomain(x.domain);
-    // console.log(tc);
-    return {
-      domain: x.domain,
-      trackerCount: tc
-    }
-  });
-  const ret = await Promise.all(res);
-  ret.sort((y, x) => {
-    if (x.trackerCount < y.trackerCount) {
-      return -1;
-    }
-    if (x.trackerCount > y.trackerCount) {
-      return 1;
-    }
-    return 0;
-  })
-  return ret;
+  // const res = domainsq.map(async x => {
+  //   const tc = await getTrackerCountByDomain(x.domain);
+  //   // console.log(tc);
+  //   return {
+  //     domain: x.domain,
+  //     trackerCount: tc
+  //   }
+  // });
+  // const ret = await Promise.all(res);
+  // ret.sort((y, x) => {
+  //   if (x.trackerCount < y.trackerCount) {
+  //     return -1;
+  //   }
+  //   if (x.trackerCount > y.trackerCount) {
+  //     return 1;
+  //   }
+  //   return 0;
+  // })
+  // return ret;
 }
 
 
@@ -348,8 +356,8 @@ export default async function makeQuery(query, args) {
     case "get_top_trackers":
       res = await getTopTrackers(args.count);
       break;
-    case "get_inferences":
-      res = await getInferences();
+    case "get_top_inferences":
+      res = await getTopInferences(args.count);
       break;
     case "get_page_visit_count_by_tracker":
       res = await getPageVisitCountByTracker(args.tracker, args.count);
