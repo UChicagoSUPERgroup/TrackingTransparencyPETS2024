@@ -231,6 +231,22 @@ async function onContentScriptMessage(message, sender) {
   }
 }
 
+/* OTHER MISCELLANEOUS FUNCTIONS */
+/* ============================= */
+
+if (typeof browser.browserAction.setPopup === "undefined") { 
+    // popups not supported
+    // like firefox for android
+    // so we directly open infopage instead
+    browser.browserAction.onClicked.addListener((tab) => {
+      let infopageData = {
+        active: true,
+        url: "../infopage/index.html"
+        };
+      browser.tabs.create(infopageData);
+    });
+}
+
 
 let pendingDirectQueries = {};
 let directQueryId = 0;
