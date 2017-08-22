@@ -3,7 +3,7 @@ port.postMessage({greeting: "hello from infopage"});
 
 //extension conditions
 var getInferences = false;
-
+var enoughInfo = true;
 
 let pendingQueries = {};
 var query;
@@ -20,73 +20,52 @@ port.onMessage.addListener(m => {
 });
 
 async function onReady() {
-  // let tabs = await browser.tabs.query({active: true, lastFocusedWindow: true})
-  // let title = tabs[0].title;
-  // if (title.length >= 30) {
-  //   title = title.substring(0,30).concat("...");
-  // }
-  // $('#pagetitle').text(title);
-
-  // port.postMessage({ type: "request_info_current_page" });
 
 
   //get the top 10 trackers and set up accordion lists on two pages
-  tracker_query = await queryDatabase("get_top_trackers", {count: 10});
-  for (let i=0; i < tracker_query.length; i++){
-    makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerList");
-    makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerListInferencing");
-    $('.numberOfFrequentTrackers').html(tracker_query.length);
+  if (enoughInfo){
+    tracker_query = await queryDatabase("get_top_trackers", {count: 10});
+    for (let i=0; i < tracker_query.length; i++){
+      makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerList");
+      makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerListInferencing");
+      $('.numberOfFrequentTrackers').html(tracker_query.length);
+    }
+
+    //set up list of all trackers
+    let allTrackers = await queryDatabase("get_trackers", {});
+    console.log(allTrackers);
+    makeAllTrackerList(allTrackers);
+
+
+    //fill in the accordion lists with trackers and trackers + inferences
+    let tracker_detailed_queries = [];
+    let tracker_list_queries = [];
+    for (let i=0; i < tracker_query.length; i++){
+        let args = {tracker: tracker_query[i].tracker, inferenceCount: 3, pageCount: 15};
+        tracker_detailed_queries[i] = await queryDatabase("get_info_about_tracker", args)
+        makeTrackerProfile(tracker_query[i].tracker,
+          tracker_detailed_queries[i], true, "frequentTrackerListInferencing");
+    }
+    for (let i=0; i < tracker_query.length; i++){
+        args = {tracker: tracker_query[i].tracker, count: 20}
+        tracker_list_queries[i] = await queryDatabase("get_domains_by_tracker", args);
+        makeTrackerProfile(tracker_query[i].tracker,
+          tracker_list_queries[i], false, "frequentTrackerList");
+    }
+  } else {
+    //what we do if there isn't enough information (like the extension was just installed)
+    //we haven't set this up yet. idea: have a message on the dashboard which tells the
+    //user to come back later and either we disable all of the navigation links or we put
+    //the same message on every page
   }
 
-  //set up list of all trackers
-  let allTrackers = await queryDatabase("get_trackers", {});
-  makeAllTrackerList(allTrackers);
-
-
-  //fill in the accordion lists with trackers and trackers + inferences
-  let tracker_detailed_queries = [];
-  let tracker_list_queries = [];
-  for (let i=0; i < tracker_query.length; i++){
-      let args = {tracker: tracker_query[i].tracker, inferenceCount: 3, pageCount: 15};
-      tracker_detailed_queries[i] = await queryDatabase("get_info_about_tracker", args)
-      makeTrackerProfile(tracker_query[i].tracker,
-        tracker_detailed_queries[i], true, "frequentTrackerListInferencing");
-  }
-  for (let i=0; i < tracker_query.length; i++){
-      args = {tracker: tracker_query[i].tracker, count: 20}
-      tracker_list_queries[i] = await queryDatabase("get_domains_by_tracker", args);
-      makeTrackerProfile(tracker_query[i].tracker,
-        tracker_list_queries[i], false, "frequentTrackerList");
-  }
-
-
-
-}
-
-async function queryDatabase(query,args) {
-  let queryPromise = new Promise((resolve, reject) => {
-    pendingQueries[queryId] = resolve;
-  })
-  // pendingQueries[queryId].promise = queryPromise;
-
-  port.postMessage({
-    type: "database_query",
-    src: "infopage",
-    id: queryId,
-    query: query,
-    args: args
-  });
-  queryId++;
-
-  let res = await queryPromise;
-  return res;
 }
 
 $('document').ready(onReady());
 
+//this is not used, but could be useful for loading content selectively
 document.addEventListener("click", (e) => {
   const clickTarget = e.target
-
   if (clickTarget.classList[0]=="nav-link" && clickTarget.href.includes("#")) {
     const chosenContent = clickTarget.href.split("#")[1];
     switch(chosenContent) {
@@ -113,6 +92,11 @@ console.log(cleanName("facebook"));
 console.log(cleanName("google.analytics.com"));
 */
 
+
+
+
+
+
 //These are the functions necessary for updating index.html with newly queried information
 
 //takes in the name of a tracker and creates a new card inside the accordion at a location
@@ -124,29 +108,42 @@ function makeTrackerAccordion(tracker, location){
   let cardblock  = 'cardblock-' + location + "-" +  trackerName;
 
   //framework of card, card header, and card block
-  $("#" + location).append('<div class="card" id="' + card + '"></div>');
-  let htmlHStr = '<div class="card-header" role="tab" id="' + heading + '"></div>';
-  let htmlCStr = '<div id="' + collapse + '" class="collapse" role="tabpanel"></div>';
-  $('#' + card).html(htmlHStr + htmlCStr);
+  $("#" + location).append('<div id="' + card + '"></div>');
+  let cardDiv = $("#" + card).addClass("card");
+  cardDiv.append('<div id="' + heading + '"></div>');
+  $("#" + heading).addClass("card-header").attr("role","tab");
+  cardDiv.append('<div id="' + collapse + '"></div>')
+  $("#" + collapse).addClass("collapse").attr("role","tabpanel");
+
   //include the labeled header
-  let htmlheader = '<h6><a data-toggle="collapse" data-parent="#'+ location +'accordion" href="#' + collapse + '">';
-  htmlheader += tracker + '</a></h6>';
-  $('#' + heading).html(htmlheader);
+  let headerContent = document.createElement("h6");
+  headerContent.append(document.createElement("a"));
+  $("#" + heading).append(headerContent);
+  let linkContent = $("#" + heading).children("h6").children("a");
+  linkContent.attr("data-toggle","collapse")
+                .attr("data-parent","#"+ location +'accordion')
+                .attr("href", "#"+ collapse)
+                .text(tracker);
+
   //include the card block body elements
-  let htmlBody = '<div class="card-block" id="'+ cardblock +'"></div>';
-  $('#' + collapse).html(htmlBody);
+  $("#" + collapse).append('<div id="'+ cardblock +'"></div>');
+  $("#" + cardblock).addClass("card-block");
 
 }
 
+
+//makes a list of all trackers along with the number of times they've been seen
 function makeAllTrackerList(trackerList){
-  listStr = '<ul class="list-group list-group-flush">';
+  $('#allTrackerList').append(document.createElement("ul"));
+  let listObj = $('#allTrackerList').children("ul");
+  listObj.addClass("list-group list-group-flush");
   for (let i=0; i<trackerList.length; i++){
-    listStr += '<li class="list-group-item">' + trackerList[i].tracker + '</li>';
+    listObj.append('<li class="list-group-item">' + trackerList[i].tracker + '</li>');
   }
-  listStr += '</ul>';
-  $('#allTrackerList').html(listStr);
   $('.numberOfTrackers').html(trackerList.length);
 }
+
+
 
 //makes a tracker profile of name, inference and some pages
 function makeTrackerProfile(tracker, trackerObject, inferences, location){
@@ -158,33 +155,55 @@ function makeTrackerProfile(tracker, trackerObject, inferences, location){
     for (let j=0; j<trackerObject.length; j++){
       textStr = tracker + " has likely concluded that you are interested in <b>" +
         trackerObject[j].inference.inference.toLowerCase() + "</b> based on your visits to these pages:";
-      listStr = '<ul class="list-group list-group-flush">';
+      $('#' + cardblock).append(textStr);
+      $('#' + cardblock).append(document.createElement("ul"));
+      let listObj = $('#' + cardblock).children(":last-child");
+      listObj.addClass("list-group list-group-flush");
       let pageList = [];
       for (let i=0; i<trackerObject[j].pages.length; i++){
         let pageName = trackerObject[j].pages[i].title;
         if (!pageList.includes(pageName)) {
           pageList.push(pageName);
-          listStr += '<li class="list-group-item p-pages" >' + pageName + '</li>';
+          listObj.append('<li class="list-group-item p-pages" >' + pageName + '</li>');
         }
       }
-      listStr += '<br></ul>';
-      $('#' + cardblock).append(textStr + listStr);
+      listObj.append("<br>");
     }
   }
   //shows all trackers but no inferences
   else {
     textStr = "There were " + tracker + " trackers on these sites which you've visited:";
-    listStr = '<ul class="list-group list-group-flush">';
+    $('#' + cardblock).append(textStr);
+    $('#' + cardblock).append(document.createElement("ul"));
+    let listObj = $('#' + cardblock).children(":last-child");
+    listObj.addClass("list-group list-group-flush");
     let domainList = [];
     for (let i = 0; i<trackerObject.length; i++){
       let domainName = trackerObject[i];
       if (!domainList.includes(domainName)) {
         domainList.push(domainName);
-        listStr += '<li class="list-group-item">' + domainName +
-          '</li>';
+        listObj.append('<li class="list-group-item">' + domainName + '</li>');
       }
     }
-    listStr += '</ul>';
-    $('#' + cardblock).html(textStr + listStr);
   }
+}
+
+//the function to make database queries
+async function queryDatabase(query,args) {
+  let queryPromise = new Promise((resolve, reject) => {
+    pendingQueries[queryId] = resolve;
+  })
+  // pendingQueries[queryId].promise = queryPromise;
+
+  port.postMessage({
+    type: "database_query",
+    src: "infopage",
+    id: queryId,
+    query: query,
+    args: args
+  });
+  queryId++;
+
+  let res = await queryPromise;
+  return res;
 }
