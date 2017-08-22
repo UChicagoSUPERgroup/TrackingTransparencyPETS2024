@@ -16,7 +16,9 @@
           <nav class="col-sm-3 col-md-2 d-none d-sm-block sidebar">
             <ul class="nav nav-tabs flex-column">
               <div style="text-align:center;">
-                <img src="../icons/super.svg" width="100" align="center">
+                <a data-toggle="tab" href="#home" role="tab">
+                  <img id="nav-logo" src="../icons/super.svg" width="100" align="center">
+                </a>
               </div>
               <br>
               <!-- These navigation options are TEMPORARY. We are using them to organize the
@@ -26,12 +28,12 @@
               <div class="nav-title">Tracking</div>
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#who-is-tracking" role="tab">
-                  Who are the trackers?
+                  Most frequent trackers
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#where-are-they" role="tab">
-                  Where are the trackers?
+                  Which pages have the most trackers
                 </a>
               </li>
               <li class="nav-item">
@@ -61,12 +63,14 @@
             <h1>Tracking Transparency Dashboard</h1>
             <div class="tab-content">
               <div class="tab-pane fade show active" id="home" role="tabpanel">
+                <!-- we need more ideas for dashboard icons-->
                     <section class="row text-center placeholders">
                       <div class="col-6 col-sm-3 placeholder">
                         <div class="card">
                           <div class="card-block">
-                            <h3 class="card-title">Special title treatment</h3>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <h1 class="card-title"><span class="numberOfTrackers"></h1>
+                            <p class="card-text">unique trackers that you've
+                              encountered</p>
                             <a href="#" class="btn btn-primary">Go somewhere</a>
                           </div>
                         </div>

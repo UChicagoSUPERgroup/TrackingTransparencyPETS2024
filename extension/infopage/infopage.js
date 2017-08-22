@@ -33,7 +33,6 @@ async function onReady() {
 
     //set up list of all trackers
     let allTrackers = await queryDatabase("get_trackers", {});
-    console.log(allTrackers);
     makeAllTrackerList(allTrackers);
 
 
@@ -65,7 +64,7 @@ $('document').ready(onReady());
 
 //this is not used, but could be useful for loading content selectively
 document.addEventListener("click", (e) => {
-  const clickTarget = e.target
+  const clickTarget = e.target;
   if (clickTarget.classList[0]=="nav-link" && clickTarget.href.includes("#")) {
     const chosenContent = clickTarget.href.split("#")[1];
     switch(chosenContent) {
