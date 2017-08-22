@@ -138,7 +138,9 @@ function makeAllTrackerList(trackerList){
   let listObj = $('#allTrackerList').children("ul");
   listObj.addClass("list-group list-group-flush");
   for (let i=0; i<trackerList.length; i++){
-    listObj.append('<li class="list-group-item">' + trackerList[i].tracker + '</li>');
+    let pages = trackerList[i]["COUNT(tracker)"] > 1 ? " pages" : " page";
+    listObj.append('<li class="list-group-item"><b>' + trackerList[i].tracker +
+      "</b> on "+ trackerList[i]["COUNT(tracker)"] + pages +'</li>');
   }
   $('.numberOfTrackers').html(trackerList.length);
 }
