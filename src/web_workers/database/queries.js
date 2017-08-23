@@ -219,6 +219,34 @@ async function getPagesWithNumberOfTrackers() {
   return pages.sort((a,b) => {
     return (b.count) - (a.count);
   });
+}
+
+/**
+ * returns an array of pages in order by the number of trackers hopefully.
+ * doesn't work yet
+ *
+ * @returns {}
+ *
+ */
+async function getDomainsWithNumberOfTrackers() {
+  let domains = [];
+  const query = await getPages();
+
+  const grouped = _.groupBy(query, 'Pages.domain');
+  // const grouped = _.groupBy(groupedDomain, 'Trackers.tracker')
+  for (let domain in grouped) {
+    let trackers = new Set();
+    for (let page of grouped[domain]) {
+      trackers.add(page.Trackers.tracker)
+    }
+    domains.push({
+      domain: domain,
+      trackers: trackers.size
+    });
+  }
+  return domains.sort((a,b) => {
+    return (b.count) - (a.count);
+  });
 
 }
 
@@ -439,6 +467,9 @@ export default async function makeQuery(query, args) {
       break;
     case "get_pages_with_number_of_trackers":
       res = await getPagesWithNumberOfTrackers(args.count);
+      break;
+    case "get_domains_with_number_of_trackers":
+      res = await getDomainsWithNumberOfTrackers(args.count);
       break;
     case "get_pages_by_tracker_and_domain":
       res = await getPagesByTrackerAndDomain(args.tracker, args.domain, args.count);
