@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "build": "webpack",
     "watch": "webpack -w",
-    "start": "web-ext run -s extension/",
+    "start": "web-ext run -s extension/ -u 'about:debugging'",
     "jsdoc": "jsdoc -c jsdoc.conf.json -r -d ./doc/jsdoc/ -R ./README.md ."
   },
   "devDependencies": {
