@@ -211,6 +211,19 @@ async function getPagesWithNumberOfTrackers() {
     return query;
   }
 
+  /**
+   * get the total number of pages
+   *
+   * @returns {Integer} number of page visits
+   */
+  async function getNumberOfPages() {
+    let ttDb = await primaryDbPromise; // db is defined in datastore.js
+    let query = await ttDb.select()
+      .from(Pages)
+      .exec();
+    return query.length;
+  }
+
 /**
  * Domain visits by tracker (i.e. TRACKERNAME knows you have been to the following sites)
  *
@@ -401,6 +414,9 @@ export default async function makeQuery(query, args) {
       break;
     case "get_pages_by_tracker_and_domain":
       res = await getPagesByTrackerAndDomain(args.tracker, args.domain, args.count);
+      break;
+    case "get_number_of_pages":
+      res = await getNumberOfPages();
       break;
     case "get_tracker_with_inferences_by_domain":
       res = await getTrackerWithInferencesByDomain(args.domain);
