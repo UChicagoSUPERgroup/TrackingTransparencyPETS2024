@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "build": "webpack",
     "watch": "webpack -w",
-    "start": "web-ext run -s extension/",
+    "start": "web-ext run -s extension/ -u 'about:debugging'",
     "jsdoc": "jsdoc -c jsdoc.conf.json -r -d ./doc/jsdoc/ -R ./README.md ."
   },
   "devDependencies": {
@@ -37,6 +37,7 @@
     "babel-polyfill": "^6.23.0",
     "babel-runtime": "^6.23.0",
     "jquery": "^3.2.1",
+    "lodash": "^4.17.4",
     "lovefield": "^2.1.12",
     "webextension-polyfill": "^0.1.1"
   }
