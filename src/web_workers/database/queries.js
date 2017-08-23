@@ -365,65 +365,6 @@ async function getInfoAboutTracker(tracker, inferenceCount, pageCount) {
   return inferenceInfo;
 }
 
-/**
- * gets domains by how many trackers they have
- *
- * @param  {} count
- * @returns {Object}
- */
-async function getTrackerCountByDomain(domain) {
-  let ttDb = await primaryDbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(lf.fn.count(Trackers.tracker))
-    .from(Pages, Trackers)
-    .where(lf.op.and(
-      Trackers.pageId.eq(Pages.id),
-      Pages.domain.eq(domain)
-    ))
-    .exec();
-  return query[0].Trackers["COUNT(tracker)"];
-}
-
-/**
- * gets domains by how many trackers they have
- *
- * @param  {} count
- * @returns {Object}
- */
-async function getDomainsByTrackerCount(count) {
-
-  // TODO: this function is wrong
-
-  let ttDb = await primaryDbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(Pages.domain, lf.fn.count(Trackers.tracker))
-    .from(Pages, Trackers)
-    .where(Trackers.pageId.eq(Pages.id))
-    .groupBy(Pages.domain, lf.fn.distinct(Trackers.tracker))
-    .exec();
-  return query;
-  // console.log(domainsq);
-
-  // const res = domainsq.map(async x => {
-  //   const tc = await getTrackerCountByDomain(x.domain);
-  //   // console.log(tc);
-  //   return {
-  //     domain: x.domain,
-  //     trackerCount: tc
-  //   }
-  // });
-  // const ret = await Promise.all(res);
-  // ret.sort((y, x) => {
-  //   if (x.trackerCount < y.trackerCount) {
-  //     return -1;
-  //   }
-  //   if (x.trackerCount > y.trackerCount) {
-  //     return 1;
-  //   }
-  //   return 0;
-  // })
-  // return ret;
-}
-
-
 /* ========= */
 
 /**
@@ -483,10 +424,7 @@ export default async function makeQuery(query, args) {
     case "get_info_about_tracker":
       res = await getInfoAboutTracker(args.tracker, args.inferenceCount, args.pageCount);
       break;
-    case "get_domains_by_tracker_count":
-      res = await getDomainsByTrackerCount(args.count);
-      break;
-    }
+  }
 
   return res;
 }
