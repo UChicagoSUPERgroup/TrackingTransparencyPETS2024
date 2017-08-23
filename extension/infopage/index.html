@@ -9,13 +9,16 @@
         <script src="../lib/popper.min.js"></script>
         <script src="../lib/bootstrap.min.js"></script>
         <script src="infopage.js"></script>
+
     </head>
     <body>
       <div class="container-fluid">
         <div class="row">
           <nav class="col-sm-3 col-md-2 d-none d-sm-block sidebar">
             <ul class="nav nav-tabs flex-column">
-              <div style="text-align:center;">
+              <div class="nav-side-menu">
+                <div class="menu-list">
+
                 <img src="../icons/super.svg" width="100" align="center">
               </div>
               <br>
@@ -54,14 +57,8 @@
                   What is the SUPERgroup?
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#FAQ" role="tab">
-                  FAQ
-                </a>
-              </li>
             </ul>
           </nav>
-
 
           <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
             <h1>Tracking Transparency Dashboard</h1>
@@ -187,62 +184,6 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- The answers to these questions are either incomplete, copy-pasted from previous work, or bad questions. Needs to be refined at a later point. -->
-
-
-
-                <div class="tab-pane fade" id="FAQ" role="tabpanel">
-                    <div class="card">
-                      <h3 class="card-header"> Frequently Asked Questions</h3>
-                      <div class="card-block">
-
-
-                      <p class="faq-accordion"><b> What is Tracking Transparency?</b>
-                      <div class="panel">
-                        <p> Description </p>
-                        </div>
-                      <p class="faq-accordion"><b> Why Tracking Transparency?</b>
-                      <div class="panel">
-                        <p>  Existing tools are not widely used or understood. Tracking Transparency takes a data-driven, personalized approach to privacy awareness to facilitate ease of understanding. </p>
-                      </div>
-
-                      <p class="faq-accordion"><b> How Does Tracking Transparency Work?</b>
-                      <div class="panel">
-                        <p> Augmented Disconnect list. Textrank + HDPLDA </p>
-                      </div>
-                      <p class="faq-accordion"><b> What is a third party tracker?</b>
-                      <div class="panel">
-                        <!-- from https://www.eff.org/privacybadger -->
-                        <p>  On the modern Web, embedded images and code often use cookies and other methods to track your browsing habits — often to display advertisements. The domains that do this are called "third party trackers", and you can read more about how they work <a href="https://www.eff.org/deeplinks/2009/09/online-trackers-and-social-networks">here</a>.</p>
-                      </div>
-                      <p class="faq-accordion"><b> What do you mean by inferencing?</b>
-                      <div class="panel">
-                        <p>  inferences </p>
-                      </div>
-                      <p class="faq-accordion"><b> How are these inferences made?</b>
-                      <div class="panel">
-                        <p> big data, ml, nlp, unknown </p>
-                      </div>
-                      <p class="faq-accordion"><b> What data is collected and how can I access it?</b>
-                      <div class="panel">
-                        <p>  superdata </p>
-                      </div>
-                      <p class="faq-accordion"><b> How does Tracking Transparency make inferences about me?</b>
-                      <div class="panel">
-                        <p>  More specific HDPLDA </p>
-                      </div>
-                      <p class="faq-accordion"><b> So isn't Tracking Transparency tracking me just like any other tracker?</b>
-                      <div class="panel">
-                        <p>  All your information is stored in a client-side database. </p>
-                      </div>
-
-
-                      </div>
-                    </div>
-                  </div>
-
-
             </div>
           </main>
         </div>
