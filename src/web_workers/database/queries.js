@@ -196,6 +196,22 @@ async function getPagesByTrackerAndInference(tracker, inference, count) {
 }
 
 /**
+ * returns an array of pages in order by the number of trackers hopefully.
+ * doesn't work yet
+ *
+ * @returns {PageInfo[]}
+ *
+ */
+async function getPagesWithNumberOfTrackers() {
+    let ttDb = await primaryDbPromise; // db is defined in datastore.js
+    let query = await ttDb.select(lf.fn.count(Pages.domain))
+      .from(Pages)
+      .orderBy(lf.fn.count(Pages.domain), lf.Order.DESC)
+      .exec();
+    return query;
+  }
+
+/**
  * Domain visits by tracker (i.e. TRACKERNAME knows you have been to the following sites)
  *
  * @param {string} tracker - tracker domain
@@ -380,7 +396,9 @@ export default async function makeQuery(query, args) {
     case "get_pages_by_tracker_and_inference":
       res = await getPagesByTrackerAndInference(args.tracker, args.inference, args.count);
       break;
-
+    case "get_pages_with_number_of_trackers":
+      res = await getPagesWithNumberOfTrackers();
+      break;
     case "get_pages_by_tracker_and_domain":
       res = await getPagesByTrackerAndDomain(args.tracker, args.domain, args.count);
       break;
