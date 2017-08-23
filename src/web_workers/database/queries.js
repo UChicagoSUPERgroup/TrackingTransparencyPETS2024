@@ -3,6 +3,8 @@
 import lf from "lovefield";
 import {primaryDbPromise, primarySchemaBuilder} from "setup.js";
 
+import _ from "lodash";
+
 /* QUERIES */
 /* ======= */
 
@@ -199,21 +201,44 @@ async function getPagesByTrackerAndInference(tracker, inference, count) {
  * returns an array of pages in order by the number of trackers hopefully.
  * doesn't work yet
  *
- * @returns {PageInfo[]}
+ * @returns {}
  *
  */
-async function getPagesWithNumberOfTrackers(count) {
+async function getPagesWithNumberOfTrackers() {
+  let pages = [];
+  const query = await getPages();
 
+  const grouped = _.groupBy(query, 'Pages.id');
+  for (let page in grouped) {
+    pages.push({
+      page: (grouped[page])[0].Pages,
+      count: (grouped[page]).length
+    });
+  }
+
+  return pages.sort((a,b) => {
+    return (b.count) - (a.count);
+  });
+
+}
+
+/**
+ * returns an array of pages in order by the number of trackers hopefully.
+ * doesn't work yet
+ *
+ * @returns {Object}
+ *
+ */
+async function getPages() {
     let ttDb = await primaryDbPromise; // db is defined in datastore.js
     let query = await ttDb.select()
-      .from(Trackers, Pages)
+      .from(Pages, Trackers)
       .where(Trackers.pageId.eq(Pages.id))
-      // .groupBy(Trackers.tracker)
-      // .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
-      // .limit(count)
+      .orderBy(Pages.id, lf.Order.ASC)
       .exec();
     return query;
   }
+
 
 /**
  * Domain visits by tracker (i.e. TRACKERNAME knows you have been to the following sites)
