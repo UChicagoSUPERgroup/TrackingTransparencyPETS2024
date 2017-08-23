@@ -139,12 +139,23 @@
                 <div class="card">
                   <h3 class="card-header">Where am I being tracked?</h3>
                   <div class="card-block">
-                    <h5 class="card-title">Sites without trackers</h5>
-                      <ul class="domainList" id="sitesWithNoTrackers">
-                      </ul>
-                    <h5 class="card-title">Sites with the most trackers</h5>
+                    <h4 class="card-title">Sites with the most trackers</h4>
                     <ul class="domainList" id="sitesWithMostTrackers">
                     </ul>
+                    <button type="button" class="btn btn-primary"
+                      data-toggle="collapse" data-target="#see-more-domains-many-trackers">
+                      See all domains with 10 or more trackers
+                    </button>
+                    <br>
+                    <div class="collapse" id="see-more-domains-many-trackers">
+                      <br>
+                      <ul class="domainList" id="sites10trackers">
+                      </ul>
+                    </div>
+                    <br>
+                    <h4 class="card-title">Sites without trackers</h4>
+                      <ul class="domainList" id="sitesWithNoTrackers">
+                      </ul>
                   </div>
                 </div>
                 </div>

@@ -166,6 +166,32 @@ function makeTrackerProfile(tracker, trackerObject, inferences, location){
   }
 }
 
+function makeDomainsByTrackers(domainList){
+  let loc = $("#sitesWithMostTrackers");
+  let i = 0;
+  while (i<5 && i<domainList.length){
+    let domain = domainList[i].domain.split(".");
+    if (domain[0]=="www"){
+      domain.shift();
+    }
+    domain = domain.join(".")
+    loc.append('<li><b>'+domain+ "</b> ("+ domainList[i].trackers + ' trackers)</li>');
+    i++;
+  }
+  loc = $("#sites10trackers");
+  while (domainList[i].trackers>=10 && i<domainList.length){
+    let domain = domainList[i].domain.split(".");
+    if (domain[0]=="www"){
+      domain.shift();
+    }
+    domain = domain.join(".")
+    loc.append('<li><b>'+domain+ "</b> ("+ domainList[i].trackers + ' trackers)</li>');
+    i++;
+  }
+
+
+}
+
 async function runGeneralQueries(){
   //query for the top 10 trackers
   let tracker_query = await queryDatabase("get_top_trackers", {count: 10});
@@ -196,6 +222,11 @@ async function runGeneralQueries(){
       makeTrackerProfile(tracker_query[i].tracker,
         tracker_list_queries[i], false, "frequentTrackerList");
   }
+
+  //query for domains with the most trackers
+  let domainsByNumberOfTrackers = await queryDatabase("get_domains_with_number_of_trackers", {});
+  console.log(domainsByNumberOfTrackers);
+  makeDomainsByTrackers(domainsByNumberOfTrackers);
 
 }
 

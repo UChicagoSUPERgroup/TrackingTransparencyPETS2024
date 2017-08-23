@@ -245,7 +245,7 @@ async function getDomainsWithNumberOfTrackers() {
     });
   }
   return domains.sort((a,b) => {
-    return (b.count) - (a.count);
+    return (b.trackers) - (a.trackers);
   });
 
 }
@@ -469,7 +469,7 @@ export default async function makeQuery(query, args) {
       res = await getPagesWithNumberOfTrackers(args.count);
       break;
     case "get_domains_with_number_of_trackers":
-      res = await getDomainsWithNumberOfTrackers(args.count);
+      res = await getDomainsWithNumberOfTrackers();
       break;
     case "get_pages_by_tracker_and_domain":
       res = await getPagesByTrackerAndDomain(args.tracker, args.domain, args.count);
