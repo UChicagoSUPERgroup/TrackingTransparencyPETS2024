@@ -142,7 +142,7 @@ function makeTrackerProfile(tracker, trackerObject, inferences, location){
         let pageName = trackerObject[j].pages[i].title;
         if (!pageList.includes(pageName)) {
           pageList.push(pageName);
-          listObj.append('<li class="list-group-item p-pages" >' + pageName + '</li>');
+          listObj.append('<li class="list-group-item p-pages" >' + escapeHTML(pageName) + '</li>');
         }
       }
       listObj.append("<br>");
@@ -170,26 +170,25 @@ function makeDomainsByTrackers(domainList){
   let loc = $("#sitesWithMostTrackers");
   let i = 0;
   while (i<5 && i<domainList.length){
-    let domain = domainList[i].domain.split(".");
-    if (domain[0]=="www"){
-      domain.shift();
-    }
-    domain = domain.join(".")
-    loc.append('<li><b>'+domain+ "</b> ("+ domainList[i].trackers + ' trackers)</li>');
+    loc.append('<li><b>'+removeWWW(domainList[i].domain)+
+                "</b> ("+ domainList[i].trackers + ' trackers)</li>');
     i++;
   }
   loc = $("#sites10trackers");
   while (domainList[i].trackers>=10 && i<domainList.length){
-    let domain = domainList[i].domain.split(".");
-    if (domain[0]=="www"){
-      domain.shift();
-    }
-    domain = domain.join(".")
-    loc.append('<li><b>'+domain+ "</b> ("+ domainList[i].trackers + ' trackers)</li>');
+    loc.append('<li><b>'+removeWWW(domainList[i].domain)+
+                "</b> ("+ domainList[i].trackers + ' trackers)</li>');
     i++;
   }
+  $(".sumTrackers10orMore").append(i);
+}
 
-
+function removeWWW(domainName){
+  domain = domainName.split(".");
+  if (domain[0]=="www"){
+    domain.shift();
+  }
+  return domain.join(".")
 }
 
 async function runGeneralQueries(){
@@ -225,9 +224,15 @@ async function runGeneralQueries(){
 
   //query for domains with the most trackers
   let domainsByNumberOfTrackers = await queryDatabase("get_domains_with_number_of_trackers", {});
-  console.log(domainsByNumberOfTrackers);
   makeDomainsByTrackers(domainsByNumberOfTrackers);
 
+}
+
+function escapeHTML(s) {
+    return s.replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
 }
 
 //the function to make database queries
