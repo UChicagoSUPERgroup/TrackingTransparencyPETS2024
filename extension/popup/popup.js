@@ -1,9 +1,14 @@
 var port = browser.runtime.connect({name:"port-from-popup"});
 
+let queryId = 0;
 let pendingQueries = {};
 
 port.onMessage.addListener(m => {
   switch (m.type) {
+    case "tab_data_response":
+      pendingQueries[m.id](m.response);
+      break;
+
     case "database_query_response":
       // resolve pending query promise
       pendingQueries[m.id](m.response);
@@ -25,6 +30,26 @@ async function onReady() {
   const tabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
   const tab = tabs[0];
 
+  // get tab data with trackers and stuff here
+  const tabData = await getTabData(tab.id);
+  console.log(tabData);
+
+  /* looks something like:
+    { 
+      pageId: 1503590672929, 
+      domain: "super.cs.uchicago.edu", 
+      path: "/members.html", 
+      protocol: "https", 
+      title: "University of Chicago SUPERgroup: M…", 
+      webRequests: Array[0], 
+      trackers: ["Google", "DoubleClick"] 
+      inference: "Warehousing" 
+    }
+  *
+  * note that info about trackers on current page is NOT in the databse at the time this is run
+  */
+
+
   const parsedURL = parseUri(tab.url);
   const query = await queryDatabase("get_tracker_with_inferences_by_domain", {domain: parsedURL.host});
   $('#mosttrackername').text(query.tracker);
@@ -42,7 +67,6 @@ async function onReady() {
 }
 
 
-let queryId = 0;
 async function queryDatabase(query, args) {
   let queryPromise = new Promise((resolve, reject) => {
     pendingQueries[queryId] = resolve;
@@ -56,6 +80,24 @@ async function queryDatabase(query, args) {
     query: query,
     args: args
   });
+  queryId++;
+
+  let res = await queryPromise;
+  return res;
+}
+
+async function getTabData(tabId) {
+  let queryPromise = new Promise((resolve, reject) => {
+    pendingQueries[queryId] = resolve;
+  })
+
+  port.postMessage({
+    type: "get_tab_data",
+    src: "popup",
+    id: queryId,
+    tabId: tabId
+  });
+  
   queryId++;
 
   let res = await queryPromise;

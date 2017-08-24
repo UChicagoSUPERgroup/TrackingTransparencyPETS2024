@@ -153,7 +153,20 @@ async function messageListener(m) {
   let activeTabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
   let activeTab = activeTabs[0];
 
-  if (m.type === "database_query") {
+  if (m.type === "get_tab_data") {
+    let data = tabData[m.tabId];
+    data.trackers = ["Google", "DoubleClick", "Yahoo"];
+    data.inference = "Warehousing";
+
+    if (m.src === "popup") {
+      portFromPopup.postMessage({
+        id: m.id,
+        type: "tab_data_response",
+        response: data
+      });
+    }
+
+  } else if (m.type === "database_query") {
     if (m.src === "popup") {
       let queryPromise = new Promise((resolve, reject) => {
         pendingPopupQueries[m.id] = resolve;
