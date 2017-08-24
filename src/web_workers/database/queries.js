@@ -243,7 +243,7 @@ async function getDomainsWithNumberOfTrackers() {
     });
   }
   return domains.sort((a,b) => {
-    return (b.count) - (a.count);
+    return (b.trackers) - (a.trackers);
   });
 
 }
@@ -284,6 +284,19 @@ async function getPagesNoTrackers() {
 async function getDomainsNoTrackers() {
   const pages = await getPagesNoTrackers();
   return pages;
+}
+
+/**
+ * get the total number of pages
+ *
+ * @returns {Integer} number of page visits
+ */
+async function getNumberOfPages() {
+  let ttDb = await primaryDbPromise; // db is defined in datastore.js
+  let query = await ttDb.select()
+    .from(Pages)
+    .exec();
+  return query.length;
 }
 
 /**
@@ -416,10 +429,13 @@ export default async function makeQuery(query, args) {
       res = await getPagesWithNumberOfTrackers(args.count);
       break;
     case "get_domains_with_number_of_trackers":
-      res = await getDomainsWithNumberOfTrackers(args.count);
+      res = await getDomainsWithNumberOfTrackers();
       break;
     case "get_pages_by_tracker_and_domain":
       res = await getPagesByTrackerAndDomain(args.tracker, args.domain, args.count);
+      break;
+    case "get_number_of_pages":
+      res = await getNumberOfPages();
       break;
     case "get_tracker_with_inferences_by_domain":
       res = await getTrackerWithInferencesByDomain(args.domain);

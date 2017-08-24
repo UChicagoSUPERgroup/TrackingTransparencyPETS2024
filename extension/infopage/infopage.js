@@ -24,33 +24,7 @@ async function onReady() {
 
   //get the top 10 trackers and set up accordion lists on two pages
   if (enoughInfo){
-    tracker_query = await queryDatabase("get_top_trackers", {count: 10});
-    for (let i=0; i < tracker_query.length; i++){
-      makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerList");
-      makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerListInferencing");
-      $('.numberOfFrequentTrackers').html(tracker_query.length);
-    }
-
-    //set up list of all trackers
-    let allTrackers = await queryDatabase("get_trackers", {});
-    makeAllTrackerList(allTrackers);
-
-
-    //fill in the accordion lists with trackers and trackers + inferences
-    let tracker_detailed_queries = [];
-    let tracker_list_queries = [];
-    for (let i=0; i < tracker_query.length; i++){
-        let args = {tracker: tracker_query[i].tracker, inferenceCount: 3, pageCount: 15};
-        tracker_detailed_queries[i] = await queryDatabase("get_info_about_tracker", args)
-        makeTrackerProfile(tracker_query[i].tracker,
-          tracker_detailed_queries[i], true, "frequentTrackerListInferencing");
-    }
-    for (let i=0; i < tracker_query.length; i++){
-        args = {tracker: tracker_query[i].tracker, count: 20}
-        tracker_list_queries[i] = await queryDatabase("get_domains_by_tracker", args);
-        makeTrackerProfile(tracker_query[i].tracker,
-          tracker_list_queries[i], false, "frequentTrackerList");
-    }
+    runGeneralQueries();
   } else {
     //what we do if there isn't enough information (like the extension was just installed)
     //we haven't set this up yet. idea: have a message on the dashboard which tells the
@@ -132,14 +106,17 @@ function makeTrackerAccordion(tracker, location){
 
 
 //makes a list of all trackers along with the number of times they've been seen
-function makeAllTrackerList(trackerList){
+function makeAllTrackerList(trackerList, totalPages){
   $('#allTrackerList').append(document.createElement("ul"));
   let listObj = $('#allTrackerList').children("ul");
   listObj.addClass("list-group list-group-flush");
   for (let i=0; i<trackerList.length; i++){
-    let pages = trackerList[i]["COUNT(tracker)"] > 1 ? " pages" : " page";
+    let pageVisits = trackerList[i]["COUNT(tracker)"]
+    let pagesStr = pageVisits > 1 ? " pages" : " page";
+    let percent = (100*pageVisits / totalPages).toPrecision(2);
     listObj.append('<li class="list-group-item"><b>' + trackerList[i].tracker +
-      "</b> on "+ trackerList[i]["COUNT(tracker)"] + pages +'</li>');
+      "</b> on "+ pageVisits + pagesStr + ", or " + percent +
+      '% of your browsing</li>');
   }
   $('.numberOfTrackers').html(trackerList.length);
 }
@@ -165,7 +142,7 @@ function makeTrackerProfile(tracker, trackerObject, inferences, location){
         let pageName = trackerObject[j].pages[i].title;
         if (!pageList.includes(pageName)) {
           pageList.push(pageName);
-          listObj.append('<li class="list-group-item p-pages" >' + pageName + '</li>');
+          listObj.append('<li class="list-group-item p-pages" >' + escapeHTML(pageName) + '</li>');
         }
       }
       listObj.append("<br>");
@@ -187,6 +164,75 @@ function makeTrackerProfile(tracker, trackerObject, inferences, location){
       }
     }
   }
+}
+
+function makeDomainsByTrackers(domainList){
+  let loc = $("#sitesWithMostTrackers");
+  let i = 0;
+  while (i<5 && i<domainList.length){
+    loc.append('<li><b>'+removeWWW(domainList[i].domain)+
+                "</b> ("+ domainList[i].trackers + ' trackers)</li>');
+    i++;
+  }
+  loc = $("#sites10trackers");
+  while (domainList[i].trackers>=10 && i<domainList.length){
+    loc.append('<li><b>'+removeWWW(domainList[i].domain)+
+                "</b> ("+ domainList[i].trackers + ' trackers)</li>');
+    i++;
+  }
+  $(".sumTrackers10orMore").append(i);
+}
+
+function removeWWW(domainName){
+  domain = domainName.split(".");
+  if (domain[0]=="www"){
+    domain.shift();
+  }
+  return domain.join(".")
+}
+
+async function runGeneralQueries(){
+  //query for the top 10 trackers
+  let tracker_query = await queryDatabase("get_top_trackers", {count: 10});
+  for (let i=0; i < tracker_query.length; i++){
+    makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerList");
+    makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerListInferencing");
+    $('.numberOfFrequentTrackers').html(tracker_query.length);
+  }
+
+  //set up list of all trackers
+  let allTrackers = await queryDatabase("get_trackers", {});
+  let sumPages = await queryDatabase("get_number_of_pages",{});
+  makeAllTrackerList(allTrackers,sumPages);
+
+
+  //fill in the accordion lists with trackers and trackers + inferences
+  let tracker_detailed_queries = [];
+  let tracker_list_queries = [];
+  for (let i=0; i < tracker_query.length; i++){
+      let args = {tracker: tracker_query[i].tracker, inferenceCount: 3, pageCount: 15};
+      tracker_detailed_queries[i] = await queryDatabase("get_info_about_tracker", args)
+      makeTrackerProfile(tracker_query[i].tracker,
+        tracker_detailed_queries[i], true, "frequentTrackerListInferencing");
+  }
+  for (let i=0; i < tracker_query.length; i++){
+      args = {tracker: tracker_query[i].tracker, count: 20}
+      tracker_list_queries[i] = await queryDatabase("get_domains_by_tracker", args);
+      makeTrackerProfile(tracker_query[i].tracker,
+        tracker_list_queries[i], false, "frequentTrackerList");
+  }
+
+  //query for domains with the most trackers
+  let domainsByNumberOfTrackers = await queryDatabase("get_domains_with_number_of_trackers", {});
+  makeDomainsByTrackers(domainsByNumberOfTrackers);
+
+}
+
+function escapeHTML(s) {
+    return s.replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
 }
 
 //the function to make database queries

@@ -8,10 +8,10 @@ h1 {
   padding-bottom: 9px;
   border-bottom: 1px solid #eee;
 }
-h6 > a , h3 > a {
+p > a , h6 > a , h3 > a {
 	color: #800000;
 }
-h6 > a:hover , h3 > a:hover {
+p > a:hover, h6 > a:hover , h3 > a:hover {
 	color: black;
 }
 
@@ -75,6 +75,18 @@ h6 > a:hover , h3 > a:hover {
 	 padding-bottom: 20px;
  }
 
+
+.domainList {
+		/*
+    -moz-column-count: 2;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 20px;
+    column-count: 2;
+    column-gap: 20px;
+		*/
+		list-style-type: none;
+}
 
 
 

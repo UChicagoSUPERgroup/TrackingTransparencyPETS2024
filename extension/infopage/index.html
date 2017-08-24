@@ -41,6 +41,11 @@
                   How are they tracking me?
                 </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#over-time" role="tab">
+                  How have things changed over time?
+                </a>
+              </li>
 
               <div class="nav-title">Inferencing</div>
               <li class="nav-item">
@@ -71,6 +76,22 @@
                             <h1 class="card-title"><span class="numberOfTrackers"></h1>
                             <p class="card-text">unique trackers that you've
                               encountered</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6 col-sm-3 placeholder">
+                        <div class="card">
+                          <div class="card-block">
+                            <h1 class="card-title"><span class="sumTrackers10orMore"></h1>
+                            <p class="card-text">sites you've visited with 10 or more trackers</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6 col-sm-3 placeholder">
+                        <div class="card">
+                          <div class="card-block">
+                            <h3 class="card-title">Special title treatment</h3>
+                            <p class="card-text">With supporting text below as .</p>
                             <a href="#" class="btn btn-primary">Go somewhere</a>
                           </div>
                         </div>
@@ -79,25 +100,7 @@
                         <div class="card">
                           <div class="card-block">
                             <h3 class="card-title">Special title treatment</h3>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-6 col-sm-3 placeholder">
-                        <div class="card">
-                          <div class="card-block">
-                            <h3 class="card-title">Special title treatment</h3>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-6 col-sm-3 placeholder">
-                        <div class="card">
-                          <div class="card-block">
-                            <h3 class="card-title">Special title treatment</h3>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <p class="card-text">With supporting text below as a </p>
                             <a href="#" class="btn btn-primary">Go somewhere</a>
                           </div>
                         </div>
@@ -132,12 +135,37 @@
                 </div>
 
               <div class="tab-pane fade" id="where-are-they" role="tabpanel">
+                <div class="card">
+                  <h3 class="card-header">Where am I being tracked?</h3>
+                  <div class="card-block">
+                    <h4 class="card-title">Sites with the most trackers</h4>
+                    <ul class="domainList" id="sitesWithMostTrackers">
+                    </ul>
+                    <button type="button" class="btn btn-primary"
+                      data-toggle="collapse" data-target="#see-more-domains-many-trackers">
+                      See all domains with 10 or more trackers
+                    </button>
+                    <br>
+                    <div class="collapse" id="see-more-domains-many-trackers">
+                      <br>
+                      <ul class="domainList" id="sites10trackers">
+                      </ul>
+                    </div>
+                    <br>
+                    <h4 class="card-title">Sites without trackers</h4>
+                      <ul class="domainList" id="sitesWithNoTrackers">
+                      </ul>
+                  </div>
+                </div>
+                </div>
+
+              <div class="tab-pane fade" id="over-time" role="tabpanel">
                   <div class="card">
-                    <h3 class="card-header">Where are the trackers?</h3>
+                    <h3 class="card-header">How has tracking affected me over time?</h3>
                     <div class="card-block">
                     </div>
                   </div>
-                </div>
+              </div>
 
               <div class="tab-pane fade" id="how-are-they" role="tabpanel">
                   <div class="card">
@@ -145,7 +173,7 @@
                     <div class="card-block">
                     </div>
                   </div>
-                </div>
+              </div>
 
               <div class="tab-pane fade" id="what-inferences" role="tabpanel">
                   <div class="card">
@@ -187,13 +215,19 @@
                   </div>
                   <br>
                   <div class="card">
-                    <h3 class="card-header">Our team</h3>
+                    <h3 class="card-header">Who we are</h3>
                     <div class="card-block">
-                      <p>The Tracking Transparency extension was built at the University of Chicago by Euirim Choi,
+                      <p>The Tracking Transparency extension was built by a smaller team within the University of
+                        Chicago <a href="super.cs.uchicago.edu">SUPERgroup</a>. Our members are Euirim Choi,
                         Claire Dolin, Aaron Goldman, Chang Min Hahn, Sixiong Shan, and Ben Weinshel. We are led by
-                         Blase Ur, an assistant professor at the University of Chicago.</p>
+                         Blase Ur, an assistant professor at the University of Chicago and the founder of the
+                          SUPERgroup.</p>
                       <p>We also work alongside our external collaborators Michelle Mazurek, an assistant professor
                          at the University of Maryland, and Lorrie Cranor, a professor at Carnegie Mellon University. </p>
+                      <p>For bug reports, please open a new issue on our
+                        <a href='github.com/UChicagoSUPERgroup/trackingtransparency'>GitHub</a>.</p>
+                      <p>For other questions, comments, or concerns you may reach out to Blase Ur:
+                        <a href="mailto:blase@uchicago.edu">blase@uchicago.edu</p>
                       <img src="../icons/super.svg" hspace="300">
                     </div>
                   </div>
