@@ -1,4 +1,4 @@
-importScripts('/lib/helpers.js'); 
+import {deserialize, readTextFile} from "helpers.js";
 
 /*
  * Build tree from given JSON file listing nodes with keywords.
