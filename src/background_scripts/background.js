@@ -6,6 +6,9 @@ import {trackersWorker, databaseWorker, inferencingWorker} from "workers_setup.j
 
 let tabData = {};
 
+let pendingTrackerMessages = {};
+let trackerMessageId = 0;
+
 
 /* WEB REQUEST/TAB LISTENERS */
 /* ========================= */
@@ -83,7 +86,8 @@ function recordNewPage(tabId, url, title) {
     path: parsedURL.path,
     protocol: parsedURL.protocol,
     title: title,
-    webRequests: []
+    webRequests: [],
+    trackers: []
   }
 
   databaseWorker.postMessage({
@@ -105,13 +109,34 @@ function clearTabData(tabId) {
   }
 
   trackersWorker.postMessage({
-    type: "tab_data",
-    tabData: tabData[tabId]
+    type: "page_changed",
+    oldPageId: tabData[tabId].pageId,
+    firstPartyHost: tabData[tabId].domain,
+    webRequests: tabData[tabId].webRequests
   });
 
   tabData[tabId] = null;
 }
 
+async function updateTrackers(tabId) {
+  let messagePromise = new Promise((resolve, reject) => {
+    pendingTrackerMessages[trackerMessageId] = resolve;
+  });
+
+  trackersWorker.postMessage({
+    id: trackerMessageId,
+    type: "push_webrequests",
+    pageId: tabData[tabId].pageId,
+    firstPartyHost: tabData[tabId].domain,
+    webRequests: tabData[tabId].webRequests
+  });
+  trackerMessageId++;
+  tabData[tabId].webRequests = [];
+
+  let trackers = await messagePromise;
+  tabData[tabId].trackers = trackers;
+  return;
+}
 
 
 /* INTRA-EXTENSION MESSAGE LISTENERS */
@@ -120,6 +145,7 @@ function clearTabData(tabId) {
 browser.runtime.onConnect.addListener(runtimeOnConnect);
 browser.runtime.onMessage.addListener(onContentScriptMessage);
 databaseWorker.onmessage = onDatabaseWorkerMessage;
+trackersWorker.onmessage = onTrackersWorkerMessage;
 
 let portFromPopup;
 let portFromInfopage;
@@ -155,7 +181,9 @@ async function messageListener(m) {
 
   if (m.type === "get_tab_data") {
     let data = tabData[m.tabId];
-    data.trackers = ["Google", "DoubleClick", "Yahoo"];
+
+    await updateTrackers(m.tabId);
+
     data.inference = "Warehousing";
 
     if (m.src === "popup") {
@@ -216,6 +244,13 @@ function onDatabaseWorkerMessage(m) {
   }
 }
 
+function onTrackersWorkerMessage(m) {
+  // console.log('Message received from database worker', m);
+  if (m.data.type === "trackers") {
+      pendingTrackerMessages[m.data.id](m.data.trackers);
+  }
+}
+
 
 /** listener function for messages from content script
  * @param  {Object} message
@@ -233,7 +268,6 @@ async function onContentScriptMessage(message, sender) {
       }
 
       pageId = tabData[sender.tab.id].pageId;
-      // const info = mainFrameRequestInfo[mainFrameReqId];
 
       inferencingWorker.postMessage({
         type: "content_script_to_inferencing",

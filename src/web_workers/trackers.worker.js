@@ -13,6 +13,8 @@ let databaseWorkerPort;
 */
 let services = {};
 
+let trackersByPageId = {};
+
 /** 
  * takes the disconnect list object and formats it into the services object
  * 
@@ -99,45 +101,57 @@ function trackerMatch(details, firstPartyHost) {
  * 
  * @param  {Object} tabData
  */
-async function onReceiveTabData(tabData) {
-  const firstPartyHost = tabData.domain;
-  let requestsQueue = tabData.webRequests;
-  let trackers = new Set();
+async function onPageChanged(oldPageId, trackers) {
+
+  databaseWorkerPort.postMessage({
+    type: "store_tracker_array",
+    pageId: oldPageId,
+    trackers: trackers
+  });
+}
+
+function processWebRequests(pageId, firstPartyHost, webRequests) {
+  if (!trackersByPageId[pageId]) {
+    trackersByPageId[pageId] = new Set();
+  }
 
   while (true) {
-    const req = requestsQueue.pop();
+    const req = webRequests.pop();
     if (!req) break;
 
     const match = trackerMatch(req, firstPartyHost);
     if (match) {
-      trackers.add(match.name);
-      // {
-      //   trackerdomain: match.domain,
-      //   trackername: match.name,
-      //   trackercategory: match.category
-      // })
+      trackersByPageId[pageId].add(match.name);
     }
   }
 
-  databaseWorkerPort.postMessage({
-    type: "store_tracker_array",
-    pageId: tabData.pageId,
-    trackers: trackers
-  });
+  return Array.from(trackersByPageId[pageId]);
 }
 
 /**
  * function to run when message is received from background script
  */
 onmessage = function(m) {
+  let trackers = [];
+
   switch (m.data.type) {
     case "database_worker_port":
       databaseWorkerPort = m.data.port;
       break;
 
-    case "tab_data":
-      onReceiveTabData(m.data.tabData);
+    case "page_changed":
+      trackers = processWebRequests(m.data.oldPageId, m.data.firstPartyHost, m.data.webRequests);
+      onPageChanged(m.data.oldPageId, trackers)
       break;
 
+    case "push_webrequests": 
+      trackers = processWebRequests(m.data.pageId, m.data.firstPartyHost, m.data.webRequests);
+      postMessage({
+        id: m.data.id,
+        type: "trackers",
+        pageId: m.data.pageId,
+        trackers: trackers
+      });
+      break;
   }
 }
