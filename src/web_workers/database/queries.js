@@ -198,8 +198,7 @@ async function getPagesByTrackerAndInference(tracker, inference, count) {
 }
 
 /**
- * returns an array of pages in order by the number of trackers hopefully.
- * doesn't work yet
+ * returns an array of pages with number of trackers
  *
  * @returns {}
  *
@@ -222,8 +221,7 @@ async function getPagesWithNumberOfTrackers() {
 }
 
 /**
- * returns an array of pages in order by the number of trackers hopefully.
- * doesn't work yet
+ * domains with number of trackers total
  *
  * @returns {}
  *
@@ -251,22 +249,42 @@ async function getDomainsWithNumberOfTrackers() {
 }
 
 /**
- * returns an array of pages in order by the number of trackers hopefully.
- * doesn't work yet
+ * returns an array of pages visited
  *
- * @returns {Object}
+ * @returns {}
  *
  */
 async function getPages() {
-    let ttDb = await primaryDbPromise; // db is defined in datastore.js
-    let query = await ttDb.select()
-      .from(Pages, Trackers)
-      .where(Trackers.pageId.eq(Pages.id))
-      .orderBy(Pages.id, lf.Order.ASC)
-      .exec();
-    return query;
-  }
+  let ttDb = await primaryDbPromise; // db is defined in datastore.js
+  let query = await ttDb.select()
+    .from(Pages, Trackers)
+    .where(Trackers.pageId.eq(Pages.id))
+    .orderBy(Pages.id, lf.Order.ASC)
+    .exec();
+  return query;
+}
 
+/**
+ * returns an array of pages visited
+ *
+ * @returns {}
+ *
+ */
+async function getPagesNoTrackers() {
+  let ttDb = await primaryDbPromise; // db is defined in datastore.js
+  let query = await ttDb.select()
+    .from(Pages)
+    .leftOuterJoin(Pages, Trackers.pageId.neq(Pages.id))
+    // .where(Trackers.isNull())
+    .orderBy(Pages.id, lf.Order.ASC)
+    .exec();
+  return query;
+}
+
+async function getDomainsNoTrackers() {
+  const pages = await getPagesNoTrackers();
+  return pages;
+}
 
 /**
  * Domain visits by tracker (i.e. TRACKERNAME knows you have been to the following sites)
@@ -408,6 +426,12 @@ export default async function makeQuery(query, args) {
       break;
     case "get_info_about_tracker":
       res = await getInfoAboutTracker(args.tracker, args.inferenceCount, args.pageCount);
+      break;
+    case "get_pages_no_trackers":
+      res = await getPagesNoTrackers();
+      break;
+    case "get_domains_no_trackers":
+      res = await getDomainsNoTrackers();
       break;
   }
 
