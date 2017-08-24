@@ -1,8 +1,7 @@
 /** @module trackers_worker */
 
 import parseuri from "parseuri";
-
-importScripts('/lib/helpers.js'); 
+import {deserialize, readTextFile} from "helpers.js";
 
 // console.log("trackers worker running");
 let databaseWorkerPort;
@@ -80,6 +79,7 @@ function trackerMatch(details, firstPartyHost) {
         category: services[domain].category
       }
   } else {
+    // try chopping off subdomains to see if TLD is known tracker
     const arr = parsedRequest.host.split('.');
     const domain = arr[arr.length -2] + '.' + arr[arr.length - 1]
     if (domain === firstPartyHost) {

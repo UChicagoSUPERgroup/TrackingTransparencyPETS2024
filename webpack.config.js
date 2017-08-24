@@ -11,9 +11,9 @@ module.exports = {
     userstudy: './src/background_scripts/userstudy.js',
 
     // workers
-    trackers_worker: './src/web_workers/trackers.worker.js',
-    inferencing_worker: './src/web_workers/inferencing.worker.js',
-    database_worker: './src/web_workers/database/database.worker.js',
+    trackers_worker: './src/trackers/trackers.worker.js',
+    inferencing_worker: './src/inferencing/inferencing.worker.js',
+    database_worker: './src/database/database.worker.js',
 
     // content scripts
     inferencing_cs: './src/content_scripts/inferencing_cs.js',
@@ -45,10 +45,10 @@ module.exports = {
     // This allows you to import modules just like you would in a NodeJS app.
     modules: [
       'node_modules',
-      path.resolve(__dirname, "src/web_workers/database"),
+      path.resolve(__dirname, 'src'),
       path.resolve(__dirname, "src/background_scripts"),
-      path.join(__dirname, 'src/lib'),
-      path.join(__dirname, 'src/inferencing')
+      path.resolve(__dirname, "src/database"),
+      path.resolve(__dirname, 'src/inferencing')
     ],
   },
   plugins: [

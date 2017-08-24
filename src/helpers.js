@@ -7,7 +7,7 @@
  * 
  * @param  {string} path to file
  */
-function readTextFile(file) {
+export function readTextFile(file) {
   return new Promise((resolve, reject) => {
     let rawFile = new XMLHttpRequest();
     rawFile.open("GET", file, false);
@@ -19,6 +19,6 @@ function readTextFile(file) {
 /** destringifies an object
  * @param  {string} object
  */
-function deserialize(object) {
+export function deserialize(object) {
   return typeof object == 'string' ? JSON.parse(object) : object;
 }
