@@ -1,8 +1,8 @@
 'use strict';
 
 const margin = {top: 40, right: 10, bottom: 10, left: 10},
-      width = 500 - margin.left - margin.right,
-      height = 1000 - margin.top - margin.bottom,
+      width = 800 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom,
       color = d3.scaleOrdinal().range(d3.schemeCategory20c);
 
 const treemap = d3.treemap().size([width, height]);
