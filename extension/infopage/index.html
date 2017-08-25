@@ -8,7 +8,9 @@
         <script src="../lib/jquery-3.2.1.min.js"></script>
         <script src="../lib/popper.min.js"></script>
         <script src="../lib/bootstrap.min.js"></script>
+        <script src="../lib/d3.min.js"></script>
         <script src="infopage.js"></script>
+        
     </head>
     <body>
       <div class="container-fluid">
@@ -49,8 +51,11 @@
 
               <div class="nav-title">Inferencing</div>
               <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#inferences-viz" role="tab">
+                  What inferences have been made about my browsing?
+                </a>
                 <a class="nav-link" data-toggle="tab" href="#what-inferences" role="tab">
-                  What might they have inferred about
+                  What might specific companies have inferred about
                   my interests?
                 </a>
               </li>
@@ -187,6 +192,16 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="tab-pane fade" id="inferences-viz" role="tabpanel">
+                <!-- https://bl.ocks.org/ganezasan/52fced34d2182483995f0ca3960fe228 -->
+                    <div id="inferviz"></div>
+                    <!-- <form>
+                        <label><input class="inferviz-form-input" type="radio" name="mode" value="size" checked> Size</label>
+                        <label><input type="radio" name="mode" value="count"> Count</label>
+                    </form> -->
+                </div>
+                <script src="inferviz.js"></script>
 
               <div class="tab-pane fade" id="supergroup" role="tabpanel">
                   <div class="card">

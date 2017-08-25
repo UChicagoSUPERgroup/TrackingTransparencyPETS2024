@@ -111,3 +111,12 @@ p > a:hover, h6 > a:hover , h3 > a:hover {
 	background-color: #642822;
 	border-color: #642822;
 }
+
+.inferviz-node {
+  border: solid 1px white;
+  font: 10px sans-serif;
+  line-height: 12px;
+  overflow: hidden;
+  position: absolute;
+  text-indent: 2px;
+}
