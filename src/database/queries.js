@@ -128,11 +128,8 @@ async function getTrackersByInference(inference, count) {
 async function getTrackersByDomain(domain) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
   let query = await ttDb.select(Trackers.tracker, lf.fn.count(Pages.id))
-    .from(Trackers, Pages)
-    .where(lf.op.and(
-      Trackers.pageId.eq(Pages.id),
-      Pages.domain.eq(domain)
-    ))
+    .from(Trackers)
+    .where(Trackers.firstPartyDomain.eq(domain))
     .groupBy(Trackers.tracker)
     .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
     .exec();
@@ -228,25 +225,35 @@ async function getPagesWithNumberOfTrackers() {
  */
 async function getDomainsWithNumberOfTrackers() {
   let domains = [];
-  const query = await getPages();
 
-  const grouped = _.groupBy(query, 'Pages.domain');
-  // const grouped = _.groupBy(groupedDomain, 'Trackers.tracker')
-  for (let domain in grouped) {
-    let trackers = new Set();
-    for (let page of grouped[domain]) {
-      trackers.add(page.Trackers.tracker)
-    }
-    domains.push({
-      domain: domain,
-      trackers: trackers.size
-    });
-  }
-  return domains.sort((a,b) => {
-    return (b.trackers) - (a.trackers);
-  });
-
+  let ttDb = await primaryDbPromise; // db is defined in datastore.js
+  let query = await ttDb.select(Trackers.firstPartyDomain, lf.fn.count(Trackers.tracker))
+    .from(Trackers)
+    .groupBy(Trackers.firstPartyDomain)
+    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.ASC)
+    .exec();
+  return query;
 }
+
+  // const query = await getPages();
+
+  // const grouped = _.groupBy(query, 'Pages.domain');
+  // // const grouped = _.groupBy(groupedDomain, 'Trackers.tracker')
+  // for (let domain in grouped) {
+  //   let trackers = new Set();
+  //   for (let page of grouped[domain]) {
+  //     trackers.add(page.Trackers.tracker)
+  //   }
+  //   domains.push({
+  //     domain: domain,
+  //     trackers: trackers.size
+  //   });
+  // }
+  // return domains.sort((a,b) => {
+  //   return (b.trackers) - (a.trackers);
+  // });
+
+// }
 
 /**
  * returns an array of pages visited
