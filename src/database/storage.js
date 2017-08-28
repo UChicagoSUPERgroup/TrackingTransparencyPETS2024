@@ -36,7 +36,7 @@ export async function storePage(info) {
  * @param {Object} pageId - identifier for page that trackers come from
  * @param {Object[]} trackers - array of objects with information about each tracker
  */
-export async function storeTrackerArray(pageId, trackers) {
+export async function storeTrackerArray(pageId, trackers, firstPartyDomain) {
   const ttDb = await primaryDbPromise;
   const trackerItem = ttDb.getSchema().table('Trackers');
   const rows = []
@@ -45,6 +45,7 @@ export async function storeTrackerArray(pageId, trackers) {
     const row = trackerItem.createRow({
       'tracker': tracker,
       'trackerCategory': "",
+      'firstPartyDomain': firstPartyDomain,
       'pageId': pageId
     });
     rows.push(row);
@@ -71,6 +72,7 @@ export async function storeInference(info) {
     'inference': info.inference,
     'inferenceCategory': info.inferenceCategory,
     'threshold': info.threshold,
+    'firstPartyDomain': info.firstPartyDomain,
     'pageId': info.pageId
   });
   return ttDb.insertOrReplace().into(inferenceItem).values([inference]).exec();

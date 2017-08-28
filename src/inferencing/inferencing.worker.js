@@ -38,7 +38,8 @@ async function inferencingMessageListener(article, mainFrameReqId) {
     inference: category[0].name,
     inferenceCategory: "",
     threshold: category[1],
-    pageId: mainFrameReqId
+    pageId: mainFrameReqId,
+    firstPartyDomain: article.uri.host
   }
   // console.log("sending inference to database");
   databaseWorkerPort.postMessage({
