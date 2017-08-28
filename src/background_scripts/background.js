@@ -73,8 +73,12 @@ async function updateMainFrameInfo(details) {
 
   /* take time stamp and use as ID for main frame page load
    * store in object to identify with tab */
-  const tab = await browser.tabs.get(details.tabId);
-  recordNewPage(details.tabId, details.url, tab.title);
+  try {
+    const tab = await browser.tabs.get(details.tabId);
+    recordNewPage(details.tabId, details.url, tab.title);
+  } catch (err) {
+    console.log("can't updateMainFrame info for tab id", details.tabId);
+  }
 }
 
 function recordNewPage(tabId, url, title) {
@@ -119,6 +123,10 @@ function clearTabData(tabId) {
 }
 
 async function updateTrackers(tabId) {
+  if (typeof tabData[tabId] === 'undefined') {
+    return;
+  }
+
   let messagePromise = new Promise((resolve, reject) => {
     pendingTrackerMessages[trackerMessageId] = resolve;
   });
@@ -180,18 +188,33 @@ async function messageListener(m) {
   let activeTab = activeTabs[0];
 
   if (m.type === "get_tab_data") {
-    let data = tabData[m.tabId];
 
-    await updateTrackers(m.tabId);
+    if (typeof tabData[m.tabId] == 'undefined') {
+      if (m.src === "popup") {
+        portFromPopup.postMessage({
+          id: m.id,
+          type: "tab_data_response",
+          response: {
+            error: "No tab data"
+          }
+        });
+      }
 
-    data.inference = "Warehousing";
+    } else {
 
-    if (m.src === "popup") {
-      portFromPopup.postMessage({
-        id: m.id,
-        type: "tab_data_response",
-        response: data
-      });
+      let data = tabData[m.tabId];
+
+      await updateTrackers(m.tabId);
+
+      data.inference = "Warehousing";
+
+      if (m.src === "popup") {
+        portFromPopup.postMessage({
+          id: m.id,
+          type: "tab_data_response",
+          response: data
+        });
+      }
     }
 
   } else if (m.type === "database_query") {

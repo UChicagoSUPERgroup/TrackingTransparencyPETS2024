@@ -32,7 +32,10 @@ async function onReady() {
 
   // get tab data with trackers and stuff here
   const tabData = await getTabData(tab.id);
-  console.log(tabData);
+  
+  if (typeof tabData.error == 'undefined') {
+    console.log(tabData);    
+  }
 
   /* looks something like:
     { 
