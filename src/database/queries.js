@@ -229,7 +229,12 @@ async function getDomainsWithNumberOfTrackers() {
     //.groupBy(Trackers.tracker)
     .orderBy(lf.fn.count(Trackers.tracker), lf.Order.ASC)
     .exec();
-  return query;
+  return query.map(row => {
+    return {
+      domain: row.firstPartyDomain,
+      trackers: row['COUNT(tracker)']
+    }
+  });
 }
 
   // const query = await getPages();
