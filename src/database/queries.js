@@ -121,6 +121,7 @@ async function getTrackersByInference(inference, count) {
 
 /**
  * Trackers by domain (the following trackers know that you have been to DOMAIN)
+ * Note that the count is the number of pages on that domain where that tracker was present
  *
  * @param {string} domain - domain
  * @returns {string[]} array of trackers
@@ -230,6 +231,7 @@ async function getDomainsWithNumberOfTrackers() {
   let query = await ttDb.select(Trackers.firstPartyDomain, lf.fn.count(Trackers.tracker))
     .from(Trackers)
     .groupBy(Trackers.firstPartyDomain)
+    //.groupBy(Trackers.tracker)
     .orderBy(lf.fn.count(Trackers.tracker), lf.Order.ASC)
     .exec();
   return query;
@@ -300,10 +302,10 @@ async function getDomainsNoTrackers() {
  */
 async function getNumberOfPages() {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
-  let query = await ttDb.select()
+  let query = await ttDb.select(lf.fn.count(Pages.id))
     .from(Pages)
     .exec();
-  return query.length;
+  return (query[0])['COUNT(id)'];
 }
 
 /**
@@ -314,15 +316,13 @@ async function getNumberOfPages() {
  */
 async function getDomainsByTracker(tracker, count) {
   let ttDb = await primaryDbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(Pages.domain)
-    .from(Pages, Trackers)
-    .where(lf.op.and(
-      Trackers.pageId.eq(Pages.id),
-      Trackers.tracker.eq(tracker)
-    ))
+  let query = await ttDb.select(Trackers.firstPartyDomain)
+    .from(Trackers)
+    .where(Trackers.tracker.eq(tracker))
+    .groupBy(Trackers.firstPartyDomain)
     .limit(count)
     .exec();
-  return query.map(x => x.Pages.domain);
+  return query.map(x => x.firstPartyDomain);
 }
 
 /**

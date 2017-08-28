@@ -192,8 +192,15 @@ function removeWWW(domainName){
 }
 
 async function runGeneralQueries(){
+  // fire off the queries we can right away
+  // won't hold up execution until we have something awaiting them
+  let trackerQueryPromise = queryDatabase("get_top_trackers", {count: 10});
+  let allTrackersPromise = queryDatabase("get_trackers", {});
+  let sumPagesPromise = queryDatabase("get_number_of_pages",{});
+  let domainsByNumberOfTrackersPromise = queryDatabase("get_domains_with_number_of_trackers", {});
+
   //query for the top 10 trackers
-  let tracker_query = await queryDatabase("get_top_trackers", {count: 10});
+  let tracker_query = await trackerQueryPromise;
   for (let i=0; i < tracker_query.length; i++){
     makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerList");
     makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerListInferencing");
@@ -201,10 +208,9 @@ async function runGeneralQueries(){
   }
 
   //set up list of all trackers
-  let allTrackers = await queryDatabase("get_trackers", {});
-  let sumPages = await queryDatabase("get_number_of_pages",{});
+  let allTrackers = await allTrackersPromise;
+  let sumPages = await sumPagesPromise;
   makeAllTrackerList(allTrackers,sumPages);
-
 
   //fill in the accordion lists with trackers and trackers + inferences
   let tracker_detailed_queries = [];
@@ -223,7 +229,7 @@ async function runGeneralQueries(){
   }
 
   //query for domains with the most trackers
-  let domainsByNumberOfTrackers = await queryDatabase("get_domains_with_number_of_trackers", {});
+  let domainsByNumberOfTrackers = await domainsByNumberOfTrackersPromise;
   makeDomainsByTrackers(domainsByNumberOfTrackers);
 
 }
