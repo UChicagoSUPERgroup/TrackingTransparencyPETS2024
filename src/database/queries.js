@@ -449,6 +449,31 @@ async function getDomainsByTrackerCount() {
   return query;
 }
 
+/**
+ * Count of how many times an inference has been made
+ * 
+ * TODO: right now we use this on infopage and make a query for every single possible inferce
+ * when it would be better just to have one query that returns counts of all inferences
+ *
+ * @param {string} inference
+ * @returns {string[]} array of trackers
+ */
+async function getInferenceCount(inference) {
+  let query = await ttDb.select(lf.fn.count(Inferences.inference))
+    .from(Inferences)
+    .where(Inferences.inference.eq(inference))
+    .groupBy(Inferences.inference)
+    .exec();
+  let res;
+  if (typeof query != "undefined" && query != null && query.length > 0) {
+    res = (query[0])['COUNT(inference)'];
+  } else {
+    res = "0";
+  }
+  // console.log(res);
+  return res;
+}
+
 // unsure how to chain these
 async function emptyDB() {
     let ttDb = await primaryDbPromise;
@@ -456,8 +481,6 @@ async function emptyDB() {
     //let emptyTrackers = await ttDb.delete().from(Trackers).exec();
     //let emptyPages = await ttDb.delete().from(Pages).exec();
     return emptyInferences;
-}
-
 
 /* ========= */
 
@@ -530,6 +553,8 @@ export default async function makeQuery(query, args) {
     case "get_domains_by_tracker_count":
       res = await getDomainsByTrackerCount();
       break;
+    case "get_inference_count":
+      res = await getInferenceCount(args.inference);
     case "emptyDB":
       res = await emptyDB();
       break;
