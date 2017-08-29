@@ -19,16 +19,14 @@ const Pages = primarySchemaBuilder.getSchema().table('Pages');
 
 /**
  * gets all inferences
- *
- * @returns {string[]} array of inferences
  */
-async function getTopInferences(count) {
-  let query = await ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
-  .from(Inferences)
-  .groupBy(Inferences.inference)
-  .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC)
-  .exec();
-  return query;
+async function getInferences(count) {
+  let query = ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
+    .from(Inferences)
+    .groupBy(Inferences.inference)
+    .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC);
+  query = count ? query.limit(count) : query;
+  return await query.exec();
 }
 
 /**
@@ -36,29 +34,13 @@ async function getTopInferences(count) {
  *
  * @returns {string[]} array of trackers
  */
-async function getTrackers() {
-  let query = await ttDb.select(Trackers.tracker, lf.fn.count(Trackers.tracker))
+async function getTrackers(count) {
+  let query = ttDb.select(Trackers.tracker, lf.fn.count(Trackers.tracker))
     .from(Trackers)
     .groupBy(Trackers.tracker)
-    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
-    .exec();
-  return query;
-}
-
-/**
- * gets n most frequently encountered trackers
- *
- * @param {Number} n - number of trackers
- * @returns {string[]} array of trackers
- */
-async function getTopTrackers(n) {
-  let query = await ttDb.select(Trackers.tracker, lf.fn.count(Trackers.tracker))
-    .from(Trackers)
-    .groupBy(Trackers.tracker)
-    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
-    .limit(n)
-    .exec();
-  return query;
+    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC);
+  query = count ? query.limit(count) : query;
+  return await query.exec();
 }
 
 /**
@@ -86,17 +68,17 @@ async function getPageVisitCountByTracker(tracker) {
  * @returns {string[]} array of inferences
  */
 async function getInferencesByTracker(tracker, count) {
-  let query = await ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
+  let query = ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
     .from(Trackers, Inferences)
     .where(lf.op.and(
       Trackers.pageId.eq(Inferences.pageId),
       Trackers.tracker.eq(tracker)
     ))
     .groupBy(Inferences.inference)
-    .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC)
-    .limit(count)
-    .exec()
-  return query.map(x => x.Inferences);
+    .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC);
+  query = count ? query.limit(count) : query;
+  const res = await query.exec();
+  return res.map(x => x.Inferences);
 }
 
 /**
@@ -107,15 +89,15 @@ async function getInferencesByTracker(tracker, count) {
  * @returns {string[]} array of trackers
  */
 async function getTrackersByInference(inference, count) {
-  let query = await ttDb.select(Trackers.tracker)
+  let query = ttDb.select(Trackers.tracker)
     .from(Trackers, Inferences)
     .where(lf.op.and(
       Trackers.pageId.eq(Inferences.pageId),
       Inferences.inference.eq(inference)
-    ))
-    .limit(count)
-    .exec();
-  return query.map(x => x.Trackers.tracker);
+    ));
+  query = count ? query.limit(count) : query;
+  const res = await query.exec();
+  return res.map(x => x.Trackers.tracker);
 }
 
 /**
@@ -149,16 +131,15 @@ async function getTrackersByDomain(domain) {
  * @returns {string[]} array of trackers
  */
 async function getTrackersByInferenceCount(count) {
-  let query = await ttDb.select(Trackers.tracker, lf.fn.count(Inferences.inference))
+  let query = ttDb.select(Trackers.tracker, lf.fn.count(Inferences.inference))
     .from(Trackers, Inferences, Pages)
     .where(lf.op.and(
       Trackers.pageId.eq(Pages.id),
       Inferences.pageId.eq(Pages.id)))
     .groupBy(Trackers.tracker)
-    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
-    .limit(count)
-    .exec();
-  return query;
+    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC);
+  query = count ? query.limit(count) : query;
+  return await query.exec();
 }
 
 /**
@@ -196,7 +177,7 @@ async function getTrackersByInferenceCount(count) {
  *
  */
 async function getPagesByTrackerAndInference(tracker, inference, count) {
-  let query = await ttDb.select()
+  let query = ttDb.select()
     .from(Trackers, Pages, Inferences)
     .where(lf.op.and(
       lf.op.and(
@@ -205,10 +186,10 @@ async function getPagesByTrackerAndInference(tracker, inference, count) {
       lf.op.and(
         Trackers.tracker.eq(tracker)),
         Inferences.inference.eq(inference))))
-    .orderBy(Pages.id, lf.Order.DESC)
-    .limit(count)
-    .exec();
-  return query.map(page => page.Pages);
+    .orderBy(Pages.id, lf.Order.DESC);
+  query = count ? query.limit(count) : query;
+  const res = await query.exec();
+  return res.map(page => page.Pages);
 }
 
 /**
@@ -336,16 +317,15 @@ async function getNumberOfPages() {
  * @returns {string[]} array of domains
  */
 async function getDomainsByTracker(tracker, count) {
-  let ttDb = await primaryDbPromise; // db is defined in datastore.js
-  let query = await ttDb.select(Pages.domain)
+  let query = ttDb.select(Pages.domain)
     .from(Pages, Trackers)
     .where(lf.op.and(
       Trackers.pageId.eq(Pages.id),
       Trackers.tracker.eq(tracker)
     ))
-    .limit(count)
-    .exec();
-  return query.map(x => x.Pages.domain);
+  query = count ? query.limit(count) : query;
+  const res = await query.exec();
+  return res.map(x => x.Pages.domain);
 }
 
 
@@ -360,7 +340,7 @@ async function getDomainsByTracker(tracker, count) {
  *
  */
 async function getPagesByTrackerAndDomain(tracker, domain, count) {
-  let query = await ttDb.select()
+  let query = ttDb.select()
     .from(Trackers, Pages, Inferences)
     .where(lf.op.and(
       lf.op.and(
@@ -369,10 +349,9 @@ async function getPagesByTrackerAndDomain(tracker, domain, count) {
      lf.op.and(
         Trackers.tracker.eq(tracker),
         Pages.domain.eq(domain))))
-    .orderBy(Pages.id, lf.Order.DESC)
-    .limit(count)
-    .exec();
-  return query;
+    .orderBy(Pages.id, lf.Order.DESC);
+  query = count ? query.limit(count) : query;
+  return await query.exec();
 }
 
 async function getTrackerWithInferencesByDomain(domain) {
@@ -417,6 +396,8 @@ async function getInfoAboutTracker(tracker, inferenceCount, pageCount) {
 /**
 
 get inferences by tracker count
+
+I think this is redundant with getInferences - unless we can make it only count unique trackers (though that may not be interesting)
 
 */
 
@@ -493,13 +474,10 @@ export default async function makeQuery(query, args) {
   let res;
   switch (query) {
     case "get_trackers":
-      res = await getTrackers();
+      res = await getTrackers(args.count);
       break;
-    case "get_top_trackers":
-      res = await getTopTrackers(args.count);
-      break;
-    case "get_top_inferences":
-      res = await getTopInferences(args.count);
+    case "get_inferences":
+      res = await getInferences(args.count);
       break;
     case "get_page_visit_count_by_tracker":
       res = await getPageVisitCountByTracker(args.tracker, args.count);

@@ -194,7 +194,7 @@ function removeWWW(domainName){
 async function runGeneralQueries(){
   // fire off the queries we can right away
   // won't hold up execution until we have something awaiting them
-  let trackerQueryPromise = queryDatabase("get_top_trackers", {count: 10});
+  let trackerQueryPromise = queryDatabase("get_trackers", {count: 10});
   let allTrackersPromise = queryDatabase("get_trackers", {});
   let sumPagesPromise = queryDatabase("get_number_of_pages",{});
   let domainsByNumberOfTrackersPromise = queryDatabase("get_domains_with_number_of_trackers", {});
