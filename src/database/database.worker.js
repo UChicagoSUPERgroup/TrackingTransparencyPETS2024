@@ -44,7 +44,7 @@ async function onMessage(m) {
       store.storePage(m.data.info);
       break;
     case "store_tracker_array":
-      store.storeTrackerArray(m.data.pageId, m.data.trackers, m.data.firstPartyDomain);
+      store.storeTrackerArray(m.data.pageId, m.data.trackers);
       break;
     case "store_inference":
       store.storeInference(m.data.info);
