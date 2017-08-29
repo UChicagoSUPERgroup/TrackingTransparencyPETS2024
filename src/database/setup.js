@@ -21,16 +21,11 @@ primarySchemaBuilder.createTable('Trackers').
     addColumn('tracker', lf.Type.STRING). // company name
     addColumn('trackerCategory', lf.Type.STRING).
     addColumn('pageId', lf.Type.INTEGER).
-    addColumn('firstPartyDomain', lf.Type.STRING).    
     addPrimaryKey(['id'], true).
-    // addForeignKey('fk_firstPartyDomain', {
-    //     local: 'firstPartyDomain',
-    //     ref: 'Pages.domain'
-    // }).
     addForeignKey('fk_pageId', {
-        local: 'pageId',
-        ref: 'Pages.id'
-    });
+         local: 'pageId',
+         ref: 'Pages.id'
+       });
 
 primarySchemaBuilder.createTable('Inferences').
     addColumn('id', lf.Type.INTEGER).
@@ -38,12 +33,7 @@ primarySchemaBuilder.createTable('Inferences').
     addColumn('inferenceCategory', lf.Type.STRING).
     addColumn('pageId', lf.Type.INTEGER).
     addColumn('threshold', lf.Type.NUMBER).
-    addColumn('firstPartyDomain', lf.Type.STRING).    
     addPrimaryKey(['id'], true).
-    // addForeignKey('fk_firstPartyDomain', {
-    //     local: 'firstPartyDomain',
-    //     ref: 'Pages.domain'
-    // }).
     addForeignKey('fk_pageId', {
         local: 'pageId',
         ref: 'Pages.id'

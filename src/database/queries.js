@@ -239,7 +239,6 @@ async function getPagesWithNumberOfTrackers() {
  *
  * @returns {}
  *
- */
 async function getDomainsWithNumberOfTrackers() {
   let domains = [];
 
@@ -256,6 +255,7 @@ async function getDomainsWithNumberOfTrackers() {
     }
   });
 }
+*/
 
   // const query = await getPages();
 
@@ -503,9 +503,9 @@ export default async function makeQuery(query, args) {
     case "get_pages_with_number_of_trackers":
       res = await getPagesWithNumberOfTrackers(args.count);
       break;
-    case "get_domains_with_number_of_trackers":
-      res = await getDomainsWithNumberOfTrackers();
-      break;
+    // case "get_domains_with_number_of_trackers":
+      // res = await getDomainsWithNumberOfTrackers();
+      // break;
     case "get_pages_by_tracker_and_domain":
       res = await getPagesByTrackerAndDomain(args.tracker, args.domain, args.count);
       break;

@@ -101,13 +101,12 @@ function trackerMatch(details, firstPartyHost) {
  * 
  * @param  {Object} tabData
  */
-async function onPageChanged(oldPageId, trackers, firstPartyHost) {
+async function onPageChanged(oldPageId, trackers) {
 
   databaseWorkerPort.postMessage({
     type: "store_tracker_array",
     pageId: oldPageId,
-    trackers: trackers,
-    firstPartyDomain: firstPartyHost
+    trackers: trackers
   });
 }
 
@@ -142,7 +141,7 @@ onmessage = function(m) {
 
     case "page_changed":
       trackers = processWebRequests(m.data.oldPageId, m.data.firstPartyHost, m.data.webRequests);
-      onPageChanged(m.data.oldPageId, trackers, m.data.firstPartyHost)
+      onPageChanged(m.data.oldPageId, trackers)
       break;
 
     case "push_webrequests": 
