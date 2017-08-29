@@ -293,6 +293,10 @@ async function getPages() {
 }
 
 /**
+Still waiting to see what we think about supplying null input if no trackers present in tracker worker
+*/
+
+/**
  * returns an array of pages visited
  *
  * @returns {}
@@ -467,6 +471,16 @@ async function getDomainsByTrackerCount() {
   return query;
 }
 
+// unsure how to chain these
+async function emptyDB() {
+    let ttDb = await primaryDbPromise;
+    let emptyInferences = await ttDb.delete().from(Inferences).exec(); 
+    //let emptyTrackers = await ttDb.delete().from(Trackers).exec();
+    //let emptyPages = await ttDb.delete().from(Pages).exec();
+    return emptyInferences;
+}
+
+
 
 /* ========= */
 
@@ -532,6 +546,18 @@ export default async function makeQuery(query, args) {
       break;
     case "get_domains_no_trackers":
       res = await getDomainsNoTrackers();
+      break;
+    case "get_trackers_by_domain_count":
+      res = await getTrackersByDomainCount();
+      break;
+    case "get_inferences_by_tracker_count":
+      res = await getInferencesByTrackerCount();
+      break;
+    case "get_domains_by_tracker_count":
+      res = await getDomainsByTrackerCount();
+      break;
+    case "emptyDB":
+      res = await emptyDB();
       break;
   }
 
