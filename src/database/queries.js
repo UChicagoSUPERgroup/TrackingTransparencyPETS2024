@@ -421,15 +421,15 @@ get inferences by tracker count
 */
 
 async function getInferencesByTrackerCount() {
-  let ttDb = await dbPromise; 
   let query = await ttDb.select(Inferences.inference, lf.fn.count(Trackers.tracker))
-	.from(Trackers, Pages, Inferences)
- 	.where(lf.op.and(
+    .from(Trackers, Pages, Inferences)
+    .where(lf.op.and(
       Trackers.pageId.eq(Pages.id),
-      Inferences.pageId.eq(Pages.id)))
-    	.groupBy(Inferences.inferences)
-    	// .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
-    	.exec();
+      Inferences.pageId.eq(Pages.id)
+    ))
+    .groupBy(Inferences.inferences)
+    // .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
+    .exec();
   return query;
 }
 
@@ -440,12 +440,11 @@ get domains by tracker count
 */
 
 async function getDomainsByTrackerCount() {
-  let ttDb = await dbPromise; 
   let query = await ttDb.select(Pages.domain, lf.fn.count(lf.fn.distinct(Trackers.tracker)))
-	.from(Trackers, Pages)
- 	.where(Trackers.pageId.eq(Pages.id))
-  .groupBy(Pages.domain)
-  .exec();
+    .from(Trackers, Pages)
+    .where(Trackers.pageId.eq(Pages.id))
+    .groupBy(Pages.domain)
+    .exec();
   return query;
 }
 
@@ -476,11 +475,11 @@ async function getInferenceCount(inference) {
 
 // unsure how to chain these
 async function emptyDB() {
-    let ttDb = await primaryDbPromise;
     let emptyInferences = await ttDb.delete().from(Inferences).exec(); 
     //let emptyTrackers = await ttDb.delete().from(Trackers).exec();
     //let emptyPages = await ttDb.delete().from(Pages).exec();
     return emptyInferences;
+}
 
 /* ========= */
 
@@ -555,6 +554,7 @@ export default async function makeQuery(query, args) {
       break;
     case "get_inference_count":
       res = await getInferenceCount(args.inference);
+      break;
     case "emptyDB":
       res = await emptyDB();
       break;
