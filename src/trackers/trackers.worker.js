@@ -123,6 +123,10 @@ function processWebRequests(pageId, firstPartyHost, webRequests) {
     if (match) {
       trackersByPageId[pageId].add(match.name);
     }
+    else {
+      trackersByPageId[pageId].add(null); // add null if no trackers on page
+    }
+
   }
 
   return Array.from(trackersByPageId[pageId]);
