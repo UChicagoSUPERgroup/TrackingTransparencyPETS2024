@@ -1,3 +1,5 @@
+'use strict';
+
 var port = browser.runtime.connect({name:"port-from-infopage"});
 port.postMessage({greeting: "hello from infopage"});
 
@@ -206,13 +208,13 @@ async function runGeneralQueries(){
   }
 
   //set up list of all trackers
-  document.getElementById("showalltrackers").onclick = async () => {
-    let allTrackersPromise = queryDatabase("get_trackers", {});
-    let sumPagesPromise = queryDatabase("get_number_of_pages",{});
-    let allTrackers = await allTrackersPromise;
-    let sumPages = await sumPagesPromise;
-    makeAllTrackerList(allTrackers,sumPages);
-  }
+  // document.getElementById("showalltrackers").onclick = async () => {
+  //   let allTrackersPromise = queryDatabase("get_trackers", {});
+  //   let sumPagesPromise = queryDatabase("get_number_of_pages",{});
+  //   let allTrackers = await allTrackersPromise;
+  //   let sumPages = await sumPagesPromise;
+  //   makeAllTrackerList(allTrackers,sumPages);
+  // }
 
   //fill in the accordion lists with trackers and trackers + inferences
   let tracker_detailed_queries = [];
