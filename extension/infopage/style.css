@@ -1,13 +1,14 @@
 /* filling up to 100% */
 html, body, .row, .container-fluid {
     height:100%;
-}
-
+  }
+  
 h1 {
   margin-bottom: 20px;
   padding-bottom: 9px;
   border-bottom: 1px solid #eee;
 }
+
 p > a , h6 > a , h3 > a {
 	color: #800000;
 }
@@ -15,6 +16,9 @@ p > a:hover, h6 > a:hover , h3 > a:hover {
 	color: black;
 }
 
+.main {
+  padding: 50px;
+}
 
 /*
  * Sidebar
@@ -26,10 +30,11 @@ p > a:hover, h6 > a:hover , h3 > a:hover {
   bottom: 0;
   left: 0;
   z-index: 1000;
-  padding: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-  border-right: 1px solid #eee;
+  /* border-right: 1px solid #eee; */
 	background-color: #767676;
 	height: 100%;
 }
@@ -42,6 +47,7 @@ p > a:hover, h6 > a:hover , h3 > a:hover {
 
 .sidebar .nav-item {
   width: 100%;
+  padding-top: 5px;
 }
 
 .sidebar .nav-item + .nav-item {
@@ -49,13 +55,14 @@ p > a:hover, h6 > a:hover , h3 > a:hover {
 }
 
 .sidebar .nav-link {
-  border-radius: 0;
+  border-radius: 5px;
 }
 
 .nav-title{
 	color: white;
-	font-weight: bold;
-	border-top: 1px solid #eee;
+  font-weight: bold;
+  padding-top: 10pt;
+	/* border-top: 1px solid #eee; */
 }
 
 .nav-link, .nav-link:hover{

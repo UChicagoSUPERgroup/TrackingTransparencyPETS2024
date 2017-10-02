@@ -195,8 +195,6 @@ async function runGeneralQueries(){
   // fire off the queries we can right away
   // won't hold up execution until we have something awaiting them
   let trackerQueryPromise = queryDatabase("get_trackers", {count: 10});
-  let allTrackersPromise = queryDatabase("get_trackers", {});
-  let sumPagesPromise = queryDatabase("get_number_of_pages",{});
   let domainsByNumberOfTrackersPromise = queryDatabase("get_domains_with_number_of_trackers", {});
 
   //query for the top 10 trackers
@@ -208,9 +206,13 @@ async function runGeneralQueries(){
   }
 
   //set up list of all trackers
-  let allTrackers = await allTrackersPromise;
-  let sumPages = await sumPagesPromise;
-  makeAllTrackerList(allTrackers,sumPages);
+  document.getElementById("showalltrackers").onclick = async () => {
+    let allTrackersPromise = queryDatabase("get_trackers", {});
+    let sumPagesPromise = queryDatabase("get_number_of_pages",{});
+    let allTrackers = await allTrackersPromise;
+    let sumPages = await sumPagesPromise;
+    makeAllTrackerList(allTrackers,sumPages);
+  }
 
   //fill in the accordion lists with trackers and trackers + inferences
   let tracker_detailed_queries = [];
@@ -222,7 +224,7 @@ async function runGeneralQueries(){
         tracker_detailed_queries[i], true, "frequentTrackerListInferencing");
   }
   for (let i=0; i < tracker_query.length; i++){
-      args = {tracker: tracker_query[i].tracker, count: 20}
+      let args = {tracker: tracker_query[i].tracker, count: 20}
       tracker_list_queries[i] = await queryDatabase("get_domains_by_tracker", args);
       makeTrackerProfile(tracker_query[i].tracker,
         tracker_list_queries[i], false, "frequentTrackerList");

@@ -35,7 +35,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#where-are-they" role="tab">
-                  Which pages have the most trackers
+                  Which pages have the most trackers?
                 </a>
               </li>
               <li class="nav-item">
@@ -60,7 +60,7 @@
                 </a>
               </li>
 
-              <div class="nav-title">About/Misc.</div>
+              <div class="nav-title">About</div>
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#supergroup" role="tab">
                   About
@@ -69,8 +69,8 @@
             </ul>
           </nav>
 
-          <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
-            <h1>Tracking Transparency Dashboard</h1>
+          <main class="main col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
+            <h1 class="display-4">Tracking Transparency Dashboard</h1>
             <div class="tab-content">
               <div class="tab-pane fade show active" id="home" role="tabpanel">
                 <!-- we need more ideas for dashboard icons-->
@@ -116,37 +116,39 @@
                 </div>
 
               <div class="tab-pane fade" id="who-is-tracking" role="tabpanel">
-                  <div class="card">
-                    <h3 class="card-header">Who is tracking me?</h3>
-                    <div class="card-block">
+                  <div>
+                    <h3>Who is tracking me?</h3>
+                    <div>
                       <!--Keeping these buttons as an example of how to use and style buttons -->
-                      <button type="button" class="btn btn-block btn-primary"
+                      <!-- <h3
                         data-toggle="collapse" data-target="#who-is-tracking-accordion">
                         See your <b><span class="numberOfFrequentTrackers"></span></b> most
                         <b>frequently</b> encountered trackers
-                      </button><br>
-                      <div class="collapse" id="who-is-tracking-accordion" role="tablist">
+                      </h3><br> -->
+                      <p>Your <b><span class="numberOfFrequentTrackers"></span></b> most
+                        <b>frequently</b> encountered trackers</p>
+                      <div id="who-is-tracking-accordion" role="tablist">
                         <div id="frequentTrackerList"></div>
                       </div>
                       <br>
-                      <button type="button" class="btn btn-block btn-primary"
-                        data-toggle="collapse" data-target="#allTrackerList">
+                      <!-- <button type="button" class="btn btn-block btn-primary"
+                        data-toggle="collapse" data-target="#allTrackerList" id="showalltrackers">
                         See <b>all <span class="numberOfTrackers"></span></b>
                         trackers you've encountered
                       </button><br>
-                      <div class="collapse" id="allTrackerList" ></div>
+                      <div class="collapse" id="allTrackerList" ></div> -->
                     </div>
                   </div>
                 </div>
 
               <div class="tab-pane fade" id="where-are-they" role="tabpanel">
-                <div class="card">
-                  <h3 class="card-header">Where am I being tracked?</h3>
-                  <div class="card-block">
+                <div>
+                  <h3>Where am I being tracked?</h3>
+                  <div>
                     <h4 class="card-title">Sites with the most trackers</h4>
                     <ul class="domainList" id="sitesWithMostTrackers">
                     </ul>
-                    <button type="button" class="btn btn-primary"
+                    <button type="button" class="btn btn-default"
                       data-toggle="collapse" data-target="#see-more-domains-many-trackers">
                       See all domains with 10 or more trackers
                     </button>
@@ -165,27 +167,27 @@
                 </div>
 
               <div class="tab-pane fade" id="over-time" role="tabpanel">
-                  <div class="card">
-                    <h3 class="card-header">How has tracking affected me over time?</h3>
-                    <div class="card-block">
+                  <div>
+                    <h3>How has tracking affected me over time?</h3>
+                    <div>
                     </div>
                   </div>
               </div>
 
               <div class="tab-pane fade" id="how-are-they" role="tabpanel">
-                  <div class="card">
-                    <h3 class="card-header">How are they tracking me?</h3>
-                    <div class="card-block">
+                  <div>
+                    <h3>How are they tracking me?</h3>
+                    <div>
                     </div>
                   </div>
               </div>
 
               <div class="tab-pane fade" id="what-inferences" role="tabpanel">
-                  <div class="card">
-                    <h3 class="card-header">What might my most frequently
+                  <div>
+                    <h3>What might my most frequently
                       encountered trackers have inferred about my interests?</h3>
-                    <div class="card-block">
-                      <h6 class="card-title">These are your most frequently encountered trackers</h6>
+                    <div>
+                      <h6>These are your most frequently encountered trackers</h6>
                       <div id="what-inferences-accordion" role="tablist">
                         <div id="frequentTrackerListInferencing"></div>
                       </div>
