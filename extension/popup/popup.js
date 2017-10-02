@@ -33,9 +33,12 @@ async function onReady() {
   // get tab data with trackers and stuff here
   const tabData = await getTabData(tab.id);
   
-  if (typeof tabData.error == 'undefined') {
-    console.log(tabData);    
+  if (typeof tabData.error != 'undefined') {
+    return;
   }
+    
+  console.log(tabData);    
+  $("#pageinfo").show();
 
   /* looks something like:
     { 
