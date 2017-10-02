@@ -480,7 +480,7 @@ export default async function makeQuery(query, args) {
       res = await getInferences(args.count);
       break;
     case "get_page_visit_count_by_tracker":
-      res = await getPageVisitCountByTracker(args.tracker, args.count);
+      res = await getPageVisitCountByTracker(args.tracker);
       break;
     case "get_inferences_by_tracker":
       res = await getInferencesByTracker(args.tracker, args.count);

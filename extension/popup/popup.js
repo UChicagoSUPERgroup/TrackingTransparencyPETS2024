@@ -52,17 +52,20 @@ async function onReady() {
   * note that info about trackers on current page is NOT in the databse at the time this is run
   */
 
+  let title = tabData.title;
+  if (title.length >= 30) {
+    title = title.substring(0,30).concat("...");
+  }
+  $('#pagetitle').text(title);
+  $('#trackercount').text(tabData.trackers.length);
 
-  const parsedURL = parseUri(tab.url);
-  const query = await queryDatabase("get_tracker_with_inferences_by_domain", {domain: parsedURL.host});
-  $('#mosttrackername').text(query.tracker);
-  $('#mosttrackercount').text(query.count - 1);
-  $('#mostrackerinferences').text(query.inferences.join(", "));
-  // let title = tabs[0].title;
-  // if (title.length >= 30) {
-  //   title = title.substring(0,30).concat("...");
-  // }
-  // $('#pagetitle').text(title);
+  if (tabData.trackers.length > 0) {
+    const tracker = tabData.trackers[0];
+    const pagecount = queryDatabase("get_page_visit_count_by_tracker", {tracker: tracker})
+      $('#trackerinfo').show();
+      $('#trackername').text(tracker);
+      $('#trackerpagecount').text(await pagecount);
+  }
 
   // port.postMessage({ type: "request_info_current_page" });
   // port.postMessage({ type: "get_tracker_most_pages" });
