@@ -126,7 +126,7 @@ function processWebRequests(pageId, firstPartyHost, webRequests) {
   }
 
   if (trackersByPageId[pageId].size == 0) {
-    trackersByPageId[pageId].add(null);
+    trackersByPageId[pageId].add("null");
   }
 
   return Array.from(trackersByPageId[pageId]);
