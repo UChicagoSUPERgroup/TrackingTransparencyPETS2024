@@ -431,7 +431,7 @@ async function getDomainsByTrackerCount() {
 
 /**
  * Count of how many times an inference has been made
- * 
+ *
  * TODO: right now we use this on infopage and make a query for every single possible inferce
  * when it would be better just to have one query that returns counts of all inferences
  *
@@ -450,19 +450,64 @@ async function getInferenceCount(inference) {
   } else {
     res = "0";
   }
-  // console.log(res);
   return res;
 }
 
 // unsure how to chain these
 async function emptyDB() {
-    let emptyInferences = await ttDb.delete().from(Inferences).exec(); 
+    let emptyInferences = await ttDb.delete().from(Inferences).exec();
     //let emptyTrackers = await ttDb.delete().from(Trackers).exec();
     //let emptyPages = await ttDb.delete().from(Pages).exec();
     return emptyInferences;
 }
 
 /* ========= */
+
+const QUERIES = {
+  get_trackers: async args => await getTrackers(args.count),
+  get_inferences: async args => getInferences(args.count),
+  get_page_visit_count_by_tracker: async args => {
+    return await getPageVisitCountByTracker(args.tracker);
+  },
+  get_inferences_by_tracker: async args => {
+    return await getInferencesByTracker(args.tracker, args.count);
+  },
+  get_trackers_by_inference: async args => {
+    return await getTrackersByInference(args.inference, args.count);
+  },
+  get_trackers_by_domain: async args => await getTrackersByDomain(args.domain),
+  get_domains_by_tracker: async args => {
+    return await getDomainsByTracker(args.tracker, args.count);
+  },
+  get_trackers_by_inference_count: async args => {
+    return await getTrackersByInferenceCount(args.count);
+  },
+  get_pages_by_tracker_and_inference: async args => {
+    return await getPagesByTrackerAndInference(args.tracker, args.inference, args.count);
+  },
+  get_pages_with_number_of_trackers: async args => {
+    return await getPagesWithNumberOfTrackers(args.count);
+  },
+  // get_domains_with_number_of_trackers: async args => {
+  //   return await getDomainsWithNumberOfTrackers();
+  // }
+  get_pages_by_tracker_and_domain: async args => {
+    return await getPagesByTrackerAndDomain(args.tracker, args.domain, args.count);
+  },
+  get_number_of_pages: async () => await getNumberOfPages(),
+  get_tracker_with_inferences_by_domain: async args => {
+    return await getTrackerWithInferencesByDomain(args.domain);
+  },
+  get_info_about_tracker: async args => {
+    return await getInfoAboutTracker(args.tracker, args.inferenceCount, args.pageCount);
+  },
+  get_pages_no_trackers: async () => await getPagesNoTrackers(),
+  get_domains_no_trackers: async () => await getDomainsNoTrackers(),
+  get_inferences_by_tracker_count: async () => await getInferencesByTrackerCount(),
+  get_domains_by_tracker_count: async () => await getDomainsByTrackerCount(),
+  get_inference_count: async args => await getInferenceCount(args.inference),
+  emptyDB: async () => await emptyDB()
+}
 
 /**
  * makes a query given string query name and arguments object
@@ -471,72 +516,5 @@ async function emptyDB() {
  * @param  {Object} args - query arguments
  */
 export default async function makeQuery(query, args) {
-  let res;
-  switch (query) {
-    case "get_trackers":
-      res = await getTrackers(args.count);
-      break;
-    case "get_inferences":
-      res = await getInferences(args.count);
-      break;
-    case "get_page_visit_count_by_tracker":
-      res = await getPageVisitCountByTracker(args.tracker);
-      break;
-    case "get_inferences_by_tracker":
-      res = await getInferencesByTracker(args.tracker, args.count);
-      break;
-    case "get_trackers_by_inference":
-      res = await getTrackersByInference(args.inference, args.count);
-      break;
-    case "get_trackers_by_domain":
-      res = await getTrackersByDomain(args.domain);
-      break;
-    case "get_domains_by_tracker":
-      res = await getDomainsByTracker(args.tracker, args.count);
-      break;
-    case "get_trackers_by_inference_count":
-      res = await getTrackersByInferenceCount(args.count);
-      break;
-    case "get_pages_by_tracker_and_inference":
-      res = await getPagesByTrackerAndInference(args.tracker, args.inference, args.count);
-      break;
-    case "get_pages_with_number_of_trackers":
-      res = await getPagesWithNumberOfTrackers(args.count);
-      break;
-    // case "get_domains_with_number_of_trackers":
-      // res = await getDomainsWithNumberOfTrackers();
-      // break;
-    case "get_pages_by_tracker_and_domain":
-      res = await getPagesByTrackerAndDomain(args.tracker, args.domain, args.count);
-      break;
-    case "get_number_of_pages":
-      res = await getNumberOfPages();
-      break;
-    case "get_tracker_with_inferences_by_domain":
-      res = await getTrackerWithInferencesByDomain(args.domain);
-      break;
-    case "get_info_about_tracker":
-      res = await getInfoAboutTracker(args.tracker, args.inferenceCount, args.pageCount);
-      break;
-    case "get_pages_no_trackers":
-      res = await getPagesNoTrackers();
-      break;
-    case "get_domains_no_trackers":
-      res = await getDomainsNoTrackers();
-      break;
-    case "get_inferences_by_tracker_count":
-      res = await getInferencesByTrackerCount();
-      break;
-    case "get_domains_by_tracker_count":
-      res = await getDomainsByTrackerCount();
-      break;
-    case "get_inference_count":
-      res = await getInferenceCount(args.inference);
-      break;
-    case "emptyDB":
-      res = await emptyDB();
-      break;
-  }
-
-  return res;
+  return (QUERIES[query] || async () => {})(args);
 }
