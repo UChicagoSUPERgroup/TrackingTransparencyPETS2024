@@ -274,8 +274,6 @@ async function getPages() {
 }
 
 /**
-Still waiting to see what we think about supplying null input if no trackers present in tracker worker
-*/
 
 /**
  * returns an array of pages visited
@@ -286,16 +284,30 @@ Still waiting to see what we think about supplying null input if no trackers pre
 async function getPagesNoTrackers() {
   let query = await ttDb.select()
     .from(Pages)
-    .leftOuterJoin(Pages, Trackers.pageId.neq(Pages.id))
-    // .where(Trackers.isNull())
+    .leftOuterJoin(Pages, Trackers.pageId.eq(Pages.id))
+    .where(Trackers.tracker.isNull())
     .orderBy(Pages.id, lf.Order.ASC)
     .exec();
   return query;
 }
 
+
+/**
+ * returns an array of domains visited
+ *
+ * @returns {}
+ *
+ */
+
+
 async function getDomainsNoTrackers() {
-  const pages = await getPagesNoTrackers();
-  return pages;
+  let query = ttDb.select(Pages.domain, lf.fn.count(Trackers.tracker))
+  .from(Pages)
+  .leftOuterJoin(Pages, Trackers.pageId.eq(Pages.id))
+  .groupBy(Pages.domain)
+  .having((lf.fn.count(Trackers.tracker).eq(0)))
+  .orderBy(Pages.id, lf.Order.ASC)
+  return query;
 }
 
 /**
