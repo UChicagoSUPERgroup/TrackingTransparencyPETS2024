@@ -17,7 +17,10 @@ module.exports = {
 
     // content scripts
     inferencing_cs: './src/content_scripts/inferencing_cs.js',
-    overlay_cs: './src/content_scripts/overlay_cs.js'
+    overlay_cs: './src/content_scripts/overlay_cs.js',
+
+    popup: './src/popup/popup.js',
+    infopage: './src/infopage/infopage.js'
   },
   output: {
     // This copies each source entry into the extension dist folder named
@@ -34,12 +37,15 @@ module.exports = {
   //   //   // Babel options are in .babelrc
   //   //   loaders: ['babel-loader'],
   //   // }]
-    // loaders: [ 
-    //   { 
-    //     test: /\.worker.js$/, 
-    //     loader: 'worker-loader' 
-    //   } 
-    // ]
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" }
+        ]
+      }
+    ]
   },
   resolve: {
     // This allows you to import modules just like you would in a NodeJS app.
@@ -48,7 +54,8 @@ module.exports = {
       path.resolve(__dirname, 'src'),
       path.resolve(__dirname, "src/background_scripts"),
       path.resolve(__dirname, "src/database"),
-      path.resolve(__dirname, 'src/inferencing')
+      path.resolve(__dirname, 'src/inferencing'),
+      path.resolve(__dirname, 'src/infopage')
     ],
   },
   plugins: [
@@ -61,7 +68,8 @@ module.exports = {
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
-      'window.jQuery': 'jquery'
+      'window.jQuery': 'jquery',
+      Popper: ['popper.js', 'default']
     })
   ],
   // This will expose source map files so that errors will point to your

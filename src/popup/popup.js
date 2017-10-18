@@ -1,3 +1,7 @@
+import "bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 var port = browser.runtime.connect({name:"port-from-popup"});
 
 let queryId = 0;
