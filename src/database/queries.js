@@ -528,5 +528,5 @@ const QUERIES = {
  * @param  {Object} args - query arguments
  */
 export default async function makeQuery(query, args) {
-  return (QUERIES[query] || async () => {})(args);
+  return (QUERIES[query] || (async () => {}))(args);
 }
