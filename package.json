@@ -44,6 +44,6 @@
     "lodash": "^4.17.4",
     "lovefield": "^2.1.12",
     "popper.js": "^1.12.5",
-    "webextension-polyfill": "^0.1.1"
+    "webextension-polyfill": "^0.2.1"
   }
 }

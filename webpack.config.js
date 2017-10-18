@@ -46,6 +46,11 @@ module.exports = {
           { loader: "style-loader" },
           { loader: "css-loader" }
         ]
+      },
+      {
+        // workaround for https://github.com/webpack/webpack/issues/5828
+        test: require.resolve('webextension-polyfill'),
+        use: "imports-loader?browser=>undefined"
       }
     ]
   },
@@ -68,6 +73,7 @@ module.exports = {
     }),
     new webpack.IgnorePlugin(/jsdom$/),
     new webpack.ProvidePlugin({
+      browser: 'webextension-polyfill',
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
