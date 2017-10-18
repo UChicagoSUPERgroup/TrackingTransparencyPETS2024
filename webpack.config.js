@@ -49,6 +49,8 @@ module.exports = {
       },
       {
         // workaround for https://github.com/webpack/webpack/issues/5828
+        // see also https://github.com/mozilla/webextension-polyfill/issues/68
+        // if this is fixed we can remove this and instead use the ProvidePlugin below
         test: require.resolve('webextension-polyfill'),
         use: "imports-loader?browser=>undefined"
       }
@@ -73,7 +75,7 @@ module.exports = {
     }),
     new webpack.IgnorePlugin(/jsdom$/),
     new webpack.ProvidePlugin({
-      browser: 'webextension-polyfill',
+      //browser: 'webextension-polyfill',
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
