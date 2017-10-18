@@ -21,6 +21,12 @@ const tree = buildCategoryTree("../lib/inferencing_data/categories.json");
 // TODO: this function needs to be rewritten
 async function inferencingMessageListener(article, mainFrameReqId) {
 
+  // TODO: remove this when inferencing is working
+  if (article === "null") {
+    storeFakeInferenceInfo(mainFrameReqId);
+    return;
+  }
+
   const tr = await tree;
   // console.log(tr);
   // const secondLevelCats = tr.children.concat.apply([], tr.children.map(x => x.children));
@@ -48,4 +54,22 @@ async function inferencingMessageListener(article, mainFrameReqId) {
   // storeInference(inferenceInfo);
 
 
+}
+
+function storeFakeInferenceInfo(mainFrameReqId) {
+  const inferences =  ["Warehousing", "Major Kitchen Appliances", "Air Travel", "Beach Vacations"];
+
+  const randomInference = inferences[Math.floor(Math.random() * inferences.length)]
+
+  let inferenceInfo = {
+    inference: randomInference,
+    inferenceCategory: "",
+    threshold: Math.random(),
+    pageId: mainFrameReqId
+  }
+  // console.log("sending inference to database");
+  databaseWorkerPort.postMessage({
+    type: "store_inference",
+    info: inferenceInfo
+  });
 }
