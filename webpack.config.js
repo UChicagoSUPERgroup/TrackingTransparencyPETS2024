@@ -20,7 +20,9 @@ module.exports = {
     overlay_cs: './src/content_scripts/overlay_cs.js',
 
     popup: './src/popup/popup.js',
-    infopage: './src/infopage/infopage.js'
+    infopage: './src/infopage/infopage.js',
+    debugscreen: './src/debugscreen/debugscreen.js'
+
   },
   output: {
     // This copies each source entry into the extension dist folder named
