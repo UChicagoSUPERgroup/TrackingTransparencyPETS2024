@@ -198,7 +198,6 @@ function removeWWW(domainName){
 }
 
 async function runGeneralQueries(){
-  console.log("running general queries")
   // fire off the queries we can right away
   // won't hold up execution until we have something awaiting them
   let trackerQueryPromise = queryDatabase("get_trackers", {count: 10});
@@ -206,7 +205,6 @@ async function runGeneralQueries(){
 
   //query for the top 10 trackers
   let tracker_query = await trackerQueryPromise;
-  console.log(tracker_query);
   for (let i=0; i < tracker_query.length; i++){
     makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerList");
     makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerListInferencing");

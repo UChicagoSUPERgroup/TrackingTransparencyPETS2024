@@ -2,7 +2,7 @@ import * as d3 from "d3";
 
 'use strict';
 
-export default function makeTreemap(queryDatabase) {
+function makeTreemap(queryDatabase) {
   const margin = {top: 40, right: 10, bottom: 10, left: 10},
         width = 1000 - margin.left - margin.right,
         height = 600 - margin.top - margin.bottom;
@@ -25,7 +25,7 @@ export default function makeTreemap(queryDatabase) {
       .style("left", margin.left + "px")
       .style("top", margin.top + "px");
 
-  d3.json("categories.json", function(error, data) {
+  d3.json("/lib/categories.json", function(error, data) {
     if (error) throw error;
 
     queryDatabase("get_inferences", {count: null})
@@ -74,3 +74,5 @@ export default function makeTreemap(queryDatabase) {
     // });
   });
 }
+
+export default makeTreemap;
