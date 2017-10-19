@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src=extension/icons/super.svg alt="Markdownify" width="200">
+  <img src=https://super.cs.uchicago.edu/UChicagoSUPERnotext.svg alt="Markdownify" width="200">
   <br>
   Tracking Transparency
   <br>
@@ -13,12 +13,12 @@
 <!-- These are just placeholders and clearly need to be changed if kept-->
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/react)
+[![License](https://img.shields.io/github/contributors/cdnjs/cdnjs.svg)]() <!-- ideally license here -->
 [![Build Status](https://img.shields.io/teamcity/codebetter/bt428.svg)]()
 ![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)
 [![GitHub Issues](https://img.shields.io/github/issues/anfederico/Clairvoyant.svg)](https://github.com/UChicagoSUPERgroup/trackingtransparency/issues)
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/react)
 
 
 
