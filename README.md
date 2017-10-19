@@ -12,15 +12,12 @@
 
 <!-- These are just placeholders and clearly need to be changed if kept-->
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[![License](https://img.shields.io/github/contributors/cdnjs/cdnjs.svg)]() <!-- ideally license here -->
-[![Build Status](https://img.shields.io/teamcity/codebetter/bt428.svg)]()
-![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)
-[![GitHub Issues](https://img.shields.io/github/issues/anfederico/Clairvoyant.svg)](https://github.com/UChicagoSUPERgroup/trackingtransparency/issues)
-![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
-[![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/react)
-
-
+<p align="center">
+  <a href="#"><img src="https://img.shields.io/badge/build-passing-blue.svg"></a>
+  <a href="#"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat"></a>
+  <a href="#"><img src="https://img.shields.io/badge/contributors%20-9-lightgrey.svg"></a>
+  <a href="#"><img src="https://img.shields.io/badge/dependencies%20-up%20to%20date-blue.svg"></a>
+</p>
 
 ![screenshot](extension/icons/trackers.gif)
 
