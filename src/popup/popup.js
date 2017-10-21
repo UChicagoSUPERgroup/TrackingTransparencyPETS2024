@@ -1,41 +1,23 @@
-import "bootstrap";
+'use strict';
+
+import FrontendMessenger from '../frontendmessenger.js';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import $ from 'jquery';
+import popper from 'popper.js';
+window.jQuery = $;
+window.Popper = popper;
+require("bootstrap");
 
-var port = browser.runtime.connect({name:"port-from-popup"});
-
-let queryId = 0;
-let pendingQueries = {};
-
-port.onMessage.addListener(m => {
-  switch (m.type) {
-    case "tab_data_response":
-      pendingQueries[m.id](m.response);
-      break;
-
-    case "database_query_response":
-      // resolve pending query promise
-      pendingQueries[m.id](m.response);
-      break;
-
-    // case "info_current_page":
-    //   $('#pagetitle').text(m.info.title);
-    //   $('#inference').text(m.info.inference);
-    //   break;
-    // case "tracker_most_pages":
-    //   $('#mosttrackername').text(m.trackerName);
-    //   $('#mosttrackercount').text(m.count - 1);
-    //   $('#mostrackerinferences').text(m.inferences.join(", "));
-    //   break;
-  }
-});
+const frontendmessenger = new FrontendMessenger("popup");
 
 async function onReady() {
   const tabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
   const tab = tabs[0];
 
   // get tab data with trackers and stuff here
-  const tabData = await getTabData(tab.id);
+  const tabData = await frontendmessenger.getTabData(tab.id);
   
   if (typeof tabData.error != 'undefined') {
     return;
@@ -68,7 +50,7 @@ async function onReady() {
 
   if (tabData.trackers.length > 0) {
     const tracker = tabData.trackers[0];
-    const pagecount = queryDatabase("get_page_visit_count_by_tracker", {tracker: tracker})
+    const pagecount = frontendmessenger.queryDatabase("get_page_visit_count_by_tracker", {tracker: tracker})
       $('#trackerinfo').show();
       $('#trackername').text(tracker);
       $('#trackerpagecount').text(await pagecount);
@@ -77,44 +59,6 @@ async function onReady() {
   // port.postMessage({ type: "request_info_current_page" });
   // port.postMessage({ type: "get_tracker_most_pages" });
 
-}
-
-
-async function queryDatabase(query, args) {
-  let queryPromise = new Promise((resolve, reject) => {
-    pendingQueries[queryId] = resolve;
-  })
-  // pendingQueries[queryId].promise = queryPromise;
-  
-  port.postMessage({
-    type: "database_query",
-    src: "popup",
-    id: queryId,
-    query: query,
-    args: args
-  });
-  queryId++;
-
-  let res = await queryPromise;
-  return res;
-}
-
-async function getTabData(tabId) {
-  let queryPromise = new Promise((resolve, reject) => {
-    pendingQueries[queryId] = resolve;
-  })
-
-  port.postMessage({
-    type: "get_tab_data",
-    src: "popup",
-    id: queryId,
-    tabId: tabId
-  });
-  
-  queryId++;
-
-  let res = await queryPromise;
-  return res;
 }
 
 

@@ -1,20 +1,9 @@
-var port = browser.runtime.connect({name:"port-from-infopage"});
-port.postMessage({greeting: "hello from infopage"});
+import FrontendMessenger from '../frontendmessenger.js';
 
-let pendingQueries = {};
-var query;
-let queryId = 0;
+import $ from 'jquery';
+window.jQuery = $;
 
-port.onMessage.addListener(m => {
-  m = JSON.parse(m);
-  switch (m.type) {
-    case "database_query_response":
-      // resolve pending query promise
-      pendingQueries[m.id](m.response);
-      break;
-  }
-});
-
+const frontendmessenger = new FrontendMessenger("debugscreen");
 
 async function saveOptions(e) {
   e.preventDefault();
@@ -31,7 +20,7 @@ async function saveOptions(e) {
   }
   console.log(queryName, argsObject);
 
-  let query = await queryDatabase(queryName, argsObject);
+  let query = await frontendmessenger.queryDatabase(queryName, argsObject);
   console.log(query);
 
   document.getElementById("queryResult").textContent = JSON.stringify(query, null, 4);
@@ -39,25 +28,6 @@ async function saveOptions(e) {
 
 document.querySelector("form").addEventListener("submit", saveOptions);
 
-
-async function queryDatabase(query,args) {
-  let queryPromise = new Promise((resolve, reject) => {
-    pendingQueries[queryId] = resolve;
-  })
-  // pendingQueries[queryId].promise = queryPromise;
-
-  port.postMessage({
-    type: "database_query",
-    src: "infopage",
-    id: queryId,
-    query: query,
-    args: args
-  });
-  queryId++;
-
-  let res = await queryPromise;
-  return res;
-}
 
 document.addEventListener("click", (e) => {
   const clickTarget = e.target

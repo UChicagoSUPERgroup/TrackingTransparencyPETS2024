@@ -157,6 +157,7 @@ trackersWorker.onmessage = onTrackersWorkerMessage;
 
 let portFromPopup;
 let portFromInfopage;
+let portFromDebugscreen;
 /** 
  * listener function to run when connection is made with popup or infopage
  *
@@ -168,16 +169,17 @@ async function runtimeOnConnect(p) {
   if (p.name === "port-from-popup") {
     portFromPopup = p;
     portFromPopup.onMessage.addListener(messageListener);
-
   } else if (p.name === "port-from-infopage") {
     portFromInfopage = p;
     portFromInfopage.onMessage.addListener(messageListener);
+  } else if (p.name === "port-from-debugscreen") {
+    portFromDebugscreen = p;
+    portFromDebugscreen.onMessage.addListener(messageListener);
   }
 
 }
 
-let pendingPopupQueries = {};
-let pendingInfopageQueries = {};
+let pendingDatabaseQueries = {};
 /** listener for messags from popup and infopage
  *
  * @param  {Object} m - message
@@ -218,37 +220,29 @@ async function messageListener(m) {
     }
 
   } else if (m.type === "database_query") {
+    let port;
     if (m.src === "popup") {
-      let queryPromise = new Promise((resolve, reject) => {
-        pendingPopupQueries[m.id] = resolve;
-      });
-
-      databaseWorker.postMessage({
-        id: m.id,
-        type: m.type,
-        src: m.src,
-        query: m.query,
-        args: m.args
-      })
-
-      let res = await queryPromise;
-      portFromPopup.postMessage(res);
+      port = portFromPopup;
     } else if (m.src === "infopage") {
-      let queryPromise = new Promise((resolve, reject) => {
-        pendingInfopageQueries[m.id] = resolve;
-      });
-
-      databaseWorker.postMessage({
-        id: m.id,
-        type: m.type,
-        src: m.src,
-        query: m.query,
-        args: m.args
-      })
-
-      let res = await queryPromise;
-      portFromInfopage.postMessage(JSON.stringify(res));
+      port = portFromInfopage;
+    } else if (m.src === "debugscreen") {
+      port = portFromDebugscreen;
     }
+
+    let queryPromise = new Promise((resolve, reject) => {
+      pendingDatabaseQueries[m.id] = resolve;
+    });
+
+    databaseWorker.postMessage({
+      id: m.id,
+      type: m.type,
+      src: m.src,
+      query: m.query,
+      args: m.args
+    })
+
+    let res = await queryPromise;
+    port.postMessage(res);
   }
 
 }
@@ -257,13 +251,7 @@ async function messageListener(m) {
 function onDatabaseWorkerMessage(m) {
   // console.log('Message received from database worker', m);
   if (m.data.type === "database_query_response") {
-    if (m.data.dst === "background-debug") {
-      pendingDirectQueries[m.data.id](m.data);
-    } else if (m.data.dst === "popup") {
-      pendingPopupQueries[m.data.id](m.data);
-    } else if (m.data.dst === "infopage") {
-      pendingInfopageQueries[m.data.id](m.data);
-    }
+    pendingDatabaseQueries[m.data.id](m.data);
   }
 }
 
@@ -315,32 +303,4 @@ if (typeof browser.browserAction.setPopup === "undefined") {
         };
       browser.tabs.create(infopageData);
     });
-}
-
-
-let pendingDirectQueries = {};
-let directQueryId = 0;
-/** function to make direct queries to database from background script
- *
- * used for debugging
- *
- * @param  {string} query - name of query
- * @param  {Object} args - arguments for query
- */
-async function directQuery(query, args) {
-  let queryPromise = new Promise((resolve, reject) => {
-    pendingDirectQueries[directQueryId] = resolve;
-  });
-
-  databaseWorker.postMessage({
-    id: directQueryId,
-    type: "database_query",
-    src: "background-debug",
-    query: query,
-    args: args
-  });
-  directQueryId++;
-
-  let res = await queryPromise;
-  return res.response;
 }

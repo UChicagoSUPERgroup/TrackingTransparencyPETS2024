@@ -1,29 +1,25 @@
-import "bootstrap";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import makeTreemap from "./inferviz.js";
-
 'use strict';
 
-var port = browser.runtime.connect({name:"port-from-infopage"});
+import makeTreemap from "./inferviz.js";
+import FrontendMessenger from '../frontendmessenger.js';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery';
+import popper from 'popper.js';
+window.jQuery = $;
+window.Popper = popper;
+require("bootstrap");
+
+const port = browser.runtime.connect({name:"port-from-infopage"});
+const frontendmessenger = new FrontendMessenger("infopage", port);
+
 port.postMessage({greeting: "hello from infopage"});
 
 //extension conditions
 var getInferences = false;
 var enoughInfo = true;
 
-let pendingQueries = {};
-var query;
-let queryId = 0;
-
-port.onMessage.addListener(m => {
-  m = JSON.parse(m);
-  switch (m.type) {
-    case "database_query_response":
-      // resolve pending query promise
-      pendingQueries[m.id](m.response);
-      break;
-  }
-});
+port.onMessage.addListener(frontendmessenger.messageListener);
 
 async function onReady() {
 
@@ -200,8 +196,8 @@ function removeWWW(domainName){
 async function runGeneralQueries(){
   // fire off the queries we can right away
   // won't hold up execution until we have something awaiting them
-  let trackerQueryPromise = queryDatabase("get_trackers", {count: 10});
-  let domainsByNumberOfTrackersPromise = queryDatabase("get_domains_with_number_of_trackers", {});
+  let trackerQueryPromise = frontendmessenger.queryDatabase("get_trackers", {count: 10});
+  let domainsByNumberOfTrackersPromise = frontendmessenger.queryDatabase("get_domains_with_number_of_trackers", {});
 
   //query for the top 10 trackers
   let tracker_query = await trackerQueryPromise;
@@ -213,8 +209,8 @@ async function runGeneralQueries(){
 
   //set up list of all trackers
   // document.getElementById("showalltrackers").onclick = async () => {
-  //   let allTrackersPromise = queryDatabase("get_trackers", {});
-  //   let sumPagesPromise = queryDatabase("get_number_of_pages",{});
+  //   let allTrackersPromise = frontendmessenger.queryDatabase("get_trackers", {});
+  //   let sumPagesPromise = frontendmessenger.queryDatabase("get_number_of_pages",{});
   //   let allTrackers = await allTrackersPromise;
   //   let sumPages = await sumPagesPromise;
   //   makeAllTrackerList(allTrackers,sumPages);
@@ -225,13 +221,13 @@ async function runGeneralQueries(){
   let tracker_list_queries = [];
   for (let i=0; i < tracker_query.length; i++){
       let args = {tracker: tracker_query[i].tracker, inferenceCount: 3, pageCount: 15};
-      tracker_detailed_queries[i] = await queryDatabase("get_info_about_tracker", args)
+      tracker_detailed_queries[i] = await frontendmessenger.queryDatabase("get_info_about_tracker", args)
       makeTrackerProfile(tracker_query[i].tracker,
         tracker_detailed_queries[i], true, "frequentTrackerListInferencing");
   }
   for (let i=0; i < tracker_query.length; i++){
       let args = {tracker: tracker_query[i].tracker, count: 20}
-      tracker_list_queries[i] = await queryDatabase("get_domains_by_tracker", args);
+      tracker_list_queries[i] = await frontendmessenger.queryDatabase("get_domains_by_tracker", args);
       makeTrackerProfile(tracker_query[i].tracker,
         tracker_list_queries[i], false, "frequentTrackerList");
   }
@@ -240,7 +236,7 @@ async function runGeneralQueries(){
   let domainsByNumberOfTrackers = await domainsByNumberOfTrackersPromise;
   makeDomainsByTrackers(domainsByNumberOfTrackers);
 
-  makeTreemap(queryDatabase);
+  makeTreemap(frontendmessenger.queryDatabase);
 }
 
 
@@ -250,24 +246,4 @@ function escapeHTML(s) {
             .replace(/"/g, '&quot;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;');
-}
-
-//the function to make database queries
-async function queryDatabase(query,args) {
-  let queryPromise = new Promise((resolve, reject) => {
-    pendingQueries[queryId] = resolve;
-  })
-  // pendingQueries[queryId].promise = queryPromise;
-
-  port.postMessage({
-    type: "database_query",
-    src: "infopage",
-    id: queryId,
-    query: query,
-    args: args
-  });
-  queryId++;
-
-  let res = await queryPromise;
-  return res;
 }
