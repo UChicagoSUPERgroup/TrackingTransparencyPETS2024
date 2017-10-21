@@ -32,13 +32,12 @@ module.exports = {
     filename: '[name].js',
   },
   module: {
-  //   // // This transpiles all code (except for third party modules) using Babel.
-  //   // loaders: [{
-  //   //   exclude: /node_modules/,
-  //   //   test: /\.js$/,
-  //   //   // Babel options are in .babelrc
-  //   //   loaders: ['babel-loader'],
-  //   // }]
+    loaders: [{
+      exclude: /node_modules/,
+      test: /\.js$/,
+      // Babel options are in .babelrc
+      loaders: ['babel-loader'],
+    }],
     rules: [
       {
         test: /\.css$/,
@@ -73,14 +72,10 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
-    new webpack.IgnorePlugin(/jsdom$/),
-    new webpack.ProvidePlugin({
-      //browser: 'webextension-polyfill',
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery',
-      Popper: ['popper.js', 'default']
-    })
+    new webpack.IgnorePlugin(/jsdom$/)
+    // new webpack.ProvidePlugin({
+    //   browser: 'webextension-polyfill'
+    // })
   ],
   // This will expose source map files so that errors will point to your
   // original source files instead of the transpiled files.
