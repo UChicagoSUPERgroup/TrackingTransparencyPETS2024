@@ -67,11 +67,11 @@ $('document').ready(onReady());
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("show-more-btn")) {
 
-    let infopageData = {
+    let dashboardData = {
       active: true,
-      url: "../infopage/index.html"
+      url: "../dashboard/index.html"
       };
-    browser.tabs.create(infopageData);
+    browser.tabs.create(dashboardData);
 
   }
 });
