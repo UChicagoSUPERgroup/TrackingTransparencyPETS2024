@@ -20,6 +20,7 @@ module.exports = {
     overlay_cs: './src/content_scripts/overlay_cs.js',
 
     popup: './src/popup/popup.js',
+    dashboard: './src/dashboard/dashboard.js',
     infopage: './src/infopage/infopage.js',
     debugscreen: './src/debugscreen/debugscreen.js'
 
@@ -32,13 +33,10 @@ module.exports = {
     filename: '[name].js',
   },
   module: {
-    loaders: [{
-      exclude: /node_modules/,
-      test: /\.js$/,
-      // Babel options are in .babelrc
-      loaders: ['babel-loader'],
-    }],
     rules: [
+      { 
+        test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" 
+      },
       {
         test: /\.css$/,
         use: [
@@ -69,13 +67,11 @@ module.exports = {
   plugins: [
     // Since some NodeJS modules expect to be running in Node, it is helpful
     // to set this environment var to avoid reference errors.
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
+    // new webpack.DefinePlugin({
+    //   'process.env.NODE_ENV': JSON.stringify('production'),
+    // }),
     new webpack.IgnorePlugin(/jsdom$/)
-    // new webpack.ProvidePlugin({
-    //   browser: 'webextension-polyfill'
-    // })
+    // new webpack.optimize.UglifyJsPlugin()
   ],
   // This will expose source map files so that errors will point to your
   // original source files instead of the transpiled files.
