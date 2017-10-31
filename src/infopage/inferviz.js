@@ -28,7 +28,7 @@ function makeTreemap(queryDatabase) {
   d3.json("/lib/categories.json", function(error, data) {
     if (error) throw error;
 
-    queryDatabase("get_inferences", {count: null})
+    queryDatabase("getInferences", {count: null})
     .then(arr => {
       let leaves = {};
       arr.forEach(item => {

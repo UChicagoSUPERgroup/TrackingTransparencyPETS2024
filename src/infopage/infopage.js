@@ -196,40 +196,40 @@ function removeWWW(domainName){
 async function runGeneralQueries(){
   // fire off the queries we can right away
   // won't hold up execution until we have something awaiting them
-  let trackerQueryPromise = frontendmessenger.queryDatabase("get_trackers", {count: 10});
-  let domainsByNumberOfTrackersPromise = frontendmessenger.queryDatabase("get_domains_with_number_of_trackers", {});
+  let trackerQueryPromise = frontendmessenger.queryDatabase("getTrackers", {count: 10});
+  let domainsByNumberOfTrackersPromise = frontendmessenger.queryDatabase("getDomainsWithNumberOfTrackers", {});
 
   //query for the top 10 trackers
-  let tracker_query = await trackerQueryPromise;
-  for (let i=0; i < tracker_query.length; i++){
-    makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerList");
-    makeTrackerAccordion(tracker_query[i].tracker, "frequentTrackerListInferencing");
-    $('.numberOfFrequentTrackers').html(tracker_query.length);
+  let trackerQuery = await trackerQueryPromise;
+  for (let i=0; i < trackerQuery.length; i++){
+    makeTrackerAccordion(trackerQuery[i].tracker, "frequentTrackerList");
+    makeTrackerAccordion(trackerQuery[i].tracker, "frequentTrackerListInferencing");
+    $('.numberOfFrequentTrackers').html(trackerQuery.length);
   }
 
   //set up list of all trackers
   // document.getElementById("showalltrackers").onclick = async () => {
-  //   let allTrackersPromise = frontendmessenger.queryDatabase("get_trackers", {});
-  //   let sumPagesPromise = frontendmessenger.queryDatabase("get_number_of_pages",{});
+  //   let allTrackersPromise = frontendmessenger.queryDatabase("getTrackers", {});
+  //   let sumPagesPromise = frontendmessenger.queryDatabase("getNumberOfPages",{});
   //   let allTrackers = await allTrackersPromise;
   //   let sumPages = await sumPagesPromise;
   //   makeAllTrackerList(allTrackers,sumPages);
   // }
 
   //fill in the accordion lists with trackers and trackers + inferences
-  let tracker_detailed_queries = [];
-  let tracker_list_queries = [];
-  for (let i=0; i < tracker_query.length; i++){
-      let args = {tracker: tracker_query[i].tracker, inferenceCount: 3, pageCount: 15};
-      tracker_detailed_queries[i] = await frontendmessenger.queryDatabase("get_info_about_tracker", args)
-      makeTrackerProfile(tracker_query[i].tracker,
-        tracker_detailed_queries[i], true, "frequentTrackerListInferencing");
+  let trackerDetailedQueries = [];
+  let trackerListQueries = [];
+  for (let i=0; i < trackerQuery.length; i++){
+      let args = {tracker: trackerQuery[i].tracker, inferenceCount: 3, pageCount: 15};
+      trackerDetailedQueries[i] = await frontendmessenger.queryDatabase("getInfoAboutTracker", args)
+      makeTrackerProfile(trackerQuery[i].tracker,
+        trackerDetailedQueries[i], true, "frequentTrackerListInferencing");
   }
-  for (let i=0; i < tracker_query.length; i++){
-      let args = {tracker: tracker_query[i].tracker, count: 20}
-      tracker_list_queries[i] = await frontendmessenger.queryDatabase("get_domains_by_tracker", args);
-      makeTrackerProfile(tracker_query[i].tracker,
-        tracker_list_queries[i], false, "frequentTrackerList");
+  for (let i=0; i < trackerQuery.length; i++){
+      let args = {tracker: trackerQuery[i].tracker, count: 20}
+      trackerListQueries[i] = await frontendmessenger.queryDatabase("getDomainsByTracker", args);
+      makeTrackerProfile(trackerQuery[i].tracker,
+        trackerListQueries[i], false, "frequentTrackerList");
   }
 
   //query for domains with the most trackers

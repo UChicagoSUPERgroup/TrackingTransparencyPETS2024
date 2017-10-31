@@ -476,48 +476,26 @@ async function emptyDB() {
 /* ========= */
 
 const QUERIES = {
-  get_trackers: async args => await getTrackers(args.count),
-  get_inferences: async args => getInferences(args.count),
-  get_page_visit_count_by_tracker: async args => {
-    return await getPageVisitCountByTracker(args.tracker);
-  },
-  get_inferences_by_tracker: async args => {
-    return await getInferencesByTracker(args.tracker, args.count);
-  },
-  get_trackers_by_inference: async args => {
-    return await getTrackersByInference(args.inference, args.count);
-  },
-  get_trackers_by_domain: async args => await getTrackersByDomain(args.domain),
-  get_domains_by_tracker: async args => {
-    return await getDomainsByTracker(args.tracker, args.count);
-  },
-  get_trackers_by_inference_count: async args => {
-    return await getTrackersByInferenceCount(args.count);
-  },
-  get_pages_by_tracker_and_inference: async args => {
-    return await getPagesByTrackerAndInference(args.tracker, args.inference, args.count);
-  },
-  get_pages_with_number_of_trackers: async args => {
-    return await getPagesWithNumberOfTrackers(args.count);
-  },
-  // get_domains_with_number_of_trackers: async args => {
-  //   return await getDomainsWithNumberOfTrackers();
-  // }
-  get_pages_by_tracker_and_domain: async args => {
-    return await getPagesByTrackerAndDomain(args.tracker, args.domain, args.count);
-  },
-  get_number_of_pages: async () => await getNumberOfPages(),
-  get_tracker_with_inferences_by_domain: async args => {
-    return await getTrackerWithInferencesByDomain(args.domain);
-  },
-  get_info_about_tracker: async args => {
-    return await getInfoAboutTracker(args.tracker, args.inferenceCount, args.pageCount);
-  },
-  get_pages_no_trackers: async () => await getPagesNoTrackers(),
-  get_domains_no_trackers: async () => await getDomainsNoTrackers(),
-  get_inferences_by_tracker_count: async () => await getInferencesByTrackerCount(),
-  get_domains_by_tracker_count: async () => await getDomainsByTrackerCount(),
-  get_inference_count: async args => await getInferenceCount(args.inference),
+  getTrackers: async args => await getTrackers(args.count),
+  getInferences: async args => getInferences(args.count),
+  getPageVisitCountByTracker: async args => await getPageVisitCountByTracker(args.tracker),
+  getInferencesByTracker: async args => await getInferencesByTracker(args.tracker, args.count),
+  getTrackersByInference: async args => await getTrackersByInference(args.inference, args.count),
+  getTrackersByDomain: async args => await getTrackersByDomain(args.domain),
+  getDomainsByTracker: async args => await getDomainsByTracker(args.tracker, args.count),
+  getTrackersByInferenceCount: async args => await getTrackersByInferenceCount(args.count),
+  getPagesByTrackerAndInference: async args => await getPagesByTrackerAndInference(args.tracker, args.inference, args.count),
+  getPagesWithNumberOfTrackers: async args => await getPagesWithNumberOfTrackers(args.count),
+  getDomainsWithNumberOfTrackers: async args => await getDomainsWithNumberOfTrackers(),
+  getPagesByTrackerAndDomain: async args => await getPagesByTrackerAndDomain(args.tracker, args.domain, args.count),
+  getNumberOfPages: async () => await getNumberOfPages(),
+  getTrackerWithInferencesByDomain: async args => await getTrackerWithInferencesByDomain(args.domain),
+  getInfoAboutTracker: async args => await getInfoAboutTracker(args.tracker, args.inferenceCount, args.pageCount),
+  getPagesNoTrackers: async () => await getPagesNoTrackers(),
+  getDomainsNoTrackers: async () => await getDomainsNoTrackers(),
+  getInferencesByTrackerCount: async () => await getInferencesByTrackerCount(),
+  getDomainsByTrackerCount: async () => await getDomainsByTrackerCount(),
+  getInferenceCount: async args => await getInferenceCount(args.inference),
   emptyDB: async () => await emptyDB()
 }
 

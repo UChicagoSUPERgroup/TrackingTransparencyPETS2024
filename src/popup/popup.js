@@ -50,14 +50,14 @@ async function onReady() {
 
   if (tabData.trackers.length > 0) {
     const tracker = tabData.trackers[0];
-    const pagecount = frontendmessenger.queryDatabase("get_page_visit_count_by_tracker", {tracker: tracker})
+    const pagecount = frontendmessenger.queryDatabase("getPageVisitCountByTracker", {tracker: tracker})
       $('#trackerinfo').show();
       $('#trackername').text(tracker);
       $('#trackerpagecount').text(await pagecount);
   }
 
-  // port.postMessage({ type: "request_info_current_page" });
-  // port.postMessage({ type: "get_tracker_most_pages" });
+  // port.postMessage({ type: "requestInfoCurrentPage" });
+  // port.postMessage({ type: "getTrackerMostPages" });
 
 }
 
