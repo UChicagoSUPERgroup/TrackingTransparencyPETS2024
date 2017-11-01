@@ -27,6 +27,7 @@
     },
     "background": {
         "scripts": [
+            "lib/browser-polyfill.min.js",
             "dist/userstudy.js",
             "dist/background.js"
         ],
@@ -40,6 +41,7 @@
                 "stylesheets/overlay.css"
             ],
             "js": [
+                "lib/browser-polyfill.min.js",
                 "dist/overlay_cs.js",
                 "dist/inferencing_cs.js"
             ],

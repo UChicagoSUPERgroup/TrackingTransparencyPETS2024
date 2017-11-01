@@ -45,13 +45,6 @@ module.exports = {
           { loader: "style-loader" },
           { loader: "css-loader" }
         ]
-      },
-      {
-        // workaround for https://github.com/webpack/webpack/issues/5828
-        // see also https://github.com/mozilla/webextension-polyfill/issues/68
-        // if this is fixed we can remove this and instead use the ProvidePlugin below
-        test: require.resolve('webextension-polyfill'),
-        use: "imports-loader?browser=>undefined"
       }
     ]
   },
