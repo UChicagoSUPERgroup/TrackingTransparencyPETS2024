@@ -26,7 +26,7 @@ async function onMessage(m) {
       break;
 
     case "database_query":
-      handleQuery(m.data.id, m.data.src, m.data.query, m.data.args);
+      handleQuery(m.data);
       break;
 
     case "trackers_worker_port":
@@ -62,15 +62,14 @@ async function onMessage(m) {
  * @param  {string} query - query name
  * @param  {Object} args - query arguments
  */
-async function handleQuery(id, dst, query, args) {
+async function handleQuery(data) {
     
-  const res = await makeQuery(query, args);
+  const res = await makeQuery(data.query, data.args);
 
   if (res) {
     postMessage({
       type: "database_query_response",
-      id: id,
-      dst: dst,
+      id: data.id,
       response: res
     });
   }

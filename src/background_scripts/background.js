@@ -150,102 +150,45 @@ async function updateTrackers(tabId) {
 /* INTRA-EXTENSION MESSAGE LISTENERS */
 /* ================================= */
 
-browser.runtime.onConnect.addListener(runtimeOnConnect);
-browser.runtime.onMessage.addListener(onContentScriptMessage);
 databaseWorker.onmessage = onDatabaseWorkerMessage;
 trackersWorker.onmessage = onTrackersWorkerMessage;
 
-let portFromPopup;
-let portFromInfopage;
-let portFromDebugscreen;
-/** 
- * listener function to run when connection is made with popup or infopage
- *
- * @param  {Object} p - port object
- * @param {string} p.name - name of port object
- */
-async function runtimeOnConnect(p) {
+async function getTabData(tabId) {
+  if (typeof tabData[tabId] == 'undefined') {
+      return null;
 
-  if (p.name === "port-from-popup") {
-    portFromPopup = p;
-    portFromPopup.onMessage.addListener(messageListener);
-  } else if (p.name === "port-from-infopage") {
-    portFromInfopage = p;
-    portFromInfopage.onMessage.addListener(messageListener);
-  } else if (p.name === "port-from-debugscreen") {
-    portFromDebugscreen = p;
-    portFromDebugscreen.onMessage.addListener(messageListener);
+  } else {
+
+    let data = tabData[tabId];
+
+    await updateTrackers(tabId);
+
+    data.inference = "Warehousing";
+
+    return data;
   }
-
 }
+window.getTabData = getTabData; // exposes function to other extension components
 
+let queryId = 0;
 let pendingDatabaseQueries = {};
-/** listener for messags from popup and infopage
- *
- * @param  {Object} m - message
- */
-async function messageListener(m) {
+async function queryDatabase(query,args) {
+  let queryPromise = new Promise((resolve) => {
+    pendingDatabaseQueries[queryId] = resolve;
+  });
 
-  let activeTabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
-  let activeTab = activeTabs[0];
+  databaseWorker.postMessage({
+    type: "database_query",
+    id: queryId,
+    query: query,
+    args: args
+  });
+  queryId++;
 
-  if (m.type === "get_tab_data") {
-
-    if (typeof tabData[m.tabId] == 'undefined') {
-      if (m.src === "popup") {
-        portFromPopup.postMessage({
-          id: m.id,
-          type: "tab_data_response",
-          response: {
-            error: "No tab data"
-          }
-        });
-      }
-
-    } else {
-
-      let data = tabData[m.tabId];
-
-      await updateTrackers(m.tabId);
-
-      data.inference = "Warehousing";
-
-      if (m.src === "popup") {
-        portFromPopup.postMessage({
-          id: m.id,
-          type: "tab_data_response",
-          response: data
-        });
-      }
-    }
-
-  } else if (m.type === "database_query") {
-    let port;
-    if (m.src === "popup") {
-      port = portFromPopup;
-    } else if (m.src === "infopage") {
-      port = portFromInfopage;
-    } else if (m.src === "debugscreen") {
-      port = portFromDebugscreen;
-    }
-
-    let queryPromise = new Promise((resolve, reject) => {
-      pendingDatabaseQueries[m.id] = resolve;
-    });
-
-    databaseWorker.postMessage({
-      id: m.id,
-      type: m.type,
-      src: m.src,
-      query: m.query,
-      args: m.args
-    })
-
-    let res = await queryPromise;
-    port.postMessage(res);
-  }
-
+  let res = await queryPromise;
+  return res.response;
 }
+window.queryDatabase = queryDatabase; // exposes function to other extension components 
 
 /* listener for messages recieved from database worker */
 function onDatabaseWorkerMessage(m) {
