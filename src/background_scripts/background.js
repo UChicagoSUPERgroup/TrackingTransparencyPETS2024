@@ -150,8 +150,20 @@ async function updateTrackers(tabId) {
 /* INTRA-EXTENSION MESSAGE LISTENERS */
 /* ================================= */
 
+// browser.runtime.onConnect.addListener(runtimeOnConnect);
+browser.runtime.onMessage.addListener(onContentScriptMessage);
 databaseWorker.onmessage = onDatabaseWorkerMessage;
 trackersWorker.onmessage = onTrackersWorkerMessage;
+
+// -/** 
+// - * listener function to run when connection is made with popup or infopage
+// - * if we wanted to implement messaging between popup/dashboard and background we would do it here
+// - *
+// - * @param  {Object} p - port object
+// - * @param {string} p.name - name of port object
+// - */
+// -async function runtimeOnConnect(p) {
+// }
 
 async function getTabData(tabId) {
   if (typeof tabData[tabId] == 'undefined') {
