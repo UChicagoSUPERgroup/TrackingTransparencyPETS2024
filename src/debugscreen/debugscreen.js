@@ -1,9 +1,8 @@
-import FrontendMessenger from '../frontendmessenger.js';
+'use strict';
 
 import $ from 'jquery';
 window.jQuery = $;
 
-const frontendmessenger = new FrontendMessenger("debugscreen");
 
 async function saveOptions(e) {
   e.preventDefault();
@@ -20,7 +19,8 @@ async function saveOptions(e) {
   }
   console.log(queryName, argsObject);
 
-  let query = await frontendmessenger.queryDatabase(queryName, argsObject);
+  const background = await browser.runtime.getBackgroundPage();
+  let query = await background.queryDatabase(queryName, argsObject);
   console.log(query);
 
   document.getElementById("queryResult").textContent = JSON.stringify(query, null, 4);

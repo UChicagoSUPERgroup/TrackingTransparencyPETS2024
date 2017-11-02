@@ -1,7 +1,6 @@
 'use strict';
 
 import makeTreemap from "./inferviz.js";
-import FrontendMessenger from '../frontendmessenger.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import $ from 'jquery';
@@ -10,16 +9,9 @@ window.jQuery = $;
 window.Popper = popper;
 require("bootstrap");
 
-const port = browser.runtime.connect({name:"port-from-infopage"});
-const frontendmessenger = new FrontendMessenger("infopage", port);
-
-port.postMessage({greeting: "hello from infopage"});
-
 //extension conditions
 var getInferences = false;
 var enoughInfo = true;
-
-port.onMessage.addListener(frontendmessenger.messageListener);
 
 async function onReady() {
 
@@ -194,10 +186,11 @@ function removeWWW(domainName){
 }
 
 async function runGeneralQueries(){
+  const background = await browser.runtime.getBackgroundPage();
   // fire off the queries we can right away
   // won't hold up execution until we have something awaiting them
-  let trackerQueryPromise = frontendmessenger.queryDatabase("getTrackers", {count: 10});
-  let domainsByNumberOfTrackersPromise = frontendmessenger.queryDatabase("getDomainsWithNumberOfTrackers", {});
+  let trackerQueryPromise = background.queryDatabase("getTrackers", {count: 10});
+  let domainsByNumberOfTrackersPromise = background.queryDatabase("getDomainsWithNumberOfTrackers", {});
 
   //query for the top 10 trackers
   let trackerQuery = await trackerQueryPromise;
@@ -209,8 +202,8 @@ async function runGeneralQueries(){
 
   //set up list of all trackers
   // document.getElementById("showalltrackers").onclick = async () => {
-  //   let allTrackersPromise = frontendmessenger.queryDatabase("getTrackers", {});
-  //   let sumPagesPromise = frontendmessenger.queryDatabase("getNumberOfPages",{});
+  //   let allTrackersPromise = background.queryDatabase("getTrackers", {});
+  //   let sumPagesPromise = background.queryDatabase("getNumberOfPages",{});
   //   let allTrackers = await allTrackersPromise;
   //   let sumPages = await sumPagesPromise;
   //   makeAllTrackerList(allTrackers,sumPages);
@@ -221,13 +214,13 @@ async function runGeneralQueries(){
   let trackerListQueries = [];
   for (let i=0; i < trackerQuery.length; i++){
       let args = {tracker: trackerQuery[i].tracker, inferenceCount: 3, pageCount: 15};
-      trackerDetailedQueries[i] = await frontendmessenger.queryDatabase("getInfoAboutTracker", args)
+      trackerDetailedQueries[i] = await background.queryDatabase("getInfoAboutTracker", args)
       makeTrackerProfile(trackerQuery[i].tracker,
         trackerDetailedQueries[i], true, "frequentTrackerListInferencing");
   }
   for (let i=0; i < trackerQuery.length; i++){
       let args = {tracker: trackerQuery[i].tracker, count: 20}
-      trackerListQueries[i] = await frontendmessenger.queryDatabase("getDomainsByTracker", args);
+      trackerListQueries[i] = await background.queryDatabase("getDomainsByTracker", args);
       makeTrackerProfile(trackerQuery[i].tracker,
         trackerListQueries[i], false, "frequentTrackerList");
   }
@@ -236,7 +229,7 @@ async function runGeneralQueries(){
   let domainsByNumberOfTrackers = await domainsByNumberOfTrackersPromise;
   makeDomainsByTrackers(domainsByNumberOfTrackers);
 
-  makeTreemap(frontendmessenger.queryDatabase);
+  makeTreemap(background.queryDatabase);
 }
 
 
