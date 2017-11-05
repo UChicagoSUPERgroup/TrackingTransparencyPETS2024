@@ -16,4 +16,6 @@
 // var article = new Readability(uri, doc).parse();
 // console.log(article);
 
-browser.runtime.sendMessage({ type: "parsed_page", article: "null" });
+export default function makeInference() {
+    browser.runtime.sendMessage({ type: "parsed_page", article: "null" });
+}

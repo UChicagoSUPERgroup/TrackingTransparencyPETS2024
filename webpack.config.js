@@ -16,8 +16,7 @@ module.exports = {
     database_worker: './src/database/database.worker.js',
 
     // content scripts
-    inferencing_cs: './src/content_scripts/inferencing_cs.js',
-    overlay_cs: './src/content_scripts/overlay_cs.js',
+    content: './src/content_scripts/content.js',
 
     popup: './src/popup/popup.js',
     dashboard: './src/dashboard/dashboard.js',
@@ -52,6 +51,7 @@ module.exports = {
       'node_modules',
       path.resolve(__dirname, 'src'),
       path.resolve(__dirname, "src/background_scripts"),
+      path.resolve(__dirname, "src/content_scripts"),
       path.resolve(__dirname, "src/database"),
       path.resolve(__dirname, 'src/inferencing'),
       path.resolve(__dirname, 'src/infopage')

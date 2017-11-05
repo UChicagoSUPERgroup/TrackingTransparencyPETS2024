@@ -42,8 +42,7 @@
             ],
             "js": [
                 "lib/browser-polyfill.min.js",
-                "dist/overlay_cs.js",
-                "dist/inferencing_cs.js"
+                "dist/content.js"
             ],
             "run_at": "document_idle",
             "all_frames": false

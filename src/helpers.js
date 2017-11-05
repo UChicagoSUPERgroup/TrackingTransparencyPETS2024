@@ -23,3 +23,7 @@ export function readTextFile(file) {
 export function deserialize(object) {
   return typeof object == 'string' ? JSON.parse(object) : object;
 }
+
+export function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

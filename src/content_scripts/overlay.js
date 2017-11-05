@@ -1,10 +1,11 @@
+'use strict';
+
+import {sleep} from 'helpers.js';
+
 /* OVERLAY */
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
-async function injectOverlay() {
+export default async function injectOverlay() {
   const q = await browser.storage.local.get("overlayCondition");
 
   if (q.overlayCondition == "none") {
@@ -27,4 +28,3 @@ async function injectOverlay() {
     overlay.parentElement.removeChild(overlay);
   });
 }
-injectOverlay();
