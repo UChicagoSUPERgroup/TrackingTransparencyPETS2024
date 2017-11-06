@@ -24,8 +24,8 @@ browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
 browser.tabs.onRemoved.addListener(clearTabData);
 
 
-/** sends a message with information about each outgoing
- * web request to trackers worker
+/** Sends a message with information about each outgoing
+ * web request to trackers worker.
  * 
  * @param  {Object} details - object from onBeforeRequest listener
  * @param  {string} details.type - type of request (i.e. "main_frame")
@@ -43,15 +43,15 @@ async function logRequest(details) {
   }
 }
 
-/** called by listeners when user navigates to a new page
+/** Called by listeners when user navigates to a new page
  * 
- * creates a new page id, associates page with the current tab, sends info about page to database worker
+ * Creates a new page id, associates page with the current tab, sends info about page to database worker.
  * 
  * @param  {Object} details - object from onBeforeRequest or onHistoryStateUpdated listener
- * @param {Number} details.frameId - frame id (should be 0 for main frame)
- * @param {Number} details.tabId - tab id
+ * @param {number} details.frameId - frame id (should be 0 for main frame)
+ * @param {number} details.tabId - tab id
  * @param {string} details.url - url
- * @param {Number} details.timeStamp - timestamp
+ * @param {number} details.timeStamp - timestamp
  */
 async function updateMainFrameInfo(details) {
 
@@ -101,8 +101,8 @@ function recordNewPage(tabId, url, title) {
 }
 
 /**
- * clears tabData info for a tab
- * called when page changed/reloaded or tab closed
+ * Clears tabData info for a tab.
+ * Called when page changed/reloaded or tab closed.
  * 
  * @param  {} tabId - tab's id
  */
@@ -151,48 +151,15 @@ async function updateTrackers(tabId) {
 /* ================================= */
 
 // browser.runtime.onConnect.addListener(runtimeOnConnect);
+browser.runtime.onMessage.addListener(runtimeOnMessage);
 databaseWorker.onmessage = onDatabaseWorkerMessage;
 trackersWorker.onmessage = onTrackersWorkerMessage;
 
-// let ports = {};
-
-/** 
-- * listener function to run when connection is made with popup or infopage
-- *
-- * @param  {Object} p - port object
-- * @param {string} p.name - name of port object
-- */
-// async function runtimeOnConnect(p) {
-//   ports[name] = p;
-//   p.onMessage.addListener(messageListener);
-//   return;
-// }
-
-/** listener for messags from popup and infopage
-- *
-- * @param  {Object} m - message
-- */
-// async function messageListener(m) {
-//   if (!m.type) {
-//     // badly formed message
-//     return;
-//   }
-  
-//   let response;
-//   let port = ports[m.port];
-
-//   switch (m.type) {
-//     case "queryDatabase":
-//       response = await queryDatabase(m.query, m.args);
-//       port.postMessage(response);
-//       break;
-//     case "getTabData":
-//       response = await getTabData(m.tabId);
-//       port.postMessage(response);
-//       break;
-//   }
-// }
-
+/**
+ * Gets tabData for given tab id, updating the trackers worker as necessary.
+ * 
+ * @param  {number} tabId
+ */
 async function getTabData(tabId) {
   if (typeof tabData[tabId] == 'undefined') {
       return null;
@@ -212,7 +179,14 @@ window.getTabData = getTabData; // exposes function to other extension component
 
 let queryId = 0;
 let pendingDatabaseQueries = {};
-async function queryDatabase(query, args, resolve) {
+
+/**
+ * Sends database query message to database worker, waits for response, returns result.
+ * 
+ * @param  {string} query - name of query
+ * @param  {Object} args - arguments object passed to database worker
+ */
+async function queryDatabase(query, args) {
   let queryPromise = new Promise((r) => {
     pendingDatabaseQueries[queryId] = r;
   });
@@ -226,15 +200,16 @@ async function queryDatabase(query, args, resolve) {
   queryId++;
 
   let res = await queryPromise;
-  if (resolve) {
-    resolve(res.response);
-    return true;
-  }
   return res.response;
 }
 window.queryDatabase = queryDatabase; // exposes function to other extension components 
 
-/* listener for messages recieved from database worker */
+/**
+ * Run on message recieved from database worker.
+ * 
+ * @param  {Object} m
+ * @param  {Object} m.data - Content of the message
+ */
 function onDatabaseWorkerMessage(m) {
   // console.log('Message received from database worker', m);
   if (m.data.type === "database_query_response") {
@@ -242,6 +217,15 @@ function onDatabaseWorkerMessage(m) {
   }
 }
 
+/**
+ * Run on message recieved from trackers worker.
+ * 
+ * @param  {Object} m
+ * @param  {Object} m.data - Content of the message
+ * @param  {Object} m.data.type - Message type, set by sender
+ * @param  {Object} m.data.id - Message id, set by sender
+ * @param  {Object} m.data.trackers - Array of trackers, given by sender
+ */
 function onTrackersWorkerMessage(m) {
   // console.log('Message received from database worker', m);
   if (m.data.type === "trackers") {
@@ -250,10 +234,19 @@ function onTrackersWorkerMessage(m) {
 }
 
 
-/** listener function for messages from content script
+/** 
+ * listener function for messages from content script
+ * 
+ * this function can NOT be an async function - if it is sendResponse won't work
+ * 
+ * if the response is the result of an async function (like queryDatabase),
+ * you must put sendRsponse in .then(), and also have the original function return true
+ * 
  * @param  {Object} message
  * @param {string} message.type - message type
  * @param  {Object} sender
+ * @param  {Object} sendResponse - callback to send a response to caller
+ * 
  */
 function runtimeOnMessage(message, sender, sendResponse) {
   let pageId;
@@ -278,14 +271,13 @@ function runtimeOnMessage(message, sender, sendResponse) {
     
     case "queryDatabase":
       query = queryDatabase(message.query, message.args);
-      query.then(res => {
+      query.then(res => { // cannot use async/await
         sendResponse(res);
       })
-      return true;
+      return true; // this tells browser that we will call sendResponse asynchronously
     }
 
 }
-  browser.runtime.onMessage.addListener(runtimeOnMessage);
 
 
 /* OTHER MISCELLANEOUS FUNCTIONS */
