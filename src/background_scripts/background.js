@@ -151,18 +151,46 @@ async function updateTrackers(tabId) {
 /* ================================= */
 
 // browser.runtime.onConnect.addListener(runtimeOnConnect);
-browser.runtime.onMessage.addListener(onContentScriptMessage);
 databaseWorker.onmessage = onDatabaseWorkerMessage;
 trackersWorker.onmessage = onTrackersWorkerMessage;
 
-// -/** 
-// - * listener function to run when connection is made with popup or infopage
-// - * if we wanted to implement messaging between popup/dashboard and background we would do it here
-// - *
-// - * @param  {Object} p - port object
-// - * @param {string} p.name - name of port object
-// - */
-// -async function runtimeOnConnect(p) {
+// let ports = {};
+
+/** 
+- * listener function to run when connection is made with popup or infopage
+- *
+- * @param  {Object} p - port object
+- * @param {string} p.name - name of port object
+- */
+// async function runtimeOnConnect(p) {
+//   ports[name] = p;
+//   p.onMessage.addListener(messageListener);
+//   return;
+// }
+
+/** listener for messags from popup and infopage
+- *
+- * @param  {Object} m - message
+- */
+// async function messageListener(m) {
+//   if (!m.type) {
+//     // badly formed message
+//     return;
+//   }
+  
+//   let response;
+//   let port = ports[m.port];
+
+//   switch (m.type) {
+//     case "queryDatabase":
+//       response = await queryDatabase(m.query, m.args);
+//       port.postMessage(response);
+//       break;
+//     case "getTabData":
+//       response = await getTabData(m.tabId);
+//       port.postMessage(response);
+//       break;
+//   }
 // }
 
 async function getTabData(tabId) {
@@ -184,9 +212,9 @@ window.getTabData = getTabData; // exposes function to other extension component
 
 let queryId = 0;
 let pendingDatabaseQueries = {};
-async function queryDatabase(query,args) {
-  let queryPromise = new Promise((resolve) => {
-    pendingDatabaseQueries[queryId] = resolve;
+async function queryDatabase(query, args, resolve) {
+  let queryPromise = new Promise((r) => {
+    pendingDatabaseQueries[queryId] = r;
   });
 
   databaseWorker.postMessage({
@@ -198,6 +226,10 @@ async function queryDatabase(query,args) {
   queryId++;
 
   let res = await queryPromise;
+  if (resolve) {
+    resolve(res.response);
+    return true;
+  }
   return res.response;
 }
 window.queryDatabase = queryDatabase; // exposes function to other extension components 
@@ -223,16 +255,18 @@ function onTrackersWorkerMessage(m) {
  * @param {string} message.type - message type
  * @param  {Object} sender
  */
-async function onContentScriptMessage(message, sender) {
+function runtimeOnMessage(message, sender, sendResponse) {
   let pageId;
+  let query;
+  // sendResponse('swhooo');
   switch (message.type) {
     case "parsed_page":
 
-        if (!sender.tab || !sender.url || sender.frameId !== 0) {
+      if (!sender.tab || !sender.url || sender.frameId !== 0) {
         // message didn't come from a tab, so we ignore
-        return;
+        break;
       }
-
+      if (!tabData[sender.tab.id]) break;
       pageId = tabData[sender.tab.id].pageId;
 
       inferencingWorker.postMessage({
@@ -241,8 +275,18 @@ async function onContentScriptMessage(message, sender) {
         mainFrameReqId: pageId
       })
       break;
-  }
+    
+    case "queryDatabase":
+      query = queryDatabase(message.query, message.args);
+      query.then(res => {
+        sendResponse(res);
+      })
+      return true;
+    }
+
 }
+  browser.runtime.onMessage.addListener(runtimeOnMessage);
+
 
 /* OTHER MISCELLANEOUS FUNCTIONS */
 /* ============================= */
