@@ -24,8 +24,8 @@ browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
 browser.tabs.onRemoved.addListener(clearTabData);
 
 
-/** sends a message with information about each outgoing
- * web request to trackers worker
+/** Sends a message with information about each outgoing
+ * web request to trackers worker.
  * 
  * @param  {Object} details - object from onBeforeRequest listener
  * @param  {string} details.type - type of request (i.e. "main_frame")
@@ -43,15 +43,15 @@ async function logRequest(details) {
   }
 }
 
-/** called by listeners when user navigates to a new page
+/** Called by listeners when user navigates to a new page
  * 
- * creates a new page id, associates page with the current tab, sends info about page to database worker
+ * Creates a new page id, associates page with the current tab, sends info about page to database worker.
  * 
  * @param  {Object} details - object from onBeforeRequest or onHistoryStateUpdated listener
- * @param {Number} details.frameId - frame id (should be 0 for main frame)
- * @param {Number} details.tabId - tab id
+ * @param {number} details.frameId - frame id (should be 0 for main frame)
+ * @param {number} details.tabId - tab id
  * @param {string} details.url - url
- * @param {Number} details.timeStamp - timestamp
+ * @param {number} details.timeStamp - timestamp
  */
 async function updateMainFrameInfo(details) {
 
@@ -101,8 +101,8 @@ function recordNewPage(tabId, url, title) {
 }
 
 /**
- * clears tabData info for a tab
- * called when page changed/reloaded or tab closed
+ * Clears tabData info for a tab.
+ * Called when page changed/reloaded or tab closed.
  * 
  * @param  {} tabId - tab's id
  */
@@ -150,104 +150,66 @@ async function updateTrackers(tabId) {
 /* INTRA-EXTENSION MESSAGE LISTENERS */
 /* ================================= */
 
-browser.runtime.onConnect.addListener(runtimeOnConnect);
-browser.runtime.onMessage.addListener(onContentScriptMessage);
+// browser.runtime.onConnect.addListener(runtimeOnConnect);
+browser.runtime.onMessage.addListener(runtimeOnMessage);
 databaseWorker.onmessage = onDatabaseWorkerMessage;
 trackersWorker.onmessage = onTrackersWorkerMessage;
 
-let portFromPopup;
-let portFromInfopage;
-let portFromDebugscreen;
-/** 
- * listener function to run when connection is made with popup or infopage
- *
- * @param  {Object} p - port object
- * @param {string} p.name - name of port object
+/**
+ * Gets tabData for given tab id, updating the trackers worker as necessary.
+ * 
+ * @param  {number} tabId
  */
-async function runtimeOnConnect(p) {
+async function getTabData(tabId) {
+  if (typeof tabData[tabId] == 'undefined') {
+      return null;
 
-  if (p.name === "port-from-popup") {
-    portFromPopup = p;
-    portFromPopup.onMessage.addListener(messageListener);
-  } else if (p.name === "port-from-infopage") {
-    portFromInfopage = p;
-    portFromInfopage.onMessage.addListener(messageListener);
-  } else if (p.name === "port-from-debugscreen") {
-    portFromDebugscreen = p;
-    portFromDebugscreen.onMessage.addListener(messageListener);
+  } else {
+
+    let data = tabData[tabId];
+
+    await updateTrackers(tabId);
+
+    data.inference = "Warehousing";
+
+    return data;
   }
-
 }
+window.getTabData = getTabData; // exposes function to other extension components
 
+let queryId = 0;
 let pendingDatabaseQueries = {};
-/** listener for messags from popup and infopage
- *
- * @param  {Object} m - message
+
+/**
+ * Sends database query message to database worker, waits for response, returns result.
+ * 
+ * @param  {string} query - name of query
+ * @param  {Object} args - arguments object passed to database worker
  */
-async function messageListener(m) {
+async function queryDatabase(query, args) {
+  let queryPromise = new Promise((r) => {
+    pendingDatabaseQueries[queryId] = r;
+  });
 
-  let activeTabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
-  let activeTab = activeTabs[0];
+  databaseWorker.postMessage({
+    type: "database_query",
+    id: queryId,
+    query: query,
+    args: args
+  });
+  queryId++;
 
-  if (m.type === "get_tab_data") {
-
-    if (typeof tabData[m.tabId] == 'undefined') {
-      if (m.src === "popup") {
-        portFromPopup.postMessage({
-          id: m.id,
-          type: "tab_data_response",
-          response: {
-            error: "No tab data"
-          }
-        });
-      }
-
-    } else {
-
-      let data = tabData[m.tabId];
-
-      await updateTrackers(m.tabId);
-
-      data.inference = "Warehousing";
-
-      if (m.src === "popup") {
-        portFromPopup.postMessage({
-          id: m.id,
-          type: "tab_data_response",
-          response: data
-        });
-      }
-    }
-
-  } else if (m.type === "database_query") {
-    let port;
-    if (m.src === "popup") {
-      port = portFromPopup;
-    } else if (m.src === "infopage") {
-      port = portFromInfopage;
-    } else if (m.src === "debugscreen") {
-      port = portFromDebugscreen;
-    }
-
-    let queryPromise = new Promise((resolve, reject) => {
-      pendingDatabaseQueries[m.id] = resolve;
-    });
-
-    databaseWorker.postMessage({
-      id: m.id,
-      type: m.type,
-      src: m.src,
-      query: m.query,
-      args: m.args
-    })
-
-    let res = await queryPromise;
-    port.postMessage(res);
-  }
-
+  let res = await queryPromise;
+  return res.response;
 }
+window.queryDatabase = queryDatabase; // exposes function to other extension components 
 
-/* listener for messages recieved from database worker */
+/**
+ * Run on message recieved from database worker.
+ * 
+ * @param  {Object} m
+ * @param  {Object} m.data - Content of the message
+ */
 function onDatabaseWorkerMessage(m) {
   // console.log('Message received from database worker', m);
   if (m.data.type === "database_query_response") {
@@ -255,6 +217,15 @@ function onDatabaseWorkerMessage(m) {
   }
 }
 
+/**
+ * Run on message recieved from trackers worker.
+ * 
+ * @param  {Object} m
+ * @param  {Object} m.data - Content of the message
+ * @param  {Object} m.data.type - Message type, set by sender
+ * @param  {Object} m.data.id - Message id, set by sender
+ * @param  {Object} m.data.trackers - Array of trackers, given by sender
+ */
 function onTrackersWorkerMessage(m) {
   // console.log('Message received from database worker', m);
   if (m.data.type === "trackers") {
@@ -263,21 +234,32 @@ function onTrackersWorkerMessage(m) {
 }
 
 
-/** listener function for messages from content script
+/** 
+ * listener function for messages from content script
+ * 
+ * this function can NOT be an async function - if it is sendResponse won't work
+ * 
+ * if the response is the result of an async function (like queryDatabase),
+ * you must put sendRsponse in .then(), and also have the original function return true
+ * 
  * @param  {Object} message
  * @param {string} message.type - message type
  * @param  {Object} sender
+ * @param  {Object} sendResponse - callback to send a response to caller
+ * 
  */
-async function onContentScriptMessage(message, sender) {
+function runtimeOnMessage(message, sender, sendResponse) {
   let pageId;
+  let query;
+  // sendResponse('swhooo');
   switch (message.type) {
     case "parsed_page":
 
-        if (!sender.tab || !sender.url || sender.frameId !== 0) {
+      if (!sender.tab || !sender.url || sender.frameId !== 0) {
         // message didn't come from a tab, so we ignore
-        return;
+        break;
       }
-
+      if (!tabData[sender.tab.id]) break;
       pageId = tabData[sender.tab.id].pageId;
 
       inferencingWorker.postMessage({
@@ -286,8 +268,17 @@ async function onContentScriptMessage(message, sender) {
         mainFrameReqId: pageId
       })
       break;
-  }
+    
+    case "queryDatabase":
+      query = queryDatabase(message.query, message.args);
+      query.then(res => { // cannot use async/await
+        sendResponse(res);
+      })
+      return true; // this tells browser that we will call sendResponse asynchronously
+    }
+
 }
+
 
 /* OTHER MISCELLANEOUS FUNCTIONS */
 /* ============================= */

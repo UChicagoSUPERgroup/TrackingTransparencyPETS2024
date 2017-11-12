@@ -1,7 +1,5 @@
 'use strict';
 
-import FrontendMessenger from '../frontendmessenger.js';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import $ from 'jquery';
@@ -10,14 +8,14 @@ window.jQuery = $;
 window.Popper = popper;
 require("bootstrap");
 
-const frontendmessenger = new FrontendMessenger("popup");
-
 async function onReady() {
+  const background = await browser.runtime.getBackgroundPage();
+
   const tabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
   const tab = tabs[0];
 
   // get tab data with trackers and stuff here
-  const tabData = await frontendmessenger.getTabData(tab.id);
+  const tabData = await background.getTabData(tab.id);
   
   if (typeof tabData.error != 'undefined') {
     return;
@@ -50,10 +48,14 @@ async function onReady() {
 
   if (tabData.trackers.length > 0) {
     const tracker = tabData.trackers[0];
-    const pagecount = frontendmessenger.queryDatabase("getPageVisitCountByTracker", {tracker: tracker})
+    try {
+      const pagecount = background.queryDatabase("getPageVisitCountByTracker", {tracker: tracker});
       $('#trackerinfo').show();
       $('#trackername').text(tracker);
       $('#trackerpagecount').text(await pagecount);
+    } catch (e) {
+      ;
+    }
   }
 
   // port.postMessage({ type: "requestInfoCurrentPage" });
