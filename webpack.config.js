@@ -37,6 +37,11 @@ module.exports = {
         test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" 
       },
       {
+        // https://github.com/webpack-contrib/css-loader/issues/38#issuecomment-313673931
+        test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+        loader: 'file-loader?name=fonts/[name].[ext]'
+      },
+      {
         test: /\.css$/,
         use: [
           { loader: "style-loader" },
@@ -60,9 +65,9 @@ module.exports = {
   plugins: [
     // Since some NodeJS modules expect to be running in Node, it is helpful
     // to set this environment var to avoid reference errors.
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
+    // new webpack.DefinePlugin({
+    //   'process.env.NODE_ENV': JSON.stringify('production'),
+    // }),
     new webpack.IgnorePlugin(/jsdom$/)
     // new webpack.optimize.UglifyJsPlugin()
   ],

@@ -1,0 +1,38 @@
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.homeText {
+  margin-top: 60px;
+  font-size: 14pt;
+}
+
+.containerInner {
+  padding-top: 60px;
+}
+
+.character-box {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  background-color: lightgray;
+  border-radius: 10px;
+  margin: 5px;
+  font-size: 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.character-box-large {
+  width: 200px;
+  height: 200px;
+  line-height: 200px;
+  background-color: lightgray;
+  border-radius: 10px;
+  margin: 20px 0 20px 0;
+  font-size: 100px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
