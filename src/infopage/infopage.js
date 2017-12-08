@@ -1,13 +1,5 @@
-'use strict';
 
 import makeTreemap from "./inferviz.js";
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import $ from 'jquery';
-import popper from 'popper.js';
-window.jQuery = $;
-window.Popper = popper;
-require("bootstrap");
 
 //extension conditions
 var getInferences = false;

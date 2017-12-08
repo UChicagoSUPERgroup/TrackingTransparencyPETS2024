@@ -1,13 +1,3 @@
-'use strict';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-import $ from 'jquery';
-import popper from 'popper.js';
-window.jQuery = $;
-window.Popper = popper;
-require("bootstrap");
-
 async function onReady() {
   const background = await browser.runtime.getBackgroundPage();
 
