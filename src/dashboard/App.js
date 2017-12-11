@@ -15,7 +15,8 @@ import {LinkContainer} from 'react-router-bootstrap';
 
 import TrackersList from './Trackers';
 import FirstPartyList from  './FirstParties';
-import AboutPage from './About'
+import AboutPage from './About';
+import DebugPage from './Debug';
 import './App.css';
 
 class App extends Component {
@@ -46,6 +47,11 @@ class App extends Component {
                 </LinkContainer>
               </Nav>
               <Nav pullRight>
+                <LinkContainer to="/debug">
+                  <NavItem>
+                    Debug
+                  </NavItem>
+                </LinkContainer>
                 <LinkContainer to="/about">
                   <NavItem>
                     About
@@ -61,6 +67,7 @@ class App extends Component {
             <Route path="/trackers" component={TrackersList}/>
             <Route path="/domains" component={FirstPartyList}/>
             <Route path="/about" component={AboutPage}/>
+            <Route path="/debug" component={DebugPage}/>
           </div>
         </div>
       </HashRouter>
