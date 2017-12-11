@@ -74,7 +74,7 @@ const Home = () => (
     <div className="homeText">
       <p>Learn about online tracking!</p>
       <p>Short example here…</p>
-      <p>See all the the trackers and inferences on a specific domain, such as <Link to={{pathname: '/domains/nytimes.com'}}>nytimes.com</Link> or <Link to={{pathname: '/domains/yahoo.com'}}>yahoo.com</Link>. Learn about a specific tracker such as <Link to={{pathname: '/trackers/Google'}}>Google</Link>. See all the <Link to={{pathname: '/inferences'}}>inferences</Link>  companies may have made about your browsing, or view details about a specific inference such as <Link to={{pathname: '/inferences/warehousing'}}>warehousing</Link>.</p>
+      <p>See all the the trackers and inferences on a specific domain, such as <Link to={{pathname: '/domains/www.nytimes.com'}}>www.nytimes.com</Link> or <Link to={{pathname: '/domains/www.yahoo.com'}}>www.yahoo.com</Link>. Learn about a specific tracker such as <Link to={{pathname: '/trackers/Google'}}>Google</Link>. See all the <Link to={{pathname: '/inferences'}}>inferences</Link>  companies may have made about your browsing, or view details about a specific inference such as <Link to={{pathname: '/inferences/warehousing'}}>warehousing</Link>.</p>
     </div>
   </div>
 )
