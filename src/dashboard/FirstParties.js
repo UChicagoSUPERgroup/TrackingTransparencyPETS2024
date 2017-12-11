@@ -12,17 +12,13 @@ function generateEmoticonPermutations(x) {
 const FirstPartyListItem = (domain) => {
   const domainName = domain.Pages.domain;
   return (
-    <LinkContainer key={domainName}
-      style={{ textDecoration: 'none' }}
-      to={{
+    <div key={domainName}>
+      <Link to={{
         pathname: '/domains/' + domainName
-      }}
-    >
-      <div>
+      }}>
         {domainName}
-      </div>
-    </LinkContainer>
-
+      </Link>
+    </div>
   );
 }
 

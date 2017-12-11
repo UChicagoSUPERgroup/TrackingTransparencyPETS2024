@@ -14,7 +14,7 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 import {LinkContainer} from 'react-router-bootstrap';
 
 // import Scripts from './Scripts';
-import Blocks from './Blocks';
+import TrackersList from './Trackers';
 import FirstPartyList from  './FirstParties';
 import AboutPage from './About'
 import {CharacterPage} from './Characters';
@@ -36,9 +36,9 @@ class App extends Component {
             </Navbar.Header>
             <Navbar.Collapse>
               <Nav>
-                <LinkContainer to="/blocks">
+                <LinkContainer to="/trackers">
                   <NavItem>
-                    Character Blocks
+                    Trackers
                   </NavItem>
                 </LinkContainer>
                 <LinkContainer to="/domains">
@@ -61,7 +61,7 @@ class App extends Component {
           <div className="container containerInner">
             <Route exact path="/" component={Home}/>
             {/* <Route path="/scripts" component={Scripts}/> */}
-            <Route path="/blocks" component={Blocks}/>
+            <Route path="/trackers" component={TrackersList}/>
             <Route path="/domains" component={FirstPartyList}/>
             <Route path="/characters/:name" component={CharacterPage}/>
             <Route path="/about" component={AboutPage}/>

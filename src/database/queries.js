@@ -49,6 +49,37 @@ async function getTrackersByDomain(args) {
   return await query.exec();
 }
 
+/**
+ * gets all trackers
+ *
+ */
+async function getTrackers(args) {
+  let query = ttDb.select(Trackers.tracker, lf.fn.count(Trackers.tracker))
+    .from(Trackers)
+    .groupBy(Trackers.tracker)
+    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC);
+  query = args.count ? query.limit(args.count) : query;
+  return await query.exec();
+}
+
+
+/**
+ * Inferences by Tracker (i.e. TRACKERNAME has made these inferences about you)
+ */
+async function getInferencesByTracker(args) {
+  let query = ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
+    .from(Trackers, Inferences)
+    .where(lf.op.and(
+      Trackers.pageId.eq(Inferences.pageId),
+      Trackers.tracker.eq(args.tracker)
+    ))
+    .groupBy(Inferences.inference)
+    .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC);
+  query = args.count ? query.limit(args.count) : query;
+  const res = await query.exec();
+  return res.map(x => x.Inferences);
+}
+
 /* OLD QUERIES */
 /* ======= */
 
@@ -65,19 +96,7 @@ async function getInferences(args) {
   return await query.exec();
 }
 
-/**
- * gets all trackers
- *
- * @returns {string[]} array of trackers
- */
-async function getTrackers(args) {
-  let query = ttDb.select(Trackers.tracker, lf.fn.count(Trackers.tracker))
-    .from(Trackers)
-    .groupBy(Trackers.tracker)
-    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC);
-  query = args.count ? query.limit(args.count) : query;
-  return await query.exec();
-}
+
 
 /**
  * page visit count by tracker (i.e. TRACKERNAME knows # sites you have visited)
@@ -96,26 +115,6 @@ async function getPageVisitCountByTracker(args) {
   return query[0].Pages["COUNT(domain)"];
 }
 
-/**
- * Inferences by Tracker (i.e. TRACKERNAME has made these inferences about you)
- *
- * @param {string} tracker - tracker domain
- * @param {Number} count - how many inferences to give
- * @returns {string[]} array of inferences
- */
-async function getInferencesByTracker(args) {
-  let query = ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
-    .from(Trackers, Inferences)
-    .where(lf.op.and(
-      Trackers.pageId.eq(Inferences.pageId),
-      Trackers.tracker.eq(args.tracker)
-    ))
-    .groupBy(Inferences.inference)
-    .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC);
-  query = args.count ? query.limit(args.count) : query;
-  const res = await query.exec();
-  return res.map(x => x.Inferences);
-}
 
 /**
  * Tracker by inferences (i.e. the following trackers know INFERENCE)
