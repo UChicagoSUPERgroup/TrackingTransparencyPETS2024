@@ -1833,10 +1833,6 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-emojibase@^1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/emojibase/-/emojibase-1.4.3.tgz#894e336dc88b0d4e72ae45d92a26d4ab2b4e5957"
-
 emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"

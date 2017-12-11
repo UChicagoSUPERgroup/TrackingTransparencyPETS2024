@@ -6,7 +6,11 @@ import {
   Link
 } from 'react-router-dom';
 
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import Navbar from 'react-bootstrap/lib/Navbar';
+import Nav from 'react-bootstrap/lib/Nav';
+import NavItem from 'react-bootstrap/lib/NavItem';
+
+
 import {LinkContainer} from 'react-router-bootstrap';
 
 // import Scripts from './Scripts';
