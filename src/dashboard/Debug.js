@@ -63,7 +63,7 @@ class DebugPage extends React.Component {
   handleChange(event) {
     const target = event.target;
     const value = target.value;
-    const name = target.name;
+    const name = target.id;
     this.setState({
       [name]: value
     });
