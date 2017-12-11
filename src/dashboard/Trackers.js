@@ -80,8 +80,6 @@ class TrackerDetails extends React.Component {
       <div>
         <h2>{this.tracker}</h2>
         <pre>{JSON.stringify(this.state.inferences, null, '\t')}</pre>
-        {/* <br/> */}
-        {/* <pre>{JSON.stringify(details, null, '\t')}</pre> */}
       </div>
     );
   }

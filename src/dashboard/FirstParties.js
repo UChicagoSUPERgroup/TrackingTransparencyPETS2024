@@ -22,14 +22,6 @@ const FirstPartyListItem = (domain) => {
   );
 }
 
-// const FirstPartyBoxLarge = (domain) => {
-//   return (
-//     <div key={domain.order} className="character-box-large">
-//         {domain.emoji}
-//     </div>
-//   );
-// }
-
 class FirstPartyList extends React.Component {
   constructor(props) {
     super(props);
@@ -52,8 +44,6 @@ class FirstPartyList extends React.Component {
   }
   
   render() {
-
-    // domains = emoji;
 
     return(
       <div>
@@ -95,8 +85,6 @@ class FirstPartyDetails extends React.Component {
       <div>
         <h2>{this.domain}</h2>
         <pre>{JSON.stringify(this.state.trackers, null, '\t')}</pre>
-        {/* <br/> */}
-        {/* <pre>{JSON.stringify(details, null, '\t')}</pre> */}
       </div>
     );
   }

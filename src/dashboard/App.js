@@ -13,11 +13,9 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 
 import {LinkContainer} from 'react-router-bootstrap';
 
-// import Scripts from './Scripts';
 import TrackersList from './Trackers';
 import FirstPartyList from  './FirstParties';
 import AboutPage from './About'
-import {CharacterPage} from './Characters';
 import './App.css';
 
 class App extends Component {
@@ -60,10 +58,8 @@ class App extends Component {
           
           <div className="container containerInner">
             <Route exact path="/" component={Home}/>
-            {/* <Route path="/scripts" component={Scripts}/> */}
             <Route path="/trackers" component={TrackersList}/>
             <Route path="/domains" component={FirstPartyList}/>
-            <Route path="/characters/:name" component={CharacterPage}/>
             <Route path="/about" component={AboutPage}/>
           </div>
         </div>
