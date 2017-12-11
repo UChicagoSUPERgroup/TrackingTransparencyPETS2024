@@ -6,12 +6,19 @@
         "jquery": true,
         "worker": true
     },
+    "plugins": [
+        "react"
+    ],
     "parserOptions": {
         "ecmaVersion": 8,
-        "sourceType": "module"
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
     },
     "extends": [
-      "eslint:recommended"
+      "eslint:recommended",
+      "plugin:react/recommended"
     ],
     "rules": {
         "no-console": 1
