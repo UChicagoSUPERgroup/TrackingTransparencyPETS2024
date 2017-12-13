@@ -62,7 +62,6 @@ async function getTrackers(args) {
   return await query.exec();
 }
 
-
 /**
  * Inferences by Tracker (i.e. TRACKERNAME has made these inferences about you)
  */
@@ -80,10 +79,6 @@ async function getInferencesByTracker(args) {
   return res.map(x => x.Inferences);
 }
 
-/* OLD QUERIES */
-/* ======= */
-
-
 /**
  * gets all inferences
  */
@@ -95,6 +90,10 @@ async function getInferences(args) {
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
 }
+
+
+/* OLD QUERIES */
+/* ======= */
 
 
 
@@ -429,13 +428,13 @@ async function emptyDB(args) {
 const QUERIES = {
   getDomains: async args => await getDomains(args),
   getTrackersByDomain: async args => await getTrackersByDomain(args),
+  getTrackers: async args => await getTrackers(args),
+  getInferencesByTracker: async args => await getInferencesByTracker(args),
+  getInferences: async args => getInferences(args),
 
 
   // old
-  getTrackers: async args => await getTrackers(args),
-  getInferences: async args => getInferences(args),
   getPageVisitCountByTracker: async args => await getPageVisitCountByTracker(args),
-  getInferencesByTracker: async args => await getInferencesByTracker(args),
   getTrackersByInference: async args => await getTrackersByInference(args),
   getDomainsByTracker: async args => await getDomainsByTracker(args),
   getTrackersByInferenceCount: async args => await getTrackersByInferenceCount(args),

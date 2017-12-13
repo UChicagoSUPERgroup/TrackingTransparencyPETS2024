@@ -12,6 +12,9 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 
 import {LinkContainer} from 'react-router-bootstrap';
 
+import '../../node_modules/react-vis/dist/style.css';
+
+import InferencesList from './Inferences';
 import TrackersList from './Trackers';
 import FirstPartyList from  './FirstParties';
 import AboutPage from './About';
@@ -37,6 +40,11 @@ class App extends Component {
             </Navbar.Header>
             <Navbar.Collapse>
               {enoughData && <Nav>
+                <LinkContainer to="/inferences">
+                  <NavItem>
+                    Inferences
+                  </NavItem>
+                </LinkContainer>
                 <LinkContainer to="/trackers">
                   <NavItem>
                     Trackers
@@ -67,14 +75,15 @@ class App extends Component {
           
           <div className="container containerInner">
             {enoughData &&<Route exact path="/" component={Home}/>}
+            {enoughData &&<Route path="/inferences" component={InferencesList}/>}
             {enoughData &&<Route path="/trackers" component={TrackersList}/>}
             {enoughData &&<Route path="/domains" component={FirstPartyList}/>}
 
-            {!enoughData &&<Route exact path="/" component={MissingDataHome}/>}
+            {!enoughData &&<Route exact path="/" component={WaitingDataHome}/>}
 
             <Route path="/about" component={AboutPage}/>
             <Route path="/debug" component={DebugPage}/>
-          </div>}
+          </div>
         </div>
       </HashRouter>
     );
@@ -92,7 +101,7 @@ const Home = () => (
   </div>
 )
 
-const MissingDataHome = () => (
+const WaitingDataHome = () => (
   <div>
     <h1>Tracking Transparency</h1>
     <div className="homeText">
