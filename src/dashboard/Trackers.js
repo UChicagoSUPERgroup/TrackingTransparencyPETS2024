@@ -2,8 +2,6 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import helpers from './helpers.js';
-
 const TrackersListItem = (tracker) => {
   const trackerName = tracker.tracker;
   return (

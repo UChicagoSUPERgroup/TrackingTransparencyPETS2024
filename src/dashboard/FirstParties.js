@@ -2,12 +2,6 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import helpers from './helpers.js';
-
-
-function generateEmoticonPermutations(x) {
-  return [x];
-}
 
 const FirstPartyListItem = (domain) => {
   const domainName = domain.Pages.domain;

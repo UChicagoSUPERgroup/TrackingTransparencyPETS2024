@@ -10,9 +10,6 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import Button from 'react-bootstrap/lib/Button';
 
 
-
-import helpers from './helpers';
-
 const FieldGroup = ({ id, label, help, ...props }) => {
   return (
     <FormGroup controlId={id} bsSize="small">

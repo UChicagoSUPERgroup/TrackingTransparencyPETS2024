@@ -4,8 +4,6 @@ import {
   Link
 } from 'react-router-dom';
 
-import helpers from './helpers';
-
 const AboutPage = () => (
   <div>
     <h1>About</h1>
