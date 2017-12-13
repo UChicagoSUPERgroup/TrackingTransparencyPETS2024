@@ -10,17 +10,19 @@ import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
-
 import {LinkContainer} from 'react-router-bootstrap';
 
 import TrackersList from './Trackers';
 import FirstPartyList from  './FirstParties';
 import AboutPage from './About';
 import DebugPage from './Debug';
+import ttDashboard from './dashboardHelpers';
 import './App.css';
 
 class App extends Component {
   render() {
+    const enoughData = ttDashboard.enoughData();
+
     return(
       <HashRouter>
         <div>
@@ -34,7 +36,7 @@ class App extends Component {
               <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
-              <Nav>
+              {enoughData && <Nav>
                 <LinkContainer to="/trackers">
                   <NavItem>
                     Trackers
@@ -45,7 +47,7 @@ class App extends Component {
                     Domains
                   </NavItem>
                 </LinkContainer>
-              </Nav>
+              </Nav>}
               <Nav pullRight>
                 <LinkContainer to="/debug">
                   <NavItem>
@@ -62,13 +64,17 @@ class App extends Component {
             </Navbar.Collapse>
           </Navbar>
           
+          
           <div className="container containerInner">
-            <Route exact path="/" component={Home}/>
-            <Route path="/trackers" component={TrackersList}/>
-            <Route path="/domains" component={FirstPartyList}/>
+            {enoughData &&<Route exact path="/" component={Home}/>}
+            {enoughData &&<Route path="/trackers" component={TrackersList}/>}
+            {enoughData &&<Route path="/domains" component={FirstPartyList}/>}
+
+            {!enoughData &&<Route exact path="/" component={MissingDataHome}/>}
+
             <Route path="/about" component={AboutPage}/>
             <Route path="/debug" component={DebugPage}/>
-          </div>
+          </div>}
         </div>
       </HashRouter>
     );
@@ -86,4 +92,12 @@ const Home = () => (
   </div>
 )
 
+const MissingDataHome = () => (
+  <div>
+    <h1>Tracking Transparency</h1>
+    <div className="homeText">
+      <p>Continue using the internet and come back here in a few days to see insights about what companies know about your browsing!</p>
+    </div>
+  </div>
+)
 export default App;
