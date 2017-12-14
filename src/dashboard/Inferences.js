@@ -4,7 +4,8 @@ import { Route, Link } from 'react-router-dom';
 import {Sunburst} from 'react-vis';
 
 import ttDashboard from './dashboardHelpers';
-import categoryTree from './categories.json';
+
+import InferencesSunburst from './InferencesSunburst';
 
 const InferencesListItem = (inference) => {
   const inferenceName = inference.inference;
@@ -23,7 +24,7 @@ class InferencesList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inferences: []
+      inferences: null
     }
   }
 
@@ -48,8 +49,10 @@ class InferencesList extends React.Component {
         <Route path={`${this.props.match.url}/:name`}  component={InferenceDetails}/>
         <Route exact path={this.props.match.url} render={() => (
           <div>
-            <InferencesSunburst inferencesList={this.state.inferences}/>
-            {this.state.inferences.map(inference => InferencesListItem(inference))}
+            <InferencesSunburst/>
+            {/* {this.state.inferences && <InferencesSunburst inferencesList={this.state.inferences}/>} */}
+            {/* <InferencesSunburst inferencesList={this.state.inferences}/> */}
+            {/* {this.state.inferences.map(inference => InferencesListItem(inference))} */}
           </div>
         )}/>
 
@@ -87,67 +90,67 @@ class InferenceDetails extends React.Component {
   }
 }
 
-class InferencesSunburst extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sunburstData: {}
-    }
-  }
+// class InferencesSunburst extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       sunburstData: {}
+//     }
+//   }
 
 
-  constructSunburstData(inferencesList) {
-    if (inferencesList.length === 0) {
-      // haven't received props
-      return;
-    }
+//   constructSunburstData(inferencesList) {
+//     if (inferencesList.length === 0) {
+//       // haven't received props
+//       return;
+//     }
 
-    let sunburstData = categoryTree;
+//     let sunburstData = categoryTree;
 
-    this.recursiveApplySizes(sunburstData.children, inferencesList);
-    ttDashboard.log(sunburstData);
+//     this.recursiveApplySizes(sunburstData.children, inferencesList);
+//     ttDashboard.log(sunburstData);
 
-    this.setState({
-      sunburstData: sunburstData
-    });
-  }
+//     this.setState({
+//       sunburstData: sunburstData
+//     });
+//   }
 
-  recursiveApplySizes(items, inferencesList) {
-    for (let item of items) {
-      if (!item.children) {
-        // no children, lookup size
-        const listItem = inferencesList.find(x => x.inference === item.title);
-        if (listItem) {
-          item.size = listItem["COUNT(inference)"];
-        } else {
-          item.size = 0;
-        }
-      } else {
-        this.recursiveApplySizes(item.children, inferencesList)
-      }
-    }
-  }
+//   recursiveApplySizes(items, inferencesList) {
+//     for (let item of items) {
+//       if (!item.children) {
+//         // no children, lookup size
+//         const listItem = inferencesList.find(x => x.inference === item.title);
+//         if (listItem) {
+//           item.size = listItem["COUNT(inference)"];
+//         } else {
+//           item.size = 0;
+//         }
+//       } else {
+//         this.recursiveApplySizes(item.children, inferencesList)
+//       }
+//     }
+//   }
 
-  async componentDidMount() {
-    this.constructSunburstData(this.props.inferencesList);
-  }
+//   async componentDidMount() {
+//     this.constructSunburstData(this.props.inferencesList);
+//   }
 
-  componentWillReceiveProps(nextProps) {
-    this.constructSunburstData(nextProps.inferencesList)
-  }
+//   componentWillReceiveProps(nextProps) {
+//     this.constructSunburstData(nextProps.inferencesList)
+//   }
 
-  render() {
-    return (
-      <Sunburst
-        hideRootNode
-        data={this.state.sunburstData}
-        colorType="literal"
-        height={500}
-        width={500}>
-        {/* <Hint value={hoveredValue} /> */}
-      </Sunburst>
-    );
-  }
-}
+//   render() {
+//     return (
+//       <Sunburst
+//         hideRootNode
+//         data={this.state.sunburstData}
+//         colorType="literal"
+//         height={500}
+//         width={500}>
+//         {/* <Hint value={hoveredValue} /> */}
+//       </Sunburst>
+//     );
+//   }
+// }
 
 export default InferencesList;
