@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {Sunburst, LabelSeries} from 'react-vis';
 import ttDashboard from './dashboardHelpers';
 
@@ -8,7 +9,7 @@ const EXTENDED_DISCRETE_COLOR_RANGE = ['#19CDD7', '#DDB27C', '#88572C', '#FF991F
 
 
 const LABEL_STYLE = {
-  fontSize: '12px',
+  fontSize: '14px',
   textAnchor: 'middle'
 };
 
@@ -19,7 +20,7 @@ const LABEL_STYLE = {
  */
 function getKeyPath(node) {
   if (!node.parent) {
-    return ['root'];
+    return [];
   }
 
   return [node.data && node.data.name || node.name].concat(getKeyPath(node.parent));
@@ -62,7 +63,7 @@ export default class BasicSunburst extends React.Component {
         pathValue: false,
         data: {},
         originalData: {},
-        finalValue: 'SUNBURST',
+        finalValue: 'Inferences',
         clicked: false
     }
   }
@@ -120,7 +121,6 @@ export default class BasicSunburst extends React.Component {
     if (!data.name) return null;
     return (
       <div className="sunburst-wrapper">
-        <div>{clicked ? 'Click to unlock selection' : 'Click to lock selection'}</div>
         <Sunburst
           animation
           className="inferences-sunburst"
@@ -160,7 +160,8 @@ export default class BasicSunburst extends React.Component {
             {x: 0, y: 0, label: finalValue, style: LABEL_STYLE}
           ]} />}
         </Sunburst>
-        <div className="sunburst-path-name">{pathValue}</div>
+        <div><em>{clicked ? 'Click on the diagram to unselect the current category' : 'Click a category to see more information'}</em></div>
+        <Link to={{pathname: '/inferences/' + finalValue}}>{pathValue}</Link>
       </div>
     );
   }
