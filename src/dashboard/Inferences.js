@@ -1,8 +1,6 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 
-import {Sunburst} from 'react-vis';
-
 import ttDashboard from './dashboardHelpers';
 
 import InferencesSunburst from './InferencesSunburst';

@@ -37,14 +37,17 @@ function updateData(data, keyPath) {
     data.children.map(child => updateData(child, keyPath));
   }
   // add a fill to all the uncolored cells
-  if (!data.hex) {
-    data.style = {
-      fill: EXTENDED_DISCRETE_COLOR_RANGE[5]
-    };
+  if (!data.color) {
+    const randomColor = EXTENDED_DISCRETE_COLOR_RANGE[Math.floor(Math.random()*EXTENDED_DISCRETE_COLOR_RANGE.length)];
+    data.color = randomColor;
+    // data.style = {
+    //   fill: randomColor
+    // };
   }
   data.style = {
     ...data.style,
     fillOpacity: keyPath && !keyPath[data.name] ? 0.2 : 1
+    // fill: keyPath && !keyPath[data.name] ? "#cccccc" : data.color
   };
 
   return data;
@@ -88,20 +91,21 @@ export default class BasicSunburst extends React.Component {
   }
 
   recursiveApplySizes(root, inferencesList) {
-    // let newChildren = [];
+    let newChildren = [];
     for (let item of root.children) {
       const listItem = inferencesList.find(x => x.inference === item.name);
       if (listItem) {
         item.size = listItem["COUNT(inference)"];
-      //   newChildren.push(item);
-      } else {
-        item.size = 0;
       }
+      
       if (item.children) {
         this.recursiveApplySizes(item, inferencesList);
       }
+      if (listItem || (item.children && item.children.length > 0)) {
+        newChildren.push(item);
+      }
     }
-
+    root.children = newChildren;
   }
 
   async componentDidMount() {
@@ -115,11 +119,11 @@ export default class BasicSunburst extends React.Component {
     const {clicked, data, originalData, finalValue, pathValue} = this.state;
     if (!data.name) return null;
     return (
-      <div className="basic-sunburst-example-wrapper">
-        <div>{clicked ? 'click to unlock selection' : 'click to lock selection'}</div>
+      <div className="sunburst-wrapper">
+        <div>{clicked ? 'Click to unlock selection' : 'Click to lock selection'}</div>
         <Sunburst
           animation
-          className="basic-sunburst-example"
+          className="inferences-sunburst"
           hideRootNode
           onValueMouseOver={node => {
             if (clicked) {
@@ -133,13 +137,13 @@ export default class BasicSunburst extends React.Component {
             this.setState({
               finalValue: path[path.length - 1],
               pathValue: path.join(' > '),
-              // data: updateData(this.decoratedData, pathAsMap)
+              data: updateData(this.decoratedData, pathAsMap)
             });
           }}
           onValueMouseOut={() => clicked ? () => {} : this.setState({
             pathValue: false,
             finalValue: false,
-            // data: updateData(this.decoratedData, false)
+            data: updateData(this.decoratedData, false)
           })}
           onValueClick={() => this.setState({clicked: !clicked})}
           style={{
@@ -149,7 +153,6 @@ export default class BasicSunburst extends React.Component {
           }}
           colorType="literal"
         //   getSize={d => d.value}
-          getColor={d => d.hex}
           data={data}
           height={500}
           width={500}>
@@ -157,7 +160,7 @@ export default class BasicSunburst extends React.Component {
             {x: 0, y: 0, label: finalValue, style: LABEL_STYLE}
           ]} />}
         </Sunburst>
-        <div className="basic-sunburst-example-path-name">{pathValue}</div>
+        <div className="sunburst-path-name">{pathValue}</div>
       </div>
     );
   }
