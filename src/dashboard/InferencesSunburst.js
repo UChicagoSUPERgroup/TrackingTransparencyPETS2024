@@ -118,6 +118,7 @@ export default class BasicSunburst extends React.Component {
 
   render() {
     const {clicked, data, originalData, finalValue, pathValue} = this.state;
+    const {selectedInference} = this.props
     if (!data.name) return null;
     return (
       <div className="sunburst-wrapper">
@@ -134,18 +135,33 @@ export default class BasicSunburst extends React.Component {
               res[row] = true;
               return res;
             }, {});
+            const newVal = path[path.length - 1];
             this.setState({
-              finalValue: path[path.length - 1],
+              finalValue: newVal,
               pathValue: path.join(' > '),
               data: updateData(this.decoratedData, pathAsMap)
             });
+            // this.props.onSelectionChange(selectedInference);
           }}
-          onValueMouseOut={() => clicked ? () => {} : this.setState({
-            pathValue: false,
-            finalValue: false,
-            data: updateData(this.decoratedData, false)
-          })}
-          onValueClick={() => this.setState({clicked: !clicked})}
+          onValueMouseOut={() => {
+            if (!clicked) {
+              this.setState({
+                pathValue: false,
+                finalValue: false,
+                data: updateData(this.decoratedData, false)
+              })
+            }
+          }}
+          onValueClick={() => {
+            if (clicked) {
+              this.setState({clicked: false});
+              this.props.onSelectionChange(false);
+            } else {
+              this.setState({clicked: true});
+              this.props.onSelectionChange(finalValue);
+            }
+            
+          }}
           style={{
             stroke: '#ddd',
             strokeOpacity: 0.3,
