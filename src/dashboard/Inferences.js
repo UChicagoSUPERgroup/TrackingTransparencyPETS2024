@@ -20,7 +20,7 @@ const InferencesListItem = (inference) => {
   );
 }
 
-class InferencesList extends React.Component {
+class InferencesPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -90,67 +90,4 @@ class InferenceDetails extends React.Component {
   }
 }
 
-// class InferencesSunburst extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       sunburstData: {}
-//     }
-//   }
-
-
-//   constructSunburstData(inferencesList) {
-//     if (inferencesList.length === 0) {
-//       // haven't received props
-//       return;
-//     }
-
-//     let sunburstData = categoryTree;
-
-//     this.recursiveApplySizes(sunburstData.children, inferencesList);
-//     ttDashboard.log(sunburstData);
-
-//     this.setState({
-//       sunburstData: sunburstData
-//     });
-//   }
-
-//   recursiveApplySizes(items, inferencesList) {
-//     for (let item of items) {
-//       if (!item.children) {
-//         // no children, lookup size
-//         const listItem = inferencesList.find(x => x.inference === item.title);
-//         if (listItem) {
-//           item.size = listItem["COUNT(inference)"];
-//         } else {
-//           item.size = 0;
-//         }
-//       } else {
-//         this.recursiveApplySizes(item.children, inferencesList)
-//       }
-//     }
-//   }
-
-//   async componentDidMount() {
-//     this.constructSunburstData(this.props.inferencesList);
-//   }
-
-//   componentWillReceiveProps(nextProps) {
-//     this.constructSunburstData(nextProps.inferencesList)
-//   }
-
-//   render() {
-//     return (
-//       <Sunburst
-//         hideRootNode
-//         data={this.state.sunburstData}
-//         colorType="literal"
-//         height={500}
-//         width={500}>
-//         {/* <Hint value={hoveredValue} /> */}
-//       </Sunburst>
-//     );
-//   }
-// }
-
-export default InferencesList;
+export default InferencesPage;
