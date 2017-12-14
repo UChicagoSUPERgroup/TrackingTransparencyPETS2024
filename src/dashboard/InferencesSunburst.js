@@ -133,15 +133,13 @@ export default class BasicSunburst extends React.Component {
             this.setState({
               finalValue: path[path.length - 1],
               pathValue: path.join(' > '),
-            //   data: updateData(this.state.originalData, pathAsMap)
-              data: updateData(this.decoratedData, pathAsMap)
+              // data: updateData(this.decoratedData, pathAsMap)
             });
           }}
           onValueMouseOut={() => clicked ? () => {} : this.setState({
             pathValue: false,
             finalValue: false,
-            // data: updateData(this.state.originalData, false)
-            data: updateData(this.decoratedData, false)
+            // data: updateData(this.decoratedData, false)
           })}
           onValueClick={() => this.setState({clicked: !clicked})}
           style={{
