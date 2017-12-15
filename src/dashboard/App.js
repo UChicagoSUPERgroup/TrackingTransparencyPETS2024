@@ -52,7 +52,7 @@ class App extends Component {
                 </LinkContainer>
                 <LinkContainer to="/domains">
                   <NavItem>
-                    Domains
+                    Recent Activity
                   </NavItem>
                 </LinkContainer>
               </Nav>}
@@ -67,7 +67,6 @@ class App extends Component {
                     About
                   </NavItem>
                 </LinkContainer>
-                <NavItem href="https://github.com/UChicagoSUPERgroup/trackingtransparency" target="_blank">GitHub</NavItem>
               </Nav>
             </Navbar.Collapse>
           </Navbar>
