@@ -39,7 +39,7 @@ class InferenceDetails extends React.Component {
       <div>
         <h2>{this.inference}</h2>
         {trackers && trackers.length > 0 && <p>Trackers from <strong>{trackers[0].Trackers.tracker}</strong> were present on <strong>{trackers[0].Trackers['COUNT(tracker)']}</strong> pages related to {this.inference}.</p>}
-        {timestamps && <PagesTimeChart timestamps={timestamps}/>}
+        {/* {timestamps && <PagesTimeChart timestamps={timestamps}/>} */}
         {/* <pre>{JSON.stringify(trackers, null, '\t')}</pre> */}
       </div>
     );
