@@ -2,7 +2,10 @@
 
 import parseuri from "parseuri";
 
-import {trackersWorker, databaseWorker, inferencingWorker} from "workers_setup.js";
+import {trackersWorker, databaseWorker, inferencingWorker} from "./workers_setup";
+import userstudy from './userstudy';
+
+userstudy.setDefaultOptions();
 
 let tabData = {};
 

@@ -36,4 +36,4 @@ async function setDefaultOptions() {
 
 }
 
-setDefaultOptions();
+export default {setDefaultOptions};

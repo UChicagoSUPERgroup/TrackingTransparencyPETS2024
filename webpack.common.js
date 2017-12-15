@@ -8,7 +8,6 @@ module.exports = {
 
     // background scripts
     background: './src/background_scripts/background.js',
-    userstudy: './src/background_scripts/userstudy.js',
 
     // web workers for background script
     trackers_worker: './src/trackers/trackers.worker.js',
