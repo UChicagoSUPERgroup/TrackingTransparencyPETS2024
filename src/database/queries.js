@@ -92,6 +92,33 @@ async function getInferences(args) {
 }
 
 
+/**
+ * Tracker by inferences (i.e. the following trackers know INFERENCE)
+ */
+async function getTrackersByInference(args) {
+  let query = ttDb.select(Trackers.tracker, lf.fn.count(Trackers.tracker))
+    .from(Trackers, Inferences)
+    .where(lf.op.and(
+      Trackers.pageId.eq(Inferences.pageId),
+      Inferences.inference.eq(args.inference)
+    ))
+    .groupBy(Trackers.tracker)
+    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC);
+  query = args.count ? query.limit(args.count) : query;
+  return await query.exec();
+}
+
+
+async function getTimestampsByInference(args) {
+  let query = ttDb.select(Pages.id)
+    .from(Pages, Inferences)
+    .where(lf.op.and(
+      Inferences.pageId.eq(Pages.id),
+      Inferences.inference.eq(args.inference)));
+    query = args.count ? query.limit(args.count) : query;
+    return await query.exec();
+}
+
 /* OLD QUERIES */
 /* ======= */
 
@@ -114,25 +141,6 @@ async function getPageVisitCountByTracker(args) {
   return query[0].Pages["COUNT(domain)"];
 }
 
-
-/**
- * Tracker by inferences (i.e. the following trackers know INFERENCE)
- *
- * @param {string} inference
- * @param {Number} count
- * @returns {string[]} array of trackers
- */
-async function getTrackersByInference(args) {
-  let query = ttDb.select(Trackers.tracker)
-    .from(Trackers, Inferences)
-    .where(lf.op.and(
-      Trackers.pageId.eq(Inferences.pageId),
-      Inferences.inference.eq(args.inference)
-    ));
-  query = args.count ? query.limit(args.count) : query;
-  const res = await query.exec();
-  return res.map(x => x.Trackers.tracker);
-}
 
 
 
@@ -431,11 +439,12 @@ const QUERIES = {
   getTrackers: async args => await getTrackers(args),
   getInferencesByTracker: async args => await getInferencesByTracker(args),
   getInferences: async args => getInferences(args),
+  getTrackersByInference: async args => await getTrackersByInference(args),
+  getTimestampsByInference: async args => await getTimestampsByInference(args),
 
 
   // old
   getPageVisitCountByTracker: async args => await getPageVisitCountByTracker(args),
-  getTrackersByInference: async args => await getTrackersByInference(args),
   getDomainsByTracker: async args => await getDomainsByTracker(args),
   getTrackersByInferenceCount: async args => await getTrackersByInferenceCount(args),
   getPagesByTrackerAndInference: async args => await getPagesByTrackerAndInference(args),

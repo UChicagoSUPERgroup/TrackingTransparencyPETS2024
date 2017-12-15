@@ -1,5 +1,7 @@
 import React from 'react';
 
+import PagesTimeChart from './PagesTimeChart';
+
 class InferenceDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -11,7 +13,8 @@ class InferenceDetails extends React.Component {
         this.inference = this.props.inference;
     }
     this.state = {
-      trackers: false
+      trackers: false,
+      timestamps: false
     }
   }
 
@@ -21,17 +24,22 @@ class InferenceDetails extends React.Component {
     trackers.then(tr => this.setState({
       trackers: tr
     }))
+    const timestamps = background.queryDatabase("getTimestampsByInference", {inference: this.inference, count: 500});
+    timestamps.then(ts => this.setState({
+      timestamps: ts
+    }))
   }
 
   render() {
     if (!this.inference) {
         return (<div>Category does not exist</div>);
     }
-    const {trackers} = this.state;
+    const {trackers, timestamps} = this.state;
     return (
       <div>
         <h2>{this.inference}</h2>
         {trackers && trackers.length > 0 && <p>Trackers from <strong>{trackers[0].Trackers.tracker}</strong> were present on <strong>{trackers[0].Trackers['COUNT(tracker)']}</strong> pages related to {this.inference}.</p>}
+        {timestamps && <PagesTimeChart timestamps={timestamps}/>}
         {/* <pre>{JSON.stringify(trackers, null, '\t')}</pre> */}
       </div>
     );
