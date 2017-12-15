@@ -11,26 +11,28 @@ class InferenceDetails extends React.Component {
         this.inference = this.props.inference;
     }
     this.state = {
-      inferences: []
+      trackers: false
     }
   }
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
-    const inferences = await background.queryDatabase("getTrackersByInference", {inference: this.inference, count: 100});
-    this.setState({
-      inferences: inferences
-    })
+    const trackers = background.queryDatabase("getTrackersByInference", {inference: this.inference, count: 1});
+    trackers.then(tr => this.setState({
+      trackers: tr
+    }))
   }
 
   render() {
     if (!this.inference) {
         return (<div>Category does not exist</div>);
     }
+    const {trackers} = this.state;
     return (
       <div>
         <h2>{this.inference}</h2>
-        <pre>{JSON.stringify(this.state.inferences, null, '\t')}</pre>
+        {trackers && trackers.length > 0 && <p>Trackers from <strong>{trackers[0].Trackers.tracker}</strong> were present on <strong>{trackers[0].Trackers['COUNT(tracker)']}</strong> pages related to {this.inference}.</p>}
+        {/* <pre>{JSON.stringify(trackers, null, '\t')}</pre> */}
       </div>
     );
   }

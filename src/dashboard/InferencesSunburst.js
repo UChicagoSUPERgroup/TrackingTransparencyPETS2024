@@ -170,8 +170,8 @@ export default class BasicSunburst extends React.Component {
           colorType="literal"
         //   getSize={d => d.value}
           data={data}
-          height={500}
-          width={500}>
+          height={400}
+          width={400}>
           {finalValue && <LabelSeries data={[
             {x: 0, y: 0, label: finalValue, style: LABEL_STYLE}
           ]} />}

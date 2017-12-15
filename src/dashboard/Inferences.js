@@ -52,7 +52,7 @@ class InferencesPage extends React.Component {
 
     return(
       <div>
-        <h1>Inferences</h1>
+        <h1>What could they have learned?</h1>
 
         <Route path={`${this.props.match.url}/:name`} component={InferenceDetails}/>
         <Route exact path={this.props.match.url} render={() => (
