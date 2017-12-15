@@ -4,10 +4,13 @@
   "description": "Provides information about online tracking",
   "scripts": {
     "test": "karma start --browsers Firefox,Chrome --single-run",
-    "lint": "eslint .",
-    "build": "webpack",
-    "watch": "webpack -w",
-    "start": "web-ext run -s extension/ -u 'about:debugging'",
+    "lint:eslint": "eslint .",
+    "lint:webext": "web-ext lint -s extension/",
+    "lint": "npm run lint:eslint; npm run lint:webext",
+    "build": "webpack --config webpack.prod.js && web-ext build -s extension/",
+    "start": "webpack -w --config webpack.dev.js",
+    "watch": "webpack -w --config webpack.dev.js",
+    "firefox": "web-ext run -s extension/ -u 'about:debugging'",
     "jsdoc": "jsdoc -c jsdoc.conf.json -r -d ./doc/jsdoc/ -R ./README.md ."
   },
   "devDependencies": {
@@ -32,8 +35,11 @@
     "mocha": "^3.4.2",
     "sinon-chrome": "^2.2.1",
     "style-loader": "^0.19.0",
+    "uglifyjs-webpack-plugin": "^1.1.4",
     "url-loader": "^0.6.2",
-    "webpack": "^3.0.0"
+    "web-ext": "^2.2.2",
+    "webpack": "^3.0.0",
+    "webpack-merge": "^4.1.1"
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
