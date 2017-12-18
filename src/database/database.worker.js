@@ -1,9 +1,9 @@
 /** @module database_worker */
 
-import tt from "../helpers";
+import tt from '../helpers';
 // import {primaryDbPromise, primarySchemaBuilder} from "setup.js";
-import makeQuery from "./queries";
-import * as store from "./storage";
+import makeQuery from './queries';
+import * as store from './storage';
 
 let trackersWorkerPort;
 let inferencingWorkerPort;
@@ -22,37 +22,37 @@ onmessage = onMessage; // web worker
 async function onMessage(m) {
   // tt.log(m);
   switch (m.data.type) {
-    case "ping":
-      tt.log("database worker recieved ping");
+    case 'ping':
+      tt.log('database worker recieved ping');
       break;
 
-    case "database_query":
+    case 'database_query':
       handleQuery(m.data);
       break;
 
-    case "trackers_worker_port":
+    case 'trackers_worker_port':
       trackersWorkerPort = m.data.port;
       trackersWorkerPort.onmessage = onMessage;
       break;
-    case "inferencing_worker_port":
+    case 'inferencing_worker_port':
       inferencingWorkerPort = m.data.port;
       inferencingWorkerPort.onmessage = onMessage;
       break;
 
     // STORAGE
 
-    case "store_page":
+    case 'store_page':
       store.storePage(m.data.info);
       break;
-    case "store_tracker_array":
+    case 'store_tracker_array':
       store.storeTrackerArray(m.data.pageId, m.data.trackers);
       break;
-    case "store_inference":
+    case 'store_inference':
       store.storeInference(m.data.info);
       break;
 
     default:
-      tt.log("database worker recieved bad message");
+      tt.log('database worker recieved bad message');
   }
 }
 /**
@@ -69,7 +69,7 @@ async function handleQuery(data) {
 
   if (res) {
     postMessage({
-      type: "database_query_response",
+      type: 'database_query_response',
       id: data.id,
       response: res
     });

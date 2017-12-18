@@ -19,5 +19,5 @@
 // tt.log(article);
 
 export default function makeInference() {
-    browser.runtime.sendMessage({ type: "parsed_page", article: "null" });
+    browser.runtime.sendMessage({ type: 'parsed_page', article: 'null' });
 }

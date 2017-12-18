@@ -1,4 +1,4 @@
-import tt from "../helpers";
+import tt from '../helpers';
 
 async function onReady() {
   const background = await browser.runtime.getBackgroundPage();
@@ -14,7 +14,7 @@ async function onReady() {
   }
     
   tt.log(tabData);    
-  $("#pageinfo").show();
+  $('#pageinfo').show();
 
   /* looks something like:
     { 
@@ -33,7 +33,7 @@ async function onReady() {
 
   let title = tabData.title;
   if (title.length >= 30) {
-    title = title.substring(0,30).concat("...");
+    title = title.substring(0,30).concat('...');
   }
   $('#pagetitle').text(title);
   $('#trackercount').text(tabData.trackers.length);
@@ -41,12 +41,12 @@ async function onReady() {
   if (tabData.trackers.length > 0) {
     const tracker = tabData.trackers[0];
     try {
-      const pagecount = background.queryDatabase("getPageVisitCountByTracker", {tracker: tracker});
+      const pagecount = background.queryDatabase('getPageVisitCountByTracker', {tracker: tracker});
       $('#trackerinfo').show();
       $('#trackername').text(tracker);
       $('#trackerpagecount').text(await pagecount);
     } catch (e) {
-      ;
+      ; // eslint-disable-line no-extra-semi
     }
   }
 
@@ -58,12 +58,12 @@ async function onReady() {
 
 $('document').ready(onReady());
 
-document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("show-more-btn")) {
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('show-more-btn')) {
 
     let dashboardData = {
       active: true,
-      url: "../dashboard/index.html"
+      url: '../dashboard/index.html'
       };
     browser.tabs.create(dashboardData);
 

@@ -24,7 +24,7 @@ function enoughData() {
 function readTextFile(file) {
   return new Promise((resolve) => {
     let rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
+    rawFile.open('GET', file, false);
     rawFile.send(null);
     resolve(rawFile.responseText);
   })

@@ -5,7 +5,7 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import Button from 'react-bootstrap/lib/Button';
 
-import tt from "../helpers";
+import tt from '../helpers';
 
 const FieldGroup = ({ id, label, ...props }) => {
   return (
@@ -23,11 +23,11 @@ class DebugPage extends React.Component {
     super(props);
 
     this.state = {
-      queryFormField: "getTrackers",
-      trackerFormField: "Google",
-      domainFormField: "www.nytimes.com",
-      inferenceFormField: "Warehousing",
-      countFormField: "10",
+      queryFormField: 'getTrackers',
+      trackerFormField: 'Google',
+      domainFormField: 'www.nytimes.com',
+      inferenceFormField: 'Warehousing',
+      countFormField: '10',
       result: {}
     }
 

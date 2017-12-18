@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 // import { LinkContainer } from 'react-router-bootstrap';
-import tt from "../helpers";
+import tt from '../helpers';
 
 
 const FirstPartyListItem = (domain) => {
@@ -27,7 +27,7 @@ class FirstPartyList extends React.Component {
 
   async getDomains() {
     const background = await browser.runtime.getBackgroundPage();
-    const domains = await background.queryDatabase("getDomains", {count: 100});
+    const domains = await background.queryDatabase('getDomains', {count: 100});
     this.setState({
       domains: domains 
     });
@@ -69,7 +69,7 @@ class FirstPartyDetails extends React.Component {
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
-    const trackers = await background.queryDatabase("getTrackersByDomain", {domain: this.domain, count: 100});
+    const trackers = await background.queryDatabase('getTrackersByDomain', {domain: this.domain, count: 100});
     this.setState({
       trackers: trackers
     })

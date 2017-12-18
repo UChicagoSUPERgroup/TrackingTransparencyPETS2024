@@ -1,7 +1,7 @@
 /** @module trackers_worker */
 
-import parseuri from "parseuri";
-import tt from "../helpers";
+import parseuri from 'parseuri';
+import tt from '../helpers';
 
 // tt.log("trackers worker running");
 let databaseWorkerPort;
@@ -104,7 +104,7 @@ function trackerMatch(details, firstPartyHost) {
 async function onPageChanged(oldPageId, trackers) {
 
   databaseWorkerPort.postMessage({
-    type: "store_tracker_array",
+    type: 'store_tracker_array',
     pageId: oldPageId,
     trackers: trackers
   });
@@ -135,20 +135,20 @@ onmessage = function(m) {
   let trackers = [];
 
   switch (m.data.type) {
-    case "database_worker_port":
+    case 'database_worker_port':
       databaseWorkerPort = m.data.port;
       break;
 
-    case "page_changed":
+    case 'page_changed':
       trackers = processWebRequests(m.data.oldPageId, m.data.firstPartyHost, m.data.webRequests);
       onPageChanged(m.data.oldPageId, trackers)
       break;
 
-    case "push_webrequests": 
+    case 'push_webrequests': 
       trackers = processWebRequests(m.data.pageId, m.data.firstPartyHost, m.data.webRequests);
       postMessage({
         id: m.data.id,
-        type: "trackers",
+        type: 'trackers',
         pageId: m.data.pageId,
         trackers: trackers
       });

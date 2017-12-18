@@ -31,7 +31,7 @@ class InferencesPage extends React.Component {
 
   async getInferences() {
     const background = await browser.runtime.getBackgroundPage();
-    const inferences = await background.queryDatabase("getInferences", {count: this.inferenceCount});
+    const inferences = await background.queryDatabase('getInferences', {count: this.inferenceCount});
     this.setState({
       inferences: inferences 
     });

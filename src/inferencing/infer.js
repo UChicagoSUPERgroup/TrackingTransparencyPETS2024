@@ -1,8 +1,8 @@
 /*
  * Infer ad interest category given the webpage a user visits.
  */
-import Tokenizer from "tokenize-text";
-import striptags from "striptags";
+import Tokenizer from 'tokenize-text';
+import striptags from 'striptags';
 // import {AllHtmlEntities as Entities} from "html-entities"
 
 // import tt from "../helpers";
@@ -88,7 +88,7 @@ export default function (article, tree) {
   // striptags
   // text = striptags(text, [], " ");
   // text = article.title.concat(" ", article.excerpt);
-  text = article.title.concat(" ", article.excerpt, " ", article.textContent);
+  text = article.title.concat(' ', article.excerpt, ' ', article.textContent);
   // tt.log("article text is:", text);
   // text = article.textContent;
 

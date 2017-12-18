@@ -1,4 +1,4 @@
-import lf from "lovefield";
+import lf from 'lovefield';
 
 /* DATABSE SETUP */
 /* ============= */

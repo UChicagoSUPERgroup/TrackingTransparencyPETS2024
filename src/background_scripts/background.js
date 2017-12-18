@@ -1,10 +1,10 @@
 /** @module background */
 
-import parseuri from "parseuri";
+import parseuri from 'parseuri';
 
-import {trackersWorker, databaseWorker, inferencingWorker} from "./workers_setup";
+import {trackersWorker, databaseWorker, inferencingWorker} from './workers_setup';
 import userstudy from './userstudy';
-import tt from "../helpers";
+import tt from '../helpers';
 
 
 userstudy.setDefaultOptions();
@@ -20,7 +20,7 @@ let trackerMessageId = 0;
 
 browser.webRequest.onBeforeRequest.addListener(
   logRequest,
-  {urls: ["<all_urls>"]}
+  {urls: ['<all_urls>']}
 );
 
 browser.webNavigation.onDOMContentLoaded.addListener(updateMainFrameInfo);
@@ -38,7 +38,7 @@ browser.tabs.onRemoved.addListener(clearTabData);
  */
 async function logRequest(details) {
 
-  if (details.type === "main_frame") {
+  if (details.type === 'main_frame') {
     // for main frame page loads, ignore
     return;
   }
@@ -63,8 +63,8 @@ async function updateMainFrameInfo(details) {
   if (details.frameId !== 0 || 
       details.tabId === -1  || 
       details.tabId === browser.tabs.TAB_ID_NONE ||
-      !details.url.startsWith("http") ||
-      details.url.includes("_/chrome/newtab")) {
+      !details.url.startsWith('http') ||
+      details.url.includes('_/chrome/newtab')) {
     // not a user-initiated page change
     return;
   }
@@ -82,7 +82,7 @@ async function updateMainFrameInfo(details) {
     const tab = await browser.tabs.get(details.tabId);
     recordNewPage(details.tabId, details.url, tab.title);
   } catch (err) {
-    tt.log("can't updateMainFrame info for tab id", details.tabId);
+    tt.log('can\'t updateMainFrame info for tab id', details.tabId);
   }
 }
 
@@ -100,7 +100,7 @@ function recordNewPage(tabId, url, title) {
   }
 
   databaseWorker.postMessage({
-    type: "store_page",
+    type: 'store_page',
     info: tabData[tabId]
   });
 }
@@ -118,7 +118,7 @@ function clearTabData(tabId) {
   }
 
   trackersWorker.postMessage({
-    type: "page_changed",
+    type: 'page_changed',
     oldPageId: tabData[tabId].pageId,
     firstPartyHost: tabData[tabId].domain,
     webRequests: tabData[tabId].webRequests
@@ -138,7 +138,7 @@ async function updateTrackers(tabId) {
 
   trackersWorker.postMessage({
     id: trackerMessageId,
-    type: "push_webrequests",
+    type: 'push_webrequests',
     pageId: tabData[tabId].pageId,
     firstPartyHost: tabData[tabId].domain,
     webRequests: tabData[tabId].webRequests
@@ -175,7 +175,7 @@ async function getTabData(tabId) {
 
     await updateTrackers(tabId);
 
-    data.inference = "Warehousing";
+    data.inference = 'Warehousing';
 
     return data;
   }
@@ -197,7 +197,7 @@ async function queryDatabase(query, args) {
   });
 
   databaseWorker.postMessage({
-    type: "database_query",
+    type: 'database_query',
     id: queryId,
     query: query,
     args: args
@@ -217,7 +217,7 @@ window.queryDatabase = queryDatabase; // exposes function to other extension com
  */
 function onDatabaseWorkerMessage(m) {
   // tt.log('Message received from database worker', m);
-  if (m.data.type === "database_query_response") {
+  if (m.data.type === 'database_query_response') {
     pendingDatabaseQueries[m.data.id](m.data);
   }
 }
@@ -233,7 +233,7 @@ function onDatabaseWorkerMessage(m) {
  */
 function onTrackersWorkerMessage(m) {
   // tt.log('Message received from database worker', m);
-  if (m.data.type === "trackers") {
+  if (m.data.type === 'trackers') {
       pendingTrackerMessages[m.data.id](m.data.trackers);
   }
 }
@@ -258,7 +258,7 @@ function runtimeOnMessage(message, sender, sendResponse) {
   let query;
   // sendResponse('swhooo');
   switch (message.type) {
-    case "parsed_page":
+    case 'parsed_page':
 
       if (!sender.tab || !sender.url || sender.frameId !== 0) {
         // message didn't come from a tab, so we ignore
@@ -268,13 +268,13 @@ function runtimeOnMessage(message, sender, sendResponse) {
       pageId = tabData[sender.tab.id].pageId;
 
       inferencingWorker.postMessage({
-        type: "content_script_to_inferencing",
+        type: 'content_script_to_inferencing',
         article: message.article,
         mainFrameReqId: pageId
       })
       break;
     
-    case "queryDatabase":
+    case 'queryDatabase':
       query = queryDatabase(message.query, message.args);
       query.then(res => { // cannot use async/await
         sendResponse(res);
@@ -288,14 +288,14 @@ function runtimeOnMessage(message, sender, sendResponse) {
 /* OTHER MISCELLANEOUS FUNCTIONS */
 /* ============================= */
 
-if (typeof browser.browserAction.setPopup === "undefined") { 
+if (typeof browser.browserAction.setPopup === 'undefined') { 
     // popups not supported
     // like firefox for android
     // so we directly open infopage instead
     browser.browserAction.onClicked.addListener(() => {
       let infopageData = {
         active: true,
-        url: "../dashboard/index.html"
+        url: '../dashboard/index.html'
         };
       browser.tabs.create(infopageData);
     });

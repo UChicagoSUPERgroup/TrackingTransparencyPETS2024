@@ -20,11 +20,11 @@ class InferenceDetails extends React.Component {
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
-    const trackers = background.queryDatabase("getTrackersByInference", {inference: this.inference, count: 1});
+    const trackers = background.queryDatabase('getTrackersByInference', {inference: this.inference, count: 1});
     trackers.then(tr => this.setState({
       trackers: tr
     }))
-    const timestamps = background.queryDatabase("getTimestampsByInference", {inference: this.inference, count: 500});
+    const timestamps = background.queryDatabase('getTimestampsByInference', {inference: this.inference, count: 500});
     timestamps.then(ts => this.setState({
       timestamps: ts
     }))

@@ -94,7 +94,7 @@ export default class BasicSunburst extends React.Component {
     for (let item of root.children) {
       const listItem = inferencesList.find(x => x.inference === item.name);
       if (listItem) {
-        item.size = listItem["COUNT(inference)"];
+        item.size = listItem['COUNT(inference)'];
       }
       
       if (item.children) {
@@ -109,7 +109,7 @@ export default class BasicSunburst extends React.Component {
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
-    const inferences = await background.queryDatabase("getInferences", {count: 100});
+    const inferences = await background.queryDatabase('getInferences', {count: 100});
     tt.log(inferences);
     this.constructSunburstData(inferences);
   }

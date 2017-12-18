@@ -36,16 +36,16 @@ export default async function (in_file) {
   var obj = tt.deserialize(file);
 
   // initalize tree with just the root
-  var tree = new Category("Root");
+  var tree = new Category('Root');
 
   for (let i = 0; i < obj.length; i++) {
     let raw_name = obj[i].category.trim();
-    let cats = raw_name.split(">");
+    let cats = raw_name.split('>');
     let cat;
     let child;
 
     if (cats.length === 1) {
-      cat = "Root";
+      cat = 'Root';
     } else {
       cat = cats[cats.length - 2];
     }

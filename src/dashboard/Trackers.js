@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 // import { LinkContainer } from 'react-router-bootstrap';
-import tt from "../helpers";
+import tt from '../helpers';
 
 
 const TrackersListItem = (tracker) => {
@@ -27,7 +27,7 @@ class TrackersList extends React.Component {
 
   async getTrackers() {
     const background = await browser.runtime.getBackgroundPage();
-    const trackers = await background.queryDatabase("getTrackers", {count: 100});
+    const trackers = await background.queryDatabase('getTrackers', {count: 100});
     this.setState({
       trackers: trackers 
     });
@@ -69,7 +69,7 @@ class TrackerDetails extends React.Component {
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
-    const inferences = await background.queryDatabase("getInferencesByTracker", {tracker: this.tracker, count: 100});
+    const inferences = await background.queryDatabase('getInferencesByTracker', {tracker: this.tracker, count: 100});
     this.setState({
       inferences: inferences
     })

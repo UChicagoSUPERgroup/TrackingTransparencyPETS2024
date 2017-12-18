@@ -1,6 +1,6 @@
 /** @module storage */
 
-import {primaryDbPromise} from "./setup";
+import {primaryDbPromise} from './setup';
 // import tt from "../helpers";
 
 /* DATA STORAGE */
@@ -45,7 +45,7 @@ export async function storeTrackerArray(pageId, trackers) {
   for (let tracker of trackers) {
     const row = trackerItem.createRow({
       'tracker': tracker,
-      'trackerCategory': "",
+      'trackerCategory': '',
       'pageId': pageId
     });
     rows.push(row);

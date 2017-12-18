@@ -1,9 +1,9 @@
 /** @module queries */
 
-import lf from "lovefield";
-import _ from "lodash";
+import lf from 'lovefield';
+import _ from 'lodash';
 
-import {primaryDbPromise, primarySchemaBuilder} from "./setup";
+import {primaryDbPromise, primarySchemaBuilder} from './setup';
 
 let ttDb;
 (async function() {
@@ -138,7 +138,7 @@ async function getPageVisitCountByTracker(args) {
       Trackers.tracker.eq(args.tracker)
     ))
     .exec();
-  return query[0].Pages["COUNT(domain)"];
+  return query[0].Pages['COUNT(domain)'];
 }
 
 
@@ -419,10 +419,10 @@ async function getInferenceCount(args) {
     .groupBy(Inferences.inference)
     .exec();
   let res;
-  if (typeof query != "undefined" && query != null && query.length > 0) {
+  if (typeof query != 'undefined' && query != null && query.length > 0) {
     res = (query[0])['COUNT(inference)'];
   } else {
-    res = "0";
+    res = '0';
   }
   return res;
 }
