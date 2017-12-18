@@ -3,7 +3,7 @@
 import lf from "lovefield";
 import _ from "lodash";
 
-import {primaryDbPromise, primarySchemaBuilder} from "setup.js";
+import {primaryDbPromise, primarySchemaBuilder} from "./setup";
 
 let ttDb;
 (async function() {

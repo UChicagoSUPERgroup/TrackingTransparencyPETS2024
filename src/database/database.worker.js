@@ -2,8 +2,8 @@
 
 import tt from "../helpers";
 // import {primaryDbPromise, primarySchemaBuilder} from "setup.js";
-import makeQuery from "queries.js";
-import * as store from "storage.js";
+import makeQuery from "./queries";
+import * as store from "./storage";
 
 let trackersWorkerPort;
 let inferencingWorkerPort;

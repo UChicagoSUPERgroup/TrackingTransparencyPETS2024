@@ -62,12 +62,7 @@ module.exports = {
   resolve: {
     // This allows you to import modules just like you would in a NodeJS app.
     modules: [
-      'node_modules',
-      path.resolve(__dirname, "src/background_scripts"),
-      path.resolve(__dirname, "src/content_scripts"),
-      path.resolve(__dirname, "src/database"),
-      path.resolve(__dirname, 'src/inferencing'),
-      path.resolve(__dirname, 'src/infopage')
+      'node_modules'
     ],
   },
   plugins: [

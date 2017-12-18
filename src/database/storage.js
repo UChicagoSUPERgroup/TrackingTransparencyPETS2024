@@ -1,6 +1,6 @@
 /** @module storage */
 
-import {primaryDbPromise} from "setup.js";
+import {primaryDbPromise} from "./setup";
 // import tt from "../helpers";
 
 /* DATA STORAGE */

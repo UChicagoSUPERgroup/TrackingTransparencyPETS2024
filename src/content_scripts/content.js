@@ -1,5 +1,5 @@
-import makeInference from 'inferencing.js';
-import injectOverlay from 'overlay.js';
+import makeInference from './inferencing';
+import injectOverlay from './overlay';
 import tt from "../helpers";
 
 injectOverlay();

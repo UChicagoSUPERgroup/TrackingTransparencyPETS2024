@@ -1,5 +1,5 @@
-import buildCategoryTree from "build.js";
-import infer from "infer.js";
+import buildCategoryTree from "./build";
+import infer from "./infer";
 
 import tt from "../helpers";
 
