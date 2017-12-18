@@ -63,7 +63,6 @@ module.exports = {
     // This allows you to import modules just like you would in a NodeJS app.
     modules: [
       'node_modules',
-      path.resolve(__dirname, 'src'),
       path.resolve(__dirname, "src/background_scripts"),
       path.resolve(__dirname, "src/content_scripts"),
       path.resolve(__dirname, "src/database"),

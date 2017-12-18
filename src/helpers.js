@@ -2,6 +2,18 @@
 
 /** @module helpers */
 
+const DEBUG = true;
+
+function log(str) {
+  if (DEBUG) {
+    console.log(str);
+  }
+}
+
+function enoughData() {
+  return true;
+}
+
 /** 
  * Reads a json file with given path.
  * 
@@ -9,7 +21,7 @@
  * 
  * @param  {string} path to file
  */
-export function readTextFile(file) {
+function readTextFile(file) {
   return new Promise((resolve) => {
     let rawFile = new XMLHttpRequest();
     rawFile.open("GET", file, false);
@@ -21,7 +33,7 @@ export function readTextFile(file) {
 /** Destringifies an object.
  * @param  {string} object
  */
-export function deserialize(object) {
+function deserialize(object) {
   return typeof object == 'string' ? JSON.parse(object) : object;
 }
 /**
@@ -29,6 +41,9 @@ export function deserialize(object) {
  * 
  * @param  {number} ms - milliseconds to sleep for
  */
-export function sleep(ms) {
+function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+
+export default {log, enoughData, readTextFile, deserialize, sleep};

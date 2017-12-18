@@ -19,12 +19,12 @@ import TrackersList from './Trackers';
 import FirstPartyList from  './FirstParties';
 import AboutPage from './About';
 import DebugPage from './Debug';
-import ttDashboard from './dashboardHelpers';
+import tt from '../helpers';
 import './App.css';
 
 class App extends Component {
   render() {
-    const enoughData = ttDashboard.enoughData();
+    const enoughData = tt.enoughData();
 
     return(
       <HashRouter>

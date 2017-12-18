@@ -1,6 +1,6 @@
 'use strict';
 
-import {sleep} from 'helpers.js';
+import tt from '../helpers';
 
 /* OVERLAY */
 
@@ -12,7 +12,7 @@ export default async function injectOverlay() {
     return;
   }
 
-  await sleep(2000);
+  await tt.sleep(2000);
 
   var overlay = document.createElement("div");
 

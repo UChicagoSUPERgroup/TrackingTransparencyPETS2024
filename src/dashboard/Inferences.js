@@ -1,8 +1,6 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 
-import ttDashboard from './dashboardHelpers';
-
 import InferenceDetails from './InferenceDetails';
 import InferencesSunburst from './InferencesSunburst';
 

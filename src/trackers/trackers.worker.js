@@ -1,7 +1,7 @@
 /** @module trackers_worker */
 
 import parseuri from "parseuri";
-import {deserialize, readTextFile} from "helpers.js";
+import tt from "../helpers";
 
 // console.log("trackers worker running");
 let databaseWorkerPort;
@@ -22,7 +22,7 @@ let trackersByPageId = {};
  * @param  {Object} data
  */
 function processServices(data) {
-  data = deserialize(data);
+  data = tt.deserialize(data);
   const categories = data.categories;
 
   for (let categoryName in categories) {
@@ -51,7 +51,7 @@ function processServices(data) {
   }
 }
 
-readTextFile('../lib/disconnect.json').then(data => {
+tt.readTextFile('../lib/disconnect.json').then(data => {
   processServices(data);
 });
 

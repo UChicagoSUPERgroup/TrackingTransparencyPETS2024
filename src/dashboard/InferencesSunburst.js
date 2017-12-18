@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {Sunburst, LabelSeries} from 'react-vis';
-import ttDashboard from './dashboardHelpers';
+import tt from '../helpers';
 
 import categoryTree from './data/categories_no_duplicate.json';
 
@@ -79,7 +79,7 @@ export default class BasicSunburst extends React.Component {
 
     this.recursiveApplySizes(sunburstData, inferencesList);
     const updated = updateData(sunburstData, false);
-    ttDashboard.log(sunburstData);
+    tt.log(sunburstData);
 
     this.decoratedData = sunburstData;
 
@@ -112,7 +112,7 @@ export default class BasicSunburst extends React.Component {
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
     const inferences = await background.queryDatabase("getInferences", {count: 100});
-    ttDashboard.log(inferences);
+    tt.log(inferences);
     this.constructSunburstData(inferences);
   }
 

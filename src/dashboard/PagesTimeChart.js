@@ -9,7 +9,7 @@ import {
   LineSeries
 } from 'react-vis';
 
-import ttDashboard from './dashboardHelpers';
+import tt from '../helpers';
 
 export default class PagesTimeChart extends React.Component {
   constructor(props) {

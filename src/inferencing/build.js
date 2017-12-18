@@ -1,4 +1,4 @@
-import {deserialize, readTextFile} from "helpers.js";
+import tt from '../helpers';
 
 /*
  * Build tree from given JSON file listing nodes with keywords.
@@ -32,8 +32,8 @@ export default async function (in_file) {
   // reading file
   // var fs = require("fs");
   // var obj = JSON.parse(fs.readFileSync(in_file, "utf8"));
-  var file = await readTextFile(in_file);
-  var obj = deserialize(file);
+  var file = await tt.readTextFile(in_file);
+  var obj = tt.deserialize(file);
 
   // initalize tree with just the root
   var tree = new Category("Root");
