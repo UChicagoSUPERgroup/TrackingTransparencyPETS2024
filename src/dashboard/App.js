@@ -17,6 +17,7 @@ import '../../node_modules/react-vis/dist/style.css';
 import InferencesPage from './Inferences';
 import TrackersList from './Trackers';
 import FirstPartyList from  './FirstParties';
+import RecentPage from './Recent';
 import AboutPage from './About';
 import DebugPage from './Debug';
 import tt from '../helpers';
@@ -50,9 +51,14 @@ class App extends Component {
                     What could they have learned?
                   </NavItem>
                 </LinkContainer>
-                <LinkContainer to="/domains">
+                <LinkContainer to="/recent">
                   <NavItem>
                     Recent Activity
+                  </NavItem>
+                </LinkContainer>
+                <LinkContainer to="/domains">
+                  <NavItem>
+                    Domains
                   </NavItem>
                 </LinkContainer>
               </Nav>}
@@ -77,6 +83,7 @@ class App extends Component {
             {enoughData &&<Route path="/inferences" component={InferencesPage}/>}
             {enoughData &&<Route path="/trackers" component={TrackersList}/>}
             {enoughData &&<Route path="/domains" component={FirstPartyList}/>}
+            {enoughData &&<Route path="/recent" component={RecentPage}/>}
 
             {!enoughData &&<Route exact path="/" component={WaitingDataHome}/>}
 

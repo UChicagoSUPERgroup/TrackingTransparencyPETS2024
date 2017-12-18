@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 
 import {
   XYPlot,
@@ -6,39 +7,92 @@ import {
   YAxis,
   HorizontalGridLines,
   VerticalGridLines,
-  LineSeries
+  VerticalRectSeries
 } from 'react-vis';
+
+import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
+import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
+import ToggleButton from 'react-bootstrap/lib/ToggleButton';
 
 import tt from '../helpers';
 
 export default class PagesTimeChart extends React.Component {
   constructor(props) {
     super(props);
-    const timestamps = this.props.timestamps;
-    const data = timestamps.map(x => (
-      (new Date(x.Pages.id))
-    ))
+    let timestamps;
+    if (this.props.timestamps) {
+      timestamps = this.props.timestamps;
+    } else {
+      tt.log('no time data provided');
+    }
+    
 
     this.state = {
-      data: {},
+      times: timestamps,
+      grouping: 'weekday'
     }
+
+    this.changeSelection = this.changeSelection.bind(this);
+  }
+
+  changeSelection(val) {
+    this.setState({
+      grouping: val
+    })
   }
 
   render() {
-    const {data} = this.state;
+    const {times, grouping} = this.state;
+
+    let grouped;
+    let xTitle;
+    let data = [];
+
+    switch(grouping) {
+    case 'weekday':
+      grouped = _.groupBy(times, t => t.getDay());
+      xTitle = 'Weekday';
+      break;
+
+    case 'month-day':
+      grouped = _.groupBy(times, t => t.getDate());
+      xTitle = 'Day of Month';
+      break;
+
+    case 'hour':
+      grouped = _.groupBy(times, t => t.getHours());
+      xTitle = 'Hour';
+      break;
+    }
+    for (let day in grouped) {
+      data.push({
+        x0: day,
+        x: parseInt(day) + 1,
+        y0: 0,
+        y: grouped[day].length
+      });
+    }
+
 
     return (
       <div>
         <XYPlot
-          xType="time"
           width={300}
           height={300}>
           <HorizontalGridLines />
           <VerticalGridLines />
-          <XAxis title="X Axis" />
-          <YAxis title="Y Axis" />
-          <LineSeries data={data}/>
+          <XAxis title={xTitle} />
+          <YAxis title="Number of Pages" />
+          <VerticalRectSeries data={data}/>
         </XYPlot>
+        
+        <ButtonToolbar>
+          <ToggleButtonGroup type="radio" name="grouping-selector" defaultValue={'weekday'} onChange={this.changeSelection}>
+            <ToggleButton value={'hour'}>Hour</ToggleButton>
+            <ToggleButton value={'weekday'}>Weekday</ToggleButton>
+            <ToggleButton value={'month-day'}>Day of Month</ToggleButton>
+          </ToggleButtonGroup>
+        </ButtonToolbar>
       </div>
     )
   }

@@ -108,7 +108,15 @@ async function getTrackersByInference(args) {
   return await query.exec();
 }
 
+/* gets all timestamps of page visits */
+async function getTimestamps(args) {
+  let query = ttDb.select(Pages.id)
+    .from(Pages)
+  query = args.count ? query.limit(args.count) : query;
+  return await query.exec();
+}
 
+/* gets all timestaps for page visits for a specific inference */
 async function getTimestampsByInference(args) {
   let query = ttDb.select(Pages.id)
     .from(Pages, Inferences)
@@ -444,6 +452,7 @@ const QUERIES = {
   getInferencesByTracker: async args => await getInferencesByTracker(args),
   getInferences: async args => getInferences(args),
   getTrackersByInference: async args => await getTrackersByInference(args),
+  getTimestamps: async args => await getTimestamps(args),
   getTimestampsByInference: async args => await getTimestampsByInference(args),
 
 
