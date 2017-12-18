@@ -9,7 +9,7 @@ async function onReady() {
   // get tab data with trackers and stuff here
   const tabData = await background.getTabData(tab.id);
   
-  if (typeof tabData.error != 'undefined') {
+  if (!tabData) {
     return;
   }
     
@@ -40,10 +40,14 @@ async function onReady() {
 
   if (tabData.trackers.length > 0) {
     const tracker = tabData.trackers[0];
-    const pagecount = background.queryDatabase("getPageVisitCountByTracker", {tracker: tracker});
-    $('#trackerinfo').show();
-    $('#trackername').text(tracker);
-    $('#trackerpagecount').text(await pagecount);
+    try {
+      const pagecount = background.queryDatabase("getPageVisitCountByTracker", {tracker: tracker});
+      $('#trackerinfo').show();
+      $('#trackername').text(tracker);
+      $('#trackerpagecount').text(await pagecount);
+    } catch (e) {
+      ;
+    }
   }
 
   // port.postMessage({ type: "requestInfoCurrentPage" });
