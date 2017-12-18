@@ -10,7 +10,7 @@
  * @param  {string} path to file
  */
 export function readTextFile(file) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let rawFile = new XMLHttpRequest();
     rawFile.open("GET", file, false);
     rawFile.send(null);

@@ -38,14 +38,10 @@ async function onReady() {
 
   if (tabData.trackers.length > 0) {
     const tracker = tabData.trackers[0];
-    try {
-      const pagecount = background.queryDatabase("getPageVisitCountByTracker", {tracker: tracker});
-      $('#trackerinfo').show();
-      $('#trackername').text(tracker);
-      $('#trackerpagecount').text(await pagecount);
-    } catch (e) {
-      ;
-    }
+    const pagecount = background.queryDatabase("getPageVisitCountByTracker", {tracker: tracker});
+    $('#trackerinfo').show();
+    $('#trackername').text(tracker);
+    $('#trackerpagecount').text(await pagecount);
   }
 
   // port.postMessage({ type: "requestInfoCurrentPage" });

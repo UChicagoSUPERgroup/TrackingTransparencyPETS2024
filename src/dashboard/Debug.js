@@ -1,8 +1,4 @@
 import React from 'react';
-import {
-  Route,
-  Link
-} from 'react-router-dom';
 
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
@@ -10,14 +6,13 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import Button from 'react-bootstrap/lib/Button';
 
 
-const FieldGroup = ({ id, label, help, ...props }) => {
+const FieldGroup = ({ id, label, ...props }) => {
   return (
     <FormGroup controlId={id} bsSize="small">
       <ControlLabel>{label}</ControlLabel>
       <FormControl 
         {...props} 
       />
-      {help && <HelpBlock>{help}</HelpBlock>}
     </FormGroup>
   );
 }
@@ -43,7 +38,7 @@ class DebugPage extends React.Component {
 
   // }
 
-  async handleClick(e) {
+  async handleClick() {
     const background = await browser.runtime.getBackgroundPage();
     const result = await background.queryDatabase(this.state.queryFormField, {
       tracker: this.state.trackerFormField,

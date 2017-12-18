@@ -1,6 +1,6 @@
 /** @module storage */
 
-import {primaryDbPromise, primarySchemaBuilder} from "setup.js";
+import {primaryDbPromise} from "setup.js";
 
 /* DATA STORAGE */
 /* ============ */

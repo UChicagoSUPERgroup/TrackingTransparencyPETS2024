@@ -130,7 +130,7 @@ async function updateTrackers(tabId) {
     return;
   }
 
-  let messagePromise = new Promise((resolve, reject) => {
+  let messagePromise = new Promise((resolve) => {
     pendingTrackerMessages[trackerMessageId] = resolve;
   });
 
@@ -290,10 +290,10 @@ if (typeof browser.browserAction.setPopup === "undefined") {
     // popups not supported
     // like firefox for android
     // so we directly open infopage instead
-    browser.browserAction.onClicked.addListener((tab) => {
+    browser.browserAction.onClicked.addListener(() => {
       let infopageData = {
         active: true,
-        url: "../infopage/index.html"
+        url: "../dashboard/index.html"
         };
       browser.tabs.create(infopageData);
     });

@@ -1,7 +1,5 @@
 /** @module userstudy */
 
-// import {trackersWorker, databaseWorker, inferencingWorker} from "workers_setup.js";
-
 const isUserstudy = false;
 
 async function setDefaultOptions() {

@@ -115,7 +115,7 @@ function processWebRequests(pageId, firstPartyHost, webRequests) {
     trackersByPageId[pageId] = new Set();
   }
 
-  while (true) {
+  for (;;) {
     const req = webRequests.pop();
     if (!req) break;
 

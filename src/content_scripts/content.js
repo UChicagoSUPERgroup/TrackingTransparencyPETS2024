@@ -1,6 +1,5 @@
 import makeInference from 'inferencing.js';
 import injectOverlay from 'overlay.js';
-import {sleep} from 'helpers.js';
 
 injectOverlay();
 makeInference();

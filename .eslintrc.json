@@ -1,10 +1,11 @@
 {
     "env": {
-        "browser": true,
         "es6": true,
+        "browser": true,
         "webextensions": true,
         "jquery": true,
-        "worker": true
+        "worker": true,
+        "mocha": true
     },
     "plugins": [
         "react"
@@ -13,7 +14,8 @@
         "ecmaVersion": 8,
         "sourceType": "module",
         "ecmaFeatures": {
-            "jsx": true
+            "jsx": true,
+            "experimentalObjectRestSpread": true
         }
     },
     "extends": [
