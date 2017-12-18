@@ -206,7 +206,7 @@ async function getPagesByTrackerAndInference(args) {
  * @returns {}
  *
  */
-async function getPagesWithNumberOfTrackers(args) {
+async function getPagesWithNumberOfTrackers() {
   let pages = [];
   const query = await getPages();
 
@@ -234,6 +234,7 @@ async function getPages(args) {
     .from(Pages, Trackers)
     .where(Trackers.pageId.eq(Pages.id))
     .orderBy(Pages.id, lf.Order.ASC);
+  query = args.count ? query.limit(args.count) : query;
   return await query.exec();
 }
 
@@ -251,6 +252,7 @@ async function getPagesNoTrackers(args) {
     .leftOuterJoin(Pages, Trackers.pageId.eq(Pages.id))
     .where(Trackers.tracker.isNull())
     .orderBy(Pages.id, lf.Order.ASC);
+  query = args.count ? query.limit(args.count) : query;
   return await query.exec();
 }
 
@@ -270,6 +272,7 @@ async function getDomainsNoTrackers(args) {
   .groupBy(Pages.domain)
   .having((lf.fn.count(Trackers.tracker).eq(0)))
   .orderBy(Pages.id, lf.Order.ASC)
+  query = args.count ? query.limit(args.count) : query;
   return await query.exec();
 }
 
@@ -278,7 +281,7 @@ async function getDomainsNoTrackers(args) {
  *
  * @returns {Integer} number of page visits
  */
-async function getNumberOfPages(args) {
+async function getNumberOfPages() {
   let query = await ttDb.select(lf.fn.count(Pages.id))
     .from(Pages)
     .exec();
@@ -394,6 +397,7 @@ async function getInferencesByTrackerCount(args) {
     ))
     .groupBy(Inferences.inferences);
     // .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC)
+  query = args.count ? query.limit(args.count) : query;
   return await query.exec();
 }
 
@@ -424,7 +428,7 @@ async function getInferenceCount(args) {
 }
 
 // unsure how to chain these
-async function emptyDB(args) {
+async function emptyDB() {
     let emptyInferences = await ttDb.delete().from(Inferences).exec();
     //let emptyTrackers = await ttDb.delete().from(Trackers).exec();
     //let emptyPages = await ttDb.delete().from(Pages).exec();

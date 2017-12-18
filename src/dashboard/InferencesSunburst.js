@@ -62,7 +62,6 @@ export default class BasicSunburst extends React.Component {
     this.state = {
         pathValue: false,
         data: {},
-        originalData: {},
         finalValue: 'Inferences',
         clicked: false
     }
@@ -78,7 +77,7 @@ export default class BasicSunburst extends React.Component {
     let sunburstData = categoryTree;
 
     this.recursiveApplySizes(sunburstData, inferencesList);
-    const updated = updateData(sunburstData, false);
+    sunburstData = updateData(sunburstData, false);
     tt.log(sunburstData);
 
     this.decoratedData = sunburstData;
@@ -86,7 +85,6 @@ export default class BasicSunburst extends React.Component {
     // return sunburstData;
 
     this.setState({
-    //   originalData: sunburstData,
       data: sunburstData
     });
   }
@@ -117,8 +115,7 @@ export default class BasicSunburst extends React.Component {
   }
 
   render() {
-    const {clicked, data, originalData, finalValue, pathValue} = this.state;
-    const {selectedInference} = this.props
+    const {clicked, data, finalValue, pathValue} = this.state;
     if (!data.name) return null;
     return (
       <div className="sunburst-wrapper">

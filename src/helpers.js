@@ -6,7 +6,7 @@ const DEBUG = true;
 
 function log(str) {
   if (DEBUG) {
-    console.log(str);
+    console.log(str); // eslint-disable-line no-console
   }
 }
 
