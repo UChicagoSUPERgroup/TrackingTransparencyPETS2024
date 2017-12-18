@@ -167,7 +167,7 @@ trackersWorker.onmessage = onTrackersWorkerMessage;
  */
 async function getTabData(tabId) {
   if (typeof tabData[tabId] == 'undefined') {
-      return null;
+    return null;
 
   } else {
 
@@ -234,7 +234,7 @@ function onDatabaseWorkerMessage(m) {
 function onTrackersWorkerMessage(m) {
   // tt.log('Message received from database worker', m);
   if (m.data.type === 'trackers') {
-      pendingTrackerMessages[m.data.id](m.data.trackers);
+    pendingTrackerMessages[m.data.id](m.data.trackers);
   }
 }
 
@@ -258,29 +258,29 @@ function runtimeOnMessage(message, sender, sendResponse) {
   let query;
   // sendResponse('swhooo');
   switch (message.type) {
-    case 'parsed_page':
+  case 'parsed_page':
 
-      if (!sender.tab || !sender.url || sender.frameId !== 0) {
-        // message didn't come from a tab, so we ignore
-        break;
-      }
-      if (!tabData[sender.tab.id]) break;
-      pageId = tabData[sender.tab.id].pageId;
-
-      inferencingWorker.postMessage({
-        type: 'content_script_to_inferencing',
-        article: message.article,
-        mainFrameReqId: pageId
-      })
+    if (!sender.tab || !sender.url || sender.frameId !== 0) {
+      // message didn't come from a tab, so we ignore
       break;
-    
-    case 'queryDatabase':
-      query = queryDatabase(message.query, message.args);
-      query.then(res => { // cannot use async/await
-        sendResponse(res);
-      })
-      return true; // this tells browser that we will call sendResponse asynchronously
     }
+    if (!tabData[sender.tab.id]) break;
+    pageId = tabData[sender.tab.id].pageId;
+
+    inferencingWorker.postMessage({
+      type: 'content_script_to_inferencing',
+      article: message.article,
+      mainFrameReqId: pageId
+    })
+    break;
+    
+  case 'queryDatabase':
+    query = queryDatabase(message.query, message.args);
+    query.then(res => { // cannot use async/await
+      sendResponse(res);
+    })
+    return true; // this tells browser that we will call sendResponse asynchronously
+  }
 
 }
 
@@ -289,14 +289,14 @@ function runtimeOnMessage(message, sender, sendResponse) {
 /* ============================= */
 
 if (typeof browser.browserAction.setPopup === 'undefined') { 
-    // popups not supported
-    // like firefox for android
-    // so we directly open infopage instead
-    browser.browserAction.onClicked.addListener(() => {
-      let infopageData = {
-        active: true,
-        url: '../dashboard/index.html'
-        };
-      browser.tabs.create(infopageData);
-    });
+  // popups not supported
+  // like firefox for android
+  // so we directly open infopage instead
+  browser.browserAction.onClicked.addListener(() => {
+    let infopageData = {
+      active: true,
+      url: '../dashboard/index.html'
+    };
+    browser.tabs.create(infopageData);
+  });
 }

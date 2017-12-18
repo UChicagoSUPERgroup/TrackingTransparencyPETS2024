@@ -7,13 +7,13 @@ let databaseWorkerPort;
 
 onmessage = function(m) {
   switch (m.data.type) {
-    case 'database_worker_port':
-      databaseWorkerPort = m.data.port;
-      break;
+  case 'database_worker_port':
+    databaseWorkerPort = m.data.port;
+    break;
     
-    case 'content_script_to_inferencing':
-      inferencingMessageListener(m.data.article, m.data.mainFrameReqId);
-      break;
+  case 'content_script_to_inferencing':
+    inferencingMessageListener(m.data.article, m.data.mainFrameReqId);
+    break;
   }
 }
 

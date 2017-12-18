@@ -115,8 +115,8 @@ async function getTimestampsByInference(args) {
     .where(lf.op.and(
       Inferences.pageId.eq(Pages.id),
       Inferences.inference.eq(args.inference)));
-    query = args.count ? query.limit(args.count) : query;
-    return await query.exec();
+  query = args.count ? query.limit(args.count) : query;
+  return await query.exec();
 }
 
 /* OLD QUERIES */
@@ -191,8 +191,8 @@ async function getPagesByTrackerAndInference(args) {
       lf.op.and(
         Trackers.pageId.eq(Pages.id),
         Inferences.pageId.eq(Pages.id),
-      lf.op.and(
-        Trackers.tracker.eq(args.tracker)),
+        lf.op.and(
+          Trackers.tracker.eq(args.tracker)),
         Inferences.inference.eq(args.inference))))
     .orderBy(Pages.id, lf.Order.DESC);
   query = args.count ? query.limit(args.count) : query;
@@ -267,11 +267,11 @@ async function getPagesNoTrackers(args) {
 
 async function getDomainsNoTrackers(args) {
   let query = ttDb.select(Pages.domain, lf.fn.count(Trackers.tracker))
-  .from(Pages)
-  .leftOuterJoin(Pages, Trackers.pageId.eq(Pages.id))
-  .groupBy(Pages.domain)
-  .having((lf.fn.count(Trackers.tracker).eq(0)))
-  .orderBy(Pages.id, lf.Order.ASC)
+    .from(Pages)
+    .leftOuterJoin(Pages, Trackers.pageId.eq(Pages.id))
+    .groupBy(Pages.domain)
+    .having((lf.fn.count(Trackers.tracker).eq(0)))
+    .orderBy(Pages.id, lf.Order.ASC)
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
 }
@@ -324,7 +324,7 @@ async function getPagesByTrackerAndDomain(args) {
       lf.op.and(
         Trackers.pageId.eq(Pages.id),
         Inferences.pageId.eq(Pages.id)),
-     lf.op.and(
+      lf.op.and(
         Trackers.tracker.eq(args.tracker),
         Pages.domain.eq(args.domain))))
     .orderBy(Pages.id, lf.Order.DESC);
@@ -429,10 +429,10 @@ async function getInferenceCount(args) {
 
 // unsure how to chain these
 async function emptyDB() {
-    let emptyInferences = await ttDb.delete().from(Inferences).exec();
-    //let emptyTrackers = await ttDb.delete().from(Trackers).exec();
-    //let emptyPages = await ttDb.delete().from(Pages).exec();
-    return emptyInferences;
+  let emptyInferences = await ttDb.delete().from(Inferences).exec();
+  //let emptyTrackers = await ttDb.delete().from(Trackers).exec();
+  //let emptyPages = await ttDb.delete().from(Pages).exec();
+  return emptyInferences;
 }
 
 /* ========= */

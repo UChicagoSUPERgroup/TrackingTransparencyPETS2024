@@ -25,7 +25,7 @@
   "rules": {
     "no-console": "warn",
     "react/prop-types": "off",
-    // "indent": ["warn", 2],
+    "indent": ["warn", 2],
     "quotes": ["warn", "single"]
   }
 }

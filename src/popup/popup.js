@@ -64,7 +64,7 @@ document.addEventListener('click', (e) => {
     let dashboardData = {
       active: true,
       url: '../dashboard/index.html'
-      };
+    };
     browser.tabs.create(dashboardData);
 
   }

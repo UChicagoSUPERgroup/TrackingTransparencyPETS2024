@@ -30,14 +30,14 @@ export default class PagesTimeChart extends React.Component {
     return (
       <div>
         <XYPlot
-        xType="time"
-        width={300}
-        height={300}>
-        <HorizontalGridLines />
-        <VerticalGridLines />
-        <XAxis title="X Axis" />
-        <YAxis title="Y Axis" />
-        <LineSeries data={data}/>
+          xType="time"
+          width={300}
+          height={300}>
+          <HorizontalGridLines />
+          <VerticalGridLines />
+          <XAxis title="X Axis" />
+          <YAxis title="Y Axis" />
+          <LineSeries data={data}/>
         </XYPlot>
       </div>
     )

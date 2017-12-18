@@ -11,15 +11,15 @@ function saveOptions(e) {
 
 
   switch (popupCondition) {
-    case 'none':
-      browser.browserAction.disable();
-      break;
-    case 'full':
-      browser.browserAction.setPopup({popup: '/popup/popup.html'});
-      browser.browserAction.enable();
-      break;
-    default:
-      browser.browserAction.disable();
+  case 'none':
+    browser.browserAction.disable();
+    break;
+  case 'full':
+    browser.browserAction.setPopup({popup: '/popup/popup.html'});
+    browser.browserAction.enable();
+    break;
+  default:
+    browser.browserAction.disable();
   }
 
 }

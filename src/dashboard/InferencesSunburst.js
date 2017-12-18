@@ -60,10 +60,10 @@ export default class BasicSunburst extends React.Component {
     super(props);
     // this.decoratedData = this.constructSunburstData(this.props.inferencesList);
     this.state = {
-        pathValue: false,
-        data: {},
-        finalValue: 'Inferences',
-        clicked: false
+      pathValue: false,
+      data: {},
+      finalValue: 'Inferences',
+      clicked: false
     }
   }
 
@@ -165,7 +165,7 @@ export default class BasicSunburst extends React.Component {
             strokeWidth: '0.5'
           }}
           colorType="literal"
-        //   getSize={d => d.value}
+          //   getSize={d => d.value}
           data={data}
           height={400}
           width={400}>

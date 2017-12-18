@@ -6,11 +6,11 @@ class InferenceDetails extends React.Component {
   constructor(props) {
     super(props);
     if (this.props.match && this.props.match.params.name) {
-        // loaded via URL
-        this.inference = this.props.match.params.name;
+      // loaded via URL
+      this.inference = this.props.match.params.name;
     } else if (this.props.inference) {
-        // loaded as in page component
-        this.inference = this.props.inference;
+      // loaded as in page component
+      this.inference = this.props.inference;
     }
     this.state = {
       trackers: false,
@@ -32,7 +32,7 @@ class InferenceDetails extends React.Component {
 
   render() {
     if (!this.inference) {
-        return (<div>Category does not exist</div>);
+      return (<div>Category does not exist</div>);
     }
     const {trackers, timestamps} = this.state;
     return (

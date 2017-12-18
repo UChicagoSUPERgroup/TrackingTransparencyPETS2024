@@ -40,11 +40,11 @@ function processServices(data) {
           const domainCount = domains.length;
 
           for (let j = 0; j < domainCount; j++)
-              services[domains[j]] = {
-                category: categoryName,
-                name: serviceName,
-                url: homepage
-              };
+            services[domains[j]] = {
+              category: categoryName,
+              name: serviceName,
+              url: homepage
+            };
         }
       }
     }
@@ -74,10 +74,10 @@ function trackerMatch(details, firstPartyHost) {
   if (parsedRequest.host in services) {
     const domain = parsedRequest.host;
     match = {
-        domain: domain,
-        name: services[domain].name,
-        category: services[domain].category
-      }
+      domain: domain,
+      name: services[domain].name,
+      category: services[domain].category
+    }
   } else {
     // try chopping off subdomains to see if TLD is known tracker
     const arr = parsedRequest.host.split('.');
@@ -135,23 +135,23 @@ onmessage = function(m) {
   let trackers = [];
 
   switch (m.data.type) {
-    case 'database_worker_port':
-      databaseWorkerPort = m.data.port;
-      break;
+  case 'database_worker_port':
+    databaseWorkerPort = m.data.port;
+    break;
 
-    case 'page_changed':
-      trackers = processWebRequests(m.data.oldPageId, m.data.firstPartyHost, m.data.webRequests);
-      onPageChanged(m.data.oldPageId, trackers)
-      break;
+  case 'page_changed':
+    trackers = processWebRequests(m.data.oldPageId, m.data.firstPartyHost, m.data.webRequests);
+    onPageChanged(m.data.oldPageId, trackers)
+    break;
 
-    case 'push_webrequests': 
-      trackers = processWebRequests(m.data.pageId, m.data.firstPartyHost, m.data.webRequests);
-      postMessage({
-        id: m.data.id,
-        type: 'trackers',
-        pageId: m.data.pageId,
-        trackers: trackers
-      });
-      break;
+  case 'push_webrequests': 
+    trackers = processWebRequests(m.data.pageId, m.data.firstPartyHost, m.data.webRequests);
+    postMessage({
+      id: m.data.id,
+      type: 'trackers',
+      pageId: m.data.pageId,
+      trackers: trackers
+    });
+    break;
   }
 }
