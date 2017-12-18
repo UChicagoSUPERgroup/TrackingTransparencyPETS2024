@@ -1,8 +1,10 @@
+// import tt from "../helpers";
+
 // import Readability from "readability";
 
 /* INFERENCING */
 
-// console.log("content script running");
+// tt.log("content script running");
 
 // var doc = document.cloneNode(true); 
 // var location = document.location;
@@ -14,7 +16,7 @@
 //     pathBase: location.protocol + "//" + location.host + location.pathname.substr(0, location.pathname.lastIndexOf("/") + 1)
 // };
 // var article = new Readability(uri, doc).parse();
-// console.log(article);
+// tt.log(article);
 
 export default function makeInference() {
     browser.runtime.sendMessage({ type: "parsed_page", article: "null" });

@@ -5,6 +5,7 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import Button from 'react-bootstrap/lib/Button';
 
+import tt from "../helpers";
 
 const FieldGroup = ({ id, label, ...props }) => {
   return (
@@ -49,7 +50,7 @@ class DebugPage extends React.Component {
     this.setState({
       result: result
     });
-    console.log(this.state.result);
+    tt.log(this.state.result);
   }
 
   handleChange(event) {

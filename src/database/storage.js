@@ -1,6 +1,7 @@
 /** @module storage */
 
 import {primaryDbPromise} from "setup.js";
+// import tt from "../helpers";
 
 /* DATA STORAGE */
 /* ============ */
@@ -49,7 +50,7 @@ export async function storeTrackerArray(pageId, trackers) {
     });
     rows.push(row);
   }
-  // console.log(rows);
+  // tt.log(rows);
   ttDb.insertOrReplace().into(trackerItem).values(rows).exec();
 }
 

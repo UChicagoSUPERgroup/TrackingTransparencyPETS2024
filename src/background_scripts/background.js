@@ -82,7 +82,7 @@ async function updateMainFrameInfo(details) {
     const tab = await browser.tabs.get(details.tabId);
     recordNewPage(details.tabId, details.url, tab.title);
   } catch (err) {
-    console.log("can't updateMainFrame info for tab id", details.tabId);
+    tt.log("can't updateMainFrame info for tab id", details.tabId);
   }
 }
 
@@ -113,7 +113,7 @@ function recordNewPage(tabId, url, title) {
  */
 function clearTabData(tabId) {
   if (!tabData[tabId]) {
-    // console.log("we tried to clear tab data for a tab we didn't have any data about");
+    // tt.log("we tried to clear tab data for a tab we didn't have any data about");
     return;
   }
 
@@ -216,7 +216,7 @@ window.queryDatabase = queryDatabase; // exposes function to other extension com
  * @param  {Object} m.data - Content of the message
  */
 function onDatabaseWorkerMessage(m) {
-  // console.log('Message received from database worker', m);
+  // tt.log('Message received from database worker', m);
   if (m.data.type === "database_query_response") {
     pendingDatabaseQueries[m.data.id](m.data);
   }
@@ -232,7 +232,7 @@ function onDatabaseWorkerMessage(m) {
  * @param  {Object} m.data.trackers - Array of trackers, given by sender
  */
 function onTrackersWorkerMessage(m) {
-  // console.log('Message received from database worker', m);
+  // tt.log('Message received from database worker', m);
   if (m.data.type === "trackers") {
       pendingTrackerMessages[m.data.id](m.data.trackers);
   }

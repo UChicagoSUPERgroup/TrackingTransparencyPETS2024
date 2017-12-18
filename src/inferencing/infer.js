@@ -3,7 +3,9 @@
  */
 import Tokenizer from "tokenize-text";
 import striptags from "striptags";
-import {AllHtmlEntities as Entities} from "html-entities"
+// import {AllHtmlEntities as Entities} from "html-entities"
+
+// import tt from "../helpers";
 
 
 function scoreCategory(category, words) {
@@ -13,7 +15,7 @@ function scoreCategory(category, words) {
     return category.keywords.indexOf(n) !== -1;
   });
 
-  // console.log(words.length);
+  // tt.log(words.length);
 
   return (words.length / total);
 }
@@ -33,7 +35,7 @@ function findBestChild(category, words, parentScore) {
       bestChild = category.children[i];
     }
 
-    // console.log("trying",category.children[i].name , "score", curScore);
+    // tt.log("trying",category.children[i].name , "score", curScore);
   }
 
   if (highestScore >= parentScore + 0.015) {
@@ -64,7 +66,7 @@ function findBestCategory(root, words, rootScore) {
 
     bestChild = result[0];
     bestChildScore = result[1];
-    // console.log("going with", bestChild.name, "score", bestChildScore);
+    // tt.log("going with", bestChild.name, "score", bestChildScore);
 
     return findBestCategory(bestChild, words, bestChildScore);
   }
@@ -87,7 +89,7 @@ export default function (article, tree) {
   // text = striptags(text, [], " ");
   // text = article.title.concat(" ", article.excerpt);
   text = article.title.concat(" ", article.excerpt, " ", article.textContent);
-  // console.log("article text is:", text);
+  // tt.log("article text is:", text);
   // text = article.textContent;
 
   // tokenize
@@ -96,11 +98,11 @@ export default function (article, tree) {
 
   words = tokens.map((token) => token.value.toLowerCase());
 
-  // console.log(words);
+  // tt.log(words);
   // findBestCategory(tree, words, 0);
 
   const cat = (findBestCategory(tree, words, 0));
-  // console.log(cat);
+  // tt.log(cat);
   return cat;
 
 }

@@ -1,3 +1,5 @@
+import tt from "../helpers";
+
 async function onReady() {
   const background = await browser.runtime.getBackgroundPage();
 
@@ -11,7 +13,7 @@ async function onReady() {
     return;
   }
     
-  console.log(tabData);    
+  tt.log(tabData);    
   $("#pageinfo").show();
 
   /* looks something like:
