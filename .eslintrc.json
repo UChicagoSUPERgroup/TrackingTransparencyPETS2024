@@ -23,7 +23,7 @@
     "plugin:react/recommended"
   ],
   "rules": {
-    "no-console": "warn",
+    "no-console": "off",
     "react/prop-types": "off",
     "indent": ["warn", 2],
     "quotes": ["warn", "single"]

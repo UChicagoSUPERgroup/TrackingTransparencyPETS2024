@@ -9,6 +9,10 @@ module.exports = merge(common, {
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
 
-    new UglifyJsPlugin()
+    new UglifyJsPlugin({
+      compress: {
+        drop_console: true,
+      }
+    })
   ]
 });

@@ -2,13 +2,7 @@
 
 /** @module helpers */
 
-const DEBUG = true;
-
-function log(str) {
-  if (DEBUG) {
-    console.log(str); // eslint-disable-line no-console
-  }
-}
+const DEBUG = (process.env.NODE_ENV === 'production');
 
 function enoughData() {
   return true;
@@ -46,4 +40,4 @@ function sleep(ms) {
 }
 
 
-export default {log, enoughData, readTextFile, deserialize, sleep};
+export default {enoughData, readTextFile, deserialize, sleep};
