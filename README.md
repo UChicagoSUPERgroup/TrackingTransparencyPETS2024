@@ -13,7 +13,8 @@
 
 A browser extension to provide transparency about online tracking and the inferences companies make about your browsing in order to target advertisments and personalize your web experience.
 
-![screenshot](extension/icons/trackers.gif)
+<!-- TODO: include screenshot -->
+<!-- ![screenshot](extension/icons/trackers.gif) -->
 
 # Table of Contents
 
