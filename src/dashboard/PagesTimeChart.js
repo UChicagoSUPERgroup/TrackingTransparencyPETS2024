@@ -35,6 +35,14 @@ export default class PagesTimeChart extends React.Component {
     this.changeSelection = this.changeSelection.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.timestamps) {
+      this.setState({
+        times: nextProps.timestamps
+      })
+    }
+  }
+
   changeSelection(val) {
     this.setState({
       grouping: val

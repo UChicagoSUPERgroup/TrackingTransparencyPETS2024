@@ -114,6 +114,15 @@ export default class BasicSunburst extends React.Component {
     this.constructSunburstData(inferences);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectedInference) {
+      this.setState({
+        finalValue: nextProps.selectedInference,
+        clicked: true
+      });
+    }
+  }
+
   render() {
     const {clicked, data, finalValue, pathValue} = this.state;
     if (!data.name) return null;

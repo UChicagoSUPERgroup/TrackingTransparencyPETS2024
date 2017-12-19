@@ -1,21 +1,11 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 
+import tt from '../helpers';
+
 import InferenceDetails from './InferenceDetails';
 import InferencesSunburst from './InferencesSunburst';
 
-const InferencesListItem = (inference) => {
-  const inferenceName = inference.inference;
-  return (
-    <div key={inferenceName}>
-      <Link to={{
-        pathname: '/inferences/' + inferenceName
-      }}>
-        {inferenceName}
-      </Link>
-    </div>
-  );
-}
 
 class InferencesPage extends React.Component {
   constructor(props) {
@@ -27,6 +17,7 @@ class InferencesPage extends React.Component {
     }
 
     this.handleSunburstSelection = this.handleSunburstSelection.bind(this);
+    this.handleInferenceLinkClick = this.handleInferenceLinkClick.bind(this);
   }
 
   async getInferences() {
@@ -35,6 +26,18 @@ class InferencesPage extends React.Component {
     this.setState({
       inferences: inferences 
     });
+  }
+
+  InferenceLink(inference) {
+    return(
+      <a key={inference} onClick={this.handleInferenceLinkClick}>{inference}</a>
+    )
+  }
+
+  handleInferenceLinkClick(e) {
+    e.preventDefault();
+    const inference = e.currentTarget.text;
+    this.setState({selectedInference: inference});
   }
 
   handleSunburstSelection(inference) {
@@ -47,6 +50,7 @@ class InferencesPage extends React.Component {
   
   
   render() {
+    let {inferences, selectedInference} = this.state;
 
     return(
       <div>
@@ -56,8 +60,17 @@ class InferencesPage extends React.Component {
         <Route exact path={this.props.match.url} render={() => (
           <div>
             <p>The Tracking Transparency extension is able to infer a topic for all the pages that you visit. Online advertisers and trackers most likely are able to make similar inferences about your browsing. This chart shows the {this.inferenceCount} topics that appeared the most in your browsing. You can click on a topic on the diagram to see how companies could have made a specific inference about you.</p>
-            <InferencesSunburst onSelectionChange={this.handleSunburstSelection}/>
-            {this.state.selectedInference && <InferenceDetails inference={this.state.selectedInference}/>}
+            {inferences && inferences.length >= 3 && <p>Some of the most frequent inferences made about you include {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)}</p>}
+            {/* {inferences && <div className='suggested-inferences'>
+              <p><strong>Suggested inferences to explore:</strong></p>
+              <ul>
+                <li>{inferences[0].inference}</li>
+                <li>{inferences[1].inference}</li>
+                <li>{inferences[2].inference}</li>
+              </ul>
+            </div>} */}
+            <InferencesSunburst onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference}/>
+            {selectedInference && <InferenceDetails inference={selectedInference}/>}
             {/* {this.state.inferences && <InferencesSunburst inferencesList={this.state.inferences}/>} */}
             {/* <InferencesSunburst inferencesList={this.state.inferences}/> */}
             {/* {this.state.inferences.map(inference => InferencesListItem(inference))} */}
