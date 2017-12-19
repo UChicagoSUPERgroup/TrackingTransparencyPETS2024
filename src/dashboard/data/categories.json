@@ -5,17 +5,11 @@
 			"name": "Arts & Entertainment",
 			"children": [
 				{
-					"name": "Arts & Entertainment"
-				},
-				{
 					"name": "Celebrities & Entertainment News"
 				},
 				{
 					"name": "Comics & Animation",
 					"children": [
-						{
-							"name": "Comics & Animation"
-						},
 						{
 							"name": "Anime & Manga"
 						},
@@ -31,14 +25,8 @@
 					"name": "Entertainment Industry",
 					"children": [
 						{
-							"name": "Entertainment Industry"
-						},
-						{
 							"name": "Film & TV Industry",
 							"children": [
-								{
-									"name": "Film & TV Industry"
-								},
 								{
 									"name": "Film & TV Awards"
 								},
@@ -50,9 +38,6 @@
 						{
 							"name": "Recording Industry",
 							"children": [
-								{
-									"name": "Recording Industry"
-								},
 								{
 									"name": "Music Awards"
 								},
@@ -66,9 +51,6 @@
 				{
 					"name": "Events & Listings",
 					"children": [
-						{
-							"name": "Events & Listings"
-						},
 						{
 							"name": "Clubs & Nightlife"
 						},
@@ -93,9 +75,6 @@
 					"name": "Fun & Trivia",
 					"children": [
 						{
-							"name": "Fun & Trivia"
-						},
-						{
 							"name": "Flash-Based Entertainment"
 						},
 						{
@@ -106,9 +85,6 @@
 				{
 					"name": "Humor",
 					"children": [
-						{
-							"name": "Humor"
-						},
 						{
 							"name": "Live Comedy"
 						},
@@ -124,14 +100,8 @@
 					"name": "Movies",
 					"children": [
 						{
-							"name": "Movies"
-						},
-						{
 							"name": "Action & Adventure Films",
 							"children": [
-								{
-									"name": "Action & Adventure Films"
-								},
 								{
 									"name": "Martial Arts Films"
 								},
@@ -153,9 +123,6 @@
 							"name": "Classic Films",
 							"children": [
 								{
-									"name": "Classic Films"
-								},
-								{
 									"name": "Silent Films"
 								}
 							]
@@ -169,9 +136,6 @@
 						{
 							"name": "DVD & Video Shopping",
 							"children": [
-								{
-									"name": "DVD & Video Shopping"
-								},
 								{
 									"name": "DVD & Video Rentals"
 								}
@@ -196,9 +160,6 @@
 							"name": "Movie Reference",
 							"children": [
 								{
-									"name": "Movie Reference"
-								},
-								{
 									"name": "Movie Reviews & Previews"
 								}
 							]
@@ -221,9 +182,6 @@
 					"name": "Music & Audio",
 					"children": [
 						{
-							"name": "Music & Audio"
-						},
-						{
 							"name": "CD & Audio Shopping"
 						},
 						{
@@ -245,9 +203,6 @@
 							"name": "Jazz & Blues",
 							"children": [
 								{
-									"name": "Jazz & Blues"
-								},
-								{
 									"name": "Blues"
 								},
 								{
@@ -265,9 +220,6 @@
 							"name": "Music Equipment & Technology",
 							"children": [
 								{
-									"name": "Music Equipment & Technology"
-								},
-								{
 									"name": "DJ Resources & Equipment"
 								},
 								{
@@ -276,9 +228,6 @@
 								{
 									"name": "Musical Instruments",
 									"children": [
-										{
-											"name": "Musical Instruments"
-										},
 										{
 											"name": "Drums & Percussion"
 										},
@@ -298,9 +247,6 @@
 						{
 							"name": "Music Reference",
 							"children": [
-								{
-									"name": "Music Reference"
-								},
 								{
 									"name": "Music Composition & Theory"
 								},
@@ -322,9 +268,6 @@
 							"name": "Radio",
 							"children": [
 								{
-									"name": "Radio"
-								},
-								{
 									"name": "Podcasting"
 								},
 								{
@@ -336,9 +279,6 @@
 							"name": "Religious Music",
 							"children": [
 								{
-									"name": "Religious Music"
-								},
-								{
 									"name": "Christian & Gospel Music"
 								}
 							]
@@ -346,9 +286,6 @@
 						{
 							"name": "Rock Music",
 							"children": [
-								{
-									"name": "Rock Music"
-								},
 								{
 									"name": "Classic Rock & Oldies"
 								},
@@ -373,9 +310,6 @@
 							"name": "Urban & Hip-Hop",
 							"children": [
 								{
-									"name": "Urban & Hip-Hop"
-								},
-								{
 									"name": "Rap & Hip-Hop"
 								},
 								{
@@ -393,9 +327,6 @@
 							"name": "World Music",
 							"children": [
 								{
-									"name": "World Music"
-								},
-								{
 									"name": "African Music"
 								},
 								{
@@ -407,9 +338,6 @@
 								{
 									"name": "Latin American Music",
 									"children": [
-										{
-											"name": "Latin American Music"
-										},
 										{
 											"name": "Brazilian Music"
 										},
@@ -435,9 +363,6 @@
 					"name": "Offbeat",
 					"children": [
 						{
-							"name": "Offbeat"
-						},
-						{
 							"name": "Edgy & Bizarre"
 						},
 						{
@@ -449,9 +374,6 @@
 					"name": "Online Media",
 					"children": [
 						{
-							"name": "Online Media"
-						},
-						{
 							"name": "Online Image Galleries"
 						},
 						{
@@ -462,9 +384,6 @@
 				{
 					"name": "Performing Arts",
 					"children": [
-						{
-							"name": "Performing Arts"
-						},
 						{
 							"name": "Acting & Theater"
 						},
@@ -483,9 +402,6 @@
 					"name": "TV & Video",
 					"children": [
 						{
-							"name": "TV & Video"
-						},
-						{
 							"name": "Online Video"
 						},
 						{
@@ -501,17 +417,11 @@
 							"name": "TV Shows & Programs",
 							"children": [
 								{
-									"name": "TV Shows & Programs"
-								},
-								{
 									"name": "TV Comedies"
 								},
 								{
 									"name": "TV Dramas",
 									"children": [
-										{
-											"name": "TV Dramas"
-										},
 										{
 											"name": "TV Crime & Legal Shows"
 										},
@@ -546,9 +456,6 @@
 					"name": "Visual Art & Design",
 					"children": [
 						{
-							"name": "Visual Art & Design"
-						},
-						{
 							"name": "Architecture"
 						},
 						{
@@ -560,9 +467,6 @@
 						{
 							"name": "Design",
 							"children": [
-								{
-									"name": "Design"
-								},
 								{
 									"name": "Graphic Design"
 								},
@@ -588,9 +492,6 @@
 			"name": "Autos & Vehicles",
 			"children": [
 				{
-					"name": "Autos & Vehicles"
-				},
-				{
 					"name": "Bicycles & Accessories"
 				},
 				{
@@ -606,9 +507,6 @@
 					"name": "Commercial Vehicles",
 					"children": [
 						{
-							"name": "Commercial Vehicles"
-						},
-						{
 							"name": "Cargo Trucks & Trailers"
 						}
 					]
@@ -619,9 +517,6 @@
 				{
 					"name": "Hybrid & Alternative Vehicles",
 					"children": [
-						{
-							"name": "Hybrid & Alternative Vehicles"
-						},
 						{
 							"name": "Electric & Plug-In Vehicles"
 						}
@@ -646,9 +541,6 @@
 					"name": "Trucks & SUVs",
 					"children": [
 						{
-							"name": "Trucks & SUVs"
-						},
-						{
 							"name": "SUVs"
 						},
 						{
@@ -662,9 +554,6 @@
 				{
 					"name": "Vehicle Brands",
 					"children": [
-						{
-							"name": "Vehicle Brands"
-						},
 						{
 							"name": "Acura"
 						},
@@ -765,9 +654,6 @@
 							"name": "Nissan",
 							"children": [
 								{
-									"name": "Nissan"
-								},
-								{
 									"name": "Infiniti"
 								}
 							]
@@ -803,9 +689,6 @@
 							"name": "Toyota",
 							"children": [
 								{
-									"name": "Toyota"
-								},
-								{
 									"name": "Scion"
 								}
 							]
@@ -831,9 +714,6 @@
 					"name": "Vehicle Parts & Accessories",
 					"children": [
 						{
-							"name": "Vehicle Parts & Accessories"
-						},
-						{
 							"name": "Auto Exterior"
 						},
 						{
@@ -854,9 +734,6 @@
 					"name": "Vehicle Shopping",
 					"children": [
 						{
-							"name": "Vehicle Shopping"
-						},
-						{
 							"name": "Fuel Economy & Gas Prices"
 						},
 						{
@@ -873,9 +750,6 @@
 			"name": "Beauty & Fitness",
 			"children": [
 				{
-					"name": "Beauty & Fitness"
-				},
-				{
 					"name": "Beauty Pageants"
 				},
 				{
@@ -884,9 +758,6 @@
 				{
 					"name": "Cosmetic Procedures",
 					"children": [
-						{
-							"name": "Cosmetic Procedures"
-						},
 						{
 							"name": "Cosmetic Surgery"
 						}
@@ -898,9 +769,6 @@
 				{
 					"name": "Face & Body Care",
 					"children": [
-						{
-							"name": "Face & Body Care"
-						},
 						{
 							"name": "Hygiene & Toiletries"
 						},
@@ -922,9 +790,6 @@
 					"name": "Fashion & Style",
 					"children": [
 						{
-							"name": "Fashion & Style"
-						},
-						{
 							"name": "Fashion Designers & Collections"
 						},
 						{
@@ -935,9 +800,6 @@
 				{
 					"name": "Fitness",
 					"children": [
-						{
-							"name": "Fitness"
-						},
 						{
 							"name": "Bodybuilding"
 						},
@@ -950,9 +812,6 @@
 					"name": "Hair Care",
 					"children": [
 						{
-							"name": "Hair Care"
-						},
-						{
 							"name": "Hair Loss"
 						}
 					]
@@ -960,9 +819,6 @@
 				{
 					"name": "Spas & Beauty Services",
 					"children": [
-						{
-							"name": "Spas & Beauty Services"
-						},
 						{
 							"name": "Massage Therapy"
 						}
@@ -976,9 +832,6 @@
 		{
 			"name": "Books & Literature",
 			"children": [
-				{
-					"name": "Books & Literature"
-				},
 				{
 					"name": "Book Retailers"
 				},
@@ -1009,14 +862,8 @@
 			"name": "Business & Industrial",
 			"children": [
 				{
-					"name": "Business & Industrial"
-				},
-				{
 					"name": "Advertising & Marketing",
 					"children": [
-						{
-							"name": "Advertising & Marketing"
-						},
 						{
 							"name": "Marketing Services"
 						},
@@ -1032,9 +879,6 @@
 					"name": "Aerospace & Defense",
 					"children": [
 						{
-							"name": "Aerospace & Defense"
-						},
-						{
 							"name": "Defense Industry"
 						},
 						{
@@ -1045,9 +889,6 @@
 				{
 					"name": "Agriculture & Forestry",
 					"children": [
-						{
-							"name": "Agriculture & Forestry"
-						},
 						{
 							"name": "Agricultural Equipment"
 						},
@@ -1081,9 +922,6 @@
 					"name": "Business Finance",
 					"children": [
 						{
-							"name": "Business Finance"
-						},
-						{
 							"name": "Commercial Lending"
 						},
 						{
@@ -1101,17 +939,11 @@
 					"name": "Business Operations",
 					"children": [
 						{
-							"name": "Business Operations"
-						},
-						{
 							"name": "Business Plans & Presentations"
 						},
 						{
 							"name": "Human Resources",
 							"children": [
-								{
-									"name": "Human Resources"
-								},
 								{
 									"name": "Compensation & Benefits"
 								},
@@ -1129,9 +961,6 @@
 						{
 							"name": "Management",
 							"children": [
-								{
-									"name": "Management"
-								},
 								{
 									"name": "Business Process"
 								},
@@ -1152,17 +981,11 @@
 					"name": "Business Services",
 					"children": [
 						{
-							"name": "Business Services"
-						},
-						{
 							"name": "Consulting"
 						},
 						{
 							"name": "Corporate Events",
 							"children": [
-								{
-									"name": "Corporate Events"
-								},
 								{
 									"name": "Trade Shows & Conventions"
 								}
@@ -1171,9 +994,6 @@
 						{
 							"name": "E-Commerce Services",
 							"children": [
-								{
-									"name": "E-Commerce Services"
-								},
 								{
 									"name": "Merchant Services & Payment Systems"
 								}
@@ -1189,9 +1009,6 @@
 							"name": "Office Services",
 							"children": [
 								{
-									"name": "Office Services"
-								},
-								{
 									"name": "Office & Facilities Management"
 								}
 							]
@@ -1199,9 +1016,6 @@
 						{
 							"name": "Office Supplies",
 							"children": [
-								{
-									"name": "Office Supplies"
-								},
 								{
 									"name": "Office Furniture"
 								}
@@ -1228,9 +1042,6 @@
 					"name": "Chemicals Industry",
 					"children": [
 						{
-							"name": "Chemicals Industry"
-						},
-						{
 							"name": "Agrochemicals"
 						},
 						{
@@ -1251,14 +1062,8 @@
 					"name": "Construction & Maintenance",
 					"children": [
 						{
-							"name": "Construction & Maintenance"
-						},
-						{
 							"name": "Building Materials & Supplies",
 							"children": [
-								{
-									"name": "Building Materials & Supplies"
-								},
 								{
 									"name": "Nails Screws & Fasteners"
 								},
@@ -1285,9 +1090,6 @@
 					"name": "Energy & Utilities",
 					"children": [
 						{
-							"name": "Energy & Utilities"
-						},
-						{
 							"name": "Electricity"
 						},
 						{
@@ -1303,9 +1105,6 @@
 							"name": "Waste Management",
 							"children": [
 								{
-									"name": "Waste Management"
-								},
-								{
 									"name": "Recycling"
 								}
 							]
@@ -1319,17 +1118,11 @@
 					"name": "Hospitality Industry",
 					"children": [
 						{
-							"name": "Hospitality Industry"
-						},
-						{
 							"name": "Event Planning"
 						},
 						{
 							"name": "Food Service",
 							"children": [
-								{
-									"name": "Food Service"
-								},
 								{
 									"name": "Restaurant Supply"
 								}
@@ -1341,14 +1134,8 @@
 					"name": "Industrial Materials & Equipment",
 					"children": [
 						{
-							"name": "Industrial Materials & Equipment"
-						},
-						{
 							"name": "Fluid Handling",
 							"children": [
-								{
-									"name": "Fluid Handling"
-								},
 								{
 									"name": "Valves Hoses & Fittings"
 								}
@@ -1366,9 +1153,6 @@
 					"name": "Manufacturing",
 					"children": [
 						{
-							"name": "Manufacturing"
-						},
-						{
 							"name": "Factory Automation"
 						}
 					]
@@ -1383,14 +1167,8 @@
 					"name": "Printing & Publishing",
 					"children": [
 						{
-							"name": "Printing & Publishing"
-						},
-						{
 							"name": "Document & Printing Services",
 							"children": [
-								{
-									"name": "Document & Printing Services"
-								},
 								{
 									"name": "Business Cards & Stationary"
 								}
@@ -1405,9 +1183,6 @@
 					"name": "Retail Trade",
 					"children": [
 						{
-							"name": "Retail Trade"
-						},
-						{
 							"name": "Retail Equipment & Technology"
 						}
 					]
@@ -1415,9 +1190,6 @@
 				{
 					"name": "Small Business",
 					"children": [
-						{
-							"name": "Small Business"
-						},
 						{
 							"name": "Business Formation"
 						},
@@ -1436,9 +1208,6 @@
 					"name": "Transportation & Logistics",
 					"children": [
 						{
-							"name": "Transportation & Logistics"
-						},
-						{
 							"name": "Aviation"
 						},
 						{
@@ -1453,9 +1222,6 @@
 						{
 							"name": "Mail & Package Delivery",
 							"children": [
-								{
-									"name": "Mail & Package Delivery"
-								},
 								{
 									"name": "Couriers & Messengers"
 								}
@@ -1493,23 +1259,14 @@
 			"name": "Computers & Electronics",
 			"children": [
 				{
-					"name": "Computers & Electronics"
-				},
-				{
 					"name": "CAD & CAM"
 				},
 				{
 					"name": "Computer Hardware",
 					"children": [
 						{
-							"name": "Computer Hardware"
-						},
-						{
 							"name": "Computer Components",
 							"children": [
-								{
-									"name": "Computer Components"
-								},
 								{
 									"name": "Chips & Processors"
 								},
@@ -1524,9 +1281,6 @@
 						{
 							"name": "Computer Drives & Storage",
 							"children": [
-								{
-									"name": "Computer Drives & Storage"
-								},
 								{
 									"name": "CD & DVD Drives & Burners"
 								},
@@ -1554,9 +1308,6 @@
 							"name": "Computer Peripherals",
 							"children": [
 								{
-									"name": "Computer Peripherals"
-								},
-								{
 									"name": "Computer Monitors & Displays"
 								},
 								{
@@ -1565,9 +1316,6 @@
 								{
 									"name": "Printers, Copiers & Fax",
 									"children": [
-										{
-											"name": "Printers, Copiers & Fax"
-										},
 										{
 											"name": "Copiers"
 										},
@@ -1600,9 +1348,6 @@
 							"name": "Laptops & Notebooks",
 							"children": [
 								{
-									"name": "Laptops & Notebooks"
-								},
-								{
 									"name": "Tablet PCs"
 								}
 							]
@@ -1612,9 +1357,6 @@
 				{
 					"name": "Computer Security",
 					"children": [
-						{
-							"name": "Computer Security"
-						},
 						{
 							"name": "Antivirus & Malware"
 						},
@@ -1627,14 +1369,8 @@
 					"name": "Consumer Electronics",
 					"children": [
 						{
-							"name": "Consumer Electronics"
-						},
-						{
 							"name": "Audio Equipment",
 							"children": [
-								{
-									"name": "Audio Equipment"
-								},
 								{
 									"name": "Headphones"
 								},
@@ -1650,17 +1386,11 @@
 							"name": "Camera & Photo Equipment",
 							"children": [
 								{
-									"name": "Camera & Photo Equipment"
-								},
-								{
 									"name": "Binoculars, Telescopes & Optical Devices"
 								},
 								{
 									"name": "Cameras & Camcorders",
 									"children": [
-										{
-											"name": "Cameras & Camcorders"
-										},
 										{
 											"name": "Camcorders"
 										},
@@ -1677,9 +1407,6 @@
 						{
 							"name": "Car Electronics",
 							"children": [
-								{
-									"name": "Car Electronics"
-								},
 								{
 									"name": "Car Audio"
 								},
@@ -1698,9 +1425,6 @@
 							"name": "Gadgets & Portable Electronics",
 							"children": [
 								{
-									"name": "Gadgets & Portable Electronics"
-								},
-								{
 									"name": "E-Book Readers"
 								},
 								{
@@ -1714,9 +1438,6 @@
 						{
 							"name": "Game Systems & Consoles",
 							"children": [
-								{
-									"name": "Game Systems & Consoles"
-								},
 								{
 									"name": "Handheld Game Consoles"
 								},
@@ -1735,9 +1456,6 @@
 							"name": "TV & Video Equipment",
 							"children": [
 								{
-									"name": "TV & Video Equipment"
-								},
-								{
 									"name": "DVRs & Set-Top Boxes"
 								},
 								{
@@ -1749,9 +1467,6 @@
 								{
 									"name": "Televisions",
 									"children": [
-										{
-											"name": "Televisions"
-										},
 										{
 											"name": "HDTVs"
 										},
@@ -1770,9 +1485,6 @@
 									"name": "Video Players & Recorders",
 									"children": [
 										{
-											"name": "Video Players & Recorders"
-										},
-										{
 											"name": "Blu-Ray Players & Recorders"
 										},
 										{
@@ -1787,9 +1499,6 @@
 				{
 					"name": "Electronics & Electrical",
 					"children": [
-						{
-							"name": "Electronics & Electrical"
-						},
 						{
 							"name": "Data Sheets & Electronics Reference"
 						},
@@ -1814,9 +1523,6 @@
 					"name": "Enterprise Technology",
 					"children": [
 						{
-							"name": "Enterprise Technology"
-						},
-						{
 							"name": "Customer Relationship Management (CRM)"
 						},
 						{
@@ -1830,9 +1536,6 @@
 				{
 					"name": "Networking",
 					"children": [
-						{
-							"name": "Networking"
-						},
 						{
 							"name": "Data Formats & Protocols"
 						},
@@ -1850,9 +1553,6 @@
 				{
 					"name": "Programming",
 					"children": [
-						{
-							"name": "Programming"
-						},
 						{
 							"name": "C & C++"
 						},
@@ -1877,14 +1577,8 @@
 					"name": "Software",
 					"children": [
 						{
-							"name": "Software"
-						},
-						{
 							"name": "Business & Productivity Software",
 							"children": [
-								{
-									"name": "Business & Productivity Software"
-								},
 								{
 									"name": "Accounting & Financial Software"
 								},
@@ -1918,9 +1612,6 @@
 							"name": "Internet Software",
 							"children": [
 								{
-									"name": "Internet Software"
-								},
-								{
 									"name": "Content Management"
 								},
 								{
@@ -1935,14 +1626,8 @@
 							"name": "Multimedia Software",
 							"children": [
 								{
-									"name": "Multimedia Software"
-								},
-								{
 									"name": "Audio & Music Software",
 									"children": [
-										{
-											"name": "Audio & Music Software"
-										},
 										{
 											"name": "Audio Files Formats & Codecs"
 										}
@@ -1951,9 +1636,6 @@
 								{
 									"name": "Desktop Publishing",
 									"children": [
-										{
-											"name": "Desktop Publishing"
-										},
 										{
 											"name": "Fonts"
 										}
@@ -1969,9 +1651,6 @@
 									"name": "Photo & Video Software",
 									"children": [
 										{
-											"name": "Photo & Video Software"
-										},
-										{
 											"name": "Video File Formats & Codecs"
 										}
 									]
@@ -1984,9 +1663,6 @@
 						{
 							"name": "Operating Systems",
 							"children": [
-								{
-									"name": "Operating Systems"
-								},
 								{
 									"name": "Linux & Unix"
 								},
@@ -2012,14 +1688,8 @@
 			"name": "Finance",
 			"children": [
 				{
-					"name": "Finance"
-				},
-				{
 					"name": "Accounting & Auditing",
 					"children": [
-						{
-							"name": "Accounting & Auditing"
-						},
 						{
 							"name": "Tax Preparation & Planning"
 						}
@@ -2031,9 +1701,6 @@
 				{
 					"name": "Credit & Lending",
 					"children": [
-						{
-							"name": "Credit & Lending"
-						},
 						{
 							"name": "Auto Financing"
 						},
@@ -2064,9 +1731,6 @@
 					"name": "Insurance",
 					"children": [
 						{
-							"name": "Insurance"
-						},
-						{
 							"name": "Auto Insurance"
 						},
 						{
@@ -2081,9 +1745,6 @@
 					"name": "Investing",
 					"children": [
 						{
-							"name": "Investing"
-						},
-						{
 							"name": "Commodities & Futures Trading"
 						}
 					]
@@ -2097,17 +1758,11 @@
 			"name": "Food & Drink",
 			"children": [
 				{
-					"name": "Food & Drink"
-				},
-				{
 					"name": "Candy & Sweets"
 				},
 				{
 					"name": "Cooking & Recipes",
 					"children": [
-						{
-							"name": "Cooking & Recipes"
-						},
 						{
 							"name": "Baked Goods"
 						},
@@ -2126,9 +1781,6 @@
 						{
 							"name": "World Cuisines",
 							"children": [
-								{
-									"name": "World Cuisines"
-								},
 								{
 									"name": "Asian Cuisine"
 								},
@@ -2155,9 +1807,6 @@
 					"name": "Non-Alcoholic Beverages",
 					"children": [
 						{
-							"name": "Non-Alcoholic Beverages"
-						},
-						{
 							"name": "Coffee & Tea"
 						}
 					]
@@ -2165,9 +1814,6 @@
 				{
 					"name": "Restaurants",
 					"children": [
-						{
-							"name": "Restaurants"
-						},
 						{
 							"name": "Dining Guides"
 						},
@@ -2182,17 +1828,11 @@
 			"name": "Games",
 			"children": [
 				{
-					"name": "Games"
-				},
-				{
 					"name": "Arcade & Coin-Op Games"
 				},
 				{
 					"name": "Board Games",
 					"children": [
-						{
-							"name": "Board Games"
-						},
 						{
 							"name": "Chess & Abstract Strategy Games"
 						},
@@ -2205,9 +1845,6 @@
 					"name": "Card Games",
 					"children": [
 						{
-							"name": "Card Games"
-						},
-						{
 							"name": "Collectible Card Games"
 						}
 					]
@@ -2215,9 +1852,6 @@
 				{
 					"name": "Computer & Video Games",
 					"children": [
-						{
-							"name": "Computer & Video Games"
-						},
 						{
 							"name": "Action & Platform Games"
 						},
@@ -2236,9 +1870,6 @@
 						{
 							"name": "Gaming Media & Reference",
 							"children": [
-								{
-									"name": "Gaming Media & Reference"
-								},
 								{
 									"name": "Game Cheats & Hints"
 								}
@@ -2271,9 +1902,6 @@
 					"name": "Family-Oriented Games & Activities",
 					"children": [
 						{
-							"name": "Family-Oriented Games & Activities"
-						},
-						{
 							"name": "Drawing & Coloring"
 						},
 						{
@@ -2284,9 +1912,6 @@
 				{
 					"name": "Online Games",
 					"children": [
-						{
-							"name": "Online Games"
-						},
 						{
 							"name": "Massive Multiplayer"
 						}
@@ -2305,9 +1930,6 @@
 					"name": "Table Games",
 					"children": [
 						{
-							"name": "Table Games"
-						},
-						{
 							"name": "Billiards"
 						},
 						{
@@ -2321,14 +1943,8 @@
 			"name": "Health",
 			"children": [
 				{
-					"name": "Health"
-				},
-				{
 					"name": "Aging & Geriatrics",
 					"children": [
-						{
-							"name": "Aging & Geriatrics"
-						},
 						{
 							"name": "Alzheimer's Disease"
 						}
@@ -2337,9 +1953,6 @@
 				{
 					"name": "Alternative & Natural Medicine",
 					"children": [
-						{
-							"name": "Alternative & Natural Medicine"
-						},
 						{
 							"name": "Acupuncture & Chinese Medicine"
 						},
@@ -2351,9 +1964,6 @@
 				{
 					"name": "Health Conditions",
 					"children": [
-						{
-							"name": "Health Conditions"
-						},
 						{
 							"name": "AIDS & HIV"
 						},
@@ -2382,9 +1992,6 @@
 							"name": "Endocrine Conditions",
 							"children": [
 								{
-									"name": "Endocrine Conditions"
-								},
-								{
 									"name": "Thyroid Conditions"
 								}
 							]
@@ -2401,9 +2008,6 @@
 						{
 							"name": "Infectious Diseases",
 							"children": [
-								{
-									"name": "Infectious Diseases"
-								},
 								{
 									"name": "Parasites & Parasitic Diseases"
 								},
@@ -2425,9 +2029,6 @@
 							"name": "Pain Management",
 							"children": [
 								{
-									"name": "Pain Management"
-								},
-								{
 									"name": "Headaches & Migraines"
 								}
 							]
@@ -2435,9 +2036,6 @@
 						{
 							"name": "Respiratory Conditions",
 							"children": [
-								{
-									"name": "Respiratory Conditions"
-								},
 								{
 									"name": "Asthma"
 								}
@@ -2461,14 +2059,8 @@
 					"name": "Medical Devices & Equipment",
 					"children": [
 						{
-							"name": "Medical Devices & Equipment"
-						},
-						{
 							"name": "Assistive Technology",
 							"children": [
-								{
-									"name": "Assistive Technology"
-								},
 								{
 									"name": "Mobility Equipment & Accessories"
 								}
@@ -2480,9 +2072,6 @@
 					"name": "Medical Facilities & Services",
 					"children": [
 						{
-							"name": "Medical Facilities & Services"
-						},
-						{
 							"name": "Doctors' Offices"
 						},
 						{
@@ -2491,9 +2080,6 @@
 						{
 							"name": "Medical Procedures",
 							"children": [
-								{
-									"name": "Medical Procedures"
-								},
 								{
 									"name": "Medical Tests & Exams"
 								},
@@ -2511,9 +2097,6 @@
 					"name": "Medical Literature & Resources",
 					"children": [
 						{
-							"name": "Medical Literature & Resources"
-						},
-						{
 							"name": "Medical Photos & Illustration"
 						}
 					]
@@ -2525,9 +2108,6 @@
 					"name": "Mental Health",
 					"children": [
 						{
-							"name": "Mental Health"
-						},
-						{
 							"name": "Anxiety & Stress"
 						},
 						{
@@ -2536,9 +2116,6 @@
 						{
 							"name": "Learning & Developmental Disabilities",
 							"children": [
-								{
-									"name": "Learning & Developmental Disabilities"
-								},
 								{
 									"name": "ADD & ADHD"
 								}
@@ -2550,9 +2127,6 @@
 					"name": "Nursing",
 					"children": [
 						{
-							"name": "Nursing"
-						},
-						{
 							"name": "Assisted Living & Long Term Care"
 						}
 					]
@@ -2561,14 +2135,8 @@
 					"name": "Nutrition",
 					"children": [
 						{
-							"name": "Nutrition"
-						},
-						{
 							"name": "Special & Restricted Diets",
 							"children": [
-								{
-									"name": "Special & Restricted Diets"
-								},
 								{
 									"name": "Cholesterol Issues"
 								}
@@ -2589,9 +2157,6 @@
 					"name": "Pharmacy",
 					"children": [
 						{
-							"name": "Pharmacy"
-						},
-						{
 							"name": "Drugs & Medications"
 						}
 					]
@@ -2599,9 +2164,6 @@
 				{
 					"name": "Public Health",
 					"children": [
-						{
-							"name": "Public Health"
-						},
 						{
 							"name": "Health Policy"
 						},
@@ -2616,9 +2178,6 @@
 				{
 					"name": "Reproductive Health",
 					"children": [
-						{
-							"name": "Reproductive Health"
-						},
 						{
 							"name": "Birth Control"
 						},
@@ -2646,9 +2205,6 @@
 					"name": "Substance Abuse",
 					"children": [
 						{
-							"name": "Substance Abuse"
-						},
-						{
 							"name": "Drug & Alcohol Testing"
 						},
 						{
@@ -2666,9 +2222,6 @@
 					"name": "Vision Care",
 					"children": [
 						{
-							"name": "Vision Care"
-						},
-						{
 							"name": "Eyeglasses & Contacts"
 						}
 					]
@@ -2682,9 +2235,6 @@
 			"name": "Hobbies & Leisure",
 			"children": [
 				{
-					"name": "Hobbies & Leisure"
-				},
-				{
 					"name": "Clubs & Organizations"
 				},
 				{
@@ -2694,9 +2244,6 @@
 					"name": "Crafts",
 					"children": [
 						{
-							"name": "Crafts"
-						},
-						{
 							"name": "Fiber & Textile Arts"
 						}
 					]
@@ -2704,9 +2251,6 @@
 				{
 					"name": "Outdoors",
 					"children": [
-						{
-							"name": "Outdoors"
-						},
 						{
 							"name": "Equestrian"
 						},
@@ -2734,14 +2278,8 @@
 					"name": "Special Occasions",
 					"children": [
 						{
-							"name": "Special Occasions"
-						},
-						{
 							"name": "Holidays & Seasonal Events",
 							"children": [
-								{
-									"name": "Holidays & Seasonal Events"
-								},
 								{
 									"name": "Birthdays & Name Days"
 								},
@@ -2751,9 +2289,6 @@
 								{
 									"name": "Christian Holidays",
 									"children": [
-										{
-											"name": "Christian Holidays"
-										},
 										{
 											"name": "Christmas"
 										},
@@ -2791,9 +2326,6 @@
 					"name": "Water Activities",
 					"children": [
 						{
-							"name": "Water Activities"
-						},
-						{
 							"name": "Boating"
 						},
 						{
@@ -2810,23 +2342,14 @@
 			"name": "Home & Garden",
 			"children": [
 				{
-					"name": "Home & Garden"
-				},
-				{
 					"name": "Bed & Bath",
 					"children": [
-						{
-							"name": "Bed & Bath"
-						},
 						{
 							"name": "Bathroom"
 						},
 						{
 							"name": "Bedroom",
 							"children": [
-								{
-									"name": "Bedroom"
-								},
 								{
 									"name": "Bedding & Bed Linens"
 								},
@@ -2844,9 +2367,6 @@
 					"name": "Domestic Services",
 					"children": [
 						{
-							"name": "Domestic Services"
-						},
-						{
 							"name": "Cleaning Supplies & Services"
 						}
 					]
@@ -2861,9 +2381,6 @@
 					"name": "Home Appliances",
 					"children": [
 						{
-							"name": "Home Appliances"
-						},
-						{
 							"name": "Water Filters & Purifiers"
 						}
 					]
@@ -2871,9 +2388,6 @@
 				{
 					"name": "Home Furnishings",
 					"children": [
-						{
-							"name": "Home Furnishings"
-						},
 						{
 							"name": "Clocks"
 						},
@@ -2891,9 +2405,6 @@
 				{
 					"name": "Home Improvement",
 					"children": [
-						{
-							"name": "Home Improvement"
-						},
 						{
 							"name": "Construction & Power Tools"
 						},
@@ -2924,14 +2435,8 @@
 					"name": "Kitchen & Dining",
 					"children": [
 						{
-							"name": "Kitchen & Dining"
-						},
-						{
 							"name": "Cookware & Diningware",
 							"children": [
-								{
-									"name": "Cookware & Diningware"
-								},
 								{
 									"name": "Cutlery & Cutting Accessories"
 								}
@@ -2966,14 +2471,8 @@
 			"name": "Internet & Telecom",
 			"children": [
 				{
-					"name": "Internet & Telecom"
-				},
-				{
 					"name": "Communications Equipment",
 					"children": [
-						{
-							"name": "Communications Equipment"
-						},
 						{
 							"name": "Radio Equipment"
 						}
@@ -2982,9 +2481,6 @@
 				{
 					"name": "Email & Messaging",
 					"children": [
-						{
-							"name": "Email & Messaging"
-						},
 						{
 							"name": "Text & Instant Messaging"
 						},
@@ -2997,14 +2493,8 @@
 					"name": "Mobile & Wireless",
 					"children": [
 						{
-							"name": "Mobile & Wireless"
-						},
-						{
 							"name": "Mobile & Wireless Accessories",
 							"children": [
-								{
-									"name": "Mobile & Wireless Accessories"
-								},
 								{
 									"name": "Bluetooth Accessories"
 								}
@@ -3014,9 +2504,6 @@
 							"name": "Mobile Apps & Add-Ons",
 							"children": [
 								{
-									"name": "Mobile Apps & Add-Ons"
-								},
-								{
 									"name": "Ringtones & Mobile Goodies"
 								}
 							]
@@ -3024,9 +2511,6 @@
 						{
 							"name": "Mobile Phones",
 							"children": [
-								{
-									"name": "Mobile Phones"
-								},
 								{
 									"name": "Smart Phones"
 								}
@@ -3038,9 +2522,6 @@
 					"name": "Search Engines",
 					"children": [
 						{
-							"name": "Search Engines"
-						},
-						{
 							"name": "People Search"
 						}
 					]
@@ -3048,9 +2529,6 @@
 				{
 					"name": "Service Providers",
 					"children": [
-						{
-							"name": "Service Providers"
-						},
 						{
 							"name": "Cable & Satellite Providers"
 						},
@@ -3060,9 +2538,6 @@
 						{
 							"name": "Phone Service Providers",
 							"children": [
-								{
-									"name": "Phone Service Providers"
-								},
 								{
 									"name": "Calling Cards"
 								}
@@ -3082,9 +2557,6 @@
 				{
 					"name": "Web Services",
 					"children": [
-						{
-							"name": "Web Services"
-						},
 						{
 							"name": "Affiliate Programs"
 						},
@@ -3108,14 +2580,8 @@
 			"name": "Jobs & Education",
 			"children": [
 				{
-					"name": "Jobs & Education"
-				},
-				{
 					"name": "Education",
 					"children": [
-						{
-							"name": "Education"
-						},
 						{
 							"name": "Academic Conferences & Publications"
 						},
@@ -3156,9 +2622,6 @@
 							"name": "Vocational & Continuing Education",
 							"children": [
 								{
-									"name": "Vocational & Continuing Education"
-								},
-								{
 									"name": "Computer Education"
 								}
 							]
@@ -3168,9 +2631,6 @@
 				{
 					"name": "Jobs",
 					"children": [
-						{
-							"name": "Jobs"
-						},
 						{
 							"name": "Career Resources & Planning"
 						},
@@ -3188,14 +2648,8 @@
 			"name": "Law & Government",
 			"children": [
 				{
-					"name": "Law & Government"
-				},
-				{
 					"name": "Government",
 					"children": [
-						{
-							"name": "Government"
-						},
 						{
 							"name": "Courts & Judiciary"
 						},
@@ -3244,9 +2698,6 @@
 					"name": "Legal",
 					"children": [
 						{
-							"name": "Legal"
-						},
-						{
 							"name": "Accident & Personal Injury Law"
 						},
 						{
@@ -3283,9 +2734,6 @@
 							"name": "Vehicle Codes & Driving Laws",
 							"children": [
 								{
-									"name": "Vehicle Codes & Driving Laws"
-								},
-								{
 									"name": "Drunk Driving Law"
 								}
 							]
@@ -3295,9 +2743,6 @@
 				{
 					"name": "Military",
 					"children": [
-						{
-							"name": "Military"
-						},
 						{
 							"name": "Air Force"
 						},
@@ -3319,14 +2764,8 @@
 					"name": "Public Safety",
 					"children": [
 						{
-							"name": "Public Safety"
-						},
-						{
 							"name": "Crime & Justice",
 							"children": [
-								{
-									"name": "Crime & Justice"
-								},
 								{
 									"name": "Corporate & Financial Crime"
 								},
@@ -3353,9 +2792,6 @@
 					"name": "Social Services",
 					"children": [
 						{
-							"name": "Social Services"
-						},
-						{
 							"name": "Counseling Services"
 						},
 						{
@@ -3369,23 +2805,14 @@
 			"name": "News",
 			"children": [
 				{
-					"name": "News"
-				},
-				{
 					"name": "Broadcast & Network News"
 				},
 				{
 					"name": "Business News",
 					"children": [
 						{
-							"name": "Business News"
-						},
-						{
 							"name": "Company News",
 							"children": [
-								{
-									"name": "Company News"
-								},
 								{
 									"name": "Company Earnings"
 								},
@@ -3409,9 +2836,6 @@
 					"name": "Gossip & Tabloid News",
 					"children": [
 						{
-							"name": "Gossip & Tabloid News"
-						},
-						{
 							"name": "Scandals & Investigations"
 						}
 					]
@@ -3431,9 +2855,6 @@
 				{
 					"name": "Politics",
 					"children": [
-						{
-							"name": "Politics"
-						},
 						{
 							"name": "Campaigns & Elections"
 						},
@@ -3472,14 +2893,8 @@
 			"name": "Online Communities",
 			"children": [
 				{
-					"name": "Online Communities"
-				},
-				{
 					"name": "Blogging Resources & Services",
 					"children": [
-						{
-							"name": "Blogging Resources & Services"
-						},
 						{
 							"name": "Microblogging"
 						}
@@ -3488,9 +2903,6 @@
 				{
 					"name": "Dating & Personals",
 					"children": [
-						{
-							"name": "Dating & Personals"
-						},
 						{
 							"name": "Matrimonial Services"
 						},
@@ -3512,9 +2924,6 @@
 					"name": "Online Goodies",
 					"children": [
 						{
-							"name": "Online Goodies"
-						},
-						{
 							"name": "Clip Art & Animated GIFs"
 						},
 						{
@@ -3531,9 +2940,6 @@
 				{
 					"name": "Photo & Video Sharing",
 					"children": [
-						{
-							"name": "Photo & Video Sharing"
-						},
 						{
 							"name": "Photo & Image Sharing"
 						},
@@ -3554,23 +2960,14 @@
 			"name": "People & Society",
 			"children": [
 				{
-					"name": "People & Society"
-				},
-				{
 					"name": "Disabled & Special Needs"
 				},
 				{
 					"name": "Ethnic & Identity Groups",
 					"children": [
 						{
-							"name": "Ethnic & Identity Groups"
-						},
-						{
 							"name": "Africans & Diaspora",
 							"children": [
-								{
-									"name": "Africans & Diaspora"
-								},
 								{
 									"name": "African-Americans"
 								}
@@ -3582,9 +2979,6 @@
 						{
 							"name": "Asians & Diaspora",
 							"children": [
-								{
-									"name": "Asians & Diaspora"
-								},
 								{
 									"name": "East Asians & Diaspora"
 								},
@@ -3609,9 +3003,6 @@
 							"name": "Indigenous Peoples",
 							"children": [
 								{
-									"name": "Indigenous Peoples"
-								},
-								{
 									"name": "Native Americans"
 								}
 							]
@@ -3631,17 +3022,11 @@
 					"name": "Family & Relationships",
 					"children": [
 						{
-							"name": "Family & Relationships"
-						},
-						{
 							"name": "Etiquette"
 						},
 						{
 							"name": "Family",
 							"children": [
-								{
-									"name": "Family"
-								},
 								{
 									"name": "Ancestry & Genealogy"
 								},
@@ -3652,17 +3037,11 @@
 									"name": "Parenting",
 									"children": [
 										{
-											"name": "Parenting"
-										},
-										{
 											"name": "Adoption"
 										},
 										{
 											"name": "Babies & Toddlers",
 											"children": [
-												{
-													"name": "Babies & Toddlers"
-												},
 												{
 													"name": "Baby Care & Hygiene"
 												}
@@ -3694,9 +3073,6 @@
 							"name": "Troubled Relationships",
 							"children": [
 								{
-									"name": "Troubled Relationships"
-								},
-								{
 									"name": "Divorce & Separation"
 								}
 							]
@@ -3707,9 +3083,6 @@
 					"name": "Men's Interests",
 					"children": [
 						{
-							"name": "Men's Interests"
-						},
-						{
 							"name": "Men's Interests (Mature)"
 						}
 					]
@@ -3717,9 +3090,6 @@
 				{
 					"name": "Religion & Belief",
 					"children": [
-						{
-							"name": "Religion & Belief"
-						},
 						{
 							"name": "Astrology & Divination"
 						},
@@ -3768,9 +3138,6 @@
 					"name": "Social Issues & Advocacy",
 					"children": [
 						{
-							"name": "Social Issues & Advocacy"
-						},
-						{
 							"name": "Charity & Philanthropy"
 						},
 						{
@@ -3807,9 +3174,6 @@
 							"name": "Work & Labor Issues",
 							"children": [
 								{
-									"name": "Work & Labor Issues"
-								},
-								{
 									"name": "Unions & Labor Movement"
 								}
 							]
@@ -3820,14 +3184,8 @@
 					"name": "Social Sciences",
 					"children": [
 						{
-							"name": "Social Sciences"
-						},
-						{
 							"name": "Communications & Media Studies",
 							"children": [
-								{
-									"name": "Communications & Media Studies"
-								},
 								{
 									"name": "Public Speaking"
 								}
@@ -3851,9 +3209,6 @@
 					"name": "Subcultures & Niche Interests",
 					"children": [
 						{
-							"name": "Subcultures & Niche Interests"
-						},
-						{
 							"name": "Goth Subculture"
 						},
 						{
@@ -3870,14 +3225,8 @@
 			"name": "Pets & Animals",
 			"children": [
 				{
-					"name": "Pets & Animals"
-				},
-				{
 					"name": "Animal Products & Services",
 					"children": [
-						{
-							"name": "Animal Products & Services"
-						},
 						{
 							"name": "Animal Welfare"
 						},
@@ -3892,9 +3241,6 @@
 				{
 					"name": "Pets",
 					"children": [
-						{
-							"name": "Pets"
-						},
 						{
 							"name": "Birds"
 						},
@@ -3930,9 +3276,6 @@
 			"name": "Real Estate",
 			"children": [
 				{
-					"name": "Real Estate"
-				},
-				{
 					"name": "Apartments & Residential Rentals"
 				},
 				{
@@ -3965,14 +3308,8 @@
 			"name": "Reference",
 			"children": [
 				{
-					"name": "Reference"
-				},
-				{
 					"name": "Directories & Listings",
 					"children": [
-						{
-							"name": "Directories & Listings"
-						},
 						{
 							"name": "Business & Personal Listings"
 						}
@@ -3981,9 +3318,6 @@
 				{
 					"name": "General Reference",
 					"children": [
-						{
-							"name": "General Reference"
-						},
 						{
 							"name": "Biographies & Quotations"
 						},
@@ -3999,9 +3333,6 @@
 						{
 							"name": "Forms Guides & Templates",
 							"children": [
-								{
-									"name": "Forms Guides & Templates"
-								},
 								{
 									"name": "Legal Forms"
 								}
@@ -4022,17 +3353,11 @@
 					"name": "Geographic Reference",
 					"children": [
 						{
-							"name": "Geographic Reference"
-						},
-						{
 							"name": "City & Local Guides"
 						},
 						{
 							"name": "Maps",
 							"children": [
-								{
-									"name": "Maps"
-								},
 								{
 									"name": "Traffic & Public Transit"
 								}
@@ -4044,14 +3369,8 @@
 					"name": "Humanities",
 					"children": [
 						{
-							"name": "Humanities"
-						},
-						{
 							"name": "History",
 							"children": [
-								{
-									"name": "History"
-								},
 								{
 									"name": "Military History"
 								}
@@ -4069,14 +3388,8 @@
 					"name": "Language Resources",
 					"children": [
 						{
-							"name": "Language Resources"
-						},
-						{
 							"name": "Foreign Language Resources",
 							"children": [
-								{
-									"name": "Foreign Language Resources"
-								},
 								{
 									"name": "Foreign Language Study"
 								},
@@ -4099,26 +3412,17 @@
 			"name": "Science",
 			"children": [
 				{
-					"name": "Science"
-				},
-				{
 					"name": "Astronomy"
 				},
 				{
 					"name": "Biological Sciences",
 					"children": [
 						{
-							"name": "Biological Sciences"
-						},
-						{
 							"name": "Anatomy"
 						},
 						{
 							"name": "Flora & Fauna",
 							"children": [
-								{
-									"name": "Flora & Fauna"
-								},
 								{
 									"name": "Insects & Entomology"
 								}
@@ -4139,9 +3443,6 @@
 					"name": "Computer Science",
 					"children": [
 						{
-							"name": "Computer Science"
-						},
-						{
 							"name": "Distributed & Parallel Computing"
 						},
 						{
@@ -4152,9 +3453,6 @@
 				{
 					"name": "Earth Sciences",
 					"children": [
-						{
-							"name": "Earth Sciences"
-						},
 						{
 							"name": "Atmospheric Science"
 						},
@@ -4173,9 +3471,6 @@
 					"name": "Ecology & Environment",
 					"children": [
 						{
-							"name": "Ecology & Environment"
-						},
-						{
 							"name": "Climate Change & Global Warming"
 						}
 					]
@@ -4184,9 +3479,6 @@
 					"name": "Engineering & Technology",
 					"children": [
 						{
-							"name": "Engineering & Technology"
-						},
-						{
 							"name": "Robotics"
 						}
 					]
@@ -4194,9 +3486,6 @@
 				{
 					"name": "Mathematics",
 					"children": [
-						{
-							"name": "Mathematics"
-						},
 						{
 							"name": "Statistics"
 						}
@@ -4217,17 +3506,11 @@
 			"name": "Shopping",
 			"children": [
 				{
-					"name": "Shopping"
-				},
-				{
 					"name": "Antiques & Collectibles"
 				},
 				{
 					"name": "Apparel",
 					"children": [
-						{
-							"name": "Apparel"
-						},
 						{
 							"name": "Apparel Services"
 						},
@@ -4237,9 +3520,6 @@
 						{
 							"name": "Casual Apparel",
 							"children": [
-								{
-									"name": "Casual Apparel"
-								},
 								{
 									"name": "T-Shirts"
 								}
@@ -4251,9 +3531,6 @@
 						{
 							"name": "Clothing Accessories",
 							"children": [
-								{
-									"name": "Clothing Accessories"
-								},
 								{
 									"name": "Gems & Jewelry"
 								},
@@ -4313,9 +3590,6 @@
 					"name": "Consumer Resources",
 					"children": [
 						{
-							"name": "Consumer Resources"
-						},
-						{
 							"name": "Consumer Advocacy & Protection"
 						},
 						{
@@ -4324,9 +3598,6 @@
 						{
 							"name": "Customer Services",
 							"children": [
-								{
-									"name": "Customer Services"
-								},
 								{
 									"name": "Loyalty Cards & Programs"
 								},
@@ -4342,9 +3613,6 @@
 							"name": "Product Reviews & Price Comparisons",
 							"children": [
 								{
-									"name": "Product Reviews & Price Comparisons"
-								},
-								{
 									"name": "Price Comparisons"
 								}
 							]
@@ -4355,9 +3623,6 @@
 					"name": "Entertainment Media",
 					"children": [
 						{
-							"name": "Entertainment Media"
-						},
-						{
 							"name": "Entertainment Media Rentals"
 						}
 					]
@@ -4365,9 +3630,6 @@
 				{
 					"name": "Gifts & Special Event Items",
 					"children": [
-						{
-							"name": "Gifts & Special Event Items"
-						},
 						{
 							"name": "Cards & Greetings"
 						},
@@ -4392,9 +3654,6 @@
 					"name": "Photo & Video Services",
 					"children": [
 						{
-							"name": "Photo & Video Services"
-						},
-						{
 							"name": "Stock Photography"
 						}
 					]
@@ -4417,17 +3676,11 @@
 			"name": "Sports",
 			"children": [
 				{
-					"name": "Sports"
-				},
-				{
 					"name": "College Sports"
 				},
 				{
 					"name": "Combat Sports",
 					"children": [
-						{
-							"name": "Combat Sports"
-						},
 						{
 							"name": "Boxing"
 						},
@@ -4449,9 +3702,6 @@
 					"name": "Individual Sports",
 					"children": [
 						{
-							"name": "Individual Sports"
-						},
-						{
 							"name": "Bowling"
 						},
 						{
@@ -4466,9 +3716,6 @@
 						{
 							"name": "Racquet Sports",
 							"children": [
-								{
-									"name": "Racquet Sports"
-								},
 								{
 									"name": "Tennis"
 								}
@@ -4492,9 +3739,6 @@
 					"name": "Sporting Goods",
 					"children": [
 						{
-							"name": "Sporting Goods"
-						},
-						{
 							"name": "Sports Memorabilia"
 						}
 					]
@@ -4505,9 +3749,6 @@
 				{
 					"name": "Team Sports",
 					"children": [
-						{
-							"name": "Team Sports"
-						},
 						{
 							"name": "American Football"
 						},
@@ -4547,9 +3788,6 @@
 					"name": "Winter Sports",
 					"children": [
 						{
-							"name": "Winter Sports"
-						},
-						{
 							"name": "Ice Skating"
 						},
 						{
@@ -4561,9 +3799,6 @@
 					"name": "World Sports Competitions",
 					"children": [
 						{
-							"name": "World Sports Competitions"
-						},
-						{
 							"name": "Olympics"
 						}
 					]
@@ -4574,14 +3809,8 @@
 			"name": "Travel",
 			"children": [
 				{
-					"name": "Travel"
-				},
-				{
 					"name": "Air Travel",
 					"children": [
-						{
-							"name": "Air Travel"
-						},
 						{
 							"name": "Airport Parking & Transportation"
 						}
@@ -4609,9 +3838,6 @@
 					"name": "Specialty Travel",
 					"children": [
 						{
-							"name": "Specialty Travel"
-						},
-						{
 							"name": "Adventure Travel"
 						},
 						{
@@ -4631,9 +3857,6 @@
 				{
 					"name": "Tourist Destinations",
 					"children": [
-						{
-							"name": "Tourist Destinations"
-						},
 						{
 							"name": "Beaches & Islands"
 						},
@@ -4661,9 +3884,6 @@
 					"name": "Travel Agencies & Services",
 					"children": [
 						{
-							"name": "Travel Agencies & Services"
-						},
-						{
 							"name": "Tourist Boards & Visitor Centers"
 						},
 						{
@@ -4680,29 +3900,17 @@
 			"name": "World Localities",
 			"children": [
 				{
-					"name": "World Localities"
-				},
-				{
 					"name": "Africa",
 					"children": [
 						{
-							"name": "Africa"
-						},
-						{
 							"name": "Eastern Africa",
 							"children": [
-								{
-									"name": "Eastern Africa"
-								},
 								{
 									"name": "Ethiopia"
 								},
 								{
 									"name": "Kenya",
 									"children": [
-										{
-											"name": "Kenya"
-										},
 										{
 											"name": "Nairobi"
 										}
@@ -4736,9 +3944,6 @@
 									"name": "Zimbabwe",
 									"children": [
 										{
-											"name": "Zimbabwe"
-										},
-										{
 											"name": "Harare"
 										}
 									]
@@ -4748,9 +3953,6 @@
 						{
 							"name": "Middle Africa",
 							"children": [
-								{
-									"name": "Middle Africa"
-								},
 								{
 									"name": "Angola"
 								},
@@ -4764,9 +3966,6 @@
 									"name": "Congo (DR)",
 									"children": [
 										{
-											"name": "Congo (DR)"
-										},
-										{
 											"name": "Kinshasa"
 										}
 									]
@@ -4777,17 +3976,11 @@
 							"name": "Northern Africa",
 							"children": [
 								{
-									"name": "Northern Africa"
-								},
-								{
 									"name": "Algeria"
 								},
 								{
 									"name": "Egypt",
 									"children": [
-										{
-											"name": "Egypt"
-										},
 										{
 											"name": "Cairo"
 										}
@@ -4811,17 +4004,11 @@
 							"name": "Southern Africa",
 							"children": [
 								{
-									"name": "Southern Africa"
-								},
-								{
 									"name": "Botswana"
 								},
 								{
 									"name": "South Africa",
 									"children": [
-										{
-											"name": "South Africa"
-										},
 										{
 											"name": "Cape Town"
 										},
@@ -4835,9 +4022,6 @@
 						{
 							"name": "Western Africa",
 							"children": [
-								{
-									"name": "Western Africa"
-								},
 								{
 									"name": "Burkina Faso"
 								},
@@ -4857,9 +4041,6 @@
 									"name": "Nigeria",
 									"children": [
 										{
-											"name": "Nigeria"
-										},
-										{
 											"name": "Lagos"
 										}
 									]
@@ -4875,14 +4056,8 @@
 					"name": "Asia",
 					"children": [
 						{
-							"name": "Asia"
-						},
-						{
 							"name": "Central Asia",
 							"children": [
-								{
-									"name": "Central Asia"
-								},
 								{
 									"name": "Kazakhstan"
 								},
@@ -4904,26 +4079,14 @@
 							"name": "East Asia",
 							"children": [
 								{
-									"name": "East Asia"
-								},
-								{
 									"name": "China",
 									"children": [
-										{
-											"name": "China"
-										},
 										{
 											"name": "Eastern China",
 											"children": [
 												{
-													"name": "Eastern China"
-												},
-												{
 													"name": "Jiangsu",
 													"children": [
-														{
-															"name": "Jiangsu"
-														},
 														{
 															"name": "Nanjing"
 														}
@@ -4936,9 +4099,6 @@
 													"name": "Zhejiang",
 													"children": [
 														{
-															"name": "Zhejiang"
-														},
-														{
 															"name": "Hangzhou"
 														}
 													]
@@ -4948,9 +4108,6 @@
 										{
 											"name": "North Central China",
 											"children": [
-												{
-													"name": "North Central China"
-												},
 												{
 													"name": "Beijing"
 												},
@@ -4978,14 +4135,8 @@
 											"name": "Northeast China",
 											"children": [
 												{
-													"name": "Northeast China"
-												},
-												{
 													"name": "Heilongjiang",
 													"children": [
-														{
-															"name": "Heilongjiang"
-														},
 														{
 															"name": "Harbin"
 														}
@@ -4995,9 +4146,6 @@
 													"name": "Jilin",
 													"children": [
 														{
-															"name": "Jilin"
-														},
-														{
 															"name": "Changchun"
 														}
 													]
@@ -5005,9 +4153,6 @@
 												{
 													"name": "Liaoning",
 													"children": [
-														{
-															"name": "Liaoning"
-														},
 														{
 															"name": "Shenyang"
 														}
@@ -5018,9 +4163,6 @@
 										{
 											"name": "Northwest China",
 											"children": [
-												{
-													"name": "Northwest China"
-												},
 												{
 													"name": "Gansu"
 												},
@@ -5033,9 +4175,6 @@
 												{
 													"name": "Shaanxi",
 													"children": [
-														{
-															"name": "Shaanxi"
-														},
 														{
 															"name": "Xi'an"
 														}
@@ -5050,9 +4189,6 @@
 											"name": "South Central China",
 											"children": [
 												{
-													"name": "South Central China"
-												},
-												{
 													"name": "Anhui"
 												},
 												{
@@ -5061,9 +4197,6 @@
 												{
 													"name": "Hubei",
 													"children": [
-														{
-															"name": "Hubei"
-														},
 														{
 															"name": "Wuhan"
 														}
@@ -5084,17 +4217,11 @@
 											"name": "Southeast China",
 											"children": [
 												{
-													"name": "Southeast China"
-												},
-												{
 													"name": "Fujian"
 												},
 												{
 													"name": "Guangdong",
 													"children": [
-														{
-															"name": "Guangdong"
-														},
 														{
 															"name": "Dongguan"
 														},
@@ -5114,9 +4241,6 @@
 										{
 											"name": "Southwest China",
 											"children": [
-												{
-													"name": "Southwest China"
-												},
 												{
 													"name": "Guangxi"
 												},
@@ -5140,20 +4264,11 @@
 									"name": "Japan",
 									"children": [
 										{
-											"name": "Japan"
-										},
-										{
 											"name": "Chubu",
 											"children": [
 												{
-													"name": "Chubu"
-												},
-												{
 													"name": "Aichi",
 													"children": [
-														{
-															"name": "Aichi"
-														},
 														{
 															"name": "Nagoya"
 														}
@@ -5189,9 +4304,6 @@
 											"name": "Chugoku",
 											"children": [
 												{
-													"name": "Chugoku"
-												},
-												{
 													"name": "Hiroshima"
 												},
 												{
@@ -5212,9 +4324,6 @@
 											"name": "Hokkaido",
 											"children": [
 												{
-													"name": "Hokkaido"
-												},
-												{
 													"name": "Sapporo"
 												}
 											]
@@ -5223,14 +4332,8 @@
 											"name": "Kansai",
 											"children": [
 												{
-													"name": "Kansai"
-												},
-												{
 													"name": "Hyogo",
 													"children": [
-														{
-															"name": "Hyogo"
-														},
 														{
 															"name": "Kobe"
 														}
@@ -5260,9 +4363,6 @@
 											"name": "Kanto",
 											"children": [
 												{
-													"name": "Kanto"
-												},
-												{
 													"name": "Chiba"
 												},
 												{
@@ -5274,9 +4374,6 @@
 												{
 													"name": "Kanagawa",
 													"children": [
-														{
-															"name": "Kanagawa"
-														},
 														{
 															"name": "Kawasaki"
 														},
@@ -5299,9 +4396,6 @@
 										{
 											"name": "Kyushu",
 											"children": [
-												{
-													"name": "Kyushu"
-												},
 												{
 													"name": "Fukuoka"
 												},
@@ -5332,9 +4426,6 @@
 											"name": "Shikoku",
 											"children": [
 												{
-													"name": "Shikoku"
-												},
-												{
 													"name": "Ehime"
 												},
 												{
@@ -5352,9 +4443,6 @@
 											"name": "Tohoku",
 											"children": [
 												{
-													"name": "Tohoku"
-												},
-												{
 													"name": "Akita"
 												},
 												{
@@ -5369,9 +4457,6 @@
 												{
 													"name": "Miyagi",
 													"children": [
-														{
-															"name": "Miyagi"
-														},
 														{
 															"name": "Sendai"
 														}
@@ -5397,17 +4482,11 @@
 									"name": "South Korea",
 									"children": [
 										{
-											"name": "South Korea"
-										},
-										{
 											"name": "Gangwon"
 										},
 										{
 											"name": "Gyeonggi",
 											"children": [
-												{
-													"name": "Gyeonggi"
-												},
 												{
 													"name": "Incheon"
 												}
@@ -5423,9 +4502,6 @@
 											"name": "North Gyeongsang",
 											"children": [
 												{
-													"name": "North Gyeongsang"
-												},
-												{
 													"name": "Daegu"
 												}
 											]
@@ -5440,9 +4516,6 @@
 											"name": "South Chungcheong",
 											"children": [
 												{
-													"name": "South Chungcheong"
-												},
-												{
 													"name": "Daejeon"
 												}
 											]
@@ -5450,9 +4523,6 @@
 										{
 											"name": "South Gyeongsang",
 											"children": [
-												{
-													"name": "South Gyeongsang"
-												},
 												{
 													"name": "Busan"
 												},
@@ -5465,9 +4535,6 @@
 											"name": "South Jeolla",
 											"children": [
 												{
-													"name": "South Jeolla"
-												},
-												{
 													"name": "Gwangju"
 												}
 											]
@@ -5477,9 +4544,6 @@
 								{
 									"name": "Taiwan",
 									"children": [
-										{
-											"name": "Taiwan"
-										},
 										{
 											"name": "Hsinchu"
 										},
@@ -5503,14 +4567,8 @@
 							"name": "Russia & CIS",
 							"children": [
 								{
-									"name": "Russia & CIS"
-								},
-								{
 									"name": "Caucasus",
 									"children": [
-										{
-											"name": "Caucasus"
-										},
 										{
 											"name": "Armenia"
 										},
@@ -5526,9 +4584,6 @@
 									"name": "Russian Federation",
 									"children": [
 										{
-											"name": "Russian Federation"
-										},
-										{
 											"name": "Far Eastern Russia"
 										},
 										{
@@ -5538,9 +4593,6 @@
 											"name": "Northwestern Russia",
 											"children": [
 												{
-													"name": "Northwestern Russia"
-												},
-												{
 													"name": "Saint Petersburg"
 												}
 											]
@@ -5548,9 +4600,6 @@
 										{
 											"name": "Russian Central District",
 											"children": [
-												{
-													"name": "Russian Central District"
-												},
 												{
 													"name": "Moscow"
 												}
@@ -5576,9 +4625,6 @@
 							"name": "South Asia",
 							"children": [
 								{
-									"name": "South Asia"
-								},
-								{
 									"name": "Afghanistan"
 								},
 								{
@@ -5591,14 +4637,8 @@
 									"name": "India",
 									"children": [
 										{
-											"name": "India"
-										},
-										{
 											"name": "East India",
 											"children": [
-												{
-													"name": "East India"
-												},
 												{
 													"name": "Bihar"
 												},
@@ -5612,9 +4652,6 @@
 													"name": "West Bengal",
 													"children": [
 														{
-															"name": "West Bengal"
-														},
-														{
 															"name": "Kolkata"
 														}
 													]
@@ -5624,9 +4661,6 @@
 										{
 											"name": "North India",
 											"children": [
-												{
-													"name": "North India"
-												},
 												{
 													"name": "Delhi"
 												},
@@ -5639,9 +4673,6 @@
 												{
 													"name": "Uttar Pradesh",
 													"children": [
-														{
-															"name": "Uttar Pradesh"
-														},
 														{
 															"name": "Agra"
 														}
@@ -5656,14 +4687,8 @@
 											"name": "South India",
 											"children": [
 												{
-													"name": "South India"
-												},
-												{
 													"name": "Andhra Pradesh",
 													"children": [
-														{
-															"name": "Andhra Pradesh"
-														},
 														{
 															"name": "Hyderabad"
 														}
@@ -5672,9 +4697,6 @@
 												{
 													"name": "Karnataka",
 													"children": [
-														{
-															"name": "Karnataka"
-														},
 														{
 															"name": "Bangalore"
 														}
@@ -5687,9 +4709,6 @@
 													"name": "Tamil Nadu",
 													"children": [
 														{
-															"name": "Tamil Nadu"
-														},
-														{
 															"name": "Chennai"
 														}
 													]
@@ -5700,9 +4719,6 @@
 											"name": "West India",
 											"children": [
 												{
-													"name": "West India"
-												},
-												{
 													"name": "Goa"
 												},
 												{
@@ -5712,9 +4728,6 @@
 													"name": "Maharashtra",
 													"children": [
 														{
-															"name": "Maharashtra"
-														},
-														{
 															"name": "Mumbai"
 														}
 													]
@@ -5722,9 +4735,6 @@
 												{
 													"name": "Rajasthan",
 													"children": [
-														{
-															"name": "Rajasthan"
-														},
 														{
 															"name": "Jaipur"
 														}
@@ -5737,9 +4747,6 @@
 								{
 									"name": "Indian Ocean Islands",
 									"children": [
-										{
-											"name": "Indian Ocean Islands"
-										},
 										{
 											"name": "Maldives"
 										},
@@ -5754,9 +4761,6 @@
 								{
 									"name": "Pakistan",
 									"children": [
-										{
-											"name": "Pakistan"
-										},
 										{
 											"name": "Karachi"
 										},
@@ -5774,9 +4778,6 @@
 							"name": "Southeast Asia",
 							"children": [
 								{
-									"name": "Southeast Asia"
-								},
-								{
 									"name": "Brunei"
 								},
 								{
@@ -5789,9 +4790,6 @@
 									"name": "Indonesia",
 									"children": [
 										{
-											"name": "Indonesia"
-										},
-										{
 											"name": "Kalimantan"
 										},
 										{
@@ -5800,9 +4798,6 @@
 										{
 											"name": "Nusa Tenggara",
 											"children": [
-												{
-													"name": "Nusa Tenggara"
-												},
 												{
 													"name": "Bali"
 												}
@@ -5826,9 +4821,6 @@
 									"name": "Malaysia",
 									"children": [
 										{
-											"name": "Malaysia"
-										},
-										{
 											"name": "Kuala Lumpur"
 										}
 									]
@@ -5839,9 +4831,6 @@
 								{
 									"name": "Philippines",
 									"children": [
-										{
-											"name": "Philippines"
-										},
 										{
 											"name": "Cebu"
 										},
@@ -5857,9 +4846,6 @@
 									"name": "Thailand",
 									"children": [
 										{
-											"name": "Thailand"
-										},
-										{
 											"name": "Bangkok"
 										},
 										{
@@ -5872,9 +4858,6 @@
 											"name": "Southern Thailand",
 											"children": [
 												{
-													"name": "Southern Thailand"
-												},
-												{
 													"name": "Phuket"
 												}
 											]
@@ -5884,9 +4867,6 @@
 								{
 									"name": "Viet Nam",
 									"children": [
-										{
-											"name": "Viet Nam"
-										},
 										{
 											"name": "Hanoi"
 										},
@@ -5901,9 +4881,6 @@
 							"name": "West Asia",
 							"children": [
 								{
-									"name": "West Asia"
-								},
-								{
 									"name": "Bahrain"
 								},
 								{
@@ -5915,9 +4892,6 @@
 								{
 									"name": "Israel",
 									"children": [
-										{
-											"name": "Israel"
-										},
 										{
 											"name": "Jerusalem"
 										},
@@ -5954,9 +4928,6 @@
 									"name": "Turkey",
 									"children": [
 										{
-											"name": "Turkey"
-										},
-										{
 											"name": "Ankara"
 										},
 										{
@@ -5978,20 +4949,11 @@
 					"name": "Europe",
 					"children": [
 						{
-							"name": "Europe"
-						},
-						{
 							"name": "Central & Eastern Europe",
 							"children": [
 								{
-									"name": "Central & Eastern Europe"
-								},
-								{
 									"name": "Austria",
 									"children": [
-										{
-											"name": "Austria"
-										},
 										{
 											"name": "Vienna"
 										}
@@ -6000,9 +4962,6 @@
 								{
 									"name": "Baltics",
 									"children": [
-										{
-											"name": "Baltics"
-										},
 										{
 											"name": "Estonia"
 										},
@@ -6018,9 +4977,6 @@
 									"name": "Czech Republic",
 									"children": [
 										{
-											"name": "Czech Republic"
-										},
-										{
 											"name": "Prague"
 										}
 									]
@@ -6028,9 +4984,6 @@
 								{
 									"name": "Eastern Europe",
 									"children": [
-										{
-											"name": "Eastern Europe"
-										},
 										{
 											"name": "Belarus"
 										},
@@ -6040,9 +4993,6 @@
 										{
 											"name": "Ukraine",
 											"children": [
-												{
-													"name": "Ukraine"
-												},
 												{
 													"name": "Crimea"
 												},
@@ -6057,17 +5007,11 @@
 									"name": "Germany",
 									"children": [
 										{
-											"name": "Germany"
-										},
-										{
 											"name": "Baden-Wuerttemberg"
 										},
 										{
 											"name": "Bavaria",
 											"children": [
-												{
-													"name": "Bavaria"
-												},
 												{
 													"name": "Munich"
 												}
@@ -6089,9 +5033,6 @@
 											"name": "Hesse",
 											"children": [
 												{
-													"name": "Hesse"
-												},
-												{
 													"name": "Frankfurt"
 												}
 											]
@@ -6105,9 +5046,6 @@
 										{
 											"name": "North Rhine-Westphalia",
 											"children": [
-												{
-													"name": "North Rhine-Westphalia"
-												},
 												{
 													"name": "Cologne"
 												},
@@ -6143,9 +5081,6 @@
 									"name": "Hungary",
 									"children": [
 										{
-											"name": "Hungary"
-										},
-										{
 											"name": "Budapest"
 										}
 									]
@@ -6156,9 +5091,6 @@
 								{
 									"name": "Poland",
 									"children": [
-										{
-											"name": "Poland"
-										},
 										{
 											"name": "Katowice (Upper Silesian)"
 										},
@@ -6186,9 +5118,6 @@
 									"name": "Switzerland",
 									"children": [
 										{
-											"name": "Switzerland"
-										},
-										{
 											"name": "Geneva"
 										},
 										{
@@ -6202,17 +5131,11 @@
 							"name": "Mediterranean Europe",
 							"children": [
 								{
-									"name": "Mediterranean Europe"
-								},
-								{
 									"name": "Cyprus"
 								},
 								{
 									"name": "Italy",
 									"children": [
-										{
-											"name": "Italy"
-										},
 										{
 											"name": "Abruzzo"
 										},
@@ -6228,9 +5151,6 @@
 										{
 											"name": "Campania",
 											"children": [
-												{
-													"name": "Campania"
-												},
 												{
 													"name": "Naples"
 												},
@@ -6249,9 +5169,6 @@
 											"name": "Lazio",
 											"children": [
 												{
-													"name": "Lazio"
-												},
-												{
 													"name": "Rome"
 												}
 											]
@@ -6260,9 +5177,6 @@
 											"name": "Liguria",
 											"children": [
 												{
-													"name": "Liguria"
-												},
-												{
 													"name": "Genoa"
 												}
 											]
@@ -6270,9 +5184,6 @@
 										{
 											"name": "Lombardy",
 											"children": [
-												{
-													"name": "Lombardy"
-												},
 												{
 													"name": "Milan"
 												}
@@ -6288,9 +5199,6 @@
 											"name": "Piedmont",
 											"children": [
 												{
-													"name": "Piedmont"
-												},
-												{
 													"name": "Turin"
 												}
 											]
@@ -6298,9 +5206,6 @@
 										{
 											"name": "Puglia",
 											"children": [
-												{
-													"name": "Puglia"
-												},
 												{
 													"name": "Bari"
 												}
@@ -6313,9 +5218,6 @@
 											"name": "Sicily",
 											"children": [
 												{
-													"name": "Sicily"
-												},
-												{
 													"name": "Palermo"
 												}
 											]
@@ -6327,9 +5229,6 @@
 											"name": "Tuscany",
 											"children": [
 												{
-													"name": "Tuscany"
-												},
-												{
 													"name": "Florence"
 												}
 											]
@@ -6340,9 +5239,6 @@
 										{
 											"name": "Veneto",
 											"children": [
-												{
-													"name": "Veneto"
-												},
 												{
 													"name": "Venice"
 												}
@@ -6359,9 +5255,6 @@
 								{
 									"name": "Portugal",
 									"children": [
-										{
-											"name": "Portugal"
-										},
 										{
 											"name": "Azores & Madeira"
 										},
@@ -6380,14 +5273,8 @@
 									"name": "Spain",
 									"children": [
 										{
-											"name": "Spain"
-										},
-										{
 											"name": "Andalucia",
 											"children": [
-												{
-													"name": "Andalucia"
-												},
 												{
 													"name": "Cádiz"
 												},
@@ -6427,9 +5314,6 @@
 											"name": "Catalonia",
 											"children": [
 												{
-													"name": "Catalonia"
-												},
-												{
 													"name": "Barcelona"
 												}
 											]
@@ -6450,9 +5334,6 @@
 											"name": "Valencian Community",
 											"children": [
 												{
-													"name": "Valencian Community"
-												},
-												{
 													"name": "Valencia"
 												}
 											]
@@ -6468,14 +5349,8 @@
 							"name": "Nordic Countries",
 							"children": [
 								{
-									"name": "Nordic Countries"
-								},
-								{
 									"name": "Denmark",
 									"children": [
-										{
-											"name": "Denmark"
-										},
 										{
 											"name": "Copenhagen"
 										}
@@ -6484,9 +5359,6 @@
 								{
 									"name": "Finland",
 									"children": [
-										{
-											"name": "Finland"
-										},
 										{
 											"name": "Helsinki"
 										}
@@ -6502,9 +5374,6 @@
 									"name": "Norway",
 									"children": [
 										{
-											"name": "Norway"
-										},
-										{
 											"name": "Oslo"
 										}
 									]
@@ -6512,9 +5381,6 @@
 								{
 									"name": "Sweden",
 									"children": [
-										{
-											"name": "Sweden"
-										},
 										{
 											"name": "Stockholm"
 										}
@@ -6525,9 +5391,6 @@
 						{
 							"name": "Southeastern Europe",
 							"children": [
-								{
-									"name": "Southeastern Europe"
-								},
 								{
 									"name": "Albania"
 								},
@@ -6543,9 +5406,6 @@
 								{
 									"name": "Greece",
 									"children": [
-										{
-											"name": "Greece"
-										},
 										{
 											"name": "Athens"
 										}
@@ -6564,9 +5424,6 @@
 									"name": "Romania",
 									"children": [
 										{
-											"name": "Romania"
-										},
-										{
 											"name": "Bucharest"
 										}
 									]
@@ -6580,23 +5437,14 @@
 							"name": "Western Europe",
 							"children": [
 								{
-									"name": "Western Europe"
-								},
-								{
 									"name": "Andorra"
 								},
 								{
 									"name": "Benelux",
 									"children": [
 										{
-											"name": "Benelux"
-										},
-										{
 											"name": "Belgium",
 											"children": [
-												{
-													"name": "Belgium"
-												},
 												{
 													"name": "Brussels"
 												}
@@ -6608,9 +5456,6 @@
 										{
 											"name": "Netherlands",
 											"children": [
-												{
-													"name": "Netherlands"
-												},
 												{
 													"name": "Amsterdam"
 												},
@@ -6625,14 +5470,8 @@
 									"name": "France",
 									"children": [
 										{
-											"name": "France"
-										},
-										{
 											"name": "Central France",
 											"children": [
-												{
-													"name": "Central France"
-												},
 												{
 													"name": "Auvergne"
 												},
@@ -6648,14 +5487,8 @@
 											"name": "East France",
 											"children": [
 												{
-													"name": "East France"
-												},
-												{
 													"name": "Alsace",
 													"children": [
-														{
-															"name": "Alsace"
-														},
 														{
 															"name": "Strasbourg"
 														}
@@ -6682,17 +5515,11 @@
 											"name": "North France",
 											"children": [
 												{
-													"name": "North France"
-												},
-												{
 													"name": "Lower Normandy"
 												},
 												{
 													"name": "Nord-Pas-de-Calais",
 													"children": [
-														{
-															"name": "Nord-Pas-de-Calais"
-														},
 														{
 															"name": "Lille"
 														}
@@ -6710,17 +5537,11 @@
 											"name": "South East France",
 											"children": [
 												{
-													"name": "South East France"
-												},
-												{
 													"name": "Corsica"
 												},
 												{
 													"name": "Provence-Alpes-Côte d'Azur",
 													"children": [
-														{
-															"name": "Provence-Alpes-Côte d'Azur"
-														},
 														{
 															"name": "Marseille"
 														},
@@ -6733,9 +5554,6 @@
 													"name": "Rhône-Alpes",
 													"children": [
 														{
-															"name": "Rhône-Alpes"
-														},
-														{
 															"name": "Lyon"
 														}
 													]
@@ -6746,14 +5564,8 @@
 											"name": "South West France",
 											"children": [
 												{
-													"name": "South West France"
-												},
-												{
 													"name": "Aquitaine",
 													"children": [
-														{
-															"name": "Aquitaine"
-														},
 														{
 															"name": "Bordeaux"
 														}
@@ -6763,9 +5575,6 @@
 													"name": "Languedoc-Roussillon",
 													"children": [
 														{
-															"name": "Languedoc-Roussillon"
-														},
-														{
 															"name": "Montpellier"
 														}
 													]
@@ -6773,9 +5582,6 @@
 												{
 													"name": "Midi-Pyrénées",
 													"children": [
-														{
-															"name": "Midi-Pyrénées"
-														},
 														{
 															"name": "Toulouse"
 														}
@@ -6787,14 +5593,8 @@
 											"name": "West France",
 											"children": [
 												{
-													"name": "West France"
-												},
-												{
 													"name": "Brittany",
 													"children": [
-														{
-															"name": "Brittany"
-														},
 														{
 															"name": "Rennes"
 														}
@@ -6803,9 +5603,6 @@
 												{
 													"name": "Pays de la Loire",
 													"children": [
-														{
-															"name": "Pays de la Loire"
-														},
 														{
 															"name": "Nantes"
 														}
@@ -6820,9 +5617,6 @@
 											"name": "Île-de-France",
 											"children": [
 												{
-													"name": "Île-de-France"
-												},
-												{
 													"name": "Paris"
 												}
 											]
@@ -6833,9 +5627,6 @@
 									"name": "Ireland",
 									"children": [
 										{
-											"name": "Ireland"
-										},
-										{
 											"name": "Dublin"
 										}
 									]
@@ -6844,14 +5635,8 @@
 									"name": "United Kingdom",
 									"children": [
 										{
-											"name": "United Kingdom"
-										},
-										{
 											"name": "England",
 											"children": [
-												{
-													"name": "England"
-												},
 												{
 													"name": "East Midlands"
 												},
@@ -6868,9 +5653,6 @@
 													"name": "North West England",
 													"children": [
 														{
-															"name": "North West England"
-														},
-														{
 															"name": "Liverpool"
 														},
 														{
@@ -6885,9 +5667,6 @@
 													"name": "South West England",
 													"children": [
 														{
-															"name": "South West England"
-														},
-														{
 															"name": "Bristol"
 														}
 													]
@@ -6896,9 +5675,6 @@
 													"name": "West Midlands",
 													"children": [
 														{
-															"name": "West Midlands"
-														},
-														{
 															"name": "Birmingham (UK)"
 														}
 													]
@@ -6906,9 +5682,6 @@
 												{
 													"name": "Yorkshire",
 													"children": [
-														{
-															"name": "Yorkshire"
-														},
 														{
 															"name": "Leeds-Bradford"
 														},
@@ -6925,9 +5698,6 @@
 										{
 											"name": "Scotland",
 											"children": [
-												{
-													"name": "Scotland"
-												},
 												{
 													"name": "Edinburgh"
 												},
@@ -6949,14 +5719,8 @@
 					"name": "Latin America",
 					"children": [
 						{
-							"name": "Latin America"
-						},
-						{
 							"name": "Caribbean",
 							"children": [
-								{
-									"name": "Caribbean"
-								},
 								{
 									"name": "Antigua & Barbuda"
 								},
@@ -7020,9 +5784,6 @@
 							"name": "Central America",
 							"children": [
 								{
-									"name": "Central America"
-								},
-								{
 									"name": "Belize"
 								},
 								{
@@ -7041,14 +5802,8 @@
 									"name": "Mexico",
 									"children": [
 										{
-											"name": "Mexico"
-										},
-										{
 											"name": "Baja California",
 											"children": [
-												{
-													"name": "Baja California"
-												},
 												{
 													"name": "Tijuana"
 												}
@@ -7057,9 +5812,6 @@
 										{
 											"name": "Central Mexico",
 											"children": [
-												{
-													"name": "Central Mexico"
-												},
 												{
 													"name": "Guanajuato"
 												},
@@ -7081,17 +5833,11 @@
 											"name": "Northern Mexico",
 											"children": [
 												{
-													"name": "Northern Mexico"
-												},
-												{
 													"name": "Chihuahua"
 												},
 												{
 													"name": "Nuevo León",
 													"children": [
-														{
-															"name": "Nuevo León"
-														},
 														{
 															"name": "Monterrey"
 														}
@@ -7106,9 +5852,6 @@
 											"name": "Pacific Coast (Mexico)",
 											"children": [
 												{
-													"name": "Pacific Coast (Mexico)"
-												},
-												{
 													"name": "Chiapas"
 												},
 												{
@@ -7117,9 +5860,6 @@
 												{
 													"name": "Jalisco",
 													"children": [
-														{
-															"name": "Jalisco"
-														},
 														{
 															"name": "Guadalajara"
 														}
@@ -7153,14 +5893,8 @@
 							"name": "South America",
 							"children": [
 								{
-									"name": "South America"
-								},
-								{
 									"name": "Argentina",
 									"children": [
-										{
-											"name": "Argentina"
-										},
 										{
 											"name": "Buenos Aires"
 										}
@@ -7173,14 +5907,8 @@
 									"name": "Brazil",
 									"children": [
 										{
-											"name": "Brazil"
-										},
-										{
 											"name": "Central West Brazil",
 											"children": [
-												{
-													"name": "Central West Brazil"
-												},
 												{
 													"name": "Brasilia"
 												},
@@ -7199,9 +5927,6 @@
 											"name": "North Brazil",
 											"children": [
 												{
-													"name": "North Brazil"
-												},
-												{
 													"name": "Amazonas"
 												},
 												{
@@ -7219,17 +5944,11 @@
 											"name": "Northeast Brazil",
 											"children": [
 												{
-													"name": "Northeast Brazil"
-												},
-												{
 													"name": "Alagoas"
 												},
 												{
 													"name": "Bahia",
 													"children": [
-														{
-															"name": "Bahia"
-														},
 														{
 															"name": "Salvador"
 														}
@@ -7238,9 +5957,6 @@
 												{
 													"name": "Ceará",
 													"children": [
-														{
-															"name": "Ceará"
-														},
 														{
 															"name": "Fortaleza"
 														}
@@ -7255,9 +5971,6 @@
 												{
 													"name": "Pernambuco",
 													"children": [
-														{
-															"name": "Pernambuco"
-														},
 														{
 															"name": "Recife"
 														}
@@ -7278,17 +5991,11 @@
 											"name": "South Brazil",
 											"children": [
 												{
-													"name": "South Brazil"
-												},
-												{
 													"name": "Paraná"
 												},
 												{
 													"name": "Rio Grande do Sul",
 													"children": [
-														{
-															"name": "Rio Grande do Sul"
-														},
 														{
 															"name": "Porto Alegre"
 														}
@@ -7303,17 +6010,11 @@
 											"name": "Southeast Brazil",
 											"children": [
 												{
-													"name": "Southeast Brazil"
-												},
-												{
 													"name": "Espirito Santo"
 												},
 												{
 													"name": "Minas Gerais",
 													"children": [
-														{
-															"name": "Minas Gerais"
-														},
 														{
 															"name": "Belo Horizonte"
 														}
@@ -7333,9 +6034,6 @@
 									"name": "Chile",
 									"children": [
 										{
-											"name": "Chile"
-										},
-										{
 											"name": "Santiago"
 										}
 									]
@@ -7343,9 +6041,6 @@
 								{
 									"name": "Colombia",
 									"children": [
-										{
-											"name": "Colombia"
-										},
 										{
 											"name": "Bogota"
 										}
@@ -7367,9 +6062,6 @@
 									"name": "Peru",
 									"children": [
 										{
-											"name": "Peru"
-										},
-										{
 											"name": "Lima"
 										}
 									]
@@ -7383,9 +6075,6 @@
 								{
 									"name": "Venezuela",
 									"children": [
-										{
-											"name": "Venezuela"
-										},
 										{
 											"name": "Caracas"
 										}
@@ -7402,23 +6091,14 @@
 					"name": "North America",
 					"children": [
 						{
-							"name": "North America"
-						},
-						{
 							"name": "Bermuda"
 						},
 						{
 							"name": "Canada",
 							"children": [
 								{
-									"name": "Canada"
-								},
-								{
 									"name": "Atlantic Provinces",
 									"children": [
-										{
-											"name": "Atlantic Provinces"
-										},
 										{
 											"name": "New Brunswick"
 										},
@@ -7428,9 +6108,6 @@
 										{
 											"name": "Nova Scotia",
 											"children": [
-												{
-													"name": "Nova Scotia"
-												},
 												{
 													"name": "Halifax"
 												}
@@ -7445,9 +6122,6 @@
 									"name": "British Columbia",
 									"children": [
 										{
-											"name": "British Columbia"
-										},
-										{
 											"name": "Vancouver"
 										},
 										{
@@ -7459,14 +6133,8 @@
 									"name": "Canadian Prairies",
 									"children": [
 										{
-											"name": "Canadian Prairies"
-										},
-										{
 											"name": "Alberta",
 											"children": [
-												{
-													"name": "Alberta"
-												},
 												{
 													"name": "Calgary"
 												},
@@ -7478,9 +6146,6 @@
 										{
 											"name": "Manitoba",
 											"children": [
-												{
-													"name": "Manitoba"
-												},
 												{
 													"name": "Winnipeg"
 												}
@@ -7497,9 +6162,6 @@
 								{
 									"name": "Ontario",
 									"children": [
-										{
-											"name": "Ontario"
-										},
 										{
 											"name": "Greater Toronto"
 										},
@@ -7518,9 +6180,6 @@
 									"name": "Quebec",
 									"children": [
 										{
-											"name": "Quebec"
-										},
-										{
 											"name": "Montreal"
 										},
 										{
@@ -7534,17 +6193,11 @@
 							"name": "USA",
 							"children": [
 								{
-									"name": "USA"
-								},
-								{
 									"name": "Alaska"
 								},
 								{
 									"name": "California",
 									"children": [
-										{
-											"name": "California"
-										},
 										{
 											"name": "California Central Coast"
 										},
@@ -7567,9 +6220,6 @@
 											"name": "Southern California",
 											"children": [
 												{
-													"name": "Southern California"
-												},
-												{
 													"name": "Inland Empire"
 												},
 												{
@@ -7589,14 +6239,8 @@
 									"name": "Florida",
 									"children": [
 										{
-											"name": "Florida"
-										},
-										{
 											"name": "Central Florida",
 											"children": [
-												{
-													"name": "Central Florida"
-												},
 												{
 													"name": "Deltona-Daytona Beach"
 												},
@@ -7615,9 +6259,6 @@
 											"name": "North Florida",
 											"children": [
 												{
-													"name": "North Florida"
-												},
-												{
 													"name": "Jacksonville"
 												}
 											]
@@ -7626,14 +6267,8 @@
 											"name": "Southern Florida",
 											"children": [
 												{
-													"name": "Southern Florida"
-												},
-												{
 													"name": "South Florida Metro",
 													"children": [
-														{
-															"name": "South Florida Metro"
-														},
 														{
 															"name": "Broward-Fort Lauderdale"
 														},
@@ -7653,9 +6288,6 @@
 									"name": "Great Plains (USA)",
 									"children": [
 										{
-											"name": "Great Plains (USA)"
-										},
-										{
 											"name": "Kansas"
 										},
 										{
@@ -7667,9 +6299,6 @@
 										{
 											"name": "Oklahoma",
 											"children": [
-												{
-													"name": "Oklahoma"
-												},
 												{
 													"name": "Oklahoma City"
 												},
@@ -7690,17 +6319,11 @@
 									"name": "Mid-Atlantic (USA)",
 									"children": [
 										{
-											"name": "Mid-Atlantic (USA)"
-										},
-										{
 											"name": "Delaware"
 										},
 										{
 											"name": "Maryland",
 											"children": [
-												{
-													"name": "Maryland"
-												},
 												{
 													"name": "Baltimore Metro"
 												}
@@ -7712,9 +6335,6 @@
 										{
 											"name": "New York State",
 											"children": [
-												{
-													"name": "New York State"
-												},
 												{
 													"name": "Albany-Capital District"
 												},
@@ -7732,9 +6352,6 @@
 										{
 											"name": "Pennsylvania",
 											"children": [
-												{
-													"name": "Pennsylvania"
-												},
 												{
 													"name": "Harrisburg-South Central PA"
 												},
@@ -7755,14 +6372,8 @@
 									"name": "Midwest (USA)",
 									"children": [
 										{
-											"name": "Midwest (USA)"
-										},
-										{
 											"name": "Illinois",
 											"children": [
-												{
-													"name": "Illinois"
-												},
 												{
 													"name": "Chicago"
 												}
@@ -7771,9 +6382,6 @@
 										{
 											"name": "Indiana",
 											"children": [
-												{
-													"name": "Indiana"
-												},
 												{
 													"name": "Indianapolis"
 												}
@@ -7786,9 +6394,6 @@
 											"name": "Michigan",
 											"children": [
 												{
-													"name": "Michigan"
-												},
-												{
 													"name": "Detroit"
 												},
 												{
@@ -7800,9 +6405,6 @@
 											"name": "Minnesota",
 											"children": [
 												{
-													"name": "Minnesota"
-												},
-												{
 													"name": "Minneapolis-Saint Paul"
 												}
 											]
@@ -7810,9 +6412,6 @@
 										{
 											"name": "Missouri",
 											"children": [
-												{
-													"name": "Missouri"
-												},
 												{
 													"name": "Greater St. Louis"
 												},
@@ -7824,9 +6423,6 @@
 										{
 											"name": "Ohio",
 											"children": [
-												{
-													"name": "Ohio"
-												},
 												{
 													"name": "Cincinnati"
 												},
@@ -7842,9 +6438,6 @@
 											"name": "Wisconsin",
 											"children": [
 												{
-													"name": "Wisconsin"
-												},
-												{
 													"name": "Milwaukee"
 												}
 											]
@@ -7855,14 +6448,8 @@
 									"name": "New England",
 									"children": [
 										{
-											"name": "New England"
-										},
-										{
 											"name": "Connecticut",
 											"children": [
-												{
-													"name": "Connecticut"
-												},
 												{
 													"name": "Greater Hartford"
 												},
@@ -7878,9 +6465,6 @@
 											"name": "Massachusetts",
 											"children": [
 												{
-													"name": "Massachusetts"
-												},
-												{
 													"name": "Boston Metro"
 												}
 											]
@@ -7891,9 +6475,6 @@
 										{
 											"name": "Rhode Island",
 											"children": [
-												{
-													"name": "Rhode Island"
-												},
 												{
 													"name": "Providence"
 												}
@@ -7908,14 +6489,8 @@
 									"name": "Pacific Northwest",
 									"children": [
 										{
-											"name": "Pacific Northwest"
-										},
-										{
 											"name": "Oregon",
 											"children": [
-												{
-													"name": "Oregon"
-												},
 												{
 													"name": "Portland (OR)"
 												}
@@ -7924,9 +6499,6 @@
 										{
 											"name": "Washington State",
 											"children": [
-												{
-													"name": "Washington State"
-												},
 												{
 													"name": "Seattle-Tacoma"
 												}
@@ -7938,14 +6510,8 @@
 									"name": "Rocky Mountains",
 									"children": [
 										{
-											"name": "Rocky Mountains"
-										},
-										{
 											"name": "Colorado",
 											"children": [
-												{
-													"name": "Colorado"
-												},
 												{
 													"name": "Denver"
 												}
@@ -7966,14 +6532,8 @@
 									"name": "South (USA)",
 									"children": [
 										{
-											"name": "South (USA)"
-										},
-										{
 											"name": "Alabama",
 											"children": [
-												{
-													"name": "Alabama"
-												},
 												{
 													"name": "Birmingham (AL)"
 												}
@@ -7986,9 +6546,6 @@
 											"name": "Georgia (USA)",
 											"children": [
 												{
-													"name": "Georgia (USA)"
-												},
-												{
 													"name": "Atlanta"
 												}
 											]
@@ -7997,9 +6554,6 @@
 											"name": "Kentucky",
 											"children": [
 												{
-													"name": "Kentucky"
-												},
-												{
 													"name": "Louisville"
 												}
 											]
@@ -8007,9 +6561,6 @@
 										{
 											"name": "Louisiana",
 											"children": [
-												{
-													"name": "Louisiana"
-												},
 												{
 													"name": "Baton Rouge"
 												},
@@ -8025,9 +6576,6 @@
 											"name": "North Carolina",
 											"children": [
 												{
-													"name": "North Carolina"
-												},
-												{
 													"name": "Charlotte Metro"
 												},
 												{
@@ -8042,9 +6590,6 @@
 											"name": "South Carolina",
 											"children": [
 												{
-													"name": "South Carolina"
-												},
-												{
 													"name": "Greater Charleston (SC)"
 												},
 												{
@@ -8056,9 +6601,6 @@
 											"name": "Tennessee",
 											"children": [
 												{
-													"name": "Tennessee"
-												},
-												{
 													"name": "Memphis"
 												},
 												{
@@ -8069,9 +6611,6 @@
 										{
 											"name": "Virginia",
 											"children": [
-												{
-													"name": "Virginia"
-												},
 												{
 													"name": "Richmond-Petersburg"
 												},
@@ -8089,14 +6628,8 @@
 									"name": "Southwest (USA)",
 									"children": [
 										{
-											"name": "Southwest (USA)"
-										},
-										{
 											"name": "Arizona",
 											"children": [
-												{
-													"name": "Arizona"
-												},
 												{
 													"name": "Phoenix"
 												},
@@ -8109,9 +6642,6 @@
 											"name": "Nevada",
 											"children": [
 												{
-													"name": "Nevada"
-												},
-												{
 													"name": "Las Vegas"
 												},
 												{
@@ -8123,9 +6653,6 @@
 											"name": "New Mexico",
 											"children": [
 												{
-													"name": "New Mexico"
-												},
-												{
 													"name": "Albuquerque-Santa Fe"
 												}
 											]
@@ -8133,9 +6660,6 @@
 										{
 											"name": "Utah",
 											"children": [
-												{
-													"name": "Utah"
-												},
 												{
 													"name": "Salt Lake City"
 												}
@@ -8146,9 +6670,6 @@
 								{
 									"name": "Texas",
 									"children": [
-										{
-											"name": "Texas"
-										},
 										{
 											"name": "Austin-Round Rock"
 										},
@@ -8174,20 +6695,11 @@
 					"name": "Oceania",
 					"children": [
 						{
-							"name": "Oceania"
-						},
-						{
 							"name": "Australia",
 							"children": [
 								{
-									"name": "Australia"
-								},
-								{
 									"name": "New South Wales",
 									"children": [
-										{
-											"name": "New South Wales"
-										},
 										{
 											"name": "Canberra"
 										},
@@ -8206,9 +6718,6 @@
 									"name": "Queensland",
 									"children": [
 										{
-											"name": "Queensland"
-										},
-										{
 											"name": "Brisbane"
 										},
 										{
@@ -8223,9 +6732,6 @@
 									"name": "South Australia",
 									"children": [
 										{
-											"name": "South Australia"
-										},
-										{
 											"name": "Adelaide"
 										}
 									]
@@ -8237,9 +6743,6 @@
 									"name": "Victoria (AU)",
 									"children": [
 										{
-											"name": "Victoria (AU)"
-										},
-										{
 											"name": "Melbourne"
 										}
 									]
@@ -8247,9 +6750,6 @@
 								{
 									"name": "Western Australia",
 									"children": [
-										{
-											"name": "Western Australia"
-										},
 										{
 											"name": "Perth"
 										}
@@ -8260,9 +6760,6 @@
 						{
 							"name": "New Zealand",
 							"children": [
-								{
-									"name": "New Zealand"
-								},
 								{
 									"name": "Auckland"
 								},
@@ -8278,14 +6775,8 @@
 							"name": "Pacific Islands",
 							"children": [
 								{
-									"name": "Pacific Islands"
-								},
-								{
 									"name": "Melanesia",
 									"children": [
-										{
-											"name": "Melanesia"
-										},
 										{
 											"name": "Fiji"
 										},
@@ -8298,9 +6789,6 @@
 									"name": "Micronesia",
 									"children": [
 										{
-											"name": "Micronesia"
-										},
-										{
 											"name": "Guam"
 										}
 									]
@@ -8308,9 +6796,6 @@
 								{
 									"name": "Polynesia",
 									"children": [
-										{
-											"name": "Polynesia"
-										},
 										{
 											"name": "Tahiti & Bora Bora"
 										}
