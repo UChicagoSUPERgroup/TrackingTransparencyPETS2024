@@ -1,4 +1,3 @@
-import tt from "../helpers";
 
 import makeTreemap from "./inferviz.js";
 
@@ -47,9 +46,9 @@ function cleanName(trackerName){
   return trackerName;
 }
 /* checks
-tt.log(cleanName("amazon.com"));
-tt.log(cleanName("facebook"));
-tt.log(cleanName("google.analytics.com"));
+console.log(cleanName("amazon.com"));
+console.log(cleanName("facebook"));
+console.log(cleanName("google.analytics.com"));
 */
 
 

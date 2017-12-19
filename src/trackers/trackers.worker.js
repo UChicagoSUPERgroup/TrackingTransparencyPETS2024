@@ -3,7 +3,7 @@
 import parseuri from 'parseuri';
 import tt from '../helpers';
 
-// tt.log("trackers worker running");
+// console.log("trackers worker running");
 let databaseWorkerPort;
 
 /*

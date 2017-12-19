@@ -1,8 +1,6 @@
 import buildCategoryTree from './build';
 import infer from './infer';
 
-import tt from '../helpers';
-
 let databaseWorkerPort;
 
 onmessage = function(m) {
@@ -30,16 +28,16 @@ async function inferencingMessageListener(article, mainFrameReqId) {
   }
 
   const tr = await tree;
-  // tt.log(tr);
+  // console.log(tr);
   // const secondLevelCats = tr.children.concat.apply([], tr.children.map(x => x.children));
-  // tt.log(secondLevelCats);
+  // console.log(secondLevelCats);
   // let secondLevelTr = Object.assign({}, tr);
   // secondLevelTr.children = secondLevelCats;
   
   const category = infer(article, tr);
-  tt.log('Inference:', category[0].name);
+  console.log('Inference:', category[0].name);
   // const category2 = infer(article, secondLevelTr);
-  // tt.log("Inference:", category2[0].name);
+  // console.log("Inference:", category2[0].name);
   // info.inference = category[0].name;
 
   let inferenceInfo = {
@@ -48,7 +46,7 @@ async function inferencingMessageListener(article, mainFrameReqId) {
     threshold: category[1],
     pageId: mainFrameReqId
   }
-  // tt.log("sending inference to database");
+  // console.log("sending inference to database");
   databaseWorkerPort.postMessage({
     type: 'store_inference',
     info: inferenceInfo
@@ -69,7 +67,7 @@ function storeFakeInferenceInfo(mainFrameReqId) {
     threshold: Math.random(),
     pageId: mainFrameReqId
   }
-  // tt.log("sending inference to database");
+  // console.log("sending inference to database");
   databaseWorkerPort.postMessage({
     type: 'store_inference',
     info: inferenceInfo

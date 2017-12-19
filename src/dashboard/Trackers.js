@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 // import { LinkContainer } from 'react-router-bootstrap';
-import tt from '../helpers';
 
 
 const TrackersListItem = (tracker) => {
@@ -31,7 +30,7 @@ class TrackersList extends React.Component {
     this.setState({
       trackers: trackers 
     });
-    tt.log(this.state.trackers);
+    console.log(this.state.trackers);
   }
 
   async componentDidMount() {

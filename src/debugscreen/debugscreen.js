@@ -1,7 +1,5 @@
 'use strict';
 
-import tt from "../helpers";
-
 import $ from 'jquery';
 window.jQuery = $;
 
@@ -19,11 +17,11 @@ async function saveOptions(e) {
     inferenceCount: +document.querySelector("#inferenceCount").value,
     pageCount: +document.querySelector("#pageCount").value,
   }
-  tt.log(queryName, argsObject);
+  console.log(queryName, argsObject);
 
   const background = await browser.runtime.getBackgroundPage();
   let query = await background.queryDatabase(queryName, argsObject);
-  tt.log(query);
+  console.log(query);
 
   document.getElementById("queryResult").textContent = JSON.stringify(query, null, 4);
 }

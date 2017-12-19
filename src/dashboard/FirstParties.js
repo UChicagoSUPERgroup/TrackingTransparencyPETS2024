@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 // import { LinkContainer } from 'react-router-bootstrap';
-import tt from '../helpers';
 
 
 const FirstPartyListItem = (domain) => {
@@ -31,7 +30,7 @@ class FirstPartyList extends React.Component {
     this.setState({
       domains: domains 
     });
-    tt.log(this.state.domains);
+    console.log(this.state.domains);
   }
 
   async componentDidMount() {

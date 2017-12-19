@@ -50,7 +50,7 @@ export async function storeTrackerArray(pageId, trackers) {
     });
     rows.push(row);
   }
-  // tt.log(rows);
+  // console.log(rows);
   ttDb.insertOrReplace().into(trackerItem).values(rows).exec();
 }
 

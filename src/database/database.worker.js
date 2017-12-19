@@ -1,6 +1,5 @@
 /** @module database_worker */
 
-import tt from '../helpers';
 // import {primaryDbPromise, primarySchemaBuilder} from "setup.js";
 import makeQuery from './queries';
 import * as store from './storage';
@@ -20,10 +19,10 @@ onmessage = onMessage; // web worker
  * @param {string} m.data.type - type of message (set by sender)
  */
 async function onMessage(m) {
-  // tt.log(m);
+  // console.log(m);
   switch (m.data.type) {
   case 'ping':
-    tt.log('database worker recieved ping');
+    console.log('database worker recieved ping');
     break;
 
   case 'database_query':
@@ -52,7 +51,7 @@ async function onMessage(m) {
     break;
 
   default:
-    tt.log('database worker recieved bad message');
+    console.log('database worker recieved bad message');
   }
 }
 /**

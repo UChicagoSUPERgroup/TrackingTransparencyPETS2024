@@ -15,7 +15,7 @@ function scoreCategory(category, words) {
     return category.keywords.indexOf(n) !== -1;
   });
 
-  // tt.log(words.length);
+  // console.log(words.length);
 
   return (words.length / total);
 }
@@ -35,7 +35,7 @@ function findBestChild(category, words, parentScore) {
       bestChild = category.children[i];
     }
 
-    // tt.log("trying",category.children[i].name , "score", curScore);
+    // console.log("trying",category.children[i].name , "score", curScore);
   }
 
   if (highestScore >= parentScore + 0.015) {
@@ -66,7 +66,7 @@ function findBestCategory(root, words, rootScore) {
 
     bestChild = result[0];
     bestChildScore = result[1];
-    // tt.log("going with", bestChild.name, "score", bestChildScore);
+    // console.log("going with", bestChild.name, "score", bestChildScore);
 
     return findBestCategory(bestChild, words, bestChildScore);
   }
@@ -89,7 +89,7 @@ export default function (article, tree) {
   // text = striptags(text, [], " ");
   // text = article.title.concat(" ", article.excerpt);
   text = article.title.concat(' ', article.excerpt, ' ', article.textContent);
-  // tt.log("article text is:", text);
+  // console.log("article text is:", text);
   // text = article.textContent;
 
   // tokenize
@@ -98,11 +98,11 @@ export default function (article, tree) {
 
   words = tokens.map((token) => token.value.toLowerCase());
 
-  // tt.log(words);
+  // console.log(words);
   // findBestCategory(tree, words, 0);
 
   const cat = (findBestCategory(tree, words, 0));
-  // tt.log(cat);
+  // console.log(cat);
   return cat;
 
 }
