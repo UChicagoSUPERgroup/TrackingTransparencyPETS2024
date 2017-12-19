@@ -1,4 +1,4 @@
-import tt from '../helpers';
+import tt from '../../helpers';
 
 /*
  * Build tree from given JSON file listing nodes with keywords.

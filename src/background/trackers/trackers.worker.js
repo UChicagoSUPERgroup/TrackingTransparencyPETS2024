@@ -1,7 +1,7 @@
 /** @module trackers_worker */
 
 import parseuri from 'parseuri';
-import tt from '../helpers';
+import tt from '../../helpers';
 
 // console.log("trackers worker running");
 let databaseWorkerPort;

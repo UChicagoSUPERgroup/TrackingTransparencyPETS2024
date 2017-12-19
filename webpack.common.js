@@ -7,12 +7,12 @@ module.exports = {
     // and included in the extension source.
 
     // background scripts
-    background: './src/background_scripts/background.js',
+    background: './src/background/background.js',
 
     // web workers for background script
-    trackers_worker: './src/trackers/trackers.worker.js',
-    inferencing_worker: './src/inferencing/inferencing.worker.js',
-    database_worker: './src/database/database.worker.js',
+    trackers_worker: './src/background/trackers/trackers.worker.js',
+    inferencing_worker: './src/background/inferencing/inferencing.worker.js',
+    database_worker: './src/background/database/database.worker.js',
 
     // content scripts
     content: './src/content_scripts/content.js',
