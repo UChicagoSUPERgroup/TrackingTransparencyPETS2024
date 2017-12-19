@@ -23,7 +23,7 @@ export default class PagesTimeChart extends React.Component {
     if (this.props.timestamps) {
       timestamps = this.props.timestamps;
     } else {
-      tt.log('no time data provided');
+      console.log('no time data provided');
     }
     
 

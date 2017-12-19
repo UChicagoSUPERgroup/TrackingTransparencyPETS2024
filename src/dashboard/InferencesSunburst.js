@@ -78,7 +78,7 @@ export default class BasicSunburst extends React.Component {
 
     this.recursiveApplySizes(sunburstData, inferencesList);
     sunburstData = updateData(sunburstData, false);
-    tt.log(sunburstData);
+    console.log(sunburstData);
 
     this.decoratedData = sunburstData;
 
@@ -110,7 +110,7 @@ export default class BasicSunburst extends React.Component {
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
     const inferences = await background.queryDatabase('getInferences', {count: 100});
-    tt.log(inferences);
+    console.log(inferences);
     this.constructSunburstData(inferences);
   }
 

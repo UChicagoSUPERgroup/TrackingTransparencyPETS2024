@@ -26,6 +26,6 @@
     "no-console": "off",
     "react/prop-types": "off",
     "indent": ["warn", 2],
-    "quotes": ["warn", "single"]
+    "quotes": ["warn", "single", {"avoidEscape": true}]
   }
 }

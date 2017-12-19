@@ -4,7 +4,7 @@ import parseuri from 'parseuri';
 
 import {trackersWorker, databaseWorker, inferencingWorker} from './workers_setup';
 import userstudy from './userstudy';
-import tt from '../helpers';
+// import tt from '../helpers';
 
 
 userstudy.setDefaultOptions();
