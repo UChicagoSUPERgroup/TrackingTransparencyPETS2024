@@ -70,7 +70,11 @@ export default class PagesTimeScatterplot extends React.Component {
           xDomain={[0,23]} yDomain={[0,6]}>
           <XAxis title="Hour" tickValues={hours} />
           <YAxis title="Day of Week" tickValues={days} />
-          <MarkSeries data={data}/>
+          <MarkSeries
+            onValueMouseOver={(datapoint, event)=>{
+              console.log(datapoint,event);
+            }}
+            data={data}/>
         </XYPlot>
       </div>
     )
