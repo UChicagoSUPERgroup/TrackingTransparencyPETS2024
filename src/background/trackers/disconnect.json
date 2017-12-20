@@ -1,5 +1,5 @@
 {
-  "license": "Copyright 2010-2016 Disconnect, Inc. / This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. / This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. / You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.",
+  "license": "Copyright 2010-2017 Disconnect, Inc. / This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. / This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. / You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.",
   "categories": {
     "Advertising": [
       {
@@ -667,6 +667,14 @@
         }
       },
       {
+        "Adglare": {
+          "https://www.adglare.com/": [
+            "adglare.net",
+            "adglare.com"
+          ]
+        }
+      },
+      {
         "Adiant": {
           "http://www.adiant.com/": [
             "adblade.com",
@@ -1074,6 +1082,13 @@
         "Amobee": {
           "http://amobee.com/": [
             "amobee.com"
+          ]
+        }
+      },
+      {
+        "AndBeyond": {
+          "http://andbeyond.media/": [
+            "andbeyond.media"
           ]
         }
       },
@@ -1762,6 +1777,14 @@
         }
       },
       {
+        "CoinHive": {
+          "https://coinhive.com": [
+            "coinhive.com",
+            "coin-hive.com"
+          ]
+        }
+      },
+      {
         "Collective": {
           "http://collective.com/": [
             "collective-media.net",
@@ -1898,6 +1921,13 @@
             "crosspixel.net",
             "crosspixelmedia.com",
             "crsspxl.com"
+          ]
+        }
+      },
+      {
+        "CryptoLoot": {
+          "https://crypto-loot.com": [
+            "crypto-loot.com"
           ]
         }
       },
@@ -2951,6 +2981,14 @@
           "http://www.insightexpress.com/": [
             "insightexpress.com",
             "insightexpressai.com"
+          ]
+        }
+      },
+      {
+        "Instinctive": {
+          "https://instinctive.io/": [
+            "instinctiveads.com",
+            "instinctive.io"
           ]
         }
       },
@@ -4044,6 +4082,14 @@
         "OptimumResponse": {
           "http://www.optimumresponse.com/": [
             "optimumresponse.com"
+          ]
+        }
+      },
+      {
+        "OptinMonster": {
+          "https://optinmonster.com/": [
+            "optnmstr.com",
+            "optinmonster.com"
           ]
         }
       },
@@ -6397,7 +6443,8 @@
         "Amazon.com": {
           "http://www.amazon.com/": [
             "amazon.com",
-            "cloudfront.net"
+            "cloudfront.net",
+            "alexa.com"
           ]
         }
       },
@@ -7122,6 +7169,13 @@
         }
       },
       {
+        "Salesforce.com": {
+          "http://www.salesforce.com/": [
+            "salesforceliveagent.com"
+          ]
+        }
+      },
+      {
         "ScribeFire": {
           "http://www.scribefire.com/": [
             "scribefire.com"
@@ -7450,6 +7504,13 @@
         }
       },
       {
+        "Yandex": {
+          "http://www.yandex.com/": [
+            "api-maps.yandex.ru"
+          ]
+        }
+      },
+      {
         "Zendesk": {
           "http://www.zendesk.com/": [
             "zendesk.com"
@@ -7559,7 +7620,6 @@
       {
         "Amazon.com": {
           "http://www.amazon.com/": [
-            "alexa.com",
             "alexametrics.com"
           ]
         }
@@ -7847,10 +7907,24 @@
         }
       },
       {
+        "Fullstory": {
+          "https://www.fullstory.com/": [
+            "fullstory.com"
+          ]
+        }
+      },
+      {
         "GTop": {
           "http://www.gtop.ro/": [
             "gtop.ro",
             "gtopstats.com"
+          ]
+        }
+      },
+      {
+        "GetSiteControl": {
+          "https://getsitecontrol.com/": [
+            "getsitecontrol.com"
           ]
         }
       },
@@ -7925,6 +7999,13 @@
         "Hotjar": {
           "https://www.hotjar.com": [
             "hotjar.com"
+          ]
+        }
+      },
+      {
+        "HubSpot": {
+          "http://www.hubspot.com/": [
+            "hs-analytics.net"
           ]
         }
       },
@@ -8093,7 +8174,8 @@
       {
         "Mixpanel": {
           "https://mixpanel.com/": [
-            "mixpanel.com"
+            "mixpanel.com",
+            "mxpnl.com"
           ]
         }
       },
@@ -8346,6 +8428,13 @@
         }
       },
       {
+        "SessionCam": {
+          "https://sessioncam.com/": [
+            "sessioncam.com"
+          ]
+        }
+      },
+      {
         "ShinyStat": {
           "http://www.shinystat.com/": [
             "shinystat.com"
@@ -8356,6 +8445,13 @@
         "Shortest": {
           "http://shorte.st/": [
             "shorte.st"
+          ]
+        }
+      },
+      {
+        "Smartlook": {
+          "https://www.smartlook.com/": [
+            "smartlook.com"
           ]
         }
       },

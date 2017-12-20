@@ -20,9 +20,7 @@ module.exports = {
     // user facing pages
     popup: './src/popup/popup.js',
     dashboard: './src/dashboard/index.js',
-    infopage: './src/infopage/infopage.js', // DEPRECATED
-    debugscreen: './src/debugscreen/debugscreen.js' // DEPRECATED
-
+    infopage: './src/infopage/infopage.js' // DEPRECATED
   },
   output: {
     // This copies each source entry into the extension dist folder named

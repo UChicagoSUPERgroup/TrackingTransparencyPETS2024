@@ -1,5 +1,7 @@
 /** @module trackers_worker */
 
+import disconnect from './disconnect.json';
+
 import parseuri from 'parseuri';
 import tt from '../../helpers';
 
@@ -14,6 +16,8 @@ let services = {};
 
 let trackersByPageId = {};
 
+processServices(disconnect);
+
 /** 
  * takes the disconnect list object and formats it into the services object
  * 
@@ -22,7 +26,6 @@ let trackersByPageId = {};
  * @param  {Object} data
  */
 function processServices(data) {
-  data = tt.deserialize(data);
   const categories = data.categories;
 
   for (let categoryName in categories) {
@@ -50,11 +53,6 @@ function processServices(data) {
     }
   }
 }
-
-tt.readTextFile('../lib/disconnect.json').then(data => {
-  processServices(data);
-});
-
 
 /** 
  * determines if a web request was for a tracker
