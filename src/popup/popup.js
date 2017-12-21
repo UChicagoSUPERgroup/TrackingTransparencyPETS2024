@@ -1,5 +1,27 @@
 async function onReady() {
   const background = await browser.runtime.getBackgroundPage();
+  // X trackers...
+  const _numTrackers = await background.queryDatabase("getTrackers", {});
+  const numTrackers = _numTrackers.length;
+  $('#numTrackers').text(numTrackers);
+  console.log("numTrackers: " + numTrackers);
+
+  // ...have seen you visit Y pages...
+  const numPages = await background.queryDatabase("getNumberOfPages", {});
+  $('#numPages').text(numPages);
+  console.log("numPages: " + numPages);
+
+  // ...and inferred Z things about you.
+  const _numInferences = await background.queryDatabase("getInferences", {});
+  const numInferences = _numInferences.length;
+  $('#numInferences').text(numInferences);
+  console.log("numInferences: " + numInferences);
+
+  // unhide the summary
+  if (numTrackers > 0 || numPages > 0 || numTrackers > 0) {
+    console.log("Unhiding summary");
+    $('#summary').show();
+  }
 
   const tabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
   const tab = tabs[0];
