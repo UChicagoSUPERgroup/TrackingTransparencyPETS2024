@@ -1,3 +1,5 @@
+/** @module InferencesSunburst */
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {Sunburst, LabelSeries} from 'react-vis';

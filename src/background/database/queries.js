@@ -20,9 +20,11 @@ const Pages = primarySchemaBuilder.getSchema().table('Pages');
 
 /* used in dashboard */
 
-/**
-get domains by tracker count
-*/
+/** get domains by tracker count
+ * 
+ * @param  {Object} args - arguments object
+ * @param  {number} [args.count] - number of entries to return
+ */
 async function getDomains(args) {
   let query = ttDb.select(Pages.domain, lf.fn.count(lf.fn.distinct(Trackers.tracker)))
     .from(Trackers, Pages)
@@ -33,8 +35,11 @@ async function getDomains(args) {
   return await query.exec();
 }
 
-/**
- * Trackers by domain (the following trackers know that you have been to DOMAIN)
+/** get trackers present on a given domain
+ * 
+ * @param  {Object} args - arguments object
+ * @param  {string} args.domain - domain
+ * @param  {number} [args.count] - number of entries to return
  */
 async function getTrackersByDomain(args) {
   if (!args.domain) {
@@ -52,9 +57,10 @@ async function getTrackersByDomain(args) {
   return await query.exec();
 }
 
-/**
- * gets all trackers
- *
+/** gets all trackers
+ * 
+ * @param  {Object} args - arguments object
+ * @param  {number} [args.count] - number of entries to return
  */
 async function getTrackers(args) {
   let query = ttDb.select(Trackers.tracker, lf.fn.count(Trackers.tracker))
@@ -65,8 +71,12 @@ async function getTrackers(args) {
   return await query.exec();
 }
 
-/**
- * Inferences by Tracker (i.e. TRACKERNAME has made these inferences about you)
+
+/** get inferences made by a specifc tracker
+ * 
+ * @param  {Object} args - arguments object
+ * @param  {string} args.tracker - tracker
+ * @param  {number} [args.count] - number of entries to return
  */
 async function getInferencesByTracker(args) {
   if (!args.tracker) {
@@ -85,8 +95,10 @@ async function getInferencesByTracker(args) {
   return res.map(x => x.Inferences);
 }
 
-/**
- * gets all inferences
+/** gets all inferences
+ * 
+ * @param  {Object} args - arguments object
+ * @param  {number} [args.count] - number of entries to return
  */
 async function getInferences(args) {
   let query = ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
@@ -98,8 +110,11 @@ async function getInferences(args) {
 }
 
 
-/**
- * Tracker by inferences (i.e. the following trackers know INFERENCE)
+/** get trackers that have made a given inference
+ * 
+ * @param  {Object} args - arguments object
+ * @param  {string} args.inference - inference
+ * @param  {number} [args.count] - number of entries to return
  */
 async function getTrackersByInference(args) {
   if (!args.inference) {
@@ -117,7 +132,12 @@ async function getTrackersByInference(args) {
   return await query.exec();
 }
 
-/* gets all timestamps of page visits */
+/** get timestamps of all page visits
+ * 
+ * @param  {Object} args - arguments object
+ * @param  {number} [args.afterDate] - date to query for entries after
+ * @param  {number} [args.count] - number of entries to return
+ */
 async function getTimestamps(args) {
   let query = ttDb.select(Pages.id)
     .from(Pages)
@@ -126,7 +146,12 @@ async function getTimestamps(args) {
   return await query.exec();
 }
 
-/* gets all timestaps for page visits for a specific inference */
+/** gets all timestaps for page visits for a specific inference
+ * 
+ * @param  {Object} args - arguments object
+ * @param  {string} args.inference - tracker
+ * @param  {number} [args.count] - number of entries to return
+ */
 async function getTimestampsByInference(args) {
   if (!args.inference) {
     throw new Error('Insufficient args provided for query');
@@ -144,12 +169,9 @@ async function getTimestampsByInference(args) {
 /* ======= */
 
 
-
 /**
  * page visit count by tracker (i.e. TRACKERNAME knows # sites you have visited)
  *
- * @param {string} tracker - tracker domain
- * @returns {Number} number of pages where that tracker was present
  */
 async function getPageVisitCountByTracker(args) {
   let query = await ttDb.select(lf.fn.count(Pages.domain))
@@ -171,8 +193,6 @@ async function getPageVisitCountByTracker(args) {
  *
  * (e.g. use case: find tracker that has made most inferences about user)
  *
- * @param {Number} count - count of trackers
- * @returns {string[]} array of trackers
  */
 async function getTrackersByInferenceCount(args) {
   let query = ttDb.select(Trackers.tracker, lf.fn.count(Inferences.inference))
@@ -186,23 +206,8 @@ async function getTrackersByInferenceCount(args) {
   return await query.exec();
 }
 
-
-/**
- * @typedef {Object} PageInfo
- * @property {string} title - the page's title
- * @property {string} domain - the page's domain
- * @property {string} path - the page's path
- * @property {} time - time page was loaded
- */
-
 /**
  * given an inference and tracker, find pages where tracker made that inference
- *
- * @param {string} tracker - tracker domain
- * @param {string} inference - inference
- * @param {Number} count - number of pages to return
- *
- * @returns {PageInfo[]}
  *
  */
 async function getPagesByTrackerAndInference(args) {
@@ -223,8 +228,6 @@ async function getPagesByTrackerAndInference(args) {
 
 /**
  * returns an array of pages with number of trackers
- *
- * @returns {}
  *
  */
 async function getPagesWithNumberOfTrackers() {
@@ -247,8 +250,6 @@ async function getPagesWithNumberOfTrackers() {
 /**
  * returns an array of pages visited
  *
- * @returns {}
- *
  */
 async function getPages(args) {
   let query = ttDb.select()
@@ -264,7 +265,6 @@ async function getPages(args) {
 /**
  * returns an array of pages visited
  *
- * @returns {}
  *
  */
 async function getPagesNoTrackers(args) {
@@ -281,7 +281,6 @@ async function getPagesNoTrackers(args) {
 /**
  * returns an array of domains visited
  *
- * @returns {}
  *
  */
 
@@ -311,8 +310,8 @@ async function getNumberOfPages() {
 
 /**
  * Domain visits by tracker (i.e. TRACKERNAME knows you have been to the following sites)
- *
- * @param {string} tracker - tracker domain
+ * @param {Object} args - args object
+ * @param {string} args.tracker - tracker domain
  * @returns {string[]} array of domains
  */
 async function getDomainsByTracker(args) {
@@ -330,12 +329,6 @@ async function getDomainsByTracker(args) {
 
 /**
  * given an tracker and domain, give pages on that domain where tracker is present
- *
- * @param {string} tracker - tracker domain
- * @param {string} domain - first-party domain
- * @param {Number} count - number of pages to return
- *
- * @returns {PageInfo[]}
  *
  */
 async function getPagesByTrackerAndDomain(args) {
@@ -364,20 +357,10 @@ async function getTrackerWithInferencesByDomain(args) {
   }
 }
 
-/**
- * @typedef {Object} InferenceInfo
- * @property {string} inference
- * @property {PageInfo[]} pages
- */
 
 /**
  * gets a lot of info about a tracker
  * used for infopage
- *
- * @param  {} tracker
- * @param  {} inferenceCount
- * @param  {} pageCount
- * @returns {InferenceInfo[]}
  */
 async function getInfoAboutTracker(args) {
 
@@ -429,9 +412,6 @@ async function getInferencesByTrackerCount(args) {
  *
  * TODO: right now we use this on infopage and make a query for every single possible inferce
  * when it would be better just to have one query that returns counts of all inferences
- *
- * @param {string} inference
- * @returns {string[]} array of trackers
  */
 async function getInferenceCount(args) {
   let query = await ttDb.select(lf.fn.count(Inferences.inference))
@@ -448,12 +428,13 @@ async function getInferenceCount(args) {
   return res;
 }
 
-// unsure how to chain these
+/** erases all entries in database
+ */
 async function emptyDB() {
-  let emptyInferences = await ttDb.delete().from(Inferences).exec();
-  //let emptyTrackers = await ttDb.delete().from(Trackers).exec();
-  //let emptyPages = await ttDb.delete().from(Pages).exec();
-  return emptyInferences;
+  let emptyInferences = ttDb.delete().from(Inferences).exec();
+  let emptyTrackers = ttDb.delete().from(Trackers).exec();
+  let emptyPages = ttDb.delete().from(Pages).exec();
+  return await Promise.all([emptyInferences, emptyTrackers, emptyPages]);
 }
 
 /* ========= */
@@ -489,7 +470,7 @@ const QUERIES = {
 export const queryNames = Object.keys(QUERIES);
 
 /**
- * makes a query given string query name and arguments object
+ * executes a query given query name as string and arguments object
  *
  * @param  {string} queryName - query name
  * @param  {Object} args - query arguments
