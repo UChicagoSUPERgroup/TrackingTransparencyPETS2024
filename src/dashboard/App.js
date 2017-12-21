@@ -13,6 +13,7 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 import {LinkContainer} from 'react-router-bootstrap';
 
 import '../../node_modules/react-vis/dist/style.css';
+import 'typeface-source-sans-pro';
 
 import InferencesPage from './Inferences';
 import TrackersList from './Trackers';

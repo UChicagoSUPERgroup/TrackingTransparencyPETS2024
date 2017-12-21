@@ -59,6 +59,7 @@
     "readability": "github:mozilla/readability",
     "striptags": "^3.1.1",
     "tokenize-text": "^1.1.3",
+    "typeface-source-sans-pro": "^0.0.44",
     "webextension-polyfill": "^0.2.1"
   }
 }
