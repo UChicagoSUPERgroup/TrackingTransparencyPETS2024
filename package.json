@@ -7,9 +7,10 @@
     "lint:eslint": "eslint .",
     "lint:webext": "web-ext lint -s extension/",
     "lint": "npm run lint:eslint; npm run lint:webext",
-    "build": "webpack --config webpack.prod.js && web-ext build -s extension/",
-    "start": "webpack -w --config webpack.dev.js",
-    "watch": "webpack -w --config webpack.dev.js",
+    "dist": "webpack --progress --config webpack.prod.js && web-ext build -s extension/",
+    "start": "webpack -w --progress --config webpack.dev.js",
+    "watch": "webpack -w --progress --config webpack.dev.js",
+    "build": "webpack --progress --config webpack.dev.js",
     "firefox": "web-ext run -s extension/ -u 'about:debugging'",
     "jsdoc": "jsdoc -c jsdoc.conf.json -r -d ./doc/jsdoc/ -R ./README.md ."
   },
