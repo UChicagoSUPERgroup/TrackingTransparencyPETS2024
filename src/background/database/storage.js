@@ -25,8 +25,7 @@ export async function storePage(info) {
     'title': info.title,
     'domain': info.domain,
     'path': info.path,
-    'protocol': info.protocol,
-    'time': new Date(info.pageId),
+    'protocol': info.protocol
   });
   return ttDb.insertOrReplace().into(pageItem).values([page]).exec();
 }

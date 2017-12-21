@@ -192,8 +192,8 @@ let pendingDatabaseQueries = {};
  * @param  {Object} args - arguments object passed to database worker
  */
 async function queryDatabase(query, args) {
-  let queryPromise = new Promise((r) => {
-    pendingDatabaseQueries[queryId] = r;
+  let queryPromise = new Promise((resolve, reject) => {
+    pendingDatabaseQueries[queryId] = {resolve: resolve, reject: reject};
   });
 
   databaseWorker.postMessage({
@@ -204,8 +204,12 @@ async function queryDatabase(query, args) {
   });
   queryId++;
 
-  let res = await queryPromise;
-  return res.response;
+  try {
+    let res = await queryPromise;
+    return res.response;
+  } catch(e) {
+    throw new Error(e);
+  }
 }
 window.queryDatabase = queryDatabase; // exposes function to other extension components 
 
@@ -217,8 +221,25 @@ window.queryDatabase = queryDatabase; // exposes function to other extension com
  */
 function onDatabaseWorkerMessage(m) {
   // console.log('Message received from database worker', m);
+  
   if (m.data.type === 'database_query_response') {
-    pendingDatabaseQueries[m.data.id](m.data);
+
+    // if response isn't given a query id to associate with request, it's an error
+    if (!m.data.id) {
+      // since we don't know which promise to reject we have to just throw an error
+      throw new Error ('malformed query response');
+    }
+
+    const p = pendingDatabaseQueries[m.data.id];
+    if (m.data.error) {
+      // database gave us an error
+      // so we reject query promise
+      p.reject(m.data.error);
+      return;
+    }
+
+    p.resolve(m.data);
+    return;
   }
 }
 

@@ -63,14 +63,21 @@ async function onMessage(m) {
  * @param  {Object} args - query arguments
  */
 async function handleQuery(data) {
-    
-  const res = await makeQuery(data.query, data.args);
-
-  if (res) {
+  
+  try {
+    const res = await makeQuery(data.query, data.args);
     postMessage({
       type: 'database_query_response',
       id: data.id,
       response: res
     });
+  } catch (error) {
+    console.log(error);
+    postMessage({
+      type: 'database_query_response',
+      id: data.id,
+      error: error.message
+    });
   }
+  
 }

@@ -37,6 +37,9 @@ async function getDomains(args) {
  * Trackers by domain (the following trackers know that you have been to DOMAIN)
  */
 async function getTrackersByDomain(args) {
+  if (!args.domain) {
+    throw new Error('Insufficient args provided for query');
+  }
   let query = ttDb.select(Trackers.tracker, lf.fn.count(Pages.id))
     .from(Trackers, Pages)
     .where(lf.op.and(
@@ -66,6 +69,9 @@ async function getTrackers(args) {
  * Inferences by Tracker (i.e. TRACKERNAME has made these inferences about you)
  */
 async function getInferencesByTracker(args) {
+  if (!args.tracker) {
+    throw new Error('Insufficient args provided for query');
+  }
   let query = ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
     .from(Trackers, Inferences)
     .where(lf.op.and(
@@ -96,6 +102,9 @@ async function getInferences(args) {
  * Tracker by inferences (i.e. the following trackers know INFERENCE)
  */
 async function getTrackersByInference(args) {
+  if (!args.inference) {
+    throw new Error('Insufficient args provided for query');
+  }
   let query = ttDb.select(Trackers.tracker, lf.fn.count(Trackers.tracker))
     .from(Trackers, Inferences)
     .where(lf.op.and(
@@ -112,12 +121,16 @@ async function getTrackersByInference(args) {
 async function getTimestamps(args) {
   let query = ttDb.select(Pages.id)
     .from(Pages)
+  query = args.afterDate ? query.where(Pages.id.gte(args.afterDate)) : query;
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
 }
 
 /* gets all timestaps for page visits for a specific inference */
 async function getTimestampsByInference(args) {
+  if (!args.inference) {
+    throw new Error('Insufficient args provided for query');
+  }
   let query = ttDb.select(Pages.id)
     .from(Pages, Inferences)
     .where(lf.op.and(
@@ -446,40 +459,44 @@ async function emptyDB() {
 /* ========= */
 
 const QUERIES = {
-  getDomains: async args => await getDomains(args),
-  getTrackersByDomain: async args => await getTrackersByDomain(args),
-  getTrackers: async args => await getTrackers(args),
-  getInferencesByTracker: async args => await getInferencesByTracker(args),
-  getInferences: async args => getInferences(args),
-  getTrackersByInference: async args => await getTrackersByInference(args),
-  getTimestamps: async args => await getTimestamps(args),
-  getTimestampsByInference: async args => await getTimestampsByInference(args),
-
+  getDomains: getDomains,
+  getTrackersByDomain: getTrackersByDomain,
+  getTrackers: getTrackers,
+  getInferencesByTracker: getInferencesByTracker,
+  getInferences: getInferences,
+  getTrackersByInference: getTrackersByInference,
+  getTimestamps: getTimestamps,
+  getTimestampsByInference: getTimestampsByInference,
 
   // old
-  getPageVisitCountByTracker: async args => await getPageVisitCountByTracker(args),
-  getDomainsByTracker: async args => await getDomainsByTracker(args),
-  getTrackersByInferenceCount: async args => await getTrackersByInferenceCount(args),
-  getPagesByTrackerAndInference: async args => await getPagesByTrackerAndInference(args),
-  getPagesWithNumberOfTrackers: async args => await getPagesWithNumberOfTrackers(args),
-  // getDomainsWithNumberOfTrackers: async args => await getDomainsWithNumberOfTrackers(),
-  getPagesByTrackerAndDomain: async args => await getPagesByTrackerAndDomain(args),
-  getNumberOfPages: async () => await getNumberOfPages(),
-  getTrackerWithInferencesByDomain: async args => await getTrackerWithInferencesByDomain(args),
-  getInfoAboutTracker: async args => await getInfoAboutTracker(args),
-  getPagesNoTrackers: async () => await getPagesNoTrackers(),
-  getDomainsNoTrackers: async () => await getDomainsNoTrackers(),
-  getInferencesByTrackerCount: async () => await getInferencesByTrackerCount(),
-  getInferenceCount: async args => await getInferenceCount(args),
-  emptyDB: async () => await emptyDB()
+  getPageVisitCountByTracker: getPageVisitCountByTracker,
+  getDomainsByTracker: getDomainsByTracker,
+  getTrackersByInferenceCount: getTrackersByInferenceCount,
+  getPagesByTrackerAndInference: getPagesByTrackerAndInference,
+  getPagesWithNumberOfTrackers: getPagesWithNumberOfTrackers,
+  // getDomainsWithNumberOfTrackers: getDomainsWithNumberOfTrackers(),
+  getPagesByTrackerAndDomain: getPagesByTrackerAndDomain,
+  getNumberOfPages: getNumberOfPages,
+  getTrackerWithInferencesByDomain: getTrackerWithInferencesByDomain,
+  getInfoAboutTracker: getInfoAboutTracker,
+  getPagesNoTrackers: getPagesNoTrackers,
+  getDomainsNoTrackers: getDomainsNoTrackers,
+  getInferencesByTrackerCount: getInferencesByTrackerCount,
+  getInferenceCount: getInferenceCount,
+  emptyDB: emptyDB
 }
+
+export const queryNames = Object.keys(QUERIES);
 
 /**
  * makes a query given string query name and arguments object
  *
- * @param  {string} query - query name
+ * @param  {string} queryName - query name
  * @param  {Object} args - query arguments
  */
-export default async function makeQuery(query, args) {
-  return (QUERIES[query] || (async () => {}))(args);
+export default async function makeQuery(queryName, args) {
+  if (!QUERIES[queryName]) {
+    throw new Error('Query does not exist');
+  }
+  return await (QUERIES[queryName])(args);
 }
