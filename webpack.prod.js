@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MinifyPlugin = require("babel-minify-webpack-plugin");
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
@@ -9,10 +9,8 @@ module.exports = merge(common, {
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
 
-    new UglifyJsPlugin({
-      compress: {
-        drop_console: true,
-      }
-    })
+    new MinifyPlugin({
+      removeConsole: true
+    }, {})
   ]
 });
