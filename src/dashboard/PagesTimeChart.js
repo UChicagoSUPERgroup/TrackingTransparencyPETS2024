@@ -30,7 +30,7 @@ export default class PagesTimeChart extends React.Component {
     this.state = {
       times: timestamps,
       grouping: 'weekday'
-    }
+    };
 
     this.changeSelection = this.changeSelection.bind(this);
   }

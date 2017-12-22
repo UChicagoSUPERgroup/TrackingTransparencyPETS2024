@@ -97,7 +97,7 @@ function recordNewPage(tabId, url, title) {
     title: title,
     webRequests: [],
     trackers: []
-  }
+  };
 
   databaseWorker.postMessage({
     type: 'store_page',
@@ -148,7 +148,7 @@ async function updateTrackers(tabId) {
 
   let trackers = await messagePromise;
   tabData[tabId].trackers = trackers;
-  return;
+
 }
 
 
@@ -239,7 +239,7 @@ function onDatabaseWorkerMessage(m) {
     }
 
     p.resolve(m.data);
-    return;
+
   }
 }
 
@@ -292,14 +292,14 @@ function runtimeOnMessage(message, sender, sendResponse) {
       type: 'content_script_to_inferencing',
       article: message.article,
       mainFrameReqId: pageId
-    })
+    });
     break;
     
   case 'queryDatabase':
     query = queryDatabase(message.query, message.args);
     query.then(res => { // cannot use async/await
       sendResponse(res);
-    })
+    });
     return true; // this tells browser that we will call sendResponse asynchronously
   }
 

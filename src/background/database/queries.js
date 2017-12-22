@@ -140,7 +140,7 @@ async function getTrackersByInference(args) {
  */
 async function getTimestamps(args) {
   let query = ttDb.select(Pages.id)
-    .from(Pages)
+    .from(Pages);
   query = args.afterDate ? query.where(Pages.id.gte(args.afterDate)) : query;
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
@@ -330,7 +330,7 @@ async function getDomainsNoTrackers(args) {
     .leftOuterJoin(Pages, Trackers.pageId.eq(Pages.id))
     .groupBy(Pages.domain)
     .having((lf.fn.count(Trackers.tracker).eq(0)))
-    .orderBy(Pages.id, lf.Order.ASC)
+    .orderBy(Pages.id, lf.Order.ASC);
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
 }
@@ -347,7 +347,7 @@ async function getDomainsByTracker(args) {
     .where(lf.op.and(
       Trackers.pageId.eq(Pages.id),
       Trackers.tracker.eq(args.tracker)
-    ))
+    ));
   query = args.count ? query.limit(args.count) : query;
   const res = await query.exec();
   return res.map(x => x.Pages.domain);
@@ -495,7 +495,7 @@ const QUERIES = {
   getInferencesByTrackerCount: getInferencesByTrackerCount,
   getInferenceCount: getInferenceCount,
   emptyDB: emptyDB
-}
+};
 
 export const queryNames = Object.keys(QUERIES);
 

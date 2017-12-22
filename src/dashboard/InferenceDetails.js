@@ -32,7 +32,7 @@ class InferenceDetails extends React.Component {
     const trackers = background.queryDatabase('getTrackersByInference', {inference: this.state.inference, count: 1});
     trackers.then(tr => this.setState({
       trackers: tr
-    }))
+    }));
     const timestamps = background.queryDatabase('getTimestampsByInference', {inference: this.state.inference});
     timestamps.then(ts => {
       const times = ts.map(x => (

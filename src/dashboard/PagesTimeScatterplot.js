@@ -28,7 +28,7 @@ export default class PagesTimeScatterplot extends React.Component {
     
     this.state = {
       times: timestamps
-    }
+    };
 
     this.changeSelection = this.changeSelection.bind(this);
   }

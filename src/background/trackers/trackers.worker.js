@@ -79,7 +79,7 @@ function trackerMatch(details, firstPartyHost) {
   } else {
     // try chopping off subdomains to see if TLD is known tracker
     const arr = parsedRequest.host.split('.');
-    const domain = arr[arr.length -2] + '.' + arr[arr.length - 1]
+    const domain = arr[arr.length -2] + '.' + arr[arr.length - 1];
     if (domain === firstPartyHost) {
       return null;
     }
@@ -139,7 +139,7 @@ onmessage = function(m) {
 
   case 'page_changed':
     trackers = processWebRequests(m.data.oldPageId, m.data.firstPartyHost, m.data.webRequests);
-    onPageChanged(m.data.oldPageId, trackers)
+    onPageChanged(m.data.oldPageId, trackers);
     break;
 
   case 'push_webrequests': 
@@ -152,4 +152,4 @@ onmessage = function(m) {
     });
     break;
   }
-}
+};

@@ -14,7 +14,7 @@ class InferencesPage extends React.Component {
     this.state = {
       selectedInference: false,
       inferences: null
-    }
+    };
 
     this.handleSunburstSelection = this.handleSunburstSelection.bind(this);
     this.handleInferenceLinkClick = this.handleInferenceLinkClick.bind(this);

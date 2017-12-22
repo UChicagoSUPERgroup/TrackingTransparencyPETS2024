@@ -39,7 +39,7 @@ export async function storePage(info) {
 export async function storeTrackerArray(pageId, trackers) {
   const ttDb = await primaryDbPromise;
   const trackerItem = ttDb.getSchema().table('Trackers');
-  const rows = []
+  const rows = [];
 
   for (let tracker of trackers) {
     const row = trackerItem.createRow({

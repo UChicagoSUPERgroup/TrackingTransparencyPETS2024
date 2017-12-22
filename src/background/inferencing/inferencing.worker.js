@@ -13,7 +13,7 @@ onmessage = function(m) {
     inferencingMessageListener(m.data.article, m.data.mainFrameReqId);
     break;
   }
-}
+};
 
 const tree = buildCategoryTree('../lib/inferencing_data/categories.json');
 
@@ -45,7 +45,7 @@ async function inferencingMessageListener(article, mainFrameReqId) {
     inferenceCategory: '',
     threshold: category[1],
     pageId: mainFrameReqId
-  }
+  };
   // console.log("sending inference to database");
   databaseWorkerPort.postMessage({
     type: 'store_inference',
@@ -59,14 +59,14 @@ async function inferencingMessageListener(article, mainFrameReqId) {
 function storeFakeInferenceInfo(mainFrameReqId) {
   const inferences =  ['Warehousing', 'Major Kitchen Appliances', 'Air Travel', 'Beach Vacations'];
 
-  const randomInference = inferences[Math.floor(Math.random() * inferences.length)]
+  const randomInference = inferences[Math.floor(Math.random() * inferences.length)];
 
   let inferenceInfo = {
     inference: randomInference,
     inferenceCategory: '',
     threshold: Math.random(),
     pageId: mainFrameReqId
-  }
+  };
   // console.log("sending inference to database");
   databaseWorkerPort.postMessage({
     type: 'store_inference',
