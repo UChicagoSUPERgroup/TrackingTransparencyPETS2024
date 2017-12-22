@@ -165,6 +165,45 @@ async function getTimestampsByInference(args) {
   return await query.exec();
 }
 
+/* COUNTING */
+
+/**
+ * get the total number of pages
+ *
+ * @returns {Integer} number of page visits
+ */
+async function getNumberOfPages() {
+  let query = await ttDb.select(lf.fn.count(Pages.id))
+    .from(Pages)
+    .exec();
+  return (query[0])['COUNT(id)'];
+}
+
+
+/**
+ * get the total number of unique trackers
+ *
+ * @returns {Integer} number of trackers
+ */
+async function getNumberOfTrackers() {
+  let query = await ttDb.select(lf.fn.count(lf.fn.distinct(Trackers.tracker)))
+    .from(Trackers)
+    .exec();
+  return (query[0])['COUNT(DISTINCT(tracker))'];
+}
+
+/**
+ * get the total number of unique inferences
+ *
+ * @returns {Integer} number of inferences made
+ */
+async function getNumberOfInferences() {
+  let query = await ttDb.select(lf.fn.count(lf.fn.distinct(Inferences.inference)))
+    .from(Inferences)
+    .exec();
+  return (query[0])['COUNT(DISTINCT(inference))'];
+}
+
 /* OLD QUERIES */
 /* ======= */
 
@@ -294,18 +333,6 @@ async function getDomainsNoTrackers(args) {
     .orderBy(Pages.id, lf.Order.ASC)
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
-}
-
-/**
- * get the total number of pages
- *
- * @returns {Integer} number of page visits
- */
-async function getNumberOfPages() {
-  let query = await ttDb.select(lf.fn.count(Pages.id))
-    .from(Pages)
-    .exec();
-  return (query[0])['COUNT(id)'];
 }
 
 /**
@@ -449,6 +476,10 @@ const QUERIES = {
   getTimestamps: getTimestamps,
   getTimestampsByInference: getTimestampsByInference,
 
+  getNumberOfPages: getNumberOfPages,
+  getNumberOfTrackers: getNumberOfTrackers,
+  getNumberOfInferences: getNumberOfInferences,
+
   // old
   getPageVisitCountByTracker: getPageVisitCountByTracker,
   getDomainsByTracker: getDomainsByTracker,
@@ -457,7 +488,6 @@ const QUERIES = {
   getPagesWithNumberOfTrackers: getPagesWithNumberOfTrackers,
   // getDomainsWithNumberOfTrackers: getDomainsWithNumberOfTrackers(),
   getPagesByTrackerAndDomain: getPagesByTrackerAndDomain,
-  getNumberOfPages: getNumberOfPages,
   getTrackerWithInferencesByDomain: getTrackerWithInferencesByDomain,
   getInfoAboutTracker: getInfoAboutTracker,
   getPagesNoTrackers: getPagesNoTrackers,
