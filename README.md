@@ -33,7 +33,7 @@ A browser extension to provide information about online tracking.
   - OS X: `npm install`
   - Linux/Windows `npm install --no-optional`
 
-- Run webpack: `npm watch` - this runs Webpack in watch mode and automatically reruns whenever you change any files. Recommended to leave this running in a background terminal.
+- Run webpack: `npm run watch` - this runs Webpack in watch mode and automatically reruns whenever you change any files. Recommended to leave this running in a background terminal.
 - Open Chrome and install extension, or run in a temporary Firefox profile by running `npm run firefox`
 
 ## Building for Production
