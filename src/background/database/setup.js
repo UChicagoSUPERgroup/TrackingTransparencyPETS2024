@@ -11,10 +11,7 @@ primarySchemaBuilder.createTable('Pages').
   addColumn('domain', lf.Type.STRING).
   addColumn('path', lf.Type.STRING).
   addColumn('protocol', lf.Type.STRING).
-  addColumn('time', lf.Type.DATE_TIME).
-  addPrimaryKey(['id']).
-  addIndex('idxTime', ['time'], false, lf.Order.DESC);
-
+  addPrimaryKey(['id']);
 
 primarySchemaBuilder.createTable('Trackers').
   addColumn('id', lf.Type.INTEGER).
