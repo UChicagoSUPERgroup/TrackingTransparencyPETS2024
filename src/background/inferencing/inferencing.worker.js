@@ -1,6 +1,8 @@
 import buildCategoryTree from './build';
 import infer from './infer';
 
+import categories from '../../data/all_categories.json';
+
 let databaseWorkerPort;
 
 onmessage = function(m) {
@@ -57,9 +59,8 @@ async function inferencingMessageListener(article, mainFrameReqId) {
 }
 
 function storeFakeInferenceInfo(mainFrameReqId) {
-  const inferences =  ['Warehousing', 'Major Kitchen Appliances', 'Air Travel', 'Beach Vacations'];
 
-  const randomInference = inferences[Math.floor(Math.random() * inferences.length)];
+  const randomInference = categories[Math.floor(Math.random() * categories.length)];
 
   let inferenceInfo = {
     inference: randomInference,
