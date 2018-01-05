@@ -7,7 +7,7 @@
     "lint:eslint": "eslint .",
     "lint:webext": "web-ext lint -s extension/",
     "lint": "npm run lint:eslint; npm run lint:webext",
-    "dist": "webpack --progress --config webpack.prod.js && web-ext build -s extension/",
+    "dist": "webpack --progress --config webpack.prod.js && web-ext build -s extension/ --overwrite-dest",
     "start": "webpack -w --progress --config webpack.dev.js",
     "watch": "webpack -w --progress --config webpack.dev.js",
     "build": "webpack --progress --config webpack.dev.js",
