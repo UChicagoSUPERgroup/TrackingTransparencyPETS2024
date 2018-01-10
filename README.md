@@ -34,12 +34,33 @@ A browser extension to provide information about online tracking.
   - Linux/Windows `npm install --no-optional`
 
 - Run webpack: `npm run watch` - this runs Webpack in watch mode and automatically reruns whenever you change any files. Recommended to leave this running in a background terminal.
-- Open Chrome and install extension, or run in a temporary Firefox profile by running `npm run firefox`
+
+### Chrome
+
+ Visit `chrome://extensions` in your browser \(or open up the Chrome menu by clicking the icon to the far right of the window, and select **Extensions** under the **More Tools** menu to get to the same place\).
+
+1.  Ensure that the **Developer mode** checkbox in the top right-hand corner is checked.
+
+2.  Click **Load unpacked extension…** to pop up a file-selection dialog.
+
+3.  Navigate to the directory in which your extension files live, and select it.
+
+Alternatively, you can drag and drop the directory where your extension files live onto `chrome://extensions` in your browser to load it.
+
+### Firefox
+
+Run `npm run firefox` to start up a temporary Firefox profile with the extension installed.
+
+Alternatively open `about:debugging` in Firefox, click **Load Temporary Add-on** and select any file in your extension's directory:
+
+The extension will now be installed, and will stay until you restart Firefox.
 
 ## Building for Production
 
-Run `npm dist`. This creates a zip file in the `web-ext-artifacts/` folder.
+Run `npm dist`. This runs webpack in production mode, minfies the files, and packs the code in a zip file in the `web-ext-artifacts/` folder. This can be installed in the same procedure as above.
 
 # License
+
+GPL? (disconnect list is GPL)
 
 # Links
