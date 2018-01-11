@@ -204,6 +204,26 @@ async function getNumberOfInferences() {
   return (query[0])['COUNT(DISTINCT(inference))'];
 }
 
+
+/**
+ * Domain visits by tracker (i.e. TRACKERNAME knows you have been to the following sites)
+ * @param {Object} args - args object
+ * @param {string} args.tracker - tracker domain
+ * @returns {string[]} array of domains
+ */
+async function getDomainsByInference(args) {
+  let query = ttDb.select(Pages.domain)
+    .from(Pages, Inferences)
+    .where(lf.op.and(
+      Inferences.pageId.eq(Pages.id),
+      Inferences.inference.eq(args.inference)
+    ));
+  query = args.count ? query.limit(args.count) : query;
+  const res = await query.exec();
+  return res.map(x => x.Pages.domain);
+}
+
+
 /* OLD QUERIES */
 /* ======= */
 
@@ -479,6 +499,8 @@ const QUERIES = {
   getNumberOfPages: getNumberOfPages,
   getNumberOfTrackers: getNumberOfTrackers,
   getNumberOfInferences: getNumberOfInferences,
+
+  getDomainsByInference: getDomainsByInference,
 
   // old
   getPageVisitCountByTracker: getPageVisitCountByTracker,

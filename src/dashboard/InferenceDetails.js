@@ -1,4 +1,5 @@
 import React from 'react';
+import { Route, Link } from 'react-router-dom';
 
 import PagesTimeChart from './PagesTimeChart';
 import PagesTimeScatterplot from './PagesTimeScatterplot';
@@ -17,23 +18,26 @@ class InferenceDetails extends React.Component {
     this.state = {
       inference: inference,
       trackers: false,
-      timestamps: false
+      timestamps: false,
+      topSites: false
     }
 
-    this.updateTimestamps = this.updateTimestamps.bind(this);
+    this.updateData = this.updateData.bind(this);
   }
 
   componentDidMount() {
-    this.updateTimestamps();
+    this.updateData();
   }
 
-  async updateTimestamps() {
+  async updateData() {
     const background = await browser.runtime.getBackgroundPage();
-    const trackers = background.queryDatabase('getTrackersByInference', {inference: this.state.inference, count: 1});
+    const {inference} = this.state;
+
+    const trackers = background.queryDatabase('getTrackersByInference', {inference: inference, count: 1});
     trackers.then(tr => this.setState({
       trackers: tr
     }));
-    const timestamps = background.queryDatabase('getTimestampsByInference', {inference: this.state.inference});
+    const timestamps = background.queryDatabase('getTimestampsByInference', {inference: inference});
     timestamps.then(ts => {
       const times = ts.map(x => (
         (new Date(x.Pages.id))
@@ -42,6 +46,11 @@ class InferenceDetails extends React.Component {
         timestamps: times
       });
     });
+
+    const topSites = background.queryDatabase('getDomainsByInference', {inference: inference, count: 5});
+    topSites.then(ts => this.setState({
+      topSites: ts
+    }));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,47 +59,75 @@ class InferenceDetails extends React.Component {
         inference: nextProps.inference
       })
     }
-    this.updateTimestamps();
+    this.updateData();
   }
 
   render() {
-    const {inference, trackers, timestamps} = this.state;
+    const {inference, trackers, timestamps, topSites} = this.state;
+
+    let content;
+
+    /* inadequate data/error conditions */
+
     if (!inference) {
-      return (
+      content = (
+        <p>This category does not exist.</p>
+      );
+    } else if (!timestamps) {
+      content = (
+        <p>Loading data…</p>
+      );
+    } else if (timestamps.length === 0) {
+      content = (
+        <p>There are no recorded page visits for this category.</p>
+      );
+
+    /* main condition */
+
+    } else {
+      content = (
         <div>
-          <h2>{inference}</h2>
-          <p>This category does not exist.</p>
+
+          {topSites && <div>
+            <h3>Top Sites</h3>
+            <p>Words…</p>
+            <ol>
+              {topSites.map(site => (
+                <li key={site}>
+                  <Link to={{pathname: '/domains/' + site}}>{site}</Link>
+                </li>
+              ))}
+            </ol>
+          </div>}
+
+          {trackers && trackers.length > 0 && <div>
+            <h3>Trackers</h3>
+            <p>Words…</p>
+            <ol>
+              {trackers.map(t => (
+                <li key={t.Trackers.tracker}>
+                  <Link to={{pathname: '/trackers/' + t.Trackers.tracker}}>{t.Trackers.tracker}</Link> ({t.Trackers['COUNT(tracker)']} pages)
+                </li>
+              ))}
+            </ol>
+          </div>}
+
+          {timestamps && timestamps.length > 1 && <div>
+            <h3>Time</h3>
+            <PagesTimeChart timestamps={timestamps}/>
+            <br/>
+            <PagesTimeScatterplot timestamps={timestamps}/>
+          </div>}
+          {/* <pre>{JSON.stringify(trackers, null, '\t')}</pre> */}
+
         </div>
       );
     }
-    if (!timestamps) {
-      return (
-        <div>
-          <h2>{inference}</h2>
-          <p>Loading data…</p>
-        </div>
-      );
-    }
-    if (timestamps.length === 0) {
-      return (
-        <div>
-          <h2>{inference}</h2>
-          <p>There are no recorded page visits for this category.</p>
-        </div>
-      );
-    }
-    return (
-      <div>
-        <h2>{inference}</h2>
-        <h3>Time</h3>
-        {timestamps && <PagesTimeChart timestamps={timestamps}/>}
-        <br/>
-        {timestamps && <PagesTimeScatterplot timestamps={timestamps}/>}
-        {/* <pre>{JSON.stringify(trackers, null, '\t')}</pre> */}
-        <h3>Companies</h3>
-        {trackers && trackers.length > 0 && <p>Trackers from <strong>{trackers[0].Trackers.tracker}</strong> were present on <strong>{trackers[0].Trackers['COUNT(tracker)']}</strong> pages related to {inference}.</p>}
-      </div>
-    );
+
+    return (<div>
+      <h2>{inference}</h2>
+      {content}
+    </div>);
   }
 }
 
