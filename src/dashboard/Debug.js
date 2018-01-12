@@ -5,6 +5,7 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import Button from 'react-bootstrap/lib/Button';
 import Alert from 'react-bootstrap/lib/Alert';
+import Checkbox from 'react-bootstrap/lib/Checkbox';
 
 import {queryNames} from '../background/database/queries';
 
@@ -31,7 +32,9 @@ class DebugPage extends React.Component {
       afterDateFormField: '2017-12-01',
       countFormField: false,
       result: false,
-      error: false
+      error: false,
+      recursive: true,
+      queryTime: false
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -45,6 +48,7 @@ class DebugPage extends React.Component {
   async handleClick() {
     const background = await browser.runtime.getBackgroundPage();
     const query = this.state.queryFormField;
+    const recursive = this.state.recursive;
     const queryObj = {
       tracker: this.state.trackerFormField,
       domain: this.state.domainFormField,
@@ -54,11 +58,20 @@ class DebugPage extends React.Component {
     };
     console.log('making query', query, queryObj);
     try {
-      const result = await background.queryDatabase(query, queryObj);
+      let t0 = performance.now();
+      let result;
+      if (recursive) {
+        console.log('making recursive query');
+        result = await background.queryDatabaseRecursive(query, queryObj);
+      } else {
+        result = await background.queryDatabase(query, queryObj);
+      }
+      let t1 = performance.now();
       console.log(result);
       this.setState({
         result: result,
-        error: false
+        error: false,
+        queryTime: t1 - t0
       });
     } catch(e) {
       console.log(e);
@@ -80,7 +93,7 @@ class DebugPage extends React.Component {
   }
 
   render() {
-    const {result, error} = this.state;
+    const {result, error, queryTime} = this.state;
     return (
       <div>
         <h1>Debug</h1>
@@ -131,6 +144,20 @@ class DebugPage extends React.Component {
             value={this.state.countFormField}
             onChange={this.handleChange}
           />
+          {/* <FieldGroup
+            id="countFormField"
+            type="checkbox"
+            label="Recursive (on inference categories)"
+            value={this.state.recursive}
+            onChange={this.handleChange}
+          /> */}
+          {/* <FormGroup>
+            <Checkbox
+              value={this.state.recursive}
+              onChange={this.handleChange}>
+              Recursive (on inference categories)
+            </Checkbox>
+          </FormGroup> */}
           <Button type="submit" onClick={this.handleClick}>
             Submit
           </Button>
@@ -138,6 +165,7 @@ class DebugPage extends React.Component {
         <br/>
         {error && <Alert bsStyle="danger">{error}</Alert>}
         {result &&<pre>{JSON.stringify(this.state.result, null, '\t')}</pre>}
+        {queryTime && <p>Time: {queryTime / 1000} seconds</p>}
       </div>
     );
   }

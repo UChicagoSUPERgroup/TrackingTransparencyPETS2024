@@ -6,6 +6,8 @@ import {trackersWorker, databaseWorker, inferencingWorker} from './workers_setup
 import userstudy from './userstudy';
 // import tt from '../helpers';
 
+import categoryTree from '../data/categories_tree.json';
+
 
 userstudy.setDefaultOptions();
 
@@ -212,6 +214,64 @@ async function queryDatabase(query, args) {
   }
 }
 window.queryDatabase = queryDatabase; // exposes function to other extension components 
+
+
+/**
+ * Makes database query recusively for all children of given inference in category tree, concatenating result
+ * 
+ * @param  {string} query - name of query
+ * @param  {Object} args - arguments object passed to database worker
+ * @param  {string} args.inference - inference
+ */
+async function queryDatabaseRecursive(query, args) {
+  if (!args.inference) {
+    return queryDatabase(query, args);
+  }
+
+  const treeElem = findChildren(args.inference, categoryTree);
+  console.log(treeElem);
+  if (!treeElem) return false;
+  let children = collapseChildren(treeElem);
+  children.push(args.inference);
+  console.log(children);
+
+  let queries = [];
+  for (let c of children) {
+    let cargs = Object.assign({}, args);
+    cargs.inference = c;
+    const q = queryDatabase(query, cargs); // this is a PROMISE
+    queries.push(q);
+  }
+
+  const results = await Promise.all(queries);
+  return Array.prototype.concat.apply([], results);
+}
+window.queryDatabaseRecursive = queryDatabaseRecursive;
+
+function findChildren(cat, root) {
+  for (let c of root.children) {
+    if (c.name === cat) {
+      return c.children ? c.children : [];
+    } else if (c.children) {
+      let rec = findChildren(cat, c);
+      if (rec) {
+        return rec;
+      }
+    }
+  }
+  return false;
+}
+
+function collapseChildren(children) {
+  let ret = [];
+  for (let c of children) {
+    ret.push(c.name);
+    if (c.children) {
+      ret = ret.concat(collapseChildren(c.children))
+    }
+  }
+  return ret;
+}
 
 /**
  * Run on message recieved from database worker.
