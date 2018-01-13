@@ -20,6 +20,11 @@ const Pages = primarySchemaBuilder.getSchema().table('Pages');
 
 /* used in dashboard */
 
+function getAllData(args) {
+  let query = ttDb.select(Pages, Trackers, Inferences);
+  return await query.exec();
+}
+
 /** get domains by tracker count
  * 
  * @param  {Object} args - arguments object
@@ -487,6 +492,8 @@ async function emptyDB() {
 /* ========= */
 
 const QUERIES = {
+  getAllData: getAllData,
+  
   getDomains: getDomains,
   getTrackersByDomain: getTrackersByDomain,
   getTrackers: getTrackers,
