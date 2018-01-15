@@ -20,8 +20,12 @@ const Pages = primarySchemaBuilder.getSchema().table('Pages');
 
 /* used in dashboard */
 
-function getAllData(args) {
-  let query = ttDb.select(Pages, Trackers, Inferences);
+async function getAllData(args) {
+  let query = ttDb.select()
+    .from(Trackers, Pages, Inferences)
+    .where(lf.op.and(
+      Trackers.pageId.eq(Pages.id),
+      Inferences.pageId.eq(Pages.id)))
   return await query.exec();
 }
 
@@ -493,7 +497,7 @@ async function emptyDB() {
 
 const QUERIES = {
   getAllData: getAllData,
-  
+
   getDomains: getDomains,
   getTrackersByDomain: getTrackersByDomain,
   getTrackers: getTrackers,
