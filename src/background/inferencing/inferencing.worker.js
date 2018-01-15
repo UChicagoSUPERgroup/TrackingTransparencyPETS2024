@@ -1,7 +1,7 @@
 import buildCategoryTree from './build';
 import infer from './infer';
 
-import categories from '../../data/all_categories.json';
+// import categories from '../../data/all_categories.json';
 
 let databaseWorkerPort;
 
@@ -21,13 +21,7 @@ const tree = buildCategoryTree('../lib/inferencing_data/categories.json');
 
 
 // TODO: this function needs to be rewritten
-async function inferencingMessageListener(article, mainFrameReqId) {
-
-  // TODO: remove this when inferencing is working
-  if (article === 'null') {
-    storeFakeInferenceInfo(mainFrameReqId);
-    return;
-  }
+async function inferencingMessageListener(text, mainFrameReqId) {
 
   const tr = await tree;
   // console.log(tr);
@@ -36,7 +30,7 @@ async function inferencingMessageListener(article, mainFrameReqId) {
   // let secondLevelTr = Object.assign({}, tr);
   // secondLevelTr.children = secondLevelCats;
   
-  const category = infer(article, tr);
+  const category = infer(text, tr);
   console.log('Inference:', category[0].name);
   // const category2 = infer(article, secondLevelTr);
   // console.log("Inference:", category2[0].name);
@@ -56,21 +50,4 @@ async function inferencingMessageListener(article, mainFrameReqId) {
   // storeInference(inferenceInfo);
 
 
-}
-
-function storeFakeInferenceInfo(mainFrameReqId) {
-
-  const randomInference = categories[Math.floor(Math.random() * categories.length)];
-
-  let inferenceInfo = {
-    inference: randomInference,
-    inferenceCategory: '',
-    threshold: Math.random(),
-    pageId: mainFrameReqId
-  };
-  // console.log("sending inference to database");
-  databaseWorkerPort.postMessage({
-    type: 'store_inference',
-    info: inferenceInfo
-  });
 }

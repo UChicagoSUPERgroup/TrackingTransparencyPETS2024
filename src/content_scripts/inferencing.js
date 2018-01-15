@@ -1,21 +1,26 @@
-// import Readability from "readability";
 
 /* INFERENCING */
 
-// console.log("content script running");
-
-// var doc = document.cloneNode(true); 
-// var location = document.location;
-// var uri = {
-//     spec: location.href,
-//     host: location.host,
-//     prePath: location.protocol + "//" + location.host,
-//     scheme: location.protocol.substr(0, location.protocol.indexOf(":")),
-//     pathBase: location.protocol + "//" + location.host + location.pathname.substr(0, location.pathname.lastIndexOf("/") + 1)
-// };
-// var article = new Readability(uri, doc).parse();
-// console.log(article);
+function removeTagByTagName(tagName, doc) {
+  var elems = doc.getElementsByTagName(tagName);
+  for (let e of elems) {
+    // console.log(e);
+    e.parentNode.removeChild(e);
+  }
+  return;
+} // from https://stackoverflow.com/questions/43072644/how-can-i-remove-a-footer-element-using-javascript
 
 export default function makeInference() {
-  browser.runtime.sendMessage({ type: 'parsed_page', article: 'null' });
+  let doc = document.cloneNode(true);
+  // let doc = document.importNode(document.body, true);
+  // console.log(doc);
+  // let doc = document.body;
+  removeTagByTagName('footer', doc);
+  removeTagByTagName('script', doc);
+  const text = doc.innerText;
+  // console.log(text);
+  if (!text || text.length === 0) {
+    throw new Error('unable to extract text from page');
+  }
+  browser.runtime.sendMessage({ type: 'parsed_page', article: text });
 }
