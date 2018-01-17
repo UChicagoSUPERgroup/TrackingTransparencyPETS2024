@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 // import { LinkContainer } from 'react-router-bootstrap';
 
+import TrackerDetails from './TrackerDetailPage';
 
 const TrackersListItem = (tracker) => {
   const trackerName = tracker.tracker;
@@ -14,6 +15,29 @@ const TrackersListItem = (tracker) => {
       </Link>
     </div>
   );
+}
+
+export default class TrackersPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    }
+  }
+
+  async componentDidMount() {
+  }
+  
+  render() {
+
+    return(
+      <div>
+        <h1>Trackers</h1>
+
+        <Route path={`${this.props.match.url}/:name`}  component={TrackerDetails}/>
+        <Route exact path={this.props.match.url} component={TrackersList}/>
+      </div>
+    );
+  }
 }
 
 class TrackersList extends React.Component {
@@ -41,48 +65,9 @@ class TrackersList extends React.Component {
 
     return(
       <div>
-        <h1>Trackers</h1>
-
-        <Route path={`${this.props.match.url}/:name`}  component={TrackerDetails}/>
-        <Route exact path={this.props.match.url} render={() => (
-          <div>
-            {this.state.trackers.map(tracker => TrackersListItem(tracker))}
-          </div>
-        )}/>
-
-
+        <p>Tracker list page. Will have bar graphs, etc. Claire is working on this page</p>
+        {this.state.trackers.map(tracker => TrackersListItem(tracker))}
       </div>
     );
   }
 }
-
-class TrackerDetails extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.tracker = this.props.match.params.name;
-    this.state = {
-      trackers: []
-    }
-  }
-
-  async componentDidMount() {
-    const background = await browser.runtime.getBackgroundPage();
-    const inferences = await background.queryDatabase('getInferencesByTracker', {tracker: this.tracker, count: 100});
-    this.setState({
-      inferences: inferences
-    })
-  }
-
-  render() {
-    return (
-      <div>
-        <h2>{this.tracker}</h2>
-        <pre>{JSON.stringify(this.state.inferences, null, '\t')}</pre>
-      </div>
-    );
-  }
-}
-
-
-export default TrackersList;

@@ -39,8 +39,8 @@ const TTNavbar = () => {
       </Navbar.Header>
       <Navbar.Collapse>
         {enoughData && <Nav>
-          <NavLink to="/trackers" title="What have they tracked?"/>
-          <NavLink to="/inferences" title="What could they have learned?"/>
+          <NavLink to="/trackers" title="Trackers"/>
+          <NavLink to="/inferences" title="Inferences Sunburst"/>
           <NavLink to="/recent" title="Recent Activity"/>
           <NavLink to="/domains" title="Domains"/>
         </Nav>}
