@@ -25,7 +25,7 @@ export default class PagesTimeChart extends React.Component {
     } else {
       console.log('no time data provided');
     }
-    
+
 
     this.state = {
       times: timestamps,
@@ -93,7 +93,7 @@ export default class PagesTimeChart extends React.Component {
           <YAxis title="Number of Pages" />
           <VerticalRectSeries data={data}/>
         </XYPlot>
-        
+
         <ButtonToolbar>
           <ToggleButtonGroup type="radio" name="grouping-selector" defaultValue={'weekday'} onChange={this.changeSelection}>
             <ToggleButton value={'hour'}>Hour</ToggleButton>

@@ -2,16 +2,26 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 // import { LinkContainer } from 'react-router-bootstrap';
 
+import {
+  XYPlot,
+  XAxis,
+  YAxis,
+  HorizontalGridLines,
+  VerticalGridLines,
+  VerticalBarSeries
+} from 'react-vis';
+
 import TrackerDetails from './TrackerDetailPage';
 
 const TrackersListItem = (tracker) => {
-  const trackerName = tracker.tracker;
+  const trackerName = tracker["tracker"];
+  const trackerCount = tracker["COUNT(tracker)"];
   return (
     <div key={trackerName}>
       <Link to={{
         pathname: '/trackers/' + trackerName
       }}>
-        {trackerName}
+        {trackerName} and a count of {trackerCount}
       </Link>
     </div>
   );
@@ -26,7 +36,7 @@ export default class TrackersPage extends React.Component {
 
   async componentDidMount() {
   }
-  
+
   render() {
 
     return(
@@ -50,9 +60,12 @@ class TrackersList extends React.Component {
 
   async getTrackers() {
     const background = await browser.runtime.getBackgroundPage();
-    const trackers = await background.queryDatabase('getTrackers', {count: 100});
+    const numTrackers = await background.queryDatabase('getNumberOfTrackers', {});
+    const trackers = await background.queryDatabase('getTrackers', {count: 20});
+
     this.setState({
-      trackers: trackers 
+      trackers: trackers,
+      numTrackers: numTrackers
     });
     console.log(this.state.trackers);
   }
@@ -60,12 +73,40 @@ class TrackersList extends React.Component {
   async componentDidMount() {
     this.getTrackers();
   }
-  
+
   render() {
+    const numTrackers = this.state.numTrackers;
+    const trackers = this.state.trackers;
+    let data = [];
+    for (let val in trackers){
+      data.push({
+        x: trackers[val]["tracker"],
+        y: trackers[val]["COUNT(tracker)"],
+        label: trackers[val]["tracker"]
+      });
+    };
+    console.log(data)
+    const myData = [
+      {x: 'A', y: 10},
+      {x: 'B', y: 5},
+      {x: 'C', y: 15}
+    ]
 
     return(
       <div>
         <p>Tracker list page. Will have bar graphs, etc. Claire is working on this page</p>
+        <p><em>{numTrackers} trackers</em> are tracking your browsing.
+          These are your most frequently encountered trackers:</p>
+        <XYPlot
+          xType={'ordinal'}
+          width={1200}
+          height={300}>
+          <HorizontalGridLines />
+          <VerticalGridLines />
+          <YAxis title="Number of Pages"/>
+          <XAxis title="Your Top Trackers"/>
+          <VerticalBarSeries data={data}/>
+        </XYPlot>
         {this.state.trackers.map(tracker => TrackersListItem(tracker))}
       </div>
     );
