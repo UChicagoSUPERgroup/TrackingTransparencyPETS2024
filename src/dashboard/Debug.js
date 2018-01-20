@@ -5,6 +5,7 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import Button from 'react-bootstrap/lib/Button';
 import Alert from 'react-bootstrap/lib/Alert';
+import Download from '@axetroy/react-download';
 
 import {queryNames} from '../background/database/queries';
 
@@ -36,6 +37,7 @@ class DebugPage extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.saveFile = this.saveFile.bind(this);
   }
 
   // componentDidMount() {
@@ -54,8 +56,9 @@ class DebugPage extends React.Component {
     };
     console.log('making query', query, queryObj);
     try {
-      const result = await background.queryDatabase(query, queryObj);
-      console.log(result);
+      let resultQuery = await background.queryDatabase(query, queryObj);
+      console.log(resultQuery);
+      let result = JSON.stringify(resultQuery, null, '\t');
       this.setState({
         result: result,
         error: false
@@ -67,6 +70,10 @@ class DebugPage extends React.Component {
         error: e.message
       });
     }
+  }
+
+  async saveFile() {
+    fileDownload(this.state.result, "tt_export.json");
   }
 
   handleChange(event) {
@@ -134,10 +141,13 @@ class DebugPage extends React.Component {
           <Button type="submit" onClick={this.handleClick}>
             Submit
           </Button>
+          <Download file="tt_export.json" content={this.state.result}>
+            <Button type="submit">Download</Button>
+          </Download>
         </form>
         <br/>
         {error && <Alert bsStyle="danger">{error}</Alert>}
-        {result &&<pre>{JSON.stringify(this.state.result, null, '\t')}</pre>}
+        {result &&<pre id="result">{this.state.result}</pre>}
       </div>
     );
   }
