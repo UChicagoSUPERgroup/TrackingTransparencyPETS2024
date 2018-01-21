@@ -1,6 +1,8 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 
+
+
 import tt from '../helpers';
 
 import InferenceDetails from './InferenceDetails';
@@ -69,6 +71,7 @@ class InferencesPage extends React.Component {
                 <li>{inferences[2].inference}</li>
               </ul>
             </div>} */}
+
             <InferencesSunburst onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference}/>
             {selectedInference && <InferenceDetails inference={selectedInference}/>}
             {/* {this.state.inferences && <InferencesSunburst inferencesList={this.state.inferences}/>} */}
