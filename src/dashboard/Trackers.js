@@ -61,11 +61,13 @@ class TrackersList extends React.Component {
   async getTrackers() {
     const background = await browser.runtime.getBackgroundPage();
     const numTrackers = await background.queryDatabase('getNumberOfTrackers', {});
+    const numPages = await background.queryDatabase('getNumberOfPages', {});
     const trackers = await background.queryDatabase('getTrackers', {count: 20});
 
     this.setState({
       trackers: trackers,
-      numTrackers: numTrackers
+      numTrackers: numTrackers,
+      numPages: numPages
     });
     console.log(this.state.trackers);
   }
@@ -77,20 +79,16 @@ class TrackersList extends React.Component {
   render() {
     const numTrackers = this.state.numTrackers;
     const trackers = this.state.trackers;
+    const numPages = this.state.numPages;
     let data = [];
     for (let val in trackers){
       data.push({
         x: trackers[val]["tracker"],
-        y: trackers[val]["COUNT(tracker)"],
+        y: 100 * trackers[val]["COUNT(tracker)"] / numPages,
         label: trackers[val]["tracker"]
       });
     };
     console.log(data)
-    const myData = [
-      {x: 'A', y: 10},
-      {x: 'B', y: 5},
-      {x: 'C', y: 15}
-    ]
 
     return(
       <div>
@@ -99,12 +97,16 @@ class TrackersList extends React.Component {
           These are your most frequently encountered trackers:</p>
         <XYPlot
           xType={'ordinal'}
-          width={1200}
-          height={300}>
+          width={1000}
+          height={350}
+          margin={{left: 50, right: 10, top: 10, bottom: 70}}>
           <HorizontalGridLines />
           <VerticalGridLines />
-          <YAxis title="Number of Pages"/>
-          <XAxis title="Your Top Trackers"/>
+          <XAxis
+            height={200}
+            tickLabelAngle={-30} />
+          <YAxis
+            tickFormat={v => v.toString() + "%"} />
           <VerticalBarSeries data={data}/>
         </XYPlot>
         {this.state.trackers.map(tracker => TrackersListItem(tracker))}
