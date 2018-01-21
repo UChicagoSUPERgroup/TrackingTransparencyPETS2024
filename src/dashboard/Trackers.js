@@ -77,9 +77,15 @@ class TrackersList extends React.Component {
   }
 
   render() {
-    const numTrackers = this.state.numTrackers;
-    const trackers = this.state.trackers;
-    const numPages = this.state.numPages;
+    const {trackers,numTrackers, numPages} = this.state;
+    let topTracker = "";
+    let topPercent = 0;
+    //
+    //console.log(topTracker);
+    //const topPercent = 100 * trackers[0]["COUNT(tracker)"] / numPages;
+    //const trackers = this.state.trackers;
+    //const numPages = this.state.numPages;
+    //const topTracker = trackers[0];
     let data = [];
     for (let val in trackers){
       data.push({
@@ -87,14 +93,20 @@ class TrackersList extends React.Component {
         y: 100 * trackers[val]["COUNT(tracker)"] / numPages,
         label: trackers[val]["tracker"]
       });
+      topTracker = trackers[0]["tracker"];
+      topPercent = Math.round(10000 * trackers[0]["COUNT(tracker)"] / numPages) / 100;
     };
-    console.log(data)
+    console.log(data);
+    console.log(topTracker);
 
     return(
       <div>
         <p>Tracker list page. Will have bar graphs, etc. Claire is working on this page</p>
-        <p><em>{numTrackers} trackers</em> are tracking your browsing.
-          These are your most frequently encountered trackers:</p>
+        <p><em>{numTrackers} trackers</em> are tracking your browsing. Your most
+          frequently encountered tracker is <em>{topTracker}</em> which is
+          present on <em>{topPercent}%</em> of
+          the pages you visit.
+          Here are your 20 most frequently encountered trackers:</p>
         <XYPlot
           xType={'ordinal'}
           width={1000}
