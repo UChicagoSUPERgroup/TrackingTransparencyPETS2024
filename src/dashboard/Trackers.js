@@ -15,13 +15,12 @@ import TrackerDetails from './TrackerDetailPage';
 
 const TrackersListItem = (tracker) => {
   const trackerName = tracker["tracker"];
-  const trackerCount = tracker["COUNT(tracker)"];
   return (
     <div key={trackerName}>
       <Link to={{
         pathname: '/trackers/' + trackerName
       }}>
-        {trackerName} and a count of {trackerCount}
+        {trackerName}
       </Link>
     </div>
   );
@@ -63,13 +62,17 @@ class TrackersList extends React.Component {
     const numTrackers = await background.queryDatabase('getNumberOfTrackers', {});
     const numPages = await background.queryDatabase('getNumberOfPages', {});
     const trackers = await background.queryDatabase('getTrackers', {count: 20});
+    const bottomTrackers =
+      await background.queryDatabase('getTrackersReverse', {count: 20});
 
     this.setState({
       trackers: trackers,
+      bottomTrackers: bottomTrackers,
       numTrackers: numTrackers,
       numPages: numPages
     });
     console.log(this.state.trackers);
+    console.log(this.state.bottomTrackers);
   }
 
   async componentDidMount() {
@@ -77,27 +80,29 @@ class TrackersList extends React.Component {
   }
 
   render() {
-    const {trackers,numTrackers, numPages} = this.state;
+    const {trackers, bottomTrackers, numTrackers, numPages} = this.state;
     let topTracker = "";
     let topPercent = 0;
-    //
-    //console.log(topTracker);
-    //const topPercent = 100 * trackers[0]["COUNT(tracker)"] / numPages;
-    //const trackers = this.state.trackers;
-    //const numPages = this.state.numPages;
-    //const topTracker = trackers[0];
+    let avg_low_encounter = 0;
     let data = [];
+    let bottom_data = [];
+
     for (let val in trackers){
       data.push({
         x: trackers[val]["tracker"],
         y: 100 * trackers[val]["COUNT(tracker)"] / numPages,
-        label: trackers[val]["tracker"]
       });
       topTracker = trackers[0]["tracker"];
       topPercent = Math.round(10000 * trackers[0]["COUNT(tracker)"] / numPages) / 100;
     };
-    console.log(data);
-    console.log(topTracker);
+    for (let val in bottomTrackers){
+      bottom_data.push({
+        x: bottomTrackers[val]["tracker"],
+        y: 100 * bottomTrackers[val]["COUNT(tracker)"] / numPages,
+      });
+      avg_low_encounter += bottomTrackers[val]["COUNT(tracker)"];
+    };
+    avg_low_encounter = Math.round(avg_low_encounter / 20);
 
     return(
       <div>
@@ -122,6 +127,22 @@ class TrackersList extends React.Component {
           <VerticalBarSeries data={data}/>
         </XYPlot>
         {this.state.trackers.map(tracker => TrackersListItem(tracker))}
+        <p>Here are your 20 least frequently encountered trackers which you have
+           encountered an average of {avg_low_encounter} time(s) each:</p>
+        <XYPlot
+          xType={'ordinal'}
+          width={1000}
+          height={350}
+          margin={{left: 50, right: 10, top: 10, bottom: 70}}>
+          <HorizontalGridLines />
+          <VerticalGridLines />
+          <XAxis
+            height={200}
+            tickLabelAngle={-30} />
+          <YAxis
+            tickFormat={v => v.toString() + "%"} />
+          <VerticalBarSeries data={bottom_data}/>
+        </XYPlot>
       </div>
     );
   }

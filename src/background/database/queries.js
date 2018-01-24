@@ -30,7 +30,7 @@ async function getAllData(args) {
 }
 
 /** get domains by tracker count
- * 
+ *
  * @param  {Object} args - arguments object
  * @param  {number} [args.count] - number of entries to return
  */
@@ -45,7 +45,7 @@ async function getDomains(args) {
 }
 
 /** get trackers present on a given domain
- * 
+ *
  * @param  {Object} args - arguments object
  * @param  {string} args.domain - domain
  * @param  {number} [args.count] - number of entries to return
@@ -67,7 +67,7 @@ async function getTrackersByDomain(args) {
 }
 
 /** gets all trackers
- * 
+ *
  * @param  {Object} args - arguments object
  * @param  {number} [args.count] - number of entries to return
  */
@@ -80,9 +80,23 @@ async function getTrackers(args) {
   return await query.exec();
 }
 
+/** gets all trackers in reverse order
+ *
+ * @param  {Object} args - arguments object
+ * @param  {number} [args.count] - number of entries to return
+ */
+async function getTrackersReverse(args) {
+  let query = ttDb.select(Trackers.tracker, lf.fn.count(Trackers.tracker))
+    .from(Trackers)
+    .groupBy(Trackers.tracker)
+    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.ASC);
+  query = args.count ? query.limit(args.count) : query;
+  return await query.exec();
+}
+
 
 /** get inferences made by a specifc tracker
- * 
+ *
  * @param  {Object} args - arguments object
  * @param  {string} args.tracker - tracker
  * @param  {number} [args.count] - number of entries to return
@@ -105,7 +119,7 @@ async function getInferencesByTracker(args) {
 }
 
 /** gets all inferences
- * 
+ *
  * @param  {Object} args - arguments object
  * @param  {number} [args.count] - number of entries to return
  */
@@ -120,7 +134,7 @@ async function getInferences(args) {
 
 
 /** get trackers that have made a given inference
- * 
+ *
  * @param  {Object} args - arguments object
  * @param  {string} args.inference - inference
  * @param  {number} [args.count] - number of entries to return
@@ -142,7 +156,7 @@ async function getTrackersByInference(args) {
 }
 
 /** get timestamps of all page visits
- * 
+ *
  * @param  {Object} args - arguments object
  * @param  {number} [args.afterDate] - date to query for entries after
  * @param  {number} [args.count] - number of entries to return
@@ -156,7 +170,7 @@ async function getTimestamps(args) {
 }
 
 /** gets all timestaps for page visits for a specific inference
- * 
+ *
  * @param  {Object} args - arguments object
  * @param  {string} args.inference - tracker
  * @param  {number} [args.count] - number of entries to return
@@ -423,7 +437,7 @@ async function getInfoAboutTracker(args) {
   let inferenceCount = args.count;
   let pageCount = args.count;
   let inferences = await getInferencesByTracker({
-    tracker: args.tracker, 
+    tracker: args.tracker,
     count: inferenceCount
   });
   let inferenceInfo = [];
@@ -431,7 +445,7 @@ async function getInfoAboutTracker(args) {
     inferenceInfo.push({
       inference: inference,
       pages: await getPagesByTrackerAndInference({
-        tracker:args.tracker, 
+        tracker:args.tracker,
         inference: inference.inference,
         count: pageCount
       })
@@ -501,6 +515,7 @@ const QUERIES = {
   getDomains: getDomains,
   getTrackersByDomain: getTrackersByDomain,
   getTrackers: getTrackers,
+  getTrackersReverse: getTrackersReverse,
   getInferencesByTracker: getInferencesByTracker,
   getInferences: getInferences,
   getTrackersByInference: getTrackersByInference,
