@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
-// import { LinkContainer } from 'react-router-bootstrap';
+import ReactTable from 'react-table'
+import "../../node_modules/react-table/react-table.css";
 
 import {
   XYPlot,
@@ -23,6 +24,36 @@ const TrackersListItem = (tracker) => {
         {trackerName}
       </Link>
     </div>
+  );
+}
+
+
+const TrackerTable = (data) => {
+  return (
+    <ReactTable
+      data={data}
+      columns={[
+        {
+          Header: "Trackers and Counts",
+          columns: [
+            {
+              Header: "Tracker",
+              accessor: "name"
+            },
+            {
+              Header: "Count",
+              accessor: "count"
+            },
+            {
+              Header: "Percent of Browsing",
+              accessor: "percent"
+            }
+          ]
+        }
+      ]}
+      defaultPageSize={20}
+      className="-striped -highlight"
+    />
   );
 }
 
@@ -62,17 +93,16 @@ class TrackersList extends React.Component {
     const numTrackers = await background.queryDatabase('getNumberOfTrackers', {});
     const numPages = await background.queryDatabase('getNumberOfPages', {});
     const trackers = await background.queryDatabase('getTrackers', {count: 20});
-    const bottomTrackers =
-      await background.queryDatabase('getTrackersReverse', {count: 20});
+    const allTrackers = await background.queryDatabase('getTrackers', {});
 
     this.setState({
       trackers: trackers,
-      bottomTrackers: bottomTrackers,
+      allTrackers: allTrackers,
       numTrackers: numTrackers,
       numPages: numPages
     });
     console.log(this.state.trackers);
-    console.log(this.state.bottomTrackers);
+    console.log(this.state.allTrackers);
   }
 
   async componentDidMount() {
@@ -80,12 +110,11 @@ class TrackersList extends React.Component {
   }
 
   render() {
-    const {trackers, bottomTrackers, numTrackers, numPages} = this.state;
+    const {trackers, allTrackers, numTrackers, numPages} = this.state;
     let topTracker = "";
     let topPercent = 0;
-    let avg_low_encounter = 0;
     let data = [];
-    let bottom_data = [];
+    let allData = [];
 
     for (let val in trackers){
       data.push({
@@ -95,14 +124,15 @@ class TrackersList extends React.Component {
       topTracker = trackers[0]["tracker"];
       topPercent = Math.round(10000 * trackers[0]["COUNT(tracker)"] / numPages) / 100;
     };
-    for (let val in bottomTrackers){
-      bottom_data.push({
-        x: bottomTrackers[val]["tracker"],
-        y: 100 * bottomTrackers[val]["COUNT(tracker)"] / numPages,
+    for (let val in allTrackers){
+      allData.push({
+        name: allTrackers[val]["tracker"],
+        count: allTrackers[val]["COUNT(tracker)"],
+        percent: (100 * allTrackers[val]["COUNT(tracker)"] / numPages).toString() + "%"
       });
-      avg_low_encounter += bottomTrackers[val]["COUNT(tracker)"];
+      topTracker = trackers[0]["tracker"];
+      topPercent = Math.round(10000 * trackers[0]["COUNT(tracker)"] / numPages) / 100;
     };
-    avg_low_encounter = Math.round(avg_low_encounter / 20);
 
     return(
       <div>
@@ -126,8 +156,7 @@ class TrackersList extends React.Component {
             tickFormat={v => v.toString() + "%"} />
           <VerticalBarSeries data={data}/>
         </XYPlot>
-        //{this.state.trackers.map(tracker => TrackersListItem(tracker))}
-        
+        {TrackerTable(allData)}
       </div>
     );
   }
