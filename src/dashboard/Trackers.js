@@ -126,23 +126,8 @@ class TrackersList extends React.Component {
             tickFormat={v => v.toString() + "%"} />
           <VerticalBarSeries data={data}/>
         </XYPlot>
-        {this.state.trackers.map(tracker => TrackersListItem(tracker))}
-        <p>Here are your 20 least frequently encountered trackers which you have
-           encountered an average of {avg_low_encounter} time(s) each:</p>
-        <XYPlot
-          xType={'ordinal'}
-          width={1000}
-          height={350}
-          margin={{left: 50, right: 10, top: 10, bottom: 70}}>
-          <HorizontalGridLines />
-          <VerticalGridLines />
-          <XAxis
-            height={200}
-            tickLabelAngle={-30} />
-          <YAxis
-            tickFormat={v => v.toString() + "%"} />
-          <VerticalBarSeries data={bottom_data}/>
-        </XYPlot>
+        //{this.state.trackers.map(tracker => TrackersListItem(tracker))}
+        
       </div>
     );
   }

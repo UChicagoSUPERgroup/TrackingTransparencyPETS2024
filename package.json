@@ -56,6 +56,7 @@
     "react-dom": "^16.2.0",
     "react-router-bootstrap": "^0.24.4",
     "react-router-dom": "^4.2.2",
+    "react-table": "^6.7.6",
     "react-vis": "^1.8.1",
     "readability": "github:mozilla/readability",
     "striptags": "^3.1.1",
