@@ -227,6 +227,11 @@ async function queryDatabaseRecursive(query, args) {
   if (!args.inference) {
     return queryDatabase(query, args);
   }
+  if (!query.endsWith('byInference')) {
+    console.warn('Making a recursive query with a query that is not inference-specific. There may be unexpected results.');
+  }
+
+  args.count = null; // if we limit count for individual queries things get messed up
 
   const treeElem = findChildren(args.inference, categoryTree);
   console.log(treeElem);
@@ -244,7 +249,37 @@ async function queryDatabaseRecursive(query, args) {
   }
 
   const results = await Promise.all(queries);
-  return Array.prototype.concat.apply([], results);
+
+  let mergedRes;
+  let tempObj;
+  switch(query) {
+  case 'getTrackersByInference':
+    mergedRes = Array.prototype.concat.apply([], results);
+    break;
+  case 'getDomainsByInference':
+    tempObj = {};
+    for (let res of results) {
+      Object.keys(res).forEach(domain => {
+        if (tempObj[domain]) {
+          tempObj[domain] += res[domain]
+        } else {
+          tempObj[domain] = res[domain];
+        }
+      })
+    }
+    mergedRes = Object.keys(tempObj).map(key => ({domain: key, count: tempObj[key]}));
+    mergedRes.sort((a, b) => (b.count - a.count));
+    break;
+  case 'getTimestampsByInference':
+    mergedRes = Array.prototype.concat.apply([], results);
+    break;
+  default:
+    console.warn('Not sure how to put together separate queries. Results may be unexpected.')
+    mergedRes = Array.prototype.concat.apply([], results);
+  }
+
+  return mergedRes;
+
 }
 window.queryDatabaseRecursive = queryDatabaseRecursive;
 
