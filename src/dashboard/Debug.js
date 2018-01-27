@@ -33,22 +33,27 @@ class DebugPage extends React.Component {
       countFormField: false,
       result: false,
       error: false,
-      recursive: true,
       queryTime: false
     }
+    this.recursive = false;
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleClickRecursive = this.handleClickRecursive.bind(this);
   }
 
   // componentDidMount() {
 
   // }
+  async handleClickRecursive() {
+    this.recursive = true;
+    await this.handleClick();
+    this.recursive = false;
+  }
 
   async handleClick() {
     const background = await browser.runtime.getBackgroundPage();
     const query = this.state.queryFormField;
-    const recursive = this.state.recursive;
     const queryObj = {
       tracker: this.state.trackerFormField,
       domain: this.state.domainFormField,
@@ -60,7 +65,7 @@ class DebugPage extends React.Component {
     try {
       let t0 = performance.now();
       let result;
-      if (recursive) {
+      if (this.recursive) {
         console.log('making recursive query');
         result = await background.queryDatabaseRecursive(query, queryObj);
       } else {
@@ -159,7 +164,10 @@ class DebugPage extends React.Component {
             </Checkbox>
           </FormGroup> */}
           <Button type="submit" onClick={this.handleClick}>
-            Submit
+            Query
+          </Button>
+          <Button type="submit" onClick={this.handleClickRecursive}>
+            Query (recursive on inferences)
           </Button>
         </form>
         <br/>
