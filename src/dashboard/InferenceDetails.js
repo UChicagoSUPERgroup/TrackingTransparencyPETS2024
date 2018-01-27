@@ -93,8 +93,8 @@ class InferenceDetails extends React.Component {
             <p>Words…</p>
             <ol>
               {topSites.map(site => (
-                <li key={site}>
-                  <Link to={{pathname: '/domains/' + site}}>{site}</Link>
+                <li key={site.domain}>
+                  <Link to={{pathname: '/domains/' + site}}>{site.domain}</Link> ({site.count} page visits)
                 </li>
               ))}
             </ol>
@@ -105,8 +105,8 @@ class InferenceDetails extends React.Component {
             <p>Words…</p>
             <ol>
               {trackers.map(t => (
-                <li key={t.Trackers.tracker}>
-                  <Link to={{pathname: '/trackers/' + t.Trackers.tracker}}>{t.Trackers.tracker}</Link> ({t.Trackers['COUNT(tracker)']} pages)
+                <li key={t.tracker}>
+                  <Link to={{pathname: '/trackers/' + t.tracker}}>{t.tracker}</Link> ({t.count} page visits)
                 </li>
               ))}
             </ol>
