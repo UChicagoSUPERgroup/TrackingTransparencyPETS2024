@@ -254,7 +254,20 @@ async function queryDatabaseRecursive(query, args) {
   let tempObj;
   switch(query) {
   case 'getTrackersByInference':
-    mergedRes = Array.prototype.concat.apply([], results);
+    tempObj = {};
+    for (let res of results) {
+      for (let tracker of res) {
+        let tn = tracker.Trackers['tracker'];
+        let tc = tracker.Trackers['COUNT(tracker)'];
+        if (tempObj[tn]) {
+          tempObj[tn] += tc
+        } else {
+          tempObj[tn] = tc;
+        }
+      }        
+    }
+    mergedRes = Object.keys(tempObj).map(key => ({tracker: key, count: tempObj[key]}));
+    mergedRes.sort((a, b) => (b.count - a.count));
     break;
   case 'getDomainsByInference':
     tempObj = {};
