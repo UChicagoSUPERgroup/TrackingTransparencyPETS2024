@@ -353,41 +353,75 @@ async function getPages(args) {
   return await query.exec();
 }
 
-/**
 
 /**
- * returns an array of pages visited
+ * get domains by tracker count for debugging the next two methods
+ * only distinct from getDomains() in that it returns pages with null trackers and is ordered in reverse
+ * use as is to debug getDomainsNoTrackers()
+ * swap in .groupBy(Pages.id) for .groupBy(Pages.domain) to debug getPagesNoTrackers()
+ *
+ */
+
+/*
+async function getNullTrackers(args) {
+  let query = ttDb.select(Pages.domain, lf.fn.count(Trackers.tracker))
+    .from(Pages)
+    .leftOuterJoin(Trackers, Pages.id.eq(Trackers.pageId))
+    .groupBy(Pages.domain)
+    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.ASC);
+//      query = args.count ? query.limit(args.count) : query;
+    return await query.exec()
+}
+*/
+
+/**
+ * returns an array of pages where there were no trackers
  *
  *
  */
+
 async function getPagesNoTrackers(args) {
-  let query = ttDb.select()
-    .from(Pages)
-    .leftOuterJoin(Pages, Trackers.pageId.eq(Pages.id))
-    .where(Trackers.tracker.isNull())
-    .orderBy(Pages.id, lf.Order.ASC);
-  query = args.count ? query.limit(args.count) : query;
-  return await query.exec();
+  let query = ttDb.select(Pages.domain, lf.fn.count(Trackers.tracker))
+  .from(Pages)
+  .leftOuterJoin(Trackers, Pages.id.eq(Trackers.pageId))
+  .groupBy(Pages.id)
+  .orderBy(lf.fn.count(Trackers.tracker), lf.Order.ASC);
+
+  let pages = new Set();
+  var i, j;
+  const pagesQuery = await query.exec();
+  for (i=0; i < pagesQuery.length; i++) {
+      if ( pagesQuery[i]['Trackers']['COUNT(tracker)'] == 0) {
+	      pages.add(pagesQuery[i]['Pages']['domain'])
+	     }
+  	}
+   return Array.from(pages)
+
 }
 
-
 /**
- * returns an array of domains visited
+ * returns an array of domains where a user has never seen a tracker
  *
  *
  */
-
 
 async function getDomainsNoTrackers(args) {
   let query = ttDb.select(Pages.domain, lf.fn.count(Trackers.tracker))
     .from(Pages)
-    .leftOuterJoin(Pages, Trackers.pageId.eq(Pages.id))
+    .leftOuterJoin(Trackers, Pages.id.eq(Trackers.pageId))
     .groupBy(Pages.domain)
-    .having((lf.fn.count(Trackers.tracker).eq(0)))
-    .orderBy(Pages.id, lf.Order.ASC);
-  query = args.count ? query.limit(args.count) : query;
-  return await query.exec();
+    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.ASC)
+
+  let domains = [] 
+  var i;
+  const domainsQuery = await query.exec();
+  for (i=0; i < domainsQuery.length; i++) {
+    ((domainsQuery[i]['Trackers']['COUNT(tracker)'] == 0) ? domains.push(domainsQuery[i]['Pages']['domain']) : i = domainsQuery.length)
+      }
+   return domains
+
 }
+
 
 /**
  * Domain visits by tracker (i.e. TRACKERNAME knows you have been to the following sites)
@@ -406,7 +440,6 @@ async function getDomainsByTracker(args) {
   const res = await query.exec();
   return res.map(x => x.Pages.domain);
 }
-
 
 /**
  * given an tracker and domain, give pages on that domain where tracker is present
@@ -549,6 +582,7 @@ const QUERIES = {
   getPagesByTrackerAndDomain: getPagesByTrackerAndDomain,
   getTrackerWithInferencesByDomain: getTrackerWithInferencesByDomain,
   getInfoAboutTracker: getInfoAboutTracker,
+  // getNullTrackers: getNullTrackers,
   getPagesNoTrackers: getPagesNoTrackers,
   getDomainsNoTrackers: getDomainsNoTrackers,
   getInferencesByTrackerCount: getInferencesByTrackerCount,
