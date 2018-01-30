@@ -385,16 +385,20 @@ async function getDomainsNoTrackers(args) {
  * @returns {string[]} array of domains
  */
 async function getDomainsByTracker(args) {
-  let query = ttDb.select(Pages.domain)
+  let query = ttDb.select(Pages.domain, lf.fn.count(Pages.domain))
     .from(Pages, Trackers)
     .where(lf.op.and(
       Trackers.pageId.eq(Pages.id),
       Trackers.tracker.eq(args.tracker)
-    ));
+    ))
+    .groupBy(Pages.domain)
+    .orderBy(lf.fn.count(Pages.domain), lf.Order.DESC);
   query = args.count ? query.limit(args.count) : query;
   const res = await query.exec();
   return res.map(x => x.Pages.domain);
+  //return await query.exec();
 }
+
 
 
 /**
