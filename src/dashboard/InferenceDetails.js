@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import PagesTimeChart from './PagesTimeChart';
 import PagesTimeScatterplot from './PagesTimeScatterplot';
@@ -33,11 +33,11 @@ class InferenceDetails extends React.Component {
     const background = await browser.runtime.getBackgroundPage();
     const {inference} = this.state;
 
-    const trackers = background.queryDatabase('getTrackersByInference', {inference: inference, count: 1});
+    const trackers = background.queryDatabaseRecursive('getTrackersByInference', {inference: inference, count: 1});
     trackers.then(tr => this.setState({
       trackers: tr
     }));
-    const timestamps = background.queryDatabase('getTimestampsByInference', {inference: inference});
+    const timestamps = background.queryDatabaseRecursive('getTimestampsByInference', {inference: inference});
     timestamps.then(ts => {
       const times = ts.map(x => (
         (new Date(x.Pages.id))
@@ -47,7 +47,7 @@ class InferenceDetails extends React.Component {
       });
     });
 
-    const topSites = background.queryDatabase('getDomainsByInference', {inference: inference, count: 5});
+    const topSites = background.queryDatabaseRecursive('getDomainsByInference', {inference: inference, count: 5});
     topSites.then(ts => this.setState({
       topSites: ts
     }));
@@ -93,8 +93,8 @@ class InferenceDetails extends React.Component {
             <p>Words…</p>
             <ol>
               {topSites.map(site => (
-                <li key={site}>
-                  <Link to={{pathname: '/domains/' + site}}>{site}</Link>
+                <li key={site.domain}>
+                  <Link to={{pathname: '/domains/' + site}}>{site.domain}</Link> ({site.count} page visits)
                 </li>
               ))}
             </ol>
@@ -105,8 +105,8 @@ class InferenceDetails extends React.Component {
             <p>Words…</p>
             <ol>
               {trackers.map(t => (
-                <li key={t.Trackers.tracker}>
-                  <Link to={{pathname: '/trackers/' + t.Trackers.tracker}}>{t.Trackers.tracker}</Link> ({t.Trackers['COUNT(tracker)']} pages)
+                <li key={t.tracker}>
+                  <Link to={{pathname: '/trackers/' + t.tracker}}>{t.tracker}</Link> ({t.count} page visits)
                 </li>
               ))}
             </ol>

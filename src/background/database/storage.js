@@ -44,7 +44,6 @@ export async function storeTrackerArray(pageId, trackers) {
   for (let tracker of trackers) {
     const row = trackerItem.createRow({
       'tracker': tracker,
-      'trackerCategory': '',
       'pageId': pageId
     });
     rows.push(row);

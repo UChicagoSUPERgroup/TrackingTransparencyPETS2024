@@ -6,6 +6,8 @@ import {trackersWorker, databaseWorker, inferencingWorker} from './workers_setup
 import userstudy from './userstudy';
 // import tt from '../helpers';
 
+import categoryTree from '../data/categories_tree.json';
+
 
 userstudy.setDefaultOptions();
 
@@ -212,6 +214,112 @@ async function queryDatabase(query, args) {
   }
 }
 window.queryDatabase = queryDatabase; // exposes function to other extension components 
+
+
+/**
+ * Makes database query recusively for all children of given inference in category tree, concatenating result
+ * 
+ * @param  {string} query - name of query
+ * @param  {Object} args - arguments object passed to database worker
+ * @param  {string} args.inference - inference
+ */
+async function queryDatabaseRecursive(query, args) {
+  if (!args.inference) {
+    return queryDatabase(query, args);
+  }
+  if (!query.endsWith('byInference')) {
+    console.warn('Making a recursive query with a query that is not inference-specific. There may be unexpected results.');
+  }
+
+  args.count = null; // if we limit count for individual queries things get messed up
+
+  const treeElem = findChildren(args.inference, categoryTree);
+  console.log(treeElem);
+  if (!treeElem) return false;
+  let children = collapseChildren(treeElem);
+  children.push(args.inference);
+  console.log(children);
+
+  let queries = [];
+  for (let c of children) {
+    let cargs = Object.assign({}, args);
+    cargs.inference = c;
+    const q = queryDatabase(query, cargs); // this is a PROMISE
+    queries.push(q);
+  }
+
+  const results = await Promise.all(queries);
+
+  let mergedRes;
+  let tempObj;
+  switch(query) {
+  case 'getTrackersByInference':
+    tempObj = {};
+    for (let res of results) {
+      for (let tracker of res) {
+        let tn = tracker.Trackers['tracker'];
+        let tc = tracker.Trackers['COUNT(tracker)'];
+        if (tempObj[tn]) {
+          tempObj[tn] += tc
+        } else {
+          tempObj[tn] = tc;
+        }
+      }        
+    }
+    mergedRes = Object.keys(tempObj).map(key => ({tracker: key, count: tempObj[key]}));
+    mergedRes.sort((a, b) => (b.count - a.count));
+    break;
+  case 'getDomainsByInference':
+    tempObj = {};
+    for (let res of results) {
+      Object.keys(res).forEach(domain => {
+        if (tempObj[domain]) {
+          tempObj[domain] += res[domain]
+        } else {
+          tempObj[domain] = res[domain];
+        }
+      })
+    }
+    mergedRes = Object.keys(tempObj).map(key => ({domain: key, count: tempObj[key]}));
+    mergedRes.sort((a, b) => (b.count - a.count));
+    break;
+  case 'getTimestampsByInference':
+    mergedRes = Array.prototype.concat.apply([], results);
+    break;
+  default:
+    console.warn('Not sure how to put together separate queries. Results may be unexpected.')
+    mergedRes = Array.prototype.concat.apply([], results);
+  }
+
+  return mergedRes;
+
+}
+window.queryDatabaseRecursive = queryDatabaseRecursive;
+
+function findChildren(cat, root) {
+  for (let c of root.children) {
+    if (c.name === cat) {
+      return c.children ? c.children : [];
+    } else if (c.children) {
+      let rec = findChildren(cat, c);
+      if (rec) {
+        return rec;
+      }
+    }
+  }
+  return false;
+}
+
+function collapseChildren(children) {
+  let ret = [];
+  for (let c of children) {
+    ret.push(c.name);
+    if (c.children) {
+      ret = ret.concat(collapseChildren(c.children))
+    }
+  }
+  return ret;
+}
 
 /**
  * Run on message recieved from database worker.

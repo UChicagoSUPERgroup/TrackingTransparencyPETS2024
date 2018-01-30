@@ -16,7 +16,6 @@ primarySchemaBuilder.createTable('Pages').
 primarySchemaBuilder.createTable('Trackers').
   addColumn('id', lf.Type.INTEGER).
   addColumn('tracker', lf.Type.STRING). // company name
-  addColumn('trackerCategory', lf.Type.STRING).
   addColumn('pageId', lf.Type.INTEGER).
   addPrimaryKey(['id'], true).
   addForeignKey('fk_pageId', {

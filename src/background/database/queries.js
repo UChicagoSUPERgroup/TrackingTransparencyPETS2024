@@ -235,15 +235,26 @@ async function getNumberOfInferences() {
  * @returns {string[]} array of domains
  */
 async function getDomainsByInference(args) {
-  let query = ttDb.select(Pages.domain)
+  let query = ttDb.select()
     .from(Pages, Inferences)
     .where(lf.op.and(
       Inferences.pageId.eq(Pages.id),
       Inferences.inference.eq(args.inference)
-    ));
-  query = args.count ? query.limit(args.count) : query;
-  const res = await query.exec();
-  return res.map(x => x.Pages.domain);
+    ))
+  let qRes = await query.exec();
+
+  let merged = _.reduce(qRes, function(result, value, index) {
+    const domain = value.Pages.domain;
+    if (result[domain]) {
+      result[domain]++;
+    } else {
+      result[domain] = 1;
+    }
+    return result;
+  }, {});
+
+  return merged;
+  // return res.map(x => x.Pages.domain);
 }
 
 

@@ -1,6 +1,6 @@
 /** @module trackers_worker */
 
-import disconnect from './disconnect.json';
+import domainEntityMap from '../../data/trackers/domainEntityMap.json';
 
 import parseuri from 'parseuri';
 import tt from '../../helpers';
@@ -8,51 +8,7 @@ import tt from '../../helpers';
 // console.log("trackers worker running");
 let databaseWorkerPort;
 
-/*
-  The categories and third parties, titlecased, and URL of their homepage and
-  domain names they phone home with, lowercased.
-*/
-let services = {};
-
 let trackersByPageId = {};
-
-processServices(disconnect);
-
-/** 
- * takes the disconnect list object and formats it into the services object
- * 
- * from Disconnect browser extension code - services.js
- * 
- * @param  {Object} data
- */
-function processServices(data) {
-  const categories = data.categories;
-
-  for (let categoryName in categories) {
-    const category = categories[categoryName];
-    const serviceCount = category.length;
-
-    for (let i = 0; i < serviceCount; i++) {
-      const service = category[i];
-
-      for (let serviceName in service) {
-        const urls = service[serviceName];
-
-        for (let homepage in urls) {
-          const domains = urls[homepage];
-          const domainCount = domains.length;
-
-          for (let j = 0; j < domainCount; j++)
-            services[domains[j]] = {
-              category: categoryName,
-              name: serviceName,
-              url: homepage
-            };
-        }
-      }
-    }
-  }
-}
 
 /** 
  * determines if a web request was for a tracker
@@ -63,35 +19,40 @@ function processServices(data) {
  */
 function trackerMatch(details, firstPartyHost) {
   const parsedRequest = parseuri(details.url);
+  let requestDomain = parsedRequest.host;
 
-  if (parsedRequest.host === firstPartyHost) {
+  let match = checkForMatch(requestDomain, firstPartyHost);
+  if (!match) {
+    const arr = parsedRequest.host.split('.');
+    requestDomain = arr[arr.length -2] + '.' + arr[arr.length - 1];
+    match = checkForMatch(requestDomain, firstPartyHost);
+  }
+  return match;
+}
+  
+function checkForMatch(requestDomain, firstPartyHost) {
+
+  const firstPartyEntity = domainEntityMap[firstPartyHost];
+  const trackerEntity = domainEntityMap[requestDomain];
+
+  if (!trackerEntity) return null;
+  
+  // check to make sure request didn't come from first party
+  // including other domains controlled by first party
+  // i.e. loads from other google domains on a google site doesn't count as a google tracker
+  if (!trackerEntity ||
+    (requestDomain === firstPartyHost) || 
+    (firstPartyEntity && trackerEntity && (firstPartyEntity === trackerEntity))
+  ) {
     return null;
   }
 
-  let match = null;
-  if (parsedRequest.host in services) {
-    const domain = parsedRequest.host;
-    match = {
-      domain: domain,
-      name: services[domain].name,
-      category: services[domain].category
-    }
-  } else {
-    // try chopping off subdomains to see if TLD is known tracker
-    const arr = parsedRequest.host.split('.');
-    const domain = arr[arr.length -2] + '.' + arr[arr.length - 1];
-    if (domain === firstPartyHost) {
-      return null;
-    }
-    if (domain in services) {
-      match = {
-        domain: domain,
-        name: services[domain].name,
-        category: services[domain].category
-      }
-    }
+  // if we got here we have a known third-party tracker
+
+  return {
+    domain: requestDomain,
+    name: domainEntityMap[requestDomain]
   }
-  return match;
 }
 
 /**
