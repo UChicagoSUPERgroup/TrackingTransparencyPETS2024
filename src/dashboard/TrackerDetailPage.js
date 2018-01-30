@@ -7,16 +7,22 @@ export default class TrackerDetailPage extends React.Component {
 
     this.tracker = this.props.match.params.name;
     this.state = {
-      trackers: []
+      inferences: [],
+      domains: []
     }
   }
 
   async componentDidMount() {
+    let queryObj = {tracker: this.tracker};
     const background = await browser.runtime.getBackgroundPage();
-    const inferences = await background.queryDatabase('getInferencesByTracker', {tracker: this.tracker, count: 100});
+    const inferences = await background.queryDatabase('getInferencesByTracker', queryObj);
+    const domains = await background.queryDatabase('getDomainsByTracker', queryObj);
     this.setState({
-      inferences: inferences
+      inferences: inferences,
+      domains: domains
     })
+    console.log(inferences);
+    console.log(domains);
   }
 
   render() {
@@ -24,7 +30,7 @@ export default class TrackerDetailPage extends React.Component {
       <div>
         <p>Tracker detail page. Min/Claire is working on this page.</p>
         <h2>{this.tracker}</h2>
-        <pre>{JSON.stringify(this.state.inferences, null, '\t')}</pre>
+        <pre>{JSON.stringify(this.state.domains, null, '\t')}</pre>
       </div>
     );
   }

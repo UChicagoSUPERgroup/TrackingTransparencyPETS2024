@@ -33,23 +33,18 @@ const TrackerTable = (data) => {
     <ReactTable
       data={data}
       columns={[
-        {
-          Header: "Trackers and Counts",
-          columns: [
-            {
-              Header: "Tracker",
-              accessor: "name"
-            },
-            {
-              Header: "Count",
-              accessor: "count"
-            },
-            {
-              Header: "Percent of Browsing",
-              accessor: "percent"
-            }
-          ]
-        }
+        {Header: "Tracker", accessor: "name",
+        Cell: row => (
+          <div key={row.value}>
+            <Link to={{
+              pathname: '/trackers/' + row.value
+            }}>
+              {row.value}
+            </Link>
+          </div>)
+        },
+        {Header: "Page Count", accessor: "count"},
+        {Header: "Percent of Browsing", accessor: "percent"}
       ]}
       defaultPageSize={20}
       className="-striped -highlight"
@@ -72,7 +67,6 @@ export default class TrackersPage extends React.Component {
     return(
       <div>
         <h1>Trackers</h1>
-
         <Route path={`${this.props.match.url}/:name`}  component={TrackerDetails}/>
         <Route exact path={this.props.match.url} component={TrackersList}/>
       </div>
@@ -115,6 +109,7 @@ class TrackersList extends React.Component {
     let topPercent = 0;
     let data = [];
     let allData = [];
+    let tempPercent = 0;
 
     for (let val in trackers){
       data.push({
@@ -125,18 +120,16 @@ class TrackersList extends React.Component {
       topPercent = Math.round(10000 * trackers[0]["COUNT(tracker)"] / numPages) / 100;
     };
     for (let val in allTrackers){
+      tempPercent = 10000 * allTrackers[val]["COUNT(tracker)"] / numPages;
       allData.push({
         name: allTrackers[val]["tracker"],
         count: allTrackers[val]["COUNT(tracker)"],
-        percent: (100 * allTrackers[val]["COUNT(tracker)"] / numPages).toString() + "%"
+        percent: (Math.round(tempPercent) / 100).toString() + " %"
       });
-      topTracker = trackers[0]["tracker"];
-      topPercent = Math.round(10000 * trackers[0]["COUNT(tracker)"] / numPages) / 100;
     };
 
     return(
       <div>
-        <p>Tracker list page. Will have bar graphs, etc. Claire is working on this page</p>
         <p><em>{numTrackers} trackers</em> are tracking your browsing. Your most
           frequently encountered tracker is <em>{topTracker}</em> which is
           present on <em>{topPercent}%</em> of
