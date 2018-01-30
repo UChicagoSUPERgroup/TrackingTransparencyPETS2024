@@ -412,7 +412,10 @@ async function getDomainsByTracker(args) {
     }
     return result;
   }, {});
-  return merged;
+  let mergedRes = [];
+  mergedRes = Object.keys(merged).map(key => ({domain: key, count: merged[key]}));
+  mergedRes.sort((a, b) => (b.count - a.count));
+  return mergedRes;
 }
 
 
