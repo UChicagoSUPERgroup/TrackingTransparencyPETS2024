@@ -12,11 +12,16 @@ export default class TrackerDetailPage extends React.Component {
   }
 
   async componentDidMount() {
+    let queryObj = {tracker: this.tracker, count: 100};
     const background = await browser.runtime.getBackgroundPage();
-    const inferences = await background.queryDatabase('getInferencesByTracker', {tracker: this.tracker, count: 100});
+    const inferences = await background.queryDatabase('getInferencesByTracker', queryObj);
+    const domains = await background.queryDatabase('getDomainsByTracker', queryObj);
     this.setState({
-      inferences: inferences
+      inferences: inferences,
+      domains: domains
     })
+    console.log(inferences);
+    console.log(domains);
   }
 
   render() {
