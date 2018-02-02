@@ -1,6 +1,9 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 
+import companyData from '../data/trackers/companyData.json';
+// companyData['Criteo'].type -> "Advertising"
+
 export default class TrackerDetailPage extends React.Component {
   constructor(props) {
     super(props);
