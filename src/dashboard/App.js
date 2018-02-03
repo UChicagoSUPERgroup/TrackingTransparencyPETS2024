@@ -1,5 +1,8 @@
-import React, { Component } from 'react';
+import 'bootstrap/dist/css/bootstrap.css';
+import '../../node_modules/react-vis/dist/style.css';
+import 'typeface-source-sans-pro';
 
+import React, { Component } from 'react';
 import { HashRouter, Route } from 'react-router-dom';
 
 import Navbar from 'react-bootstrap/lib/Navbar';
@@ -7,9 +10,6 @@ import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
 import {LinkContainer} from 'react-router-bootstrap';
-
-import '../../node_modules/react-vis/dist/style.css';
-import 'typeface-source-sans-pro';
 
 import {Home, WaitingDataHome} from './Home';
 import InferencesPage from './Inferences';
@@ -19,6 +19,7 @@ import RecentPage from './Recent';
 import AboutPage from './About';
 import DebugPage from './Debug';
 import tt from '../helpers';
+import COLORS from '../colors';
 import './App.css';
 
 const NavLink = ({to, title}) => (
