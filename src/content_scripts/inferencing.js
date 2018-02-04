@@ -1,26 +1,26 @@
 
 /* INFERENCING */
 
-function removeTagByTagName(tagName, doc) {
-  var elems = doc.getElementsByTagName(tagName);
-  for (let e of elems) {
-    // console.log(e);
-    e.parentNode.removeChild(e);
+function extractTextFromNode(node) {
+  // node.tagName is in ALL CAPS
+  if (node.tagName === 'FOOTER' || node.tagName === 'SCRIPT') {
+    return '';
   }
-  return;
-} // from https://stackoverflow.com/questions/43072644/how-can-i-remove-a-footer-element-using-javascript
+
+  let res = node.innerText;
+  for (let child of node.children) {
+    res += (' ' + extractTextFromNode(child));
+  }
+  return res;
+}
 
 export default function makeInference() {
-  let doc = document.cloneNode(true);
-  // let doc = document.importNode(document.body, true);
-  // console.log(doc);
-  // let doc = document.body;
-  removeTagByTagName('footer', doc);
-  removeTagByTagName('script', doc);
-  const text = doc.innerText;
+  const text = extractTextFromNode(document.body);
   // console.log(text);
+
   if (!text || text.length === 0) {
-    throw new Error('unable to extract text from page');
+    console.warn('unable to extract text from page');
+    return;
   }
   browser.runtime.sendMessage({ type: 'parsed_page', article: text });
 }
