@@ -38,6 +38,7 @@ class DebugPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.saveFile = this.saveFile.bind(this);
+    this.handleClickRecursive = this.handleClickRecursive.bind(this);
   }
 
   // componentDidMount() {
@@ -72,8 +73,11 @@ class DebugPage extends React.Component {
     }
   }
 
-  async saveFile() {
-    fileDownload(this.state.result, "tt_export.json");
+  saveFile() {
+    let blob = new Blob([JSON.stringify(this.state.result, null, '\t')], {type : 'application/json'});
+    var objectURL = window.URL.createObjectURL(blob);
+    browser.downloads.download({url: objectURL, filename: 'tt_export.json'});
+    // FileSaver.saveAs(blob, 'tt_export.json');
   }
 
   handleChange(event) {
@@ -141,13 +145,14 @@ class DebugPage extends React.Component {
           <Button type="submit" onClick={this.handleClick}>
             Submit
           </Button>
-          <Download file="tt_export.json" content={this.state.result}>
-            <Button type="submit">Download</Button>
-          </Download>
+          <Button type="submit" onClick={this.saveFile}>
+            Download
+          </Button>
         </form>
         <br/>
         {error && <Alert bsStyle="danger">{error}</Alert>}
-        {result &&<pre id="result">{this.state.result}</pre>}
+        {result &&<pre id="result">{JSON.stringify(this.state.result, null, '\t')}</pre>}
+        {queryTime && <p>Time: {queryTime / 1000} seconds</p>}
       </div>
     );
   }
