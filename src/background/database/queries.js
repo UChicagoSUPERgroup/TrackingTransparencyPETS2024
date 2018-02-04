@@ -20,12 +20,28 @@ const Pages = primarySchemaBuilder.getSchema().table('Pages');
 
 /* used in dashboard */
 
-async function getAllData(args) {
+async function getAllData() {
+  let pages = await getAllPages();
+  let trackers = await getAllTrackers();
+  let inferences = await getAllInferences();
+  return {'pages': pages, 'trackers': trackers, 'inferences': inferences};
+}
+
+async function getAllPages() {
   let query = ttDb.select()
-    .from(Trackers, Pages, Inferences)
-    .where(lf.op.and(
-      Trackers.pageId.eq(Pages.id),
-      Inferences.pageId.eq(Pages.id)))
+    .from(Pages)
+  return await query.exec();
+}
+
+async function getAllTrackers() {
+  let query = ttDb.select()
+    .from(Trackers)
+  return await query.exec();
+}
+
+async function getAllInferences() {
+  let query = ttDb.select()
+    .from(Inferences)
   return await query.exec();
 }
 
@@ -566,6 +582,9 @@ async function emptyDB() {
 
 const QUERIES = {
   getAllData: getAllData,
+  getAllPages: getAllPages,
+  getAllTrackers: getAllTrackers,
+  getAllInferences: getAllInferences,
 
   getDomains: getDomains,
   getTrackersByDomain: getTrackersByDomain,
