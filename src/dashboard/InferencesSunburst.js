@@ -3,12 +3,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {Sunburst, LabelSeries} from 'react-vis';
-import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+
 import tt from '../helpers';
 
 import categoryTree from '../data/categories_tree.json';
-import sensitiveCats from '../data/categories_comfort_list.json';
 
 const EXTENDED_DISCRETE_COLOR_RANGE = ['#19CDD7', '#DDB27C', '#88572C', '#FF991F', '#F15C17', '#223F9A', '#DA70BF', '#125C77', '#4DC19C', '#776E57', '#12939A', '#17B8BE', '#F6D18A', '#B7885E', '#FFCB99', '#F89570', '#829AE3', '#E79FD5', '#1E96BE', '#89DAC1', '#B3AD9E'];
 
@@ -64,14 +62,16 @@ export default class BasicSunburst extends React.Component {
   constructor(props) {
     super(props);
     // this.decoratedData = this.constructSunburstData(this.props.inferencesList);
+    const data = this.constructSunburstData(props.inferenceCounts);
+
     this.state = {
       pathValue: false,
-      data: {},
+      data: data,
       finalValue: 'Inferences',
       clicked: false
     }
 
-    this.handleSensitivitySelection = this.handleSensitivitySelection.bind(this);
+    this.constructSunburstData = this.constructSunburstData.bind(this);
   }
 
 
@@ -81,19 +81,14 @@ export default class BasicSunburst extends React.Component {
       return;
     }
 
-    let sunburstData = categoryTree;
+    // we have to do a deep copy of the category tree
+    // and this is supposedly the best way to do it
+    let sunburstData = JSON.parse(JSON.stringify(categoryTree));
 
-    this.recursiveApplySizes(sunburstData, inferencesList);
+    sunburstData = this.recursiveApplySizes(sunburstData, inferencesList);
     sunburstData = updateData(sunburstData, false);
-    console.log(sunburstData);
 
-    this.decoratedData = sunburstData;
-
-    // return sunburstData;
-
-    this.setState({
-      data: sunburstData
-    });
+    return sunburstData;
   }
 
   recursiveApplySizes(root, inferencesList) {
@@ -112,84 +107,46 @@ export default class BasicSunburst extends React.Component {
       }
     }
     root.children = newChildren;
+    return root;
   }
 
   async componentDidMount() {
-    const background = await browser.runtime.getBackgroundPage();
-    const inferences = await background.queryDatabase('getInferences', {count: 100});
-    console.log(inferences);
-    this.constructSunburstData(inferences);
+    
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedInference) {
+    if (!nextProps.selectedInference) {
+      
+      // clear any selections
       this.setState({
-        finalValue: nextProps.selectedInference,
-        clicked: true
+        finalValue: false,
+        clicked: false
       });
-    }
-  }
-
-  async handleSensitivitySelection(e) {
-    const key = e.target.attributes.getNamedItem('data-key').value;
-    console.log('key:', key);
-    console.log(sensitiveCats);
-    let cats = [];
-    switch (key) {
-    case 'all-senstive':
-      // reset to default
-      this.componentDidMount();
-      return;
-    case 'less-sensitve':
-      cats = sensitiveCats.slice(-50).reverse(); // 50 least sensitive categories
-      break;
-    case 'more-sensitve':
-      cats = sensitiveCats.slice(0,50);
-      break;
-    }
-    console.log(cats);
-
-    const background = await browser.runtime.getBackgroundPage();
-    const queryPromises = cats.map(cat => {
-      return background.queryDatabase('getInferenceCount', {inference: cat});
-    });
-
-    const counts = await Promise.all(queryPromises); // lets all queries happen async
-
-    const data = cats.map((cat, i) => {
-      return {
-        'inference': cat,
-        'COUNT(inference)': counts[i]
+      
+      if (nextProps.inferenceCounts) {
+        const data = this.constructSunburstData(nextProps.inferenceCounts);
+        this.setState({
+          data: data
+        });
       }
-    });
-
-    this.constructSunburstData(data);
+    } else {
+      if (nextProps.selectedInference !== this.props.selectedInference) {
+        this.setState({
+          finalValue: nextProps.selectedInference,
+          clicked: true
+        });
+      }
+    }
+    
   }
+
 
   render() {
     const {clicked, data, finalValue, pathValue} = this.state;
     if (!data.name) return null;
     return (
       <div className="sunburst-wrapper">
-        <div>
-          <h3>Filters</h3>
-          {/* <p>Prevalence: <ButtonGroup>
-            <Button href="#">All Inferences</Button>
-            <Button href="#">Common Inferences</Button>
-            <Button href="#">Uncommon Inferences</Button>
-          </ButtonGroup></p> */}
-          <p>Sensitivity: <ButtonGroup onClick={this.handleSensitivitySelection}>
-            <Button data-key='all-sensitive'>All Inferences</Button>
-            <Button data-key='less-sensitive'>Less Sensitive Inferences</Button>
-            <Button data-key='more-sensitive'>Sensitive Inferences</Button>
-          </ButtonGroup></p>
-          {/* <p>Date: <ButtonGroup>
-            <Button href="#">All</Button>
-            <Button href="#">Today</Button>
-            <Button href="#">Last Week</Button>
-            <Button href="#">Last Month</Button>
-          </ButtonGroup></p> */}
-        </div>
+
         <Sunburst
           animation
           className="inferences-sunburst"
@@ -207,16 +164,15 @@ export default class BasicSunburst extends React.Component {
             this.setState({
               finalValue: newVal,
               pathValue: path.join(' > '),
-              data: updateData(this.decoratedData, pathAsMap)
+              data: updateData(data, pathAsMap)
             });
-            // this.props.onSelectionChange(selectedInference);
           }}
           onValueMouseOut={() => {
             if (!clicked) {
               this.setState({
                 pathValue: false,
                 finalValue: false,
-                data: updateData(this.decoratedData, false)
+                data: updateData(data, false)
               })
             }
           }}
@@ -236,7 +192,6 @@ export default class BasicSunburst extends React.Component {
             strokeWidth: '0.5'
           }}
           colorType="literal"
-          //   getSize={d => d.value}
           data={data}
           height={400}
           width={400}>

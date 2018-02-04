@@ -1,9 +1,11 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
-
-
+import Button from 'react-bootstrap/lib/Button';
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 
 import tt from '../helpers';
+import sensitiveCats from '../data/categories_comfort_list.json';
+
 
 import InferenceDetails from './InferenceDetails';
 import InferencesSunburst from './InferencesSunburst';
@@ -19,14 +21,15 @@ class InferencesPage extends React.Component {
     };
 
     this.handleSunburstSelection = this.handleSunburstSelection.bind(this);
+    this.handleSensitivitySelection = this.handleSensitivitySelection.bind(this);
     this.handleInferenceLinkClick = this.handleInferenceLinkClick.bind(this);
   }
 
   async getInferences() {
     const background = await browser.runtime.getBackgroundPage();
-    const inferences = await background.queryDatabase('getInferences', {count: this.inferenceCount});
+    this.topInferences = await background.queryDatabase('getInferences', {count: this.inferenceCount});
     this.setState({
-      inferences: inferences 
+      inferences: this.topInferences 
     });
   }
 
@@ -46,9 +49,57 @@ class InferencesPage extends React.Component {
     this.setState({selectedInference: inference});
   }
 
+  async handleSensitivitySelection(e) {
+    const key = e.target.attributes.getNamedItem('data-key').value;
+
+    let cats;
+
+    const background = await browser.runtime.getBackgroundPage();
+
+    if (key === 'all-sensitive') {
+      console.log('all sensitive')
+      // reset to default
+      this.setState({
+        inferences: this.topInferences,
+        selectedInference: false
+      })
+      return;
+
+    } else if (key === 'less-sensitive') {
+      console.log('less sensitive')
+      cats = sensitiveCats.slice(-50).reverse(); // 50 least sensitive categories
+
+    } else if (key === 'more-sensitive') {
+      console.log('more sensitive')
+
+      cats = sensitiveCats.slice(0,50);
+    }
+    console.log(cats);
+
+    const queryPromises = cats.map(cat => {
+      return background.queryDatabase('getInferenceCount', {inference: cat});
+    });
+
+    const counts = await Promise.all(queryPromises); // lets all queries happen async
+
+    const data = cats.map((cat, i) => {
+      return {
+        'inference': cat,
+        'COUNT(inference)': counts[i]
+      }
+    });
+    console.log(data)
+
+    this.setState({
+      inferences: data,
+      selectedInference: false
+    })
+  }
+
   async componentDidMount() {
     this.getInferences();
   }
+  
   
   
   render() {
@@ -72,7 +123,17 @@ class InferencesPage extends React.Component {
               </ul>
             </div>} */}
 
-            <InferencesSunburst onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference}/>
+            <div>
+              <h3>Filters</h3>
+              <p>Sensitivity: <ButtonGroup onClick={this.handleSensitivitySelection}>
+                <Button data-key='all-sensitive'>All Inferences</Button>
+                <Button data-key='less-sensitive'>Less Sensitive Inferences</Button>
+                <Button data-key='more-sensitive'>Sensitive Inferences</Button>
+              </ButtonGroup></p>
+            </div>
+
+            {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference}/>}
+
             {selectedInference && <InferenceDetails inference={selectedInference}/>}
             {/* {this.state.inferences && <InferencesSunburst inferencesList={this.state.inferences}/>} */}
             {/* <InferencesSunburst inferencesList={this.state.inferences}/> */}
