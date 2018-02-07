@@ -11,26 +11,8 @@ const lightbeam = {
 
   async init() {
     // this.websites = await storeChild.getAll();
-    this.websites = {
-      "www.firstpartydomain.com": {
-        favicon: "http://blah...",
-        firstParty: true,
-        firstPartyHostnames: false,
-        hostname: "www.firstpartydomain.com",
-        thirdParties: [
-          "www.thirdpartydomain.com"
-        ]
-      },
-      "www.thirdpartydomain.com": {
-        favicon: "",
-        firstParty: false,
-        firstPartyHostnames: [
-          "www.firstpartydomain.com"
-        ],
-        hostname: "www.thirdpartydomain.com",
-        thirdParties: []
-      }
-    };
+    const background = await browser.runtime.getBackgroundPage();
+    this.websites = await background.queryDatabase('lightbeam', {});
     this.renderGraph();
     this.addListeners();
     this.updateVars();

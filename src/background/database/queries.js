@@ -3,6 +3,8 @@
 import lf from 'lovefield';
 import _ from 'lodash';
 
+import trackerData from '../../data/trackers/companyData.json';
+
 import {primaryDbPromise, primarySchemaBuilder} from './setup';
 
 let ttDb;
@@ -294,6 +296,77 @@ async function getPageVisitCountByTracker(args) {
 }
 
 
+/* simulates lighbeam */
+async function lightbeam(args) {
+  // this is very inefficient code but is easier to hack together this way
+
+  /* WE WANT TO RETURN
+    {
+      "www.firstpartydomain.com": {
+        favicon: "http://blah...",
+        firstParty: true,
+        firstPartyHostnames: false,
+        hostname: "www.firstpartydomain.com",
+        thirdParties: [
+          "www.thirdpartydomain.com"
+        ]
+      },
+      "www.thirdpartydomain.com": {
+        favicon: "",
+        firstParty: false,
+        firstPartyHostnames: [
+          "www.firstpartydomain.com"
+        ],
+        hostname: "www.thirdpartydomain.com",
+        thirdParties: []
+      }
+    }
+    */
+  let websites = {};
+
+  const domains = (await getDomains({})).map(x => x['Pages']['domain']);
+
+  await Promise.all(domains.map(async (domain) => {
+    const trackers = (await getTrackersByDomain({domain: domain}))
+      .map(x => {
+        const company = x['Trackers']['tracker'];
+        return trackerData[company].domain;
+      });
+    
+    if (websites[domain]) {
+      websites[domain].firstParty = true;
+      websites[domain].thirdParties.concat(trackers);
+    } else {
+      websites[domain] = {
+        favicon: '',
+        firstParty: true,
+        firstPartyHostnames: false,
+        hostname: domain,
+        thirdParties: trackers
+      }
+    }
+
+    for (let tracker of trackers) {
+      if (websites[tracker]) {
+        if (websites[tracker].firstPartyHostnames) {
+          websites[tracker].firstPartyHostnames.push(domain);
+        } else {
+          websites[tracker].firstPartyHostnames = [domain];
+        }
+      } else {
+        websites[tracker] = {
+          favicon: '',
+          firstParty: false,
+          firstPartyHostnames: [domain],
+          hostname: tracker,
+          thirdParties: []
+        }
+      }
+    }
+  }));
+
+  return websites;
+}
 
 
 
@@ -601,6 +674,8 @@ const QUERIES = {
   getNumberOfInferences: getNumberOfInferences,
 
   getDomainsByInference: getDomainsByInference,
+
+  lightbeam: lightbeam,
 
   // old
   getPageVisitCountByTracker: getPageVisitCountByTracker,

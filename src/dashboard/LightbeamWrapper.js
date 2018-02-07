@@ -11,7 +11,7 @@ class IFrame extends React.Component {
   }
 }
 
-export default class Lightbeam extends React.Component {
+export default class LightbeamWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
