@@ -10,7 +10,8 @@ const lightbeam = {
   numThirdParties: 0,
 
   async init() {
-    this.websites = await storeChild.getAll();
+    // this.websites = await storeChild.getAll();
+    this.websites = {};
     this.initTPToggle();
     this.renderGraph();
     this.addListeners();

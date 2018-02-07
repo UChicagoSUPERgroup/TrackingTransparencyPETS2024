@@ -26,7 +26,7 @@ const viz = {
     this.collisionRadius = this.collisionRadius * this.scalingFactor;
     this.scale = (window.devicePixelRatio || 1) * this.scalingFactor;
     this.transform = d3.zoomIdentity;
-    this.defaultIcon = this.convertURIToImageData('images/defaultFavicon.svg');
+    // this.defaultIcon = this.convertURIToImageData('../lightbeam/images/defaultFavicon.svg');
 
     this.updateCanvas(width, height);
     this.draw(nodes, links);
