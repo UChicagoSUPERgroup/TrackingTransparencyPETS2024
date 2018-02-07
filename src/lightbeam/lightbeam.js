@@ -11,40 +11,31 @@ const lightbeam = {
 
   async init() {
     // this.websites = await storeChild.getAll();
-    this.websites = {};
-    this.initTPToggle();
+    this.websites = {
+      "www.firstpartydomain.com": {
+        favicon: "http://blah...",
+        firstParty: true,
+        firstPartyHostnames: false,
+        hostname: "www.firstpartydomain.com",
+        thirdParties: [
+          "www.thirdpartydomain.com"
+        ]
+      },
+      "www.thirdpartydomain.com": {
+        favicon: "",
+        firstParty: false,
+        firstPartyHostnames: [
+          "www.firstpartydomain.com"
+        ],
+        hostname: "www.thirdpartydomain.com",
+        thirdParties: []
+      }
+    };
     this.renderGraph();
     this.addListeners();
     this.updateVars();
   },
 
-  async initTPToggle() {
-    // const toggleCheckbox
-    //   = document.getElementById('tracking-protection-control');
-    // const trackingProtection = document.getElementById('tracking-protection');
-    // const trackingProtectionDisabled
-    //   = document.getElementById('tracking-protection-disabled');
-    // // Do we support setting TP
-    // if ('trackingProtectionMode' in browser.privacy.websites) {
-    //   trackingProtection.hidden = false;
-    //   trackingProtectionDisabled.hidden = true;
-
-    //   const trackingProtectionState
-    //     = await browser.privacy.websites.trackingProtectionMode.get({});
-    //   let value = true;
-    //   if (trackingProtectionState.value !== 'always') {
-    //     value = false;
-    //   }
-    //   toggleCheckbox.checked = value;
-    //   toggleCheckbox.addEventListener('change', () => {
-    //     const value = toggleCheckbox.checked ? 'always' : 'private_browsing';
-    //     browser.privacy.websites.trackingProtectionMode.set({ value });
-    //   });
-    // } else {
-    //   trackingProtection.hidden = true;
-    //   trackingProtectionDisabled.hidden = false;
-    // }
-  },
 
   renderGraph() {
     const transformedData = this.transformData();
@@ -52,8 +43,6 @@ const lightbeam = {
   },
 
   addListeners() {
-    // this.downloadData();
-    // this.resetData();
     // storeChild.onUpdate((data) => {
     //   this.redraw(data);
     // });
@@ -133,7 +122,9 @@ const lightbeam = {
 
   async getNumFirstParties() {
     const background = await browser.runtime.getBackgroundPage();
-    return await background.queryDatabase('getNumberOfPages', {});
+    const pages = await background.queryDatabase('getNumberOfPages', {});
+    console.log('we have pages', pages);
+    return(pages);
   },
 
   async getNumThirdParties() {
@@ -244,46 +235,6 @@ const lightbeam = {
     };
   },
 
-  downloadData() {
-    // const saveData = document.getElementById('save-data-button');
-    // saveData.addEventListener('click', async () => {
-    //   const data = await storeChild.getAll();
-    //   const blob = new Blob([JSON.stringify(data ,' ' , 2)],
-    //     {type : 'application/json'});
-    //   const url = window.URL.createObjectURL(blob);
-    //   const downloading = browser.downloads.download({
-    //     url : url,
-    //     filename : 'lightbeamData.json',
-    //     conflictAction : 'uniquify'
-    //   });
-    //   await downloading;
-    // });
-  },
-
-  resetData() {
-    // const resetData = document.getElementById('reset-data-button');
-    // const dialog = document.getElementById('reset-data-dialog');
-    // window.dialogPolyfill && window.dialogPolyfill.registerDialog(dialog);
-
-    // resetData.addEventListener('click', () => {
-    //   dialog.showModal();
-    // });
-
-    // dialog.addEventListener('cancel', () => {
-    //   delete dialog.returnValue;
-    // });
-
-    // dialog.addEventListener('close', async () => {
-    //   if (dialog.returnValue === 'confirm') {
-    //     await storeChild.reset();
-    //     window.location.reload();
-    //   }
-
-    //   // This is a little naive, because the dialog might not have been
-    //   // triggered by the reset button. But it's better than nothing.
-    //   resetData.focus();
-    // });
-  },
 
   redraw(data) {
     if (!(data.hostname in this.websites)) {
