@@ -18,7 +18,7 @@ import FirstPartyList from  './FirstParties';
 import RecentPage from './Recent';
 import AboutPage from './About';
 import DebugPage from './Debug';
-import Lightbeam from './Lightbeam';
+import LightbeamWrapper from './LightbeamWrapper';
 import tt from '../helpers';
 import COLORS from '../colors';
 import './App.css';
@@ -73,7 +73,7 @@ class App extends Component {
               <Route path="/trackers" component={TrackersList}/>
               <Route path="/domains" component={FirstPartyList}/>
               <Route path="/recent" component={RecentPage}/>
-              <Route path="/lightbeam" component={Lightbeam}/>
+              <Route path="/lightbeam" component={LightbeamWrapper}/>
             </div>}
 
             {!enoughData &&<Route exact path="/" component={WaitingDataHome}/>}
