@@ -39,7 +39,10 @@ fs.readFile('disconnect.json', 'utf8', (err, body) => {
               entry[name][domain].forEach((trackerURL) => {
                 let major = majorNetworks[name.toLowerCase()] ? majorNetworks[name.toLowerCase()] : null;
 
-                let data = {'domain': domain, 'type': type, 'percent': major};
+                const split = domain.split('//');
+                let trimmedDomain = split[split.length-1].slice(0,-1);
+                
+                let data = {'domain': trimmedDomain, 'type': type, 'percent': major};
                 domainEntityMap[trackerURL] = name;
                 companyData[name] = data;
               });
