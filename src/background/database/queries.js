@@ -369,33 +369,6 @@ async function getPages(args) {
   return await query.exec();
 }
 
-
-/**
- * get domains by tracker count for debugging the next two methods
- * only distinct from getDomains() in that it returns pages with null trackers and is ordered in reverse
- * use as is to debug getDomainsNoTrackers()
- * swap in .groupBy(Pages.id) for .groupBy(Pages.domain) to debug getPagesNoTrackers()
- *
- */
-
-/*
-async function getNullTrackers(args) {
-  let query = ttDb.select(Pages.domain, lf.fn.count(Trackers.tracker))
-    .from(Pages)
-    .leftOuterJoin(Trackers, Pages.id.eq(Trackers.pageId))
-    .groupBy(Pages.domain)
-    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.ASC);
-//      query = args.count ? query.limit(args.count) : query;
-    return await query.exec()
-}
-*/
-
-/**
- * returns an array of pages where there were no trackers
- *
- *
- */
-
 async function getPagesNoTrackers(args) {
   let query = ttDb.select(Pages.domain, lf.fn.count(Trackers.tracker))
   .from(Pages)
@@ -612,7 +585,6 @@ const QUERIES = {
   getPagesByTrackerAndDomain: getPagesByTrackerAndDomain,
   getTrackerWithInferencesByDomain: getTrackerWithInferencesByDomain,
   getInfoAboutTracker: getInfoAboutTracker,
-  // getNullTrackers: getNullTrackers,
   getPagesNoTrackers: getPagesNoTrackers,
   getDomainsNoTrackers: getDomainsNoTrackers,
   getInferencesByTrackerCount: getInferencesByTrackerCount,
