@@ -542,6 +542,55 @@ async function getInferenceCount(args) {
   return res;
 }
 
+/**
+ * get domains by visit (not tracker) count 
+ *
+ *
+ */
+
+async function getDomainVisits(args) {
+   let query = ttDb.select(Pages.domain, lf.fn.count(Pages.domain))
+	.from(Pages)
+	.groupBy(Pages.domain)
+	.orderBy(lf.fn.count(Pages.domain), lf.Order.DESC);
+
+  query = args.count ? query.limit(args.count) : query;
+  return await query.exec();
+}
+
+/** 
+ * gets all titles 
+ * 
+ * 
+ */
+
+
+async function getTitles(args) {
+   let query = ttDb.select(Pages.title, lf.fn.count(Pages.title))
+	.from(Pages)
+	.groupBy(Pages.title)
+	.orderBy(lf.fn.count(Pages.title), lf.Order.DESC);	
+   query = args.count ? query.limit(args.count) : query;
+   return await query.exec();
+}
+
+/**
+ * get titles seen on a given domain
+ * 
+ *
+ */
+   
+async function getTitlesByDomain(args) {
+   let query = ttDb.select(Pages.title, lf.fn.count(Pages.title))
+        .from(Pages)
+        .where(Pages.domain.eq(args.domain))
+        .groupBy(Pages.title)
+        .orderBy(lf.fn.count(Pages.title), lf.Order.DESC);
+   query = args.count ? query.limit(args.count) : query;
+   return await query.exec();
+}
+
+
 /** erases all entries in database
  */
 async function emptyDB() {
@@ -589,6 +638,9 @@ const QUERIES = {
   getDomainsNoTrackers: getDomainsNoTrackers,
   getInferencesByTrackerCount: getInferencesByTrackerCount,
   getInferenceCount: getInferenceCount,
+  getDomainVisits: getDomainVisits,
+  getTitles: getTitles,
+  getTitlesByDomain: getTitlesByDomain,
   emptyDB: emptyDB
 };
 
