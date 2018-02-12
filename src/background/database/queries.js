@@ -428,7 +428,7 @@ async function getDomainsNoTrackers(args) {
     .groupBy(Pages.domain)
     .orderBy(lf.fn.count(Trackers.tracker), lf.Order.ASC)
 
-  let domains = [] 
+  let domains = []
   var i;
   const domainsQuery = await query.exec();
   for (i=0; i < domainsQuery.length; i++) {
@@ -601,10 +601,10 @@ const QUERIES = {
   getNumberOfInferences: getNumberOfInferences,
 
   getDomainsByInference: getDomainsByInference,
+    getDomainsByTracker: getDomainsByTracker,
 
   // old
   getPageVisitCountByTracker: getPageVisitCountByTracker,
-  getDomainsByTracker: getDomainsByTracker,
   getTrackersByInferenceCount: getTrackersByInferenceCount,
   getPagesByTrackerAndInference: getPagesByTrackerAndInference,
   getPagesWithNumberOfTrackers: getPagesWithNumberOfTrackers,
