@@ -273,6 +273,76 @@ async function getDomainsByInference(args) {
   // return res.map(x => x.Pages.domain);
 }
 
+/**
+ * Inferences by domain (i.e. INFERENCES have been made on DOMAIN)
+ * @param {Object} args - args object
+ * @param {string} args.domain - domain
+ * @returns {string[]} array of inferences 
+ */
+async function getInferencesByDomain(args) {
+  let query = ttDb.select(Inferences.inference)
+    .from(Pages, Inferences)
+    .where(lf.op.and(
+      Inferences.pageId.eq(Pages.id),
+      Pages.domain.eq(args.domain)
+      //.groupBy(Inferences.inference)
+      //.orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC);
+    ))
+   //return await query.exec();
+   
+  let qRes = await query.exec();
+
+  let merged = _.reduce(qRes, function(result, value, index) {
+    const inference = value.Inferences.inference;
+    if (result[inference]) {
+      result[inference]++;
+    } else {
+      result[inference] = 1;
+    }
+    return result;
+  }, {});
+
+  return merged;  
+}
+
+
+/**
+ * get Titles on DOMAIN where INFERENCE made
+ * @param {Object} args - args object
+ * @param {string} args.domain - domain
+ * @param {string} args.inference - inference
+ * @returns {string[]} array of titles
+ *
+ * e.g. show titles on DICTIONARY.COM where REFERENCE INFERENCE made  
+ * this may help on inferencingSunburst, so when you click on a Top Site, you can see titles drop domain 
+ *
+ */
+async function getTitlesbyInferenceAndDomain(args) {
+  let query = ttDb.select(Pages.title)
+    .from(Pages, Inferences)
+    .where(lf.op.and(
+      Inferences.pageId.eq(Pages.id),
+      Inferences.inference.eq(args.inference),
+      Pages.domain.eq(args.domain)
+    ));
+   // .groupBy(Pages.title)
+   // .orderBy(lf.fn.count(Pages.title), lf.Order.DESC);
+  
+  let qRes = await query.exec();
+
+  let merged = _.reduce(qRes, function(result, value, index) {
+    const title = value.Pages.title;
+    if (result[title]) {
+      result[title]++;
+    } else {
+      result[title] = 1;
+    }
+    return result;
+  
+  }, {});
+  return merged;
+}
+
 
 /* OLD QUERIES */
 /* ======= */
@@ -622,7 +692,9 @@ const QUERIES = {
   getNumberOfTrackers: getNumberOfTrackers,
   getNumberOfInferences: getNumberOfInferences,
 
+  getInferencesByDomain: getInferencesByDomain,
   getDomainsByInference: getDomainsByInference,
+  getTitlesbyInferenceAndDomain: getTitlesbyInferenceAndDomain,  
 
   // old
   getPageVisitCountByTracker: getPageVisitCountByTracker,
