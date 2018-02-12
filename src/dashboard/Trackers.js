@@ -43,8 +43,11 @@ const TrackerTable = (data) => {
             </Link>
           </div>)
         },
-        {Header: "Page Count", accessor: "count"},
-        {Header: "Percent of Browsing", accessor: "percent"}
+        {Header: "Page Count",
+         accessor: "count"},
+        {Header: "Percent of Browsing",
+         accessor: "percent",
+          Cell: row => ((Math.round(row.value) / 100).toString() + " %")}
       ]}
       defaultPageSize={20}
       className="-striped -highlight"
@@ -63,7 +66,6 @@ export default class TrackersPage extends React.Component {
   }
 
   render() {
-
     return(
       <div>
         <h1>Trackers</h1>
@@ -124,7 +126,7 @@ class TrackersList extends React.Component {
       allData.push({
         name: allTrackers[val]["tracker"],
         count: allTrackers[val]["COUNT(tracker)"],
-        percent: (Math.round(tempPercent) / 100).toString() + " %"
+        percent: tempPercent
       });
     };
 
@@ -147,7 +149,7 @@ class TrackersList extends React.Component {
             tickLabelAngle={-30} />
           <YAxis
             tickFormat={v => v.toString() + "%"} />
-          <VerticalBarSeries data={data}/>
+          <VerticalBarSeries data={data} color="#8F3931"/>
         </XYPlot>
         {TrackerTable(allData)}
       </div>
