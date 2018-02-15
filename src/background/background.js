@@ -20,6 +20,11 @@ let trackerMessageId = 0;
 /* WEB REQUEST/TAB LISTENERS */
 /* ========================= */
 
+function ping() {
+  return 'ping'
+}
+window.ping = ping;
+
 browser.webRequest.onBeforeRequest.addListener(
   logRequest,
   {urls: ['<all_urls>']}
@@ -335,7 +340,7 @@ function onDatabaseWorkerMessage(m) {
     // if response isn't given a query id to associate with request, it's an error
     if (!m.data.id) {
       // since we don't know which promise to reject we have to just throw an error
-      throw new Error ('malformed query response');
+      throw new Error ('malformed query response', m);
     }
 
     const p = pendingDatabaseQueries[m.data.id];

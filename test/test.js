@@ -20,17 +20,36 @@ puppeteer.launch({
   id = id.trim();
   const BASE_URL = 'chrome-extension://' + id + '/';
 
+
+  // visit some pages
+  await page.goto('https://www.nytimes.com');
+  await page.goto('https://super.cs.uchicago.edu');
+  await page.goto('https://cs.uchicago.edu');
+  await page.close();
+
   // do some testing on the extension
   const background = await browser.newPage();
   await background.goto(BASE_URL + '_generated_background_page.html');
+  background.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
-  const q = await background.evaluate(() => {
-    // return await window.queryDatabase('getPages', {});
-    // we can theoretically write code that runs inside the extension here?
-    // but I cannot currently figure this out
+  const q = await background.evaluate(async () => {
+
+    // WRITE TESTS HERE ???
+
+    let ping = window.ping();
+    console.log(ping) // this works
+
+    let query = await window.queryDatabase('getAllData', {});
+    console.log(query) // this hangs? idk why
+
+
   });
   console.log(q);
 
   // await runTests(id);
   await browser.close();
 });
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
