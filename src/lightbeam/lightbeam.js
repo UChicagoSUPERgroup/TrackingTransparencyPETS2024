@@ -1,7 +1,4 @@
-import storeChild from './storeChild';
 import viz from './viz';
-
-storeChild.init();
 
 const lightbeam = {
   websites: {},
@@ -10,7 +7,6 @@ const lightbeam = {
   numThirdParties: 0,
 
   async init() {
-    // this.websites = await storeChild.getAll();
     const background = await browser.runtime.getBackgroundPage();
     this.websites = await background.queryDatabase('lightbeam', {});
     this.renderGraph();

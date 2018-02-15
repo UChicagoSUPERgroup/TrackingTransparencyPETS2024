@@ -41,8 +41,6 @@
 }
 
 body {
-  display: grid;
-  grid-template-columns: 170px 1fr;
   height: 100vh;
   width: 100%;
   margin: 0;
@@ -109,133 +107,6 @@ button::before, a.thumbs-up::before {
   margin-right: 10px;
 }
 
-dialog {
-  display: block;
-  position: fixed;
-  transform: translate(0, -50%);
-  top: 50%;
-  left: 2em;
-  right: 2em;
-  width: -moz-fit-content;
-  width: -webkit-fit-content;
-  width: fit-content;
-  max-width: 40em;
-  height: -moz-fit-content;
-  height: -webkit-fit-content;
-  height: fit-content;
-  margin: auto;
-  padding: 1em;
-  background: white;
-  color: black;
-  border: none;
-  border-radius: 0.5em;
-  box-shadow: 0.5em 0.5em 0 rgba(0,0,0,0.5);
-  overflow: hidden;
-}
-
-dialog:not([open]) {
-  display: none;
-}
-
-dialog::backdrop, dialog + .backdrop {
-  background: rgba(0,0,0,0.25);
-}
-
-dialog + .backdrop {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-
-dialog .dialog-wrapper {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 10px;
-  grid-auto-rows: auto;
-}
-
-dialog .dialog-title {
-  background: var(--dialog-header-color);
-  color: #FFF;
-  margin: -1em -1em 0;
-  padding: 1em;
-  font-size: 1em;
-  text-transform: uppercase;
-  grid-column: 1 / 5;
-  grid-row: 1;
-}
-
-dialog .dialog-icon {
-  grid-column: 1;
-  grid-row: 2;
-  width: 100%;
-  display: block;
-}
-
-dialog .dialog-content {
-  grid-column: 1 / 5;
-  grid-row: 2;
-}
-
-dialog .dialog-icon + .dialog-content {
-  grid-column: 2 / 5;
-}
-
-dialog .dialog-options {
-  text-align: right;
-  display: block;
-  margin: 0;
-  padding: 0;
-  grid-column: 1 / 5;
-  grid-row: 3;
-}
-
-dialog .dialog-options button {
-  background: var(--dialog-button-color);
-  display: inline-block;
-  width: auto;
-  min-width: 6em;
-  box-shadow: none;
-  margin: 0;
-  padding: 0.5em 1em;
-  font-size: inherit;
-  text-align: center;
-}
-
-dialog .dialog-options button::before {
-  display: none;
-}
-
-dialog .dialog-options button::-moz-focus-inner {
-  padding: 0;
-  border: none;
-}
-
-dialog .dialog-options button:focus {
-  outline: dotted 1px grey;
-}
-
-@media (max-width: 44em) {
-  dialog .dialog-icon {
-    display: none;
-  }
-
-  dialog .dialog-content,
-  dialog .dialog-icon + .dialog-content {
-    grid-column: 1 / 5;
-  }
-}
-
-._dialog_overlay {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-
 .active {
   background-color: var(--button-active-color);
   border-top: 2px solid var(--button-active-border-color);
@@ -277,55 +148,6 @@ a {
   border-color: #fff;
 }
 
-/* ----------- UI - Side Bar ----------- */
-
-aside {
-  background-color: var(--secondary-color);
-  padding: 15px;
-}
-
-aside h1 {
-  color: var(--tertiary-color);
-}
-
-.logo {
-  max-width: 100%;
-}
-
-aside h2 {
-  margin-top: 20px;
-  color: var(--primary-text-color);
-}
-
-.nav-links {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.nav-links .icon {
-  margin-right: 0;
-}
-
-.graph::before {
-  background-image: url("../images/lightbeam_icon_graph.png");
-}
-
-.list:before {
-  background-image: url("../images/lightbeam_icon_list.png");
-}
-
-.download::before {
-  background-image: url("../images/lightbeam_icon_download.png");
-}
-
-.reset::before {
-  background-image: url("../images/lightbeam_icon_reset.png");
-}
-
-.thumbs-up::before {
-  background-image: url("../images/lightbeam_icon_feedback.png");
-}
-
 /* ----------- UI - Top Bar ----------- */
 
 main {
@@ -350,79 +172,6 @@ main {
 
 .top-bar > dl > div {
   margin-right: 15px;
-}
-
-.tracking-protection {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-#tracking-protection-disabled > div {
-  display: inline-block;
-  width: 140px;
-  margin-inline-start: 10px;
-}
-
-#tracking-protection-disabled > div > a {
-  font-size: 1rem;
-  text-decoration: none;
-}
-
-.toggle-switch {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-around;
-  height: 30px;
-  width: 55px;
-  margin-left: 5px;
-  background-color: var(--secondary-color);
-  border-radius: 5px;
-  position: relative;
-  cursor: pointer;
-}
-
-.toggle-switch input {
-  -moz-appearance: none;
-  opacity: 0;
-}
-
-.toggle-switch:active {
-  border:1px solid var(--button-active-border-color);
-}
-
-.toggle:before {
-  content: "";
-  height: 24px;
-  width: 25px;
-  background-color: var(--primary-color);
-  border-radius: 5px;
-  transition: all 0.4s;
-  position: absolute;
-  left: 5px;
-  top: 10%;
-}
-
-.toggle:after {
-  content: "OFF";
-  font-size: .75em;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--primary-text-color);
-  position: absolute;
-  right: 10%;
-  top: 30%;
-}
-
-.toggle-switch input:checked + .toggle:before {
-  transform: translateX(20px);
-  right: 10%;
-  background-color: var(--secondary-text-color);
-}
-
-.toggle-switch input:checked + .toggle:after {
-  content: "ON";
-  left: 10%;
 }
 
 /* ----------- UI - Graph ----------- */
@@ -504,7 +253,7 @@ main {
 
 .website::before {
   background-image: url('../images/lightbeam_icon_website.png');
-  opacity: .5;
+  /* opacity: .5; */
 }
 
 .help::before {
