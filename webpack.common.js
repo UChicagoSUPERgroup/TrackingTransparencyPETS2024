@@ -20,7 +20,6 @@ module.exports = {
     // user facing pages
     popup: './src/popup/popup.js',
     dashboard: './src/dashboard/index.js',
-    infopage: './src/infopage/infopage.js', // DEPRECATED
 
     lightbeam: './src/lightbeam/lightbeam.js'
   },

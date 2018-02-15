@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 
-import * as d3 from 'd3';
+// d3 is included in html and not imported here
 
 const viz = {
   scalingFactor: 2,
