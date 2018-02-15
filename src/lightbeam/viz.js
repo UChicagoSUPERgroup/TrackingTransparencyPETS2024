@@ -168,9 +168,9 @@ const viz = {
         this.drawThirdParty(x, y);
       }
 
-      if (node.shadow) {
-        this.drawShadow(x, y, radius);
-      }
+      // if (node.shadow) {
+      //   this.drawShadow(x, y, radius);
+      // }
 
       this.context.fillStyle = this.canvasColor;
       this.context.closePath();
