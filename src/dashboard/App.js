@@ -18,6 +18,7 @@ import FirstPartyList from  './FirstParties';
 import RecentPage from './Recent';
 import AboutPage from './About';
 import DebugPage from './Debug';
+import LightbeamWrapper from './LightbeamWrapper';
 import tt from '../helpers';
 import COLORS from '../colors';
 import './App.css';
@@ -44,6 +45,7 @@ const TTNavbar = () => {
           <NavLink to="/inferences" title="Inferences Sunburst"/>
           <NavLink to="/recent" title="Recent Activity"/>
           <NavLink to="/domains" title="Domains"/>
+          <NavLink to="/lightbeam" title="Lightbeam"/>
         </Nav>}
         <Nav pullRight>
           <NavLink to="/debug" title="Debug"/>
@@ -71,6 +73,7 @@ class App extends Component {
               <Route path="/trackers" component={TrackersList}/>
               <Route path="/domains" component={FirstPartyList}/>
               <Route path="/recent" component={RecentPage}/>
+              <Route path="/lightbeam" component={LightbeamWrapper}/>
             </div>}
 
             {!enoughData &&<Route exact path="/" component={WaitingDataHome}/>}
