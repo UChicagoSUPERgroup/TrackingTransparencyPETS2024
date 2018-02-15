@@ -8,7 +8,9 @@ const lightbeam = {
 
   async init() {
     const background = await browser.runtime.getBackgroundPage();
-    this.websites = await background.queryDatabase('lightbeam', {});
+    this.websites = await background.queryDatabase('lightbeam', {
+      afterDate: (Date.now() - 86400000) // 24 hours ago
+    });
     this.renderGraph();
     this.addListeners();
     this.updateVars();
