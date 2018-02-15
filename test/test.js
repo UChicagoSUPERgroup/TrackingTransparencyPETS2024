@@ -10,11 +10,27 @@ puppeteer.launch({
     '--user-agent=PuppeteerAgent'
   ]
 }).then(async browser => {
-  // ... do some testing ...
-  await runTests();
+  
+  // a hack to get id of current extension by loading options page and finding where it is displayed in texted
+  const page = await browser.newPage();
+  await page.goto('chrome://extensions');
+  const devToggle = await page.click('#toggle-dev-on');
+  const idHandle = await (await page.$('.extension-id'));
+  let id = await page.evaluate(body => body.textContent, idHandle);
+  id = id.trim();
+  const BASE_URL = 'chrome-extension://' + id + '/';
+
+  // do some testing on the extension
+  const background = await browser.newPage();
+  await background.goto(BASE_URL + '_generated_background_page.html');
+
+  const q = await background.evaluate(() => {
+    // return await window.queryDatabase('getPages', {});
+    // we can theoretically write code that runs inside the extension here?
+    // but I cannot currently figure this out
+  });
+  console.log(q);
+
+  // await runTests(id);
   await browser.close();
 });
-
-async function runTests() {
-    console.log('hi')
-}

@@ -20,10 +20,6 @@ let trackerMessageId = 0;
 /* WEB REQUEST/TAB LISTENERS */
 /* ========================= */
 
-browser.runtime.onInstalled.addListener(details => {
-  console.log(navigator.userAgent); // "PuppeteerAgent"
-});
-
 browser.webRequest.onBeforeRequest.addListener(
   logRequest,
   {urls: ['<all_urls>']}
