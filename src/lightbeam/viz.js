@@ -11,7 +11,7 @@ const viz = {
   collisionRadius: 10,
   chargeStrength: -100,
   tickCount: 100,
-  canvasColor: 'white',
+  canvasColor: '#155F83',
   alphaTargetStart: 0.1,
   alphaTargetStop: 0,
 

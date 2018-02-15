@@ -2,12 +2,12 @@
 /* ----------- VISUALIZATION ----------- */
 
 .links line {
-  stroke: #999;
-  stroke-opacity: 0.6;
+  stroke: #D6D6CE;
+  /* stroke-opacity: 0.6; */
 }
 
 .nodes circle {
-  stroke: #fff;
+  stroke: #767676;
   stroke-width: 1.5px;
 }
 
@@ -23,17 +23,15 @@
 }
 
 :root {
-  --primary-color: #000;
-  --secondary-color: #404850;
-  --tertiary-color: #eaeaea;
+  --primary-color: #fff;
+  --secondary-color: #767676;
+  --tertiary-color: #D6D6CE;
   --button-color: #171e25;
   --button-border-color: #12181b;
   --button-active-color: #73a4b8;
   --button-active-border-color: #6fc3e5;
   --primary-text-color: #eaeaea;
   --secondary-text-color: #73a4b8;
-  --dialog-header-color: #4cc7e6;
-  --dialog-button-color: #4cc7e6;
 }
 
 *::before, *::after, * {
@@ -209,10 +207,10 @@ main {
   position: absolute;
   z-index: 1;
   display: none;
-  background-color: #FFF;
+  background-color: #D6D6CE;
   color: #010203;
   padding: 5px 10px;
-  box-shadow: 0px 2px #4CC7E6;
+  box-shadow: 0px 2px #FFA319;
   border-radius: 5px;
 }
 
@@ -221,7 +219,7 @@ main {
   width: 0;
   height: 0;
   border: 10px solid transparent;
-  border-top: 10px solid #FFF;
+  border-top: 10px solid #FFA319;
   position: absolute;
   top: 100%;
   left: 50%;
@@ -251,60 +249,8 @@ main {
   margin-top: 0;
 }
 
-.website::before {
-  background-image: url('../images/lightbeam_icon_website.png');
-  /* opacity: .5; */
-}
-
-.help::before {
-  background-image: url('../images/lightbeam_icon_help.png');
-}
-
-.about::before {
-  background-image: url('../images/lightbeam_icon_about.png');
-}
-
 /* ----------- UI - vis Controls ----------- */
-footer {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr) minmax(150px, auto);
-  padding: 0 30px;
-}
 
-.footer-heading {
-  display: flex;
-  border-bottom: 1px solid var(--primary-text-color);
-  justify-content: space-between;
-}
-
-.footer-heading h2 {
-  padding-bottom: 5px;
-  color: var(--primary-text-color);
-}
-
-.footer-heading .hide {
-  text-transform: none;
-  font-weight: 400;
-}
-
-.footer-toggle {
-  grid-column: 1 / 5;
-}
-
-.footer-filter {
-  grid-column-start: 5;
-}
-
-.footer-toggle-buttons {
-  display: grid;
-  grid-column-gap: 10px;
-  grid-template-columns: repeat(3, minmax(auto, 150px));
-  grid-template-rows: repeat(3, 1fr);
-}
-
-.footer-toggle-buttons .connections {
-  grid-column-start: 1;
-}
 
 .visited-sites::before {
   background-image: url('data:image/svg+xml,<svg style="fill: rgb(234, 234, 234)" version="1.1" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="6"></circle></svg>');
