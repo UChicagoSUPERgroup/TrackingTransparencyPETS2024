@@ -29,7 +29,7 @@ class DebugPage extends React.Component {
       trackerFormField: 'Google',
       domainFormField: 'www.nytimes.com',
       inferenceFormField: 'Warehousing',
-      afterDateFormField: '2017-12-01',
+      afterDateFormField: '2018-01-01',
       countFormField: false,
       result: false,
       error: false,
