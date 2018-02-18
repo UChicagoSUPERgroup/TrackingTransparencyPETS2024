@@ -185,10 +185,10 @@ async function getTimestamps(args) {
   return await query.exec();
 }
 
-/** gets all timestaps for page visits for a specific inference
+/** gets all timestamps for page visits for a specific inference
  *
  * @param  {Object} args - arguments object
- * @param  {string} args.inference - tracker
+ * @param  {string} args.inference - inference
  * @param  {number} [args.count] - number of entries to return
  */
 async function getTimestampsByInference(args) {
@@ -200,6 +200,25 @@ async function getTimestampsByInference(args) {
     .where(lf.op.and(
       Inferences.pageId.eq(Pages.id),
       Inferences.inference.eq(args.inference)));
+  query = args.count ? query.limit(args.count) : query;
+  return await query.exec();
+}
+
+/** gets all timestamps for page visits for a specific tracker
+ *
+ * @param  {Object} args - arguments object
+ * @param  {string} args.tracker - tracker
+ * @param  {number} [args.count] - number of entries to return
+ */
+async function getTimestampsByTracker(args) {
+  if (!args.inference) {
+    throw new Error('Insufficient args provided for query');
+  }
+  let query = ttDb.select(Pages.id)
+    .from(Pages, Trackers)
+    .where(lf.op.and(
+      Trackers.pageId.eq(Pages.id),
+      Trackers.tracker.eq(args.tracker)));
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
 }
@@ -595,6 +614,7 @@ const QUERIES = {
   getTrackersByInference: getTrackersByInference,
   getTimestamps: getTimestamps,
   getTimestampsByInference: getTimestampsByInference,
+  getTimestampsByTracker: getTimestampsByTracker,
 
   getNumberOfPages: getNumberOfPages,
   getNumberOfTrackers: getNumberOfTrackers,
