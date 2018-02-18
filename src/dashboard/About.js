@@ -6,7 +6,24 @@ const AboutPage = () => (
     <p>
     Tracking is ubiquitous…
     </p>
-
+    <h2>How it works</h2>
+    <p>With this extension, we are trying to bring you more transparency about the world of
+    online tracking, analytics, and advertising. We track the trackers by looking for trackers
+    on all of the pages you visit while the extension is running. The extension keeps track of
+    where and when you encountered these trackers. All of this information is used to show you
+    personalized examples of how you interact with trackers in your normal activity.</p>
+    <p> insert: how we know what trackers are</p>
+    <p> insert: how we make inferences</p>
+    <p> insert: limits of our approach</p>
+    <p> insert: how it compares to other extensions- could be different approach</p>
+    <h2>Your privacy</h2>
+    <p>To show you the data that other companies could gather about your browsing behavior, our
+    extension also needs to log your behavior and page visits. All of your data is stored in a
+    local database on your device and so nobody, not even our team of researchers, has access to
+    your information. Your data stays on your computer and is never sent to another server.</p>
+    <h2>Who we are</h2>
+    <p>The Tracking Transparency extension was built by a team within the <a href="https://super.cs.uchicago.edu" target="_blank" rel="noopener noreferrer">University of Chicago SUPERgroup</a>. It was developed by Ben Weinshel, Claire Dolin, Shawn Shan, Euirim Choi, and Aaron Goldman. The project is advised by Prof. Blase Ur at the University of Chicago, Prof. Michelle L. Mazurek at the University of Maryland, and Lorrie Faith Cranor at Carnegie Mellon University.</p>
+    <p>Our source code is available on <a href="https://github.com/UChicagoSUPERgroup/trackingtransparency" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
   </div>
 );
 

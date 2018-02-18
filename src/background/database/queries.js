@@ -3,6 +3,8 @@
 import lf from 'lovefield';
 import _ from 'lodash';
 
+import trackerData from '../../data/trackers/companyData.json';
+
 import {primaryDbPromise, primarySchemaBuilder} from './setup';
 
 let ttDb;
@@ -51,10 +53,18 @@ async function getAllInferences() {
  * @param  {number} [args.count] - number of entries to return
  */
 async function getDomains(args) {
-  let query = ttDb.select(Pages.domain, lf.fn.count(lf.fn.distinct(Trackers.tracker)))
-    .from(Trackers, Pages)
-    .where(Trackers.pageId.eq(Pages.id))
-    .groupBy(Pages.domain)
+  let sel = ttDb.select(Pages.domain, lf.fn.count(lf.fn.distinct(Trackers.tracker)))
+    .from(Trackers, Pages);
+  let where;
+  if (args.afterDate) {
+    where = sel.where(lf.op.and(
+      Pages.id.gte(args.afterDate),
+      Trackers.pageId.eq(Pages.id)
+    ))
+  } else {
+    where = sel.where(Trackers.pageId.eq(Pages.id))
+  }
+  let query = where.groupBy(Pages.domain)
     .orderBy(lf.fn.count(lf.fn.distinct(Trackers.tracker)), lf.Order.DESC);
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
@@ -70,13 +80,24 @@ async function getTrackersByDomain(args) {
   if (!args.domain) {
     throw new Error('Insufficient args provided for query');
   }
-  let query = ttDb.select(Trackers.tracker, lf.fn.count(Pages.id))
-    .from(Trackers, Pages)
-    .where(lf.op.and(
+  let sel = ttDb.select(Trackers.tracker, lf.fn.count(Pages.id))
+    .from(Trackers, Pages);
+  let where;
+  if (args.afterDate) {
+    where = sel.where(lf.op.and(
+      Pages.id.gte(args.afterDate),
+      lf.op.and(
+        Trackers.pageId.eq(Pages.id),
+        Pages.domain.eq(args.domain)
+      ))
+    );
+  } else {
+    where = sel.where(lf.op.and(
       Trackers.pageId.eq(Pages.id),
       Pages.domain.eq(args.domain)
-    ))
-    .groupBy(Trackers.tracker)
+    ));
+  }
+  let query = where.groupBy(Trackers.tracker)
     .orderBy(lf.fn.count(Pages.id), lf.Order.DESC);
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
@@ -292,6 +313,76 @@ async function getDomainsByInference(args) {
   // return res.map(x => x.Pages.domain);
 }
 
+/**
+ * Inferences by domain (i.e. INFERENCES have been made on DOMAIN)
+ * @param {Object} args - args object
+ * @param {string} args.domain - domain
+ * @returns {string[]} array of inferences 
+ */
+async function getInferencesByDomain(args) {
+  let query = ttDb.select(Inferences.inference)
+    .from(Pages, Inferences)
+    .where(lf.op.and(
+      Inferences.pageId.eq(Pages.id),
+      Pages.domain.eq(args.domain)
+      //.groupBy(Inferences.inference)
+      //.orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC);
+    ))
+   //return await query.exec();
+   
+  let qRes = await query.exec();
+
+  let merged = _.reduce(qRes, function(result, value, index) {
+    const inference = value.Inferences.inference;
+    if (result[inference]) {
+      result[inference]++;
+    } else {
+      result[inference] = 1;
+    }
+    return result;
+  }, {});
+
+  return merged;  
+}
+
+
+/**
+ * get Titles on DOMAIN where INFERENCE made
+ * @param {Object} args - args object
+ * @param {string} args.domain - domain
+ * @param {string} args.inference - inference
+ * @returns {string[]} array of titles
+ *
+ * e.g. show titles on DICTIONARY.COM where REFERENCE INFERENCE made  
+ * this may help on inferencingSunburst, so when you click on a Top Site, you can see titles drop domain 
+ *
+ */
+async function getTitlesbyInferenceAndDomain(args) {
+  let query = ttDb.select(Pages.title)
+    .from(Pages, Inferences)
+    .where(lf.op.and(
+      Inferences.pageId.eq(Pages.id),
+      Inferences.inference.eq(args.inference),
+      Pages.domain.eq(args.domain)
+    ));
+   // .groupBy(Pages.title)
+   // .orderBy(lf.fn.count(Pages.title), lf.Order.DESC);
+  
+  let qRes = await query.exec();
+
+  let merged = _.reduce(qRes, function(result, value, index) {
+    const title = value.Pages.title;
+    if (result[title]) {
+      result[title]++;
+    } else {
+      result[title] = 1;
+    }
+    return result;
+  
+  }, {});
+  return merged;
+}
+
 
 /* OLD QUERIES */
 /* ======= */
@@ -313,6 +404,77 @@ async function getPageVisitCountByTracker(args) {
 }
 
 
+/* simulates lighbeam */
+async function lightbeam(args) {
+  // this is very inefficient code but is easier to hack together this way
+
+  /* WE WANT TO RETURN
+    {
+      "www.firstpartydomain.com": {
+        favicon: "http://blah...",
+        firstParty: true,
+        firstPartyHostnames: false,
+        hostname: "www.firstpartydomain.com",
+        thirdParties: [
+          "www.thirdpartydomain.com"
+        ]
+      },
+      "www.thirdpartydomain.com": {
+        favicon: "",
+        firstParty: false,
+        firstPartyHostnames: [
+          "www.firstpartydomain.com"
+        ],
+        hostname: "www.thirdpartydomain.com",
+        thirdParties: []
+      }
+    }
+    */
+  let websites = {};
+
+  const domains = (await getDomains({afterDate: args.afterDate})).map(x => x['Pages']['domain']);
+
+  await Promise.all(domains.map(async (domain) => {
+    const trackers = (await getTrackersByDomain({domain: domain, afterDate: args.afterDate}))
+      .map(x => {
+        const company = x['Trackers']['tracker'];
+        return trackerData[company].domain;
+      });
+    
+    if (websites[domain]) {
+      websites[domain].firstParty = true;
+      websites[domain].thirdParties.concat(trackers);
+    } else {
+      websites[domain] = {
+        favicon: '',
+        firstParty: true,
+        firstPartyHostnames: false,
+        hostname: domain,
+        thirdParties: trackers
+      }
+    }
+
+    for (let tracker of trackers) {
+      if (websites[tracker]) {
+        if (websites[tracker].firstPartyHostnames) {
+          websites[tracker].firstPartyHostnames.push(domain);
+        } else {
+          websites[tracker].firstPartyHostnames = [domain];
+        }
+      } else {
+        websites[tracker] = {
+          favicon: '',
+          firstParty: false,
+          firstPartyHostnames: [domain],
+          hostname: tracker,
+          thirdParties: []
+        }
+      }
+    }
+  }));
+
+  return websites;
+}
 
 
 
@@ -387,33 +549,6 @@ async function getPages(args) {
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
 }
-
-
-/**
- * get domains by tracker count for debugging the next two methods
- * only distinct from getDomains() in that it returns pages with null trackers and is ordered in reverse
- * use as is to debug getDomainsNoTrackers()
- * swap in .groupBy(Pages.id) for .groupBy(Pages.domain) to debug getPagesNoTrackers()
- *
- */
-
-/*
-async function getNullTrackers(args) {
-  let query = ttDb.select(Pages.domain, lf.fn.count(Trackers.tracker))
-    .from(Pages)
-    .leftOuterJoin(Trackers, Pages.id.eq(Trackers.pageId))
-    .groupBy(Pages.domain)
-    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.ASC);
-//      query = args.count ? query.limit(args.count) : query;
-    return await query.exec()
-}
-*/
-
-/**
- * returns an array of pages where there were no trackers
- *
- *
- */
 
 async function getPagesNoTrackers(args) {
   let query = ttDb.select(Pages.domain, lf.fn.count(Trackers.tracker))
@@ -588,6 +723,55 @@ async function getInferenceCount(args) {
   return res;
 }
 
+/**
+ * get domains by visit (not tracker) count 
+ *
+ *
+ */
+
+async function getDomainVisits(args) {
+   let query = ttDb.select(Pages.domain, lf.fn.count(Pages.domain))
+	.from(Pages)
+	.groupBy(Pages.domain)
+	.orderBy(lf.fn.count(Pages.domain), lf.Order.DESC);
+
+  query = args.count ? query.limit(args.count) : query;
+  return await query.exec();
+}
+
+/** 
+ * gets all titles 
+ * 
+ * 
+ */
+
+
+async function getTitles(args) {
+   let query = ttDb.select(Pages.title, lf.fn.count(Pages.title))
+	.from(Pages)
+	.groupBy(Pages.title)
+	.orderBy(lf.fn.count(Pages.title), lf.Order.DESC);	
+   query = args.count ? query.limit(args.count) : query;
+   return await query.exec();
+}
+
+/**
+ * get titles seen on a given domain
+ * 
+ *
+ */
+   
+async function getTitlesByDomain(args) {
+   let query = ttDb.select(Pages.title, lf.fn.count(Pages.title))
+        .from(Pages)
+        .where(Pages.domain.eq(args.domain))
+        .groupBy(Pages.title)
+        .orderBy(lf.fn.count(Pages.title), lf.Order.DESC);
+   query = args.count ? query.limit(args.count) : query;
+   return await query.exec();
+}
+
+
 /** erases all entries in database
  */
 async function emptyDB() {
@@ -620,8 +804,12 @@ const QUERIES = {
   getNumberOfTrackers: getNumberOfTrackers,
   getNumberOfInferences: getNumberOfInferences,
 
+  getInferencesByDomain: getInferencesByDomain,
   getDomainsByInference: getDomainsByInference,
-    getDomainsByTracker: getDomainsByTracker,
+  getTitlesbyInferenceAndDomain: getTitlesbyInferenceAndDomain,  
+  getDomainsByTracker: getDomainsByTracker,
+
+  lightbeam: lightbeam,
 
   // old
   getPageVisitCountByTracker: getPageVisitCountByTracker,
@@ -632,11 +820,13 @@ const QUERIES = {
   getPagesByTrackerAndDomain: getPagesByTrackerAndDomain,
   getTrackerWithInferencesByDomain: getTrackerWithInferencesByDomain,
   getInfoAboutTracker: getInfoAboutTracker,
-  // getNullTrackers: getNullTrackers,
   getPagesNoTrackers: getPagesNoTrackers,
   getDomainsNoTrackers: getDomainsNoTrackers,
   getInferencesByTrackerCount: getInferencesByTrackerCount,
   getInferenceCount: getInferenceCount,
+  getDomainVisits: getDomainVisits,
+  getTitles: getTitles,
+  getTitlesByDomain: getTitlesByDomain,
   emptyDB: emptyDB
 };
 
