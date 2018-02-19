@@ -232,7 +232,7 @@ async function getTimestampsByInference(args) {
  * @param  {number} [args.count] - number of entries to return
  */
 async function getTimestampsByTracker(args) {
-  if (!args.inference) {
+  if (!args.tracker) {
     throw new Error('Insufficient args provided for query');
   }
   let query = ttDb.select(Pages.id)
@@ -317,7 +317,7 @@ async function getDomainsByInference(args) {
  * Inferences by domain (i.e. INFERENCES have been made on DOMAIN)
  * @param {Object} args - args object
  * @param {string} args.domain - domain
- * @returns {string[]} array of inferences 
+ * @returns {string[]} array of inferences
  */
 async function getInferencesByDomain(args) {
   let query = ttDb.select(Inferences.inference)
@@ -329,7 +329,7 @@ async function getInferencesByDomain(args) {
       //.orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC);
     ))
    //return await query.exec();
-   
+
   let qRes = await query.exec();
 
   let merged = _.reduce(qRes, function(result, value, index) {
@@ -342,7 +342,7 @@ async function getInferencesByDomain(args) {
     return result;
   }, {});
 
-  return merged;  
+  return merged;
 }
 
 
@@ -353,8 +353,8 @@ async function getInferencesByDomain(args) {
  * @param {string} args.inference - inference
  * @returns {string[]} array of titles
  *
- * e.g. show titles on DICTIONARY.COM where REFERENCE INFERENCE made  
- * this may help on inferencingSunburst, so when you click on a Top Site, you can see titles drop domain 
+ * e.g. show titles on DICTIONARY.COM where REFERENCE INFERENCE made
+ * this may help on inferencingSunburst, so when you click on a Top Site, you can see titles drop domain
  *
  */
 async function getTitlesbyInferenceAndDomain(args) {
@@ -367,7 +367,7 @@ async function getTitlesbyInferenceAndDomain(args) {
     ));
    // .groupBy(Pages.title)
    // .orderBy(lf.fn.count(Pages.title), lf.Order.DESC);
-  
+
   let qRes = await query.exec();
 
   let merged = _.reduce(qRes, function(result, value, index) {
@@ -378,7 +378,7 @@ async function getTitlesbyInferenceAndDomain(args) {
       result[title] = 1;
     }
     return result;
-  
+
   }, {});
   return merged;
 }
@@ -440,7 +440,7 @@ async function lightbeam(args) {
         const company = x['Trackers']['tracker'];
         return trackerData[company].domain;
       });
-    
+
     if (websites[domain]) {
       websites[domain].firstParty = true;
       websites[domain].thirdParties.concat(trackers);
@@ -724,7 +724,7 @@ async function getInferenceCount(args) {
 }
 
 /**
- * get domains by visit (not tracker) count 
+ * get domains by visit (not tracker) count
  *
  *
  */
@@ -739,10 +739,10 @@ async function getDomainVisits(args) {
   return await query.exec();
 }
 
-/** 
- * gets all titles 
- * 
- * 
+/**
+ * gets all titles
+ *
+ *
  */
 
 
@@ -750,17 +750,17 @@ async function getTitles(args) {
    let query = ttDb.select(Pages.title, lf.fn.count(Pages.title))
 	.from(Pages)
 	.groupBy(Pages.title)
-	.orderBy(lf.fn.count(Pages.title), lf.Order.DESC);	
+	.orderBy(lf.fn.count(Pages.title), lf.Order.DESC);
    query = args.count ? query.limit(args.count) : query;
    return await query.exec();
 }
 
 /**
  * get titles seen on a given domain
- * 
+ *
  *
  */
-   
+
 async function getTitlesByDomain(args) {
    let query = ttDb.select(Pages.title, lf.fn.count(Pages.title))
         .from(Pages)
@@ -806,7 +806,7 @@ const QUERIES = {
 
   getInferencesByDomain: getInferencesByDomain,
   getDomainsByInference: getDomainsByInference,
-  getTitlesbyInferenceAndDomain: getTitlesbyInferenceAndDomain,  
+  getTitlesbyInferenceAndDomain: getTitlesbyInferenceAndDomain,
   getDomainsByTracker: getDomainsByTracker,
 
   lightbeam: lightbeam,
