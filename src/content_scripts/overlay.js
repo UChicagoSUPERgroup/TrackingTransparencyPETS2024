@@ -16,24 +16,28 @@ export default async function injectOverlay() {
 
   var overlay = document.createElement('div');
 
-  // var p = document.createElement("p");
-  // overlay.appendChild(p);
+  // note that we are using the CHROME api and not the BROWSER api
+  // because the webextension polyfill does NOT work with sending a response because of reasons
+  // so we have to use callbacks :(
+  chrome.runtime.sendMessage({ type: 'getTabData' }, (tabData) => {
+    if (!tabData) {
+      throw new Error('no tab data');
+    }
 
-  // let response = await browser.runtime.sendMessage({ type: 'queryDatabase', query: 'getTrackers', args: {count: 5} });
-  // console.log(response);
+    overlay.id = 'trackingtransparency_overlay';
+    overlay.innerHTML += '<div class="tt_closebutton"></div>'
 
-  const tabData = await browser.runtime.sendMessage({ type: 'getTabData' });
+    if (tabData.trackers.length > 0) {
+      overlay.innerHTML += tabData.trackers[0] + ' and ' + (tabData.trackers.length - 1) + ' other trackers are on this page.';
+    } else {
+      overlay.innerHTML += 'There are no trackers on this page!';
+    }
 
-  if (!tabData) {
-    throw new Error('no tab data');
-  }
-
-  overlay.id = 'trackingtransparency_overlay';
-  overlay.innerHTML += '<div class="tt_closebutton"></div>'
-  overlay.innerHTML += tabData.trackers[0] + ' and ' + (tabData.trackers.length - 1) + ' other trackers are on this page.';
-
-  document.body.appendChild(overlay);
-  overlay.onclick = (() => {
-    overlay.parentElement.removeChild(overlay);
+    document.body.appendChild(overlay);
+    overlay.onclick = (() => {
+      overlay.parentElement.removeChild(overlay);
+    });
   });
+
+  
 }

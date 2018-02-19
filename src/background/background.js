@@ -157,8 +157,10 @@ async function updateTrackers(tabId) {
 /* INTRA-EXTENSION MESSAGE LISTENERS */
 /* ================================= */
 
-// browser.runtime.onConnect.addListener(runtimeOnConnect);
-browser.runtime.onMessage.addListener(runtimeOnMessage);
+// note that we are using the CHROME api and not the BROWSER api
+// because the webextension polyfill does NOT work with sending a response because of reasons
+chrome.runtime.onMessage.addListener(runtimeOnMessage);
+
 databaseWorker.onmessage = onDatabaseWorkerMessage;
 trackersWorker.onmessage = onTrackersWorkerMessage;
 
@@ -377,7 +379,7 @@ function onTrackersWorkerMessage(m) {
  * @param  {Object} sendResponse - callback to send a response to caller
  * 
  */
-function runtimeOnMessage(message, sender) {
+function runtimeOnMessage(message, sender, sendResponse) {
   let pageId;
   let query, tabDataRes;
   // sendResponse('swhooo');
@@ -399,18 +401,16 @@ function runtimeOnMessage(message, sender) {
     break;
     
   case 'queryDatabase':
-    return queryDatabase(message.query, message.args);
+    query = queryDatabase(message.query, message.args);
+    query.then(res => sendResponse(res));
+    return true; // must do since calling sendResponse asynchronously
 
   case 'getTabData':
-    return getTabData(sender.tab.id);
+    tabDataRes = getTabData(sender.tab.id);
+    tabDataRes.then(res => sendResponse(res));
+    return true; // must do since calling sendResponse asynchronously
   }
 
-}
-
-// if you want to send a response that is not an async function
-// return runtimeMessageResponse('foo')
-function runtimeMessageResponse(response) {
-  return new Promise((resolve) => resolve(response));
 }
 
 /* OTHER MISCELLANEOUS FUNCTIONS */
