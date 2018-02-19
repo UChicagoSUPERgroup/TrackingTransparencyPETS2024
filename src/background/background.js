@@ -157,8 +157,10 @@ async function updateTrackers(tabId) {
 /* INTRA-EXTENSION MESSAGE LISTENERS */
 /* ================================= */
 
-// browser.runtime.onConnect.addListener(runtimeOnConnect);
-browser.runtime.onMessage.addListener(runtimeOnMessage);
+// note that we are using the CHROME api and not the BROWSER api
+// because the webextension polyfill does NOT work with sending a response because of reasons
+chrome.runtime.onMessage.addListener(runtimeOnMessage);
+
 databaseWorker.onmessage = onDatabaseWorkerMessage;
 trackersWorker.onmessage = onTrackersWorkerMessage;
 
@@ -371,11 +373,6 @@ function onTrackersWorkerMessage(m) {
 /** 
  * listener function for messages from content script
  * 
- * this function can NOT be an async function - if it is sendResponse won't work
- * 
- * if the response is the result of an async function (like queryDatabase),
- * you must put sendRsponse in .then(), and also have the original function return true
- * 
  * @param  {Object} message
  * @param {string} message.type - message type
  * @param  {Object} sender
@@ -384,7 +381,7 @@ function onTrackersWorkerMessage(m) {
  */
 function runtimeOnMessage(message, sender, sendResponse) {
   let pageId;
-  let query;
+  let query, tabDataRes;
   // sendResponse('swhooo');
   switch (message.type) {
   case 'parsed_page':
@@ -405,14 +402,16 @@ function runtimeOnMessage(message, sender, sendResponse) {
     
   case 'queryDatabase':
     query = queryDatabase(message.query, message.args);
-    query.then(res => { // cannot use async/await
-      sendResponse(res);
-    });
-    return true; // this tells browser that we will call sendResponse asynchronously
+    query.then(res => sendResponse(res));
+    return true; // must do since calling sendResponse asynchronously
+
+  case 'getTabData':
+    tabDataRes = getTabData(sender.tab.id);
+    tabDataRes.then(res => sendResponse(res));
+    return true; // must do since calling sendResponse asynchronously
   }
 
 }
-
 
 /* OTHER MISCELLANEOUS FUNCTIONS */
 /* ============================= */

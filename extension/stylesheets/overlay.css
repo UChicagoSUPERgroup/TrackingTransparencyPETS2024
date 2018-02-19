@@ -13,6 +13,8 @@
 	background-color: #D6D6CE;
 	opacity: 0.9;
 	animation: fadein 0.5s;
+    font: 10pt sans-serif;
+    overflow-wrap: break-word;
 }
 
 @keyframes fadein {
@@ -20,10 +22,6 @@
     to   { opacity: 0.9; }
 }
 
-
-#trackingtransparency_overlay p {
-	font: 10pt sans-serif;
-}
 
 /* credit: https://jsfiddle.net/elin/67sw12rL/ */
 #trackingtransparency_overlay .tt_closebutton {
