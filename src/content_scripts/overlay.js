@@ -18,10 +18,19 @@ export default async function injectOverlay() {
 
   // var p = document.createElement("p");
   // overlay.appendChild(p);
+
+  // let response = await browser.runtime.sendMessage({ type: 'queryDatabase', query: 'getTrackers', args: {count: 5} });
+  // console.log(response);
+
+  const tabData = await browser.runtime.sendMessage({ type: 'getTabData' });
+
+  if (!tabData) {
+    throw new Error('no tab data');
+  }
+
   overlay.id = 'trackingtransparency_overlay';
-  overlay.innerHTML = `<div class="tt_closebutton"></div>
-  <p>Tracking Transparency is tracking the trackers!</p>
-  `;
+  overlay.innerHTML += '<div class="tt_closebutton"></div>'
+  overlay.innerHTML += tabData.trackers[0] + ' and ' + (tabData.trackers.length - 1) + ' other trackers are on this page.';
 
   document.body.appendChild(overlay);
   overlay.onclick = (() => {

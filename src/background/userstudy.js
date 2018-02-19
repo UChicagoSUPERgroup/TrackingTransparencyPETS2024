@@ -9,7 +9,7 @@ async function setDefaultOptions() {
     popupCondition = 'full';
     infopageCondition = 'full';
     inferencingCondition = 'full';
-    overlayCondition = 'none';
+    overlayCondition = 'full';
   } else {
     popupCondition = 'none';
     infopageCondition = 'none';
