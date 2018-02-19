@@ -4,7 +4,7 @@ import ReactTable from 'react-table'
 import "../../node_modules/react-table/react-table.css";
 
 import {
-  XYPlot,
+  FlexibleWidthXYPlot,
   XAxis,
   YAxis,
   HorizontalGridLines,
@@ -137,9 +137,8 @@ class TrackersList extends React.Component {
           present on <em>{topPercent}%</em> of
           the pages you visit.
           Here are your 20 most frequently encountered trackers:</p>
-        <XYPlot
+        <FlexibleWidthXYPlot
           xType={'ordinal'}
-          width={1000}
           height={350}
           margin={{left: 50, right: 10, top: 10, bottom: 70}}>
           <HorizontalGridLines />
@@ -150,7 +149,7 @@ class TrackersList extends React.Component {
           <YAxis
             tickFormat={v => v.toString() + "%"} />
           <VerticalBarSeries data={data} color="#8F3931"/>
-        </XYPlot>
+        </FlexibleWidthXYPlot>
         {TrackerTable(allData)}
       </div>
     );
