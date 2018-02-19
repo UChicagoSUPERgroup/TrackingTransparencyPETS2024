@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 import {Grid, Row, Col} from 'react-bootstrap';
+import _ from 'lodash';
 import {
   FlexibleWidthXYPlot,
   XAxis,
@@ -10,7 +11,7 @@ import {
   LineSeries
 } from 'react-vis';
 
-import companyData from '../data/trackers/companyData.json';
+//import companyData from '../data/trackers/companyData.json';
 // companyData['Criteo'].type -> "Advertising"
 
 const DomainTable = (data) => {
@@ -65,28 +66,56 @@ export default class TrackerDetailPage extends React.Component {
     const inferences = await background.queryDatabase('getInferencesByTracker', queryObj);
     const domains = await background.queryDatabase('getDomainsByTracker', queryObj);
     const timestamps = await background.queryDatabase('getTimestampsByTracker', queryObj);
-    //const totalPages = await background.queryDatabase('getDomainsByTracker')
+    const times2 = timestamps.map(x => (
+      (new Date(x.Pages.id))));
     this.setState({
       inferences: inferences,
       domains: domains,
+      times: times2,
       timestamps: timestamps
     });
-    console.log(inferences);
-    console.log(domains);
-    console.log(timestamps);
+
   }
 
   render() {
     const domains = this.state.domains;
     const inferences = this.state.inferences;
+    const times = this.state.times;
+    const timestamps = this.state.timestamps;
     let numDomains = 0;
     let numInferences = 0;
+    let firstDay = 0;
+    let msInDay = 86400000;
+    var data = [];
     if (domains) {
       numDomains = domains.length;
     }
     if (inferences) {
       numInferences = inferences.length;
     }
+    if (timestamps && times) {
+      firstDay = new Date(times[0].getFullYear(), times[0].getMonth(), times[0].getDate());
+      firstDay = firstDay.getTime();
+      let grouped;
+      grouped = _.groupBy(timestamps, t => Math.floor((parseInt(t.Pages.id) - firstDay) / msInDay));
+      for (let day in grouped) {
+        var tempDay = new Date((day * msInDay) + firstDay);
+        data.push({
+          x: parseInt(day),
+          y: grouped[day].length,
+          label: tempDay.toDateString()
+        });
+      }
+    }
+    console.log(data);
+
+    var dataLabel = function(v) {
+      if(data[v]){
+        return data[v].label;
+      }
+      return v;
+    }
+
     return (
       <div>
         <p>Tracker detail page. Min/Claire is working on this page.</p>
@@ -107,19 +136,24 @@ export default class TrackerDetailPage extends React.Component {
           </Row>
           <Row>
             <Col md={12}>
-            <FlexibleWidthXYPlot
-              height={300}>
-              <HorizontalGridLines />
-              <LineSeries
-                color="red"
-                data={[
-                  {x: 1, y: 10},
-                  {x: 2, y: 5},
-                  {x: 3, y: 15}
-                ]}/>
-              <XAxis title="X" />
-              <YAxis />
-            </FlexibleWidthXYPlot>
+              <h2>When have you seen {this.tracker} trackers?</h2>
+              <FlexibleWidthXYPlot
+                height={400}
+                margin={{left: 100, right: 10, top: 10, bottom: 100}}>
+                <HorizontalGridLines />
+                <LineSeries
+                  color="#8F3931"
+                  data={data}/>
+                <XAxis
+                  height={100}
+                  tickFormat={dataLabel}
+                  tickLabelAngle={-30}/>
+                <YAxis />
+              </FlexibleWidthXYPlot>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12}>
             </Col>
           </Row>
         </Grid>
