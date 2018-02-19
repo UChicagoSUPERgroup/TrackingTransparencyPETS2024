@@ -122,8 +122,9 @@ export default class TrackerDetailPage extends React.Component {
         <h2>{this.tracker}</h2>
         <p>You have encountered trackers
             from {this.tracker} on <em>{numDomains}</em> different
-            domains. We have found <em>{numInferences}</em> inferences
-            that {this.tracker} may have made about you, based on your browsing.
+            domains. The Tracking Transparency extension has
+            found <em>{numInferences}</em> inferences
+            that {this.tracker} may have made about you.
             </p>
         <Grid>
           <Row>
