@@ -446,7 +446,7 @@ async function lightbeam(args) {
       websites[domain].thirdParties.concat(trackers);
     } else {
       websites[domain] = {
-        favicon: '',
+        favicon: 'http://' + domain + '/favicon.ico',
         firstParty: true,
         firstPartyHostnames: false,
         hostname: domain,
