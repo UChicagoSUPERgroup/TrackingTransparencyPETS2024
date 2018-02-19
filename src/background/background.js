@@ -371,20 +371,15 @@ function onTrackersWorkerMessage(m) {
 /** 
  * listener function for messages from content script
  * 
- * this function can NOT be an async function - if it is sendResponse won't work
- * 
- * if the response is the result of an async function (like queryDatabase),
- * you must put sendRsponse in .then(), and also have the original function return true
- * 
  * @param  {Object} message
  * @param {string} message.type - message type
  * @param  {Object} sender
  * @param  {Object} sendResponse - callback to send a response to caller
  * 
  */
-function runtimeOnMessage(message, sender, sendResponse) {
+function runtimeOnMessage(message, sender) {
   let pageId;
-  let query;
+  let query, tabDataRes;
   // sendResponse('swhooo');
   switch (message.type) {
   case 'parsed_page':
@@ -404,15 +399,19 @@ function runtimeOnMessage(message, sender, sendResponse) {
     break;
     
   case 'queryDatabase':
-    query = queryDatabase(message.query, message.args);
-    query.then(res => { // cannot use async/await
-      sendResponse(res);
-    });
-    return true; // this tells browser that we will call sendResponse asynchronously
+    return queryDatabase(message.query, message.args);
+
+  case 'getTabData':
+    return getTabData(sender.tab.id);
   }
 
 }
 
+// if you want to send a response that is not an async function
+// return runtimeMessageResponse('foo')
+function runtimeMessageResponse(response) {
+  return new Promise((resolve) => resolve(response));
+}
 
 /* OTHER MISCELLANEOUS FUNCTIONS */
 /* ============================= */
