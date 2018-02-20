@@ -159,12 +159,18 @@ async function getInferencesByTracker(args) {
  *
  * @param  {Object} args - arguments object
  * @param  {number} [args.count] - number of entries to return
+ * @param  {number} [args.afterDate]
  */
 async function getInferences(args) {
   let query = ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
-    .from(Inferences)
+    .from(Inferences);
+
+  query = args.afterDate ? query.where(Inferences.pageId.gte(args.afterDate)) : query;
+
+  query = query
     .groupBy(Inferences.inference)
     .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC);
+
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
 }
