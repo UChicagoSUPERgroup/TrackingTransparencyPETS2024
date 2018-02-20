@@ -1,7 +1,9 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
-import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import {
+  ToggleButtonGroup, ToggleButton, 
+  Grid, Row, Col
+} from 'react-bootstrap';
 
 import tt from '../helpers';
 import sensitiveCats from '../data/categories_comfort_list.json';
@@ -17,11 +19,14 @@ class InferencesPage extends React.Component {
     this.inferenceCount = 100;
     this.state = {
       selectedInference: false,
-      inferences: null
+      inferences: null,
+      sensitivitySelection: 'all-sensitive',
+      dateSelection: 'all-dates'
     };
 
     this.handleSunburstSelection = this.handleSunburstSelection.bind(this);
     this.handleSensitivitySelection = this.handleSensitivitySelection.bind(this);
+    this.handleDateSelection = this.handleDateSelection.bind(this);
     this.handleInferenceLinkClick = this.handleInferenceLinkClick.bind(this);
   }
 
@@ -49,8 +54,7 @@ class InferencesPage extends React.Component {
     this.setState({selectedInference: inference});
   }
 
-  async handleSensitivitySelection(e) {
-    const key = e.target.attributes.getNamedItem('data-key').value;
+  async handleSensitivitySelection(key) {
 
     let cats;
 
@@ -61,7 +65,9 @@ class InferencesPage extends React.Component {
       // reset to default
       this.setState({
         inferences: this.topInferences,
-        selectedInference: false
+        selectedInference: false,
+        sensitivitySelection: key,
+        dateSelection: 'all-dates'
       })
       return;
 
@@ -92,7 +98,37 @@ class InferencesPage extends React.Component {
 
     this.setState({
       inferences: data,
-      selectedInference: false
+      selectedInference: false,
+      sensitivitySelection: key,
+      dateSelection: 'all-dates'
+    })
+  }
+
+  async handleDateSelection(key) {
+
+    let afterDate;
+
+    const background = await browser.runtime.getBackgroundPage();
+
+    if (key === 'all-dates') {
+      // reset to default
+      afterDate = 0;
+
+    } else if (key === 'past-24') {
+      afterDate = Date.now() - 86400000;
+
+    } else if (key === 'past-week') {
+      afterDate = Date.now() - 86400000 * 7;
+    }
+
+    console.log(key)
+    const data = await background.queryDatabase('getInferences', {count: this.inferenceCount, afterDate: afterDate});
+
+    this.setState({
+      inferences: data,
+      selectedInference: false,
+      sensitivitySelection: 'all-sensitive',
+      dateSelection: key
     })
   }
 
@@ -123,18 +159,41 @@ class InferencesPage extends React.Component {
               </ul>
             </div>} */}
 
-            <div>
-              <h3>Filters</h3>
-              <p>Sensitivity: <ButtonGroup onClick={this.handleSensitivitySelection}>
-                <Button data-key='all-sensitive'>All Inferences</Button>
-                <Button data-key='less-sensitive'>Less Sensitive Inferences</Button>
-                <Button data-key='more-sensitive'>Sensitive Inferences</Button>
-              </ButtonGroup></p>
-            </div>
+            <Grid>
+              <Row>
+                <Col md={6} mdPush={6}>
+                  <div className={'inferences-sunburst-filters'}>
+                    <h3>Filters</h3>
+                    <div className={'filter-row'}>Inferences sensitivity: <ToggleButtonGroup 
+                      name="sensitivity-filter" 
+                      value={this.state.sensitivitySelection}
+                      onChange={this.handleSensitivitySelection}
+                      defaultValue={'all-sensitive'}>
+                      <ToggleButton value={'all-sensitive'} bsSize="small">All inferences</ToggleButton>
+                      <ToggleButton value={'less-sensitive'} bsSize="small">Less sensitive</ToggleButton>
+                      <ToggleButton value={'more-sensitive'} bsSize="small">More sensitive</ToggleButton>
+                    </ToggleButtonGroup></div>
+                    <div className={'filter-row'}>Recency of inferences: <ToggleButtonGroup 
+                      name="date-filter" 
+                      value={this.state.dateSelection}
+                      onChange={this.handleDateSelection}
+                      defaultValue={'all-dates'}>
+                      <ToggleButton value={'all-dates'} bsSize="small">Since you installed the plugin</ToggleButton>
+                      <ToggleButton value={'past-24'} bsSize="small">Last 24 hours</ToggleButton>
+                      <ToggleButton value={'past-week'} bsSize="small">Last week</ToggleButton>
+                    </ToggleButtonGroup></div>
+                  </div>
 
-            {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference}/>}
+                  <p className={'selected-inference'}><em>{selectedInference ? 'Click on the diagram to unselect the current category' : 'Click a category to see more information'}</em></p>
+                  <p><strong><Link to={{pathname: '/inferences/' + selectedInference}}>{selectedInference}</Link></strong></p>
+                </Col>
+                <Col md={6} mdPull={6}>
+                  {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference}/>}
+                </Col>
+              </Row>
+            </Grid>
 
-            {selectedInference && <InferenceDetails inference={selectedInference}/>}
+            {/* {selectedInference && <InferenceDetails inference={selectedInference}/>} */}
             {/* {this.state.inferences && <InferencesSunburst inferencesList={this.state.inferences}/>} */}
             {/* <InferencesSunburst inferencesList={this.state.inferences}/> */}
             {/* {this.state.inferences.map(inference => InferencesListItem(inference))} */}
