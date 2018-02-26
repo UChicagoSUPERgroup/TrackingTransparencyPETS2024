@@ -1,8 +1,60 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ReactTable from 'react-table';
+import {Grid, Row, Col} from 'react-bootstrap';
+
 
 import PagesTimeChart from './PagesTimeChart';
 import PagesTimeScatterplot from './PagesTimeScatterplot';
+
+
+const SiteTable = (data) => {
+  return (
+    <ReactTable
+      data={data}
+      columns={[
+        {Header: "Site",
+         accessor: "domain",
+         Cell: row => (
+           <div key={row.value}>
+              <Link to={{pathname: '/domains/' + row.value}}>
+                 {row.value}
+              </Link>
+           </div>)
+        },
+        {Header: "Page Visits",
+         accessor: "count"},
+      ]}
+      defaultPageSize={20}
+      className="-striped -highlight"
+    />
+  );
+}
+
+const TrackerTable = (data) => {
+  return (
+    <ReactTable
+      data={data}
+      columns={[
+        {Header: "Trackers",
+         accessor: "tracker",
+         Cell: row => (
+           <div key={row.value}>
+              <Link to={{pathname: '/trackers/' + row.value}}>
+                 {row.value}
+              </Link>
+           </div>)
+        },
+        {Header: "Page Visits",
+         accessor: "count"},
+      ]}
+      defaultPageSize={20}
+      className="-striped -highlight"
+    />
+  );
+}
+
+
 
 class InferenceDetails extends React.Component {
   constructor(props) {
@@ -87,39 +139,35 @@ class InferenceDetails extends React.Component {
     } else {
       content = (
         <div>
-
-          {topSites && <div>
-            <h3>Top Sites</h3>
-            <p>Words…</p>
-            <ol>
-              {topSites.map(site => (
-                <li key={site.domain}>
-                  <Link to={{pathname: '/domains/' + site}}>{site.domain}</Link> ({site.count} page visits)
-                </li>
-              ))}
-            </ol>
-          </div>}
-
-          {trackers && trackers.length > 0 && <div>
-            <h3>Trackers</h3>
-            <p>Words…</p>
-            <ol>
-              {trackers.map(t => (
-                <li key={t.tracker}>
-                  <Link to={{pathname: '/trackers/' + t.tracker}}>{t.tracker}</Link> ({t.count} page visits)
-                </li>
-              ))}
-            </ol>
-          </div>}
-
-          {timestamps && timestamps.length > 1 && <div>
-            <h3>Time</h3>
-            <PagesTimeChart timestamps={timestamps}/>
-            <br/>
-            <PagesTimeScatterplot timestamps={timestamps}/>
-          </div>}
-          {/* <pre>{JSON.stringify(trackers, null, '\t')}</pre> */}
-
+          <Grid>
+            <Row>
+              <Col md={6} mdPush={6}>
+                {topSites && <div>
+                  <h3>Top Sites</h3>
+                  <p>Words…</p>
+                  {SiteTable(topSites)}
+                </div>}
+              </Col>
+              <Col md={6} mdPull={6}>
+                {trackers && trackers.length > 0 && <div>
+                  <h3>Trackers</h3>
+                  <p>Words…</p>
+                  {TrackerTable(trackers)}
+                </div>}
+              </Col>
+            </Row>
+            <Row>
+              <Col md={12}>
+                {timestamps && timestamps.length > 1 && <div>
+                  <h3>Time</h3>
+                  <PagesTimeChart timestamps={timestamps}/>
+                  <br/>
+                  <PagesTimeScatterplot timestamps={timestamps}/>
+                </div>}
+                {/* <pre>{JSON.stringify(trackers, null, '\t')}</pre> */}
+              </Col>
+            </Row>
+          </Grid>
         </div>
       );
     }
