@@ -33,15 +33,14 @@ const TrackerTable = (data) => {
     <ReactTable
       data={data}
       columns={[
-        {Header: "Tracker", accessor: "name",
-        Cell: row => (
-          <div key={row.value}>
-            <Link to={{
-              pathname: '/trackers/' + row.value
-            }}>
-              {row.value}
-            </Link>
-          </div>)
+        {Header: "Tracker",
+         accessor: "name",
+         Cell: row => (
+           <div key={row.value}>
+              <Link to={{pathname: '/trackers/' + row.value}}>
+                 {row.value}
+              </Link>
+           </div>)
         },
         {Header: "Page Count",
          accessor: "count"},

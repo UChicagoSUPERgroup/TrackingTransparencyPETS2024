@@ -145,7 +145,7 @@ export default class TrackerDetailPage extends React.Component {
           </Row>
           <Row>
             <Col md={12}>
-              <h2>When have you seen {this.tracker} trackers?</h2>
+              <h2>When has {this.tracker} tracked you?</h2>
               <FlexibleWidthXYPlot
                 height={400}
                 margin={{left: 100, right: 10, top: 10, bottom: 100}}>
