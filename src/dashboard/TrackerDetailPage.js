@@ -105,27 +105,23 @@ export default class TrackerDetailPage extends React.Component {
     if (inferences) {
       numInferences = inferences.length;
     }
-    if (timestamps && times) {
+    if (timestamps && times[0]) {
       firstDay = new Date(times[0].getFullYear(), times[0].getMonth(), times[0].getDate());
       firstDay = firstDay.getTime();
       let grouped;
       grouped = _.groupBy(timestamps, t => Math.floor((parseInt(t.Pages.id) - firstDay) / msInDay));
       for (let day in grouped) {
-        var tempDay = new Date((day * msInDay) + firstDay);
         data.push({
           x: parseInt(day),
           y: grouped[day].length,
-          label: tempDay.toDateString()
         });
       }
     }
     console.log(data);
 
     var dataLabel = function(v) {
-      if(data[v]){
-        return data[v].label;
-      }
-      return v;
+      var tempDay = new Date((v * msInDay) + firstDay);
+      return tempDay.toDateString();
     }
 
     return (
