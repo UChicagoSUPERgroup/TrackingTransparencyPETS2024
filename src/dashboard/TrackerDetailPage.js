@@ -20,7 +20,13 @@ const DomainTable = (data) => {
       data={data}
       columns={[
         {Header: "Site",
-         accessor: "domain"
+         accessor: "domain",
+         Cell: row => (
+           <div key={row.value}>
+              <Link to={{pathname: '/domains/' + row.value}}>
+                 {row.value}
+              </Link>
+           </div>)
         },
         {Header: "Page Count",
          accessor: "count"},
@@ -37,7 +43,13 @@ const InferTable = (data) => {
       data={data}
       columns={[
         {Header: "Inference",
-         accessor: "inference"
+         accessor: "inference",
+         Cell: row => (
+           <div key={row.value}>
+              <Link to={{pathname: '/inferences/' + row.value}}>
+                 {row.value}
+              </Link>
+           </div>)
         },
         {Header: "Inference Count",
          accessor: "COUNT(inference)"},
