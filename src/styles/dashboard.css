@@ -1,3 +1,8 @@
+p {
+  font-size: 12pt;
+  line-height: 1.5;
+}
+
 .inferences-sunburst {
   margin: 20px;
 }

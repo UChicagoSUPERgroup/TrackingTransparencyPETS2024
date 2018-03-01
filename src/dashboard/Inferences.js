@@ -1,9 +1,11 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
-import {
-  ToggleButtonGroup, ToggleButton, 
-  Grid, Row, Col
-} from 'react-bootstrap';
+
+import ToggleButton from 'react-bootstrap/lib/ToggleButton';
+import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
+import Grid from 'react-bootstrap/lib/Grid';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
 
 import tt from '../helpers';
 import sensitiveCats from '../data/categories_comfort_list.json';
