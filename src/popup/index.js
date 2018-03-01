@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import '../styles/common.css';
 import '../styles/popup.css';
+import '../styles/button.css';
 import '../styles/navbar2.css';
 
 
@@ -16,7 +17,7 @@ class Popup extends React.Component {
   }
 
   async componentDidMount() {
-    this.getData();
+    await this.getData();
   }
 
   async getData() {
@@ -31,34 +32,35 @@ class Popup extends React.Component {
     numTrackers.then(n => this.setState({numTrackers: n}));
     numInferences.then(n => this.setState({numInferences: n}));
 
-    const tabs = await browser.tabs.query({active: true, lastFocusedWindow: true});
+    const tabs = await browser.tabs.query({active: true, currentWindow: true});
     const tab = tabs[0];
 
     // get tab data with trackers and stuff here
     const tabData = await background.getTabData(tab.id);
-    tabData.then(data => {
-      let title = data.title;
-      if (title.length >= 30) {
-        title = title.substring(0,30).concat('...');
-      }
+    
+    this.setState({tab: JSON.stringify(tabData)})
 
-      this.setState({
-        pageTitle: title,
-        trackers: tabData.trackers 
-      })
+    let title = tabData.title;
+    if (title.length >= 30) {
+      title = title.substring(0,30).concat('...');
+    }
 
-      if (tabData.trackers.length > 0) {
-        const topTracker = tabData.trackers[0];
-        const topTrackerCount = background.queryDatabase('getPageVisitCountByTracker', {tracker: topTracker});
-        topTrackerCount.then(count => {
-          this.setState({
-            topTracker: topTracker,
-            topTrackerCount: count
-          })
-          
-        })
-      }
+    this.setState({
+      pageTitle: title,
+      trackers: tabData.trackers 
     })
+
+    if (tabData.trackers.length > 0) {
+      const topTracker = tabData.trackers[0];
+      const topTrackerCount = background.queryDatabase('getPageVisitCountByTracker', {tracker: topTracker});
+      topTrackerCount.then(count => {
+        this.setState({
+          topTracker: topTracker,
+          topTrackerCount: count
+        })
+        
+      })
+    }
     
   }
   
@@ -81,9 +83,9 @@ class Popup extends React.Component {
         </div>
 
         <div className="content">
-          <p>The Tracking Transparency extension lets you learn about what companies could have inferrred about your browsing through trackers and advertisments on the web pages you visit.</p>
+          {/* <p>The Tracking Transparency extension lets you learn about what companies could have inferrred about your browsing through trackers and advertisments on the web pages you visit.</p> */}
 
-          {trackers && 
+          {pageTitle && 
             <p>On <strong>{pageTitle},</strong> there are <strong>{trackers.length} trackers.</strong></p>
           }
 
@@ -91,11 +93,12 @@ class Popup extends React.Component {
             <p>One of these trackers is <strong>{topTracker}</strong>, which knows about your activity on this page and <strong>{topTrackerCount}</strong> others.</p>
           }
 
-          {numTrackers &&
+          {numTrackers && numPages && numInferences &&
             <p>In total, <em>{numTrackers} trackers</em> have seen you visit <em>{numPages} pages</em>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <em>{numInferences} topics</em>.</p>
-          }  
+          }
             
-          <button type="button" onClick={this.openDashboard}>Show me more about what the trackers know</button>
+          <button type="button" className="btn btn-lt" onClick={this.openDashboard}>Show me more about what the trackers know</button>
+          
         </div>
       </div>     
     );
