@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import '../styles/common.css';
 import '../styles/popup.css';
+import '../styles/navbar2.css';
 
 
 class Popup extends React.Component {
@@ -75,23 +76,27 @@ class Popup extends React.Component {
 
     return (
       <div>        
-        <p className="popup-header">Tracking Transparency</p>
+        <div className="navbar">
+          <div className="navbarTitle">Tracking Transparency</div>
+        </div>
 
-        <p>The Tracking Transparency extension lets you learn about what companies could have inferrred about your browsing through trackers and advertisments on the web pages you visit.</p>
+        <div className="content">
+          <p>The Tracking Transparency extension lets you learn about what companies could have inferrred about your browsing through trackers and advertisments on the web pages you visit.</p>
 
-        {trackers && 
-          <p>On <strong>{pageTitle},</strong> there are <strong>{trackers.length} trackers.</strong></p>
-        }
+          {trackers && 
+            <p>On <strong>{pageTitle},</strong> there are <strong>{trackers.length} trackers.</strong></p>
+          }
 
-        {topTracker && 
-          <p>One of these trackers is <strong>{topTracker}</strong>, which knows about your activity on this page and <strong>{topTrackerCount}</strong> others.</p>
-        }
+          {topTracker && 
+            <p>One of these trackers is <strong>{topTracker}</strong>, which knows about your activity on this page and <strong>{topTrackerCount}</strong> others.</p>
+          }
 
-        {numTrackers &&
-          <p>In total, <em>{numTrackers} trackers</em> have seen you visit <em>{numPages} pages</em>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <em>{numInferences} topics</em>.</p>
-        }  
-          
-        <button type="button" onClick={this.openDashboard}>Show me more about what the trackers know</button>
+          {numTrackers &&
+            <p>In total, <em>{numTrackers} trackers</em> have seen you visit <em>{numPages} pages</em>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <em>{numInferences} topics</em>.</p>
+          }  
+            
+          <button type="button" onClick={this.openDashboard}>Show me more about what the trackers know</button>
+        </div>
       </div>     
     );
   }

@@ -1,8 +1,11 @@
 body {
   width: 400px;
-  padding: 20px;
 }
 
 p {
   font-size: 12pt;
+}
+
+.content {
+  padding: 30px 10px 10px 10px;
 }
