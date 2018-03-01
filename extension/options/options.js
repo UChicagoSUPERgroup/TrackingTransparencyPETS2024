@@ -15,7 +15,7 @@ function saveOptions(e) {
     browser.browserAction.disable();
     break;
   case 'full':
-    browser.browserAction.setPopup({popup: '/popup/index.html'});
+    // browser.browserAction.setPopup({popup: '/popup/index.html'});
     browser.browserAction.enable();
     break;
   default:
