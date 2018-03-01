@@ -43,7 +43,8 @@ function updateData(data, keyPath, parentColor) {
   
   if (!data.color) {
     if (!parentColor) {
-      data.color = PRIMARIES[(colorCounter++) % PRIMARIES.length]
+      // data.color = PRIMARIES[(colorCounter++) % PRIMARIES.length]
+      data.color = COLORS.UC_BLUE_1;
     } else {
       data.color = parentColor;
     }
