@@ -412,19 +412,3 @@ function runtimeOnMessage(message, sender, sendResponse) {
   }
 
 }
-
-/* OTHER MISCELLANEOUS FUNCTIONS */
-/* ============================= */
-
-if (typeof browser.browserAction.setPopup === 'undefined') { 
-  // popups not supported
-  // like firefox for android
-  // so we directly open infopage instead
-  browser.browserAction.onClicked.addListener(() => {
-    let infopageData = {
-      active: true,
-      url: '../dashboard/index.html'
-    };
-    browser.tabs.create(infopageData);
-  });
-}
