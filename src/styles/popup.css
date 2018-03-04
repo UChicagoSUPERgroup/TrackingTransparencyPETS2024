@@ -1,0 +1,14 @@
+body {
+  width: 400px;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+p {
+  font-size: 12pt;
+}
+
+.content {
+  padding: 40px 10px 20px 10px;
+  /* width: 100%; */
+}

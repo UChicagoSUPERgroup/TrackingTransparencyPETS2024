@@ -18,7 +18,7 @@ module.exports = {
     content: './src/content_scripts/content.js',
 
     // user facing pages
-    popup: './src/popup/popup.js',
+    popup: './src/popup/index.js',
     dashboard: './src/dashboard/index.js',
 
     lightbeam: './src/lightbeam/lightbeam.js'

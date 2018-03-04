@@ -21,7 +21,10 @@ import DebugPage from './Debug';
 import LightbeamWrapper from './LightbeamWrapper';
 import tt from '../helpers';
 import COLORS from '../colors';
-import './App.css';
+
+import '../styles/common.css';
+import '../styles/dashboard.css';
+import '../styles/navbar.css';
 
 const NavLink = ({to, title}) => (
   <LinkContainer to={to}>

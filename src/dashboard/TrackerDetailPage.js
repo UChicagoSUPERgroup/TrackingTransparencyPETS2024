@@ -1,7 +1,11 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import ReactTable from 'react-table';
-import {Grid, Row, Col} from 'react-bootstrap';
+
+import Grid from 'react-bootstrap/lib/Grid';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
+
 import _ from 'lodash';
 import {
   FlexibleWidthXYPlot,

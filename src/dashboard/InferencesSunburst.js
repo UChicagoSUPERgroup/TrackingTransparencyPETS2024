@@ -153,6 +153,7 @@ export default class BasicSunburst extends React.Component {
 
   render() {
     const {clicked, data, finalValue, pathValue} = this.state;
+    if (!data) return null;
     if (!data.name) return null;
     return (
       <div className="sunburst-wrapper">

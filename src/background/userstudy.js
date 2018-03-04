@@ -25,7 +25,7 @@ async function setDefaultOptions() {
     browser.browserAction.disable();
     break;
   case 'full':
-    browser.browserAction.setPopup({popup: '/popup/popup.html'});
+    // browser.browserAction.setPopup({popup: '/popup/index.html'});
     browser.browserAction.enable();
     break;
   default:
