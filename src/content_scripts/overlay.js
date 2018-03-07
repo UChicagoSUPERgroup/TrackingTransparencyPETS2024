@@ -1,43 +1,45 @@
-'use strict';
+export default class Overlay {
 
-import tt from '../helpers';
+  constructor() {
 
-/* OVERLAY */
-
-
-export default async function injectOverlay() {
-  const q = await browser.storage.local.get('overlayCondition');
-
-  if (q.overlayCondition == 'none') {
-    return;
-  }
-
-  await tt.sleep(2000);
-
-  var overlay = document.createElement('div');
-
-  // note that we are using the CHROME api and not the BROWSER api
-  // because the webextension polyfill does NOT work with sending a response because of reasons
-  // so we have to use callbacks :(
-  chrome.runtime.sendMessage({ type: 'getTabData' }, (tabData) => {
-    if (!tabData) {
-      throw new Error('no tab data');
-    }
-
+    let overlay = document.createElement('div');
+    this.overlay = overlay;
     overlay.id = 'trackingtransparency_overlay';
     overlay.innerHTML += '<div class="tt_closebutton"></div>'
 
-    if (tabData.trackers.length > 0) {
-      overlay.innerHTML += tabData.trackers[0] + ' and ' + (tabData.trackers.length - 1) + ' other trackers are on this page.';
-    } else {
-      overlay.innerHTML += 'There are no trackers on this page!';
-    }
+    this.addTabData();
 
-    document.body.appendChild(overlay);
-    overlay.onclick = (() => {
-      overlay.parentElement.removeChild(overlay);
+  }
+
+  inject() {
+    document.body.appendChild(this.overlay);
+    this.overlay.onclick = (() => {
+      this.overlay.parentElement.removeChild(this.overlay);
     });
-  });
+  }
 
-  
+  append(append) {
+    this.overlay.innerHTML += append;
+  }
+
+  addTabData() {
+    // note that we are using the CHROME api and not the BROWSER api
+    // because the webextension polyfill does NOT work with sending a response because of reasons
+    // so we have to use callbacks :(
+    chrome.runtime.sendMessage({ type: 'getTabData' }, (tabData) => {
+      if (!tabData) {
+        throw new Error('no tab data');
+      }
+
+      if (tabData.trackers.length > 0) {
+        this.append('<strong>' + tabData.trackers[0] + '</strong> and ' + (tabData.trackers.length - 1) + ' other trackers are on this page.');
+      } else {
+        this.append('There are no trackers on this page!');
+      }
+    });
+  }
+
+  addInference(inference) {
+    this.append('<br/><br/>We think this page is about <strong>' + inference + '</strong>');
+  }
 }

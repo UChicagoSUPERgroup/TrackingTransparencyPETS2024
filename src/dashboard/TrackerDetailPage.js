@@ -130,7 +130,6 @@ export default class TrackerDetailPage extends React.Component {
 
     return (
       <div>
-        <p>Tracker detail page. Min/Claire is working on this page.</p>
         <h2>{this.tracker}</h2>
         <p>You have encountered trackers
             from {this.tracker} on <em>{numDomains}</em> different

@@ -163,6 +163,7 @@ chrome.runtime.onMessage.addListener(runtimeOnMessage);
 
 databaseWorker.onmessage = onDatabaseWorkerMessage;
 trackersWorker.onmessage = onTrackersWorkerMessage;
+inferencingWorker.onmessage = onInferencingWorkerMessage;
 
 /**
  * Gets tabData for given tab id, updating the trackers worker as necessary.
@@ -178,8 +179,6 @@ async function getTabData(tabId) {
     let data = tabData[tabId];
 
     await updateTrackers(tabId);
-
-    data.inference = 'Warehousing';
 
     return data;
   }
@@ -372,12 +371,23 @@ function onDatabaseWorkerMessage(m) {
  * @param  {Object} m.data.trackers - Array of trackers, given by sender
  */
 function onTrackersWorkerMessage(m) {
-  // console.log('Message received from database worker', m);
+  // console.log('Message received from trackers worker', m);
   if (m.data.type === 'trackers') {
     pendingTrackerMessages[m.data.id](m.data.trackers);
   }
 }
 
+
+function onInferencingWorkerMessage(m) {
+  console.log('Message received from inferencing worker', m);
+  const tabId = m.data.info.tabId;
+  if (m.data.type === 'page_inference') {
+    console.log(m.data.info.inference)
+    tabData[tabId].inference = m.data.info.inference;
+    console.log(tabData[tabId].inference)
+  }
+  chrome.tabs.sendMessage(tabId, m.data);
+}
 
 /** 
  * listener function for messages from content script
@@ -405,7 +415,8 @@ function runtimeOnMessage(message, sender, sendResponse) {
     inferencingWorker.postMessage({
       type: 'content_script_to_inferencing',
       article: message.article,
-      mainFrameReqId: pageId
+      mainFrameReqId: pageId,
+      tabId: sender.tab.id
     });
     break;
     
