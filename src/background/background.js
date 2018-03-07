@@ -323,6 +323,15 @@ function collapseChildren(children) {
   return ret;
 }
 
+
+async function importData(dataString) {
+  databaseWorker.postMessage({
+    type: 'import_data',
+    data: dataString
+  })
+}
+window.importData = importData;
+
 /**
  * Run on message recieved from database worker.
  * 
