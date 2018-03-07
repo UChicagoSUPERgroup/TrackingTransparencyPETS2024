@@ -2,7 +2,6 @@
 
 import domainEntityMap from '../../data/trackers/domainEntityMap.json';
 
-import parseuri from 'parseuri';
 import tt from '../../helpers';
 
 // console.log("trackers worker running");
@@ -18,12 +17,12 @@ let trackersByPageId = {};
  * @returns {string} domain of tracker, if request is known tracker domain
  */
 function trackerMatch(details, firstPartyHost) {
-  const parsedRequest = parseuri(details.url);
-  let requestDomain = parsedRequest.host;
+  const urlObj = new URL(details.url);
+  let requestDomain = urlObj.hostname;
 
   let match = checkForMatch(requestDomain, firstPartyHost);
   if (!match) {
-    const arr = parsedRequest.host.split('.');
+    const arr = urlObj.hostname.split('.');
     requestDomain = arr[arr.length -2] + '.' + arr[arr.length - 1];
     match = checkForMatch(requestDomain, firstPartyHost);
   }

@@ -1,7 +1,5 @@
 /** @module background */
 
-import parseuri from 'parseuri';
-
 import {trackersWorker, databaseWorker, inferencingWorker} from './workers_setup';
 import userstudy from './userstudy';
 // import tt from '../helpers';
@@ -90,12 +88,12 @@ async function updateMainFrameInfo(details) {
 
 function recordNewPage(tabId, url, title) {
   const pageId = Date.now();
-  let parsedURL = parseuri(url);
+  let urlObj = new URL(url)
   tabData[tabId] = {
     pageId: pageId,
-    domain: parsedURL.host,
-    path: parsedURL.path,
-    protocol: parsedURL.protocol,
+    domain: urlObj.hostname,
+    path: urlObj.pathname,
+    protocol: urlObj.protocol,
     title: title,
     webRequests: [],
     trackers: []
