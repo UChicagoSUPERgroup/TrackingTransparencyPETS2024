@@ -151,6 +151,12 @@ async function updateTrackers(tabId) {
   let trackers = await messagePromise;
   tabData[tabId].trackers = trackers;
 
+  // notify content script to update overlay
+  chrome.tabs.sendMessage(tabId, {
+    type: 'page_trackers',
+    trackers: trackers
+  });
+
 }
 
 

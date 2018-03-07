@@ -1,3 +1,5 @@
+import '../styles/overlay.css';
+
 export default class Overlay {
 
   constructor() {
@@ -9,6 +11,10 @@ export default class Overlay {
 
     this.addTabData();
 
+    // hack to get trackers to update to final value after 5 sec
+    setInterval(() => {
+      chrome.runtime.sendMessage({ type: 'getTabData' });
+    }, 3000)
   }
 
   inject() {
@@ -22,6 +28,10 @@ export default class Overlay {
     this.overlay.innerHTML += append;
   }
 
+  remove() {
+    this.overlay.parentElement.removeChild(this.overlay);
+  }
+
   addTabData() {
     // note that we are using the CHROME api and not the BROWSER api
     // because the webextension polyfill does NOT work with sending a response because of reasons
@@ -32,7 +42,7 @@ export default class Overlay {
       }
 
       if (tabData.trackers.length > 0) {
-        this.append('<strong>' + tabData.trackers[0] + '</strong> and ' + (tabData.trackers.length - 1) + ' other trackers are on this page.');
+        this.append('<strong>' + tabData.trackers[0] + '</strong> and <span id="num-trackers">' + (tabData.trackers.length - 1) + '</span> other trackers are on this page.');
       } else {
         this.append('There are no trackers on this page!');
       }
@@ -41,5 +51,10 @@ export default class Overlay {
 
   addInference(inference) {
     this.append('<br/><br/>We think this page is about <strong>' + inference + '</strong>');
+  }
+
+  updateTrackers(trackers) {
+    console.log('now have', trackers.length, 'trackers')
+    document.getElementById('num-trackers').textContent = trackers.length - 1;
   }
 }

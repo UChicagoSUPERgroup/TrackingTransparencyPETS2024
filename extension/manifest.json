@@ -37,9 +37,6 @@
         {
             "matches": ["<all_urls>"],
             "exclude_matches": ["*://*/_/chrome/newtab*"],
-            "css": [
-                "stylesheets/overlay.css"
-            ],
             "js": [
                 "lib/browser-polyfill.min.js",
                 "dist/content.js"

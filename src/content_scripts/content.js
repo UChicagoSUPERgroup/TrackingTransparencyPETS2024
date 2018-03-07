@@ -18,15 +18,24 @@ async function injectOverlay() {
 
   await tt.sleep(2000);
   overlay.inject();
+  
+  await tt.sleep(5000);
+  overlay.remove();
 }
 
 injectOverlay();
 
 function runtimeOnMessage(m, sender, sendResponse) {
+  console.log('got msg from background', m)
   switch (m.type) {
   case 'page_inference':
     if (overlay) {
       overlay.addInference(m.info.inference);
+    }
+    break;
+  case 'page_trackers':
+    if (overlay) {
+      overlay.updateTrackers(m.trackers);
     }
     break;
   }
