@@ -31,6 +31,7 @@ class DebugPage extends React.Component {
       inferenceFormField: 'Warehousing',
       afterDateFormField: '2018-01-01',
       countFormField: false,
+      importFormField: false,
       result: false,
       error: false,
       queryTime: false
@@ -40,6 +41,7 @@ class DebugPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.saveFile = this.saveFile.bind(this);
+    this.importData = this.importData.bind(this);
     this.handleClickRecursive = this.handleClickRecursive.bind(this);
   }
 
@@ -93,6 +95,11 @@ class DebugPage extends React.Component {
     var objectURL = window.URL.createObjectURL(blob);
     browser.downloads.download({url: objectURL, filename: 'tt_export.json'});
     // FileSaver.saveAs(blob, 'tt_export.json');
+  }
+
+  async importData() {
+    const background = await browser.runtime.getBackgroundPage();
+    await background.importData(this.state.importFormField);
   }
 
   handleChange(event) {
@@ -185,6 +192,17 @@ class DebugPage extends React.Component {
         {error && <Alert bsStyle="danger">{error}</Alert>}
         {result &&<pre id="result">{JSON.stringify(this.state.result, null, '\t')}</pre>}
         {queryTime && <p>Time: {queryTime / 1000} seconds</p>}
+
+        <FieldGroup
+          id="importFormField"
+          type="text"
+          label="Import"
+          value={this.state.importFormField}
+          onChange={this.handleChange}
+        />
+        <Button type="submit" onClick={this.importData}>
+            Import
+          </Button>
       </div>
     );
   }

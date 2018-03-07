@@ -11,7 +11,7 @@ const viz = {
   collisionRadius: 10,
   chargeStrength: -100,
   tickCount: 100,
-  canvasColor: '#155F83',
+  canvasColor: '#D6D6CE',
   alphaTargetStart: 0.1,
   alphaTargetStop: 0,
 
@@ -173,6 +173,7 @@ const viz = {
       // }
 
       this.context.fillStyle = this.canvasColor;
+      this.context.strokeStyle = '#000000';
       this.context.closePath();
       this.context.fill();
 
@@ -206,6 +207,7 @@ const viz = {
       canvas.width = side * this.scale;
       canvas.height = side * this.scale;
       context.fillStyle = this.canvasColor;
+      context.strokeStyle = '#000000';
       context.fillRect(0, 0, canvas.width, canvas.height);
 
       image.onload = () => {
@@ -259,7 +261,7 @@ const viz = {
     const deltaX = deltaY * Math.sqrt(3);
 
     this.context.moveTo(x - deltaX, y + deltaY);
-    this.context.lineTo(x, y - this.circleRadius);
+    this.context.lineTo(x, y - deltaY * 2);
     this.context.lineTo(x + deltaX, y + deltaY);
   },
 

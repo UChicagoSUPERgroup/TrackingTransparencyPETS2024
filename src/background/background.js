@@ -1,7 +1,5 @@
 /** @module background */
 
-import parseuri from 'parseuri';
-
 import {trackersWorker, databaseWorker, inferencingWorker} from './workers_setup';
 import userstudy from './userstudy';
 // import tt from '../helpers';
@@ -95,12 +93,12 @@ async function updateMainFrameInfo(details) {
 
 function recordNewPage(tabId, url, title) {
   const pageId = Date.now();
-  let parsedURL = parseuri(url);
+  let urlObj = new URL(url)
   tabData[tabId] = {
     pageId: pageId,
-    domain: parsedURL.host,
-    path: parsedURL.path,
-    protocol: parsedURL.protocol,
+    domain: urlObj.hostname,
+    path: urlObj.pathname,
+    protocol: urlObj.protocol,
     title: title,
     webRequests: [],
     trackers: []
@@ -156,16 +154,25 @@ async function updateTrackers(tabId) {
   let trackers = await messagePromise;
   tabData[tabId].trackers = trackers;
 
+  // notify content script to update overlay
+  chrome.tabs.sendMessage(tabId, {
+    type: 'page_trackers',
+    trackers: trackers
+  });
+
 }
 
 
 /* INTRA-EXTENSION MESSAGE LISTENERS */
 /* ================================= */
 
-// browser.runtime.onConnect.addListener(runtimeOnConnect);
-browser.runtime.onMessage.addListener(runtimeOnMessage);
+// note that we are using the CHROME api and not the BROWSER api
+// because the webextension polyfill does NOT work with sending a response because of reasons
+chrome.runtime.onMessage.addListener(runtimeOnMessage);
+
 databaseWorker.onmessage = onDatabaseWorkerMessage;
 trackersWorker.onmessage = onTrackersWorkerMessage;
+inferencingWorker.onmessage = onInferencingWorkerMessage;
 
 /**
  * Gets tabData for given tab id, updating the trackers worker as necessary.
@@ -181,8 +188,6 @@ async function getTabData(tabId) {
     let data = tabData[tabId];
 
     await updateTrackers(tabId);
-
-    data.inference = 'Warehousing';
 
     return data;
   }
@@ -326,6 +331,15 @@ function collapseChildren(children) {
   return ret;
 }
 
+
+async function importData(dataString) {
+  databaseWorker.postMessage({
+    type: 'import_data',
+    data: dataString
+  })
+}
+window.importData = importData;
+
 /**
  * Run on message recieved from database worker.
  * 
@@ -366,20 +380,26 @@ function onDatabaseWorkerMessage(m) {
  * @param  {Object} m.data.trackers - Array of trackers, given by sender
  */
 function onTrackersWorkerMessage(m) {
-  // console.log('Message received from database worker', m);
+  // console.log('Message received from trackers worker', m);
   if (m.data.type === 'trackers') {
     pendingTrackerMessages[m.data.id](m.data.trackers);
   }
 }
 
 
+function onInferencingWorkerMessage(m) {
+  console.log('Message received from inferencing worker', m);
+  const tabId = m.data.info.tabId;
+  if (m.data.type === 'page_inference') {
+    console.log(m.data.info.inference)
+    tabData[tabId].inference = m.data.info.inference;
+    console.log(tabData[tabId].inference)
+  }
+  chrome.tabs.sendMessage(tabId, m.data);
+}
+
 /** 
  * listener function for messages from content script
- * 
- * this function can NOT be an async function - if it is sendResponse won't work
- * 
- * if the response is the result of an async function (like queryDatabase),
- * you must put sendRsponse in .then(), and also have the original function return true
  * 
  * @param  {Object} message
  * @param {string} message.type - message type
@@ -389,7 +409,7 @@ function onTrackersWorkerMessage(m) {
  */
 function runtimeOnMessage(message, sender, sendResponse) {
   let pageId;
-  let query;
+  let query, tabDataRes;
   // sendResponse('swhooo');
   switch (message.type) {
   case 'parsed_page':
@@ -404,33 +424,20 @@ function runtimeOnMessage(message, sender, sendResponse) {
     inferencingWorker.postMessage({
       type: 'content_script_to_inferencing',
       article: message.article,
-      mainFrameReqId: pageId
+      mainFrameReqId: pageId,
+      tabId: sender.tab.id
     });
     break;
     
   case 'queryDatabase':
     query = queryDatabase(message.query, message.args);
-    query.then(res => { // cannot use async/await
-      sendResponse(res);
-    });
-    return true; // this tells browser that we will call sendResponse asynchronously
+    query.then(res => sendResponse(res));
+    return true; // must do since calling sendResponse asynchronously
+
+  case 'getTabData':
+    tabDataRes = getTabData(sender.tab.id);
+    tabDataRes.then(res => sendResponse(res));
+    return true; // must do since calling sendResponse asynchronously
   }
 
-}
-
-
-/* OTHER MISCELLANEOUS FUNCTIONS */
-/* ============================= */
-
-if (typeof browser.browserAction.setPopup === 'undefined') { 
-  // popups not supported
-  // like firefox for android
-  // so we directly open infopage instead
-  browser.browserAction.onClicked.addListener(() => {
-    let infopageData = {
-      active: true,
-      url: '../dashboard/index.html'
-    };
-    browser.tabs.create(infopageData);
-  });
 }

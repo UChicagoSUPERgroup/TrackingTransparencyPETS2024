@@ -1,8 +1,21 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
-import ReactTable from 'react-table'
+import ReactTable from 'react-table';
 
-import companyData from '../data/trackers/companyData.json';
+import Grid from 'react-bootstrap/lib/Grid';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
+
+import _ from 'lodash';
+import {
+  FlexibleWidthXYPlot,
+  XAxis,
+  YAxis,
+  HorizontalGridLines,
+  LineSeries
+} from 'react-vis';
+
+//import companyData from '../data/trackers/companyData.json';
 // companyData['Criteo'].type -> "Advertising"
 
 const DomainTable = (data) => {
@@ -11,24 +24,39 @@ const DomainTable = (data) => {
       data={data}
       columns={[
         {Header: "Site",
-         accessor: "domain"
-         /*
-         sortMethod: (a, b) => {
-           let a1 = a;
-           let b1 = b;
-           if (a1.startsWith('www.')) {
-             a1 = a1.substring(4);
-           }
-           if (b1.startsWith('www.')) {
-             b1 = b1.substring(4);
-           }
-           console.log("compare " + a1 + " " + b1 + " " + a + " " + b + " " + (a1>b1));
-           return (a1 > b1);
-         }
-         */
+         accessor: "domain",
+         Cell: row => (
+           <div key={row.value}>
+              <Link to={{pathname: '/domains/' + row.value}}>
+                 {row.value}
+              </Link>
+           </div>)
         },
         {Header: "Page Count",
          accessor: "count"},
+      ]}
+      defaultPageSize={20}
+      className="-striped -highlight"
+    />
+  );
+}
+
+const InferTable = (data) => {
+  return (
+    <ReactTable
+      data={data}
+      columns={[
+        {Header: "Inference",
+         accessor: "inference",
+         Cell: row => (
+           <div key={row.value}>
+              <Link to={{pathname: '/inferences/' + row.value}}>
+                 {row.value}
+              </Link>
+           </div>)
+        },
+        {Header: "Inference Count",
+         accessor: "COUNT(inference)"},
       ]}
       defaultPageSize={20}
       className="-striped -highlight"
@@ -53,30 +81,94 @@ export default class TrackerDetailPage extends React.Component {
     const background = await browser.runtime.getBackgroundPage();
     const inferences = await background.queryDatabase('getInferencesByTracker', queryObj);
     const domains = await background.queryDatabase('getDomainsByTracker', queryObj);
-    //const totalPages = await background.queryDatabase('getDomainsByTracker')
+    const timestamps = await background.queryDatabase('getTimestampsByTracker', queryObj);
+    const times2 = timestamps.map(x => (
+      (new Date(x.Pages.id))));
     this.setState({
       inferences: inferences,
-      domains: domains
+      domains: domains,
+      times: times2,
+      timestamps: timestamps
     });
-    console.log(inferences);
-    console.log(domains);
+
   }
 
   render() {
     const domains = this.state.domains;
+    const inferences = this.state.inferences;
+    const times = this.state.times;
+    const timestamps = this.state.timestamps;
     let numDomains = 0;
+    let numInferences = 0;
+    let firstDay = 0;
+    let msInDay = 86400000;
+    var data = [];
     if (domains) {
       numDomains = domains.length;
     }
+    if (inferences) {
+      numInferences = inferences.length;
+    }
+    if (timestamps && times[0]) {
+      firstDay = new Date(times[0].getFullYear(), times[0].getMonth(), times[0].getDate());
+      firstDay = firstDay.getTime();
+      let grouped;
+      grouped = _.groupBy(timestamps, t => Math.floor((parseInt(t.Pages.id) - firstDay) / msInDay));
+      for (let day in grouped) {
+        data.push({
+          x: parseInt(day),
+          y: grouped[day].length,
+        });
+      }
+    }
+    console.log(data);
+
+    var dataLabel = function(v) {
+      var tempDay = new Date((v * msInDay) + firstDay);
+      return tempDay.toDateString();
+    }
+
     return (
       <div>
-        <p>Tracker detail page. Min/Claire is working on this page.</p>
         <h2>{this.tracker}</h2>
         <p>You have encountered trackers
             from {this.tracker} on <em>{numDomains}</em> different
-            domains.</p>
-        {DomainTable(domains)}
-        <pre>{JSON.stringify(this.state.domains, null, '\t')}</pre>
+            domains. The Tracking Transparency extension has
+            found <em>{numInferences}</em> inferences
+            that {this.tracker} may have made about you.
+            </p>
+        <Grid>
+          <Row>
+            <Col md={6} mdPush={6}>
+              {InferTable(inferences)}
+            </Col>
+            <Col md={6} mdPull={6}>
+              {DomainTable(domains)}
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12}>
+              <h2>When has {this.tracker} tracked you?</h2>
+              <FlexibleWidthXYPlot
+                height={400}
+                margin={{left: 100, right: 10, top: 10, bottom: 100}}>
+                <HorizontalGridLines />
+                <LineSeries
+                  color="#8F3931"
+                  data={data}/>
+                <XAxis
+                  height={100}
+                  tickFormat={dataLabel}
+                  tickLabelAngle={-30}/>
+                <YAxis />
+              </FlexibleWidthXYPlot>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12}>
+            </Col>
+          </Row>
+        </Grid>
       </div>
     );
   }

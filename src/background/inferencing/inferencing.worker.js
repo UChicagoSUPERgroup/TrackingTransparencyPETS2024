@@ -12,7 +12,7 @@ onmessage = function(m) {
     break;
     
   case 'content_script_to_inferencing':
-    inferencingMessageListener(m.data.article, m.data.mainFrameReqId);
+    inferencingMessageListener(m.data.article, m.data.mainFrameReqId, m.data.tabId);
     break;
   }
 };
@@ -21,7 +21,7 @@ const tree = buildCategoryTree('../lib/inferencing_data/categories.json');
 
 
 // TODO: this function needs to be rewritten
-async function inferencingMessageListener(text, mainFrameReqId) {
+async function inferencingMessageListener(text, mainFrameReqId, tabId) {
 
   const tr = await tree;
   // console.log(tr);
@@ -40,13 +40,19 @@ async function inferencingMessageListener(text, mainFrameReqId) {
     inference: category[0].name,
     inferenceCategory: '',
     threshold: category[1],
-    pageId: mainFrameReqId
+    pageId: mainFrameReqId,
+    tabId: tabId
   };
   // console.log("sending inference to database");
   databaseWorkerPort.postMessage({
     type: 'store_inference',
     info: inferenceInfo
   });
+
+  postMessage({
+    type: 'page_inference',
+    info: inferenceInfo
+  })
   // storeInference(inferenceInfo);
 
 

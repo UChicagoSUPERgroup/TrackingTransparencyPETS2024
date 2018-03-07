@@ -23,7 +23,7 @@
         "19": "icons/super-19.png",
         "38": "icons/super-38.png"
         },
-        "default_popup": "popup/popup.html",
+        "default_popup": "popup/index.html",
         "default_title": "Tracking Transparency"
     },
     "background": {
@@ -37,9 +37,6 @@
         {
             "matches": ["<all_urls>"],
             "exclude_matches": ["*://*/_/chrome/newtab*"],
-            "css": [
-                "stylesheets/overlay.css"
-            ],
             "js": [
                 "lib/browser-polyfill.min.js",
                 "dist/content.js"

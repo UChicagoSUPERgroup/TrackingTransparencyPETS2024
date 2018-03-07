@@ -50,6 +50,10 @@ async function onMessage(m) {
     store.storeInference(m.data.info);
     break;
 
+  case 'import_data':
+    store.importData(m.data.data);
+    break;
+
   default:
     console.log('database worker recieved bad message');
   }

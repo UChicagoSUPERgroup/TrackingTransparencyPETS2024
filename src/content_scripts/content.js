@@ -1,12 +1,43 @@
 import makeInference from './inferencing';
-import injectOverlay from './overlay';
+import Overlay from './overlay';
+import tt from '../helpers';
 
-injectOverlay();
 makeInference();
 
+let overlay;
 
-// this is example of how to do database query for content script
-// (async () => {
-//   let response = await browser.runtime.sendMessage({ type: 'queryDatabase', query: 'getTrackers', args: {} });
-//   console.log(response);
-// })();
+async function injectOverlay() {
+
+  const q = await browser.storage.local.get('overlayCondition');
+
+  if (q.overlayCondition == 'none') {
+    return;
+  }
+
+  overlay = new Overlay();
+
+  await tt.sleep(2000);
+  overlay.inject();
+  
+  await tt.sleep(5000);
+  overlay.remove();
+}
+
+injectOverlay();
+
+function runtimeOnMessage(m, sender, sendResponse) {
+  console.log('got msg from background', m)
+  switch (m.type) {
+  case 'page_inference':
+    if (overlay) {
+      overlay.addInference(m.info.inference);
+    }
+    break;
+  case 'page_trackers':
+    if (overlay) {
+      overlay.updateTrackers(m.trackers);
+    }
+    break;
+  }
+}
+chrome.runtime.onMessage.addListener(runtimeOnMessage)

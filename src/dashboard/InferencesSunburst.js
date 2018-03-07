@@ -8,8 +8,8 @@ import tt from '../helpers';
 
 import categoryTree from '../data/categories_tree.json';
 
-const EXTENDED_DISCRETE_COLOR_RANGE = ['#19CDD7', '#DDB27C', '#88572C', '#FF991F', '#F15C17', '#223F9A', '#DA70BF', '#125C77', '#4DC19C', '#776E57', '#12939A', '#17B8BE', '#F6D18A', '#B7885E', '#FFCB99', '#F89570', '#829AE3', '#E79FD5', '#1E96BE', '#89DAC1', '#B3AD9E'];
-
+import COLORS from '../colors';
+const PRIMARIES = [COLORS.UC_YELLOW_1, COLORS.UC_ORANGE_1, COLORS.UC_RED_1, COLORS.UC_LT_GREEN_1, COLORS.UC_DK_GREEN_1, COLORS.UC_BLUE_1, COLORS.UC_VIOLET_1];
 
 const LABEL_STYLE = {
   fontSize: '14px',
@@ -29,6 +29,8 @@ function getKeyPath(node) {
   return [node.data && node.data.name || node.name].concat(getKeyPath(node.parent));
 }
 
+let colorCounter = 0;
+
 /**
  * Recursively modify data depending on whether or not each cell has been selected by the hover/highlight
  * @param {Object} data - the current node being considered
@@ -36,17 +38,24 @@ function getKeyPath(node) {
  * if this is false then all nodes are marked as selected
  * @returns {Object} Updated tree structure
  */
-function updateData(data, keyPath) {
-  if (data.children) {
-    data.children.map(child => updateData(child, keyPath));
-  }
+function updateData(data, keyPath, parentColor) {
   // add a fill to all the uncolored cells
+  
   if (!data.color) {
-    const randomColor = EXTENDED_DISCRETE_COLOR_RANGE[Math.floor(Math.random()*EXTENDED_DISCRETE_COLOR_RANGE.length)];
-    data.color = randomColor;
+    if (!parentColor) {
+      // data.color = PRIMARIES[(colorCounter++) % PRIMARIES.length]
+      data.color = COLORS.UC_BLUE_1;
+    } else {
+      data.color = parentColor;
+    }
+    
     // data.style = {
     //   fill: randomColor
     // };
+  }
+  if (data.children) {
+    const childColor = (data.name === 'Categories') ? false : data.color;
+    data.children.map(child => updateData(child, keyPath, childColor));
   }
   data.style = {
     ...data.style,
@@ -86,7 +95,7 @@ export default class BasicSunburst extends React.Component {
     let sunburstData = JSON.parse(JSON.stringify(categoryTree));
 
     sunburstData = this.recursiveApplySizes(sunburstData, inferencesList);
-    sunburstData = updateData(sunburstData, false);
+    sunburstData = updateData(sunburstData, false, false);
 
     return sunburstData;
   }
@@ -115,6 +124,7 @@ export default class BasicSunburst extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    colorCounter = 0;
     if (!nextProps.selectedInference) {
       
       // clear any selections
@@ -143,6 +153,7 @@ export default class BasicSunburst extends React.Component {
 
   render() {
     const {clicked, data, finalValue, pathValue} = this.state;
+    if (!data) return null;
     if (!data.name) return null;
     return (
       <div className="sunburst-wrapper">
@@ -164,7 +175,7 @@ export default class BasicSunburst extends React.Component {
             this.setState({
               finalValue: newVal,
               pathValue: path.join(' > '),
-              data: updateData(data, pathAsMap)
+              data: updateData(data, pathAsMap, false)
             });
           }}
           onValueMouseOut={() => {
@@ -172,7 +183,7 @@ export default class BasicSunburst extends React.Component {
               this.setState({
                 pathValue: false,
                 finalValue: false,
-                data: updateData(data, false)
+                data: updateData(data, false, false)
               })
             }
           }}
@@ -199,8 +210,7 @@ export default class BasicSunburst extends React.Component {
             {x: 0, y: 0, label: finalValue, style: LABEL_STYLE}
           ]} />}
         </Sunburst>
-        <div><em>{clicked ? 'Click on the diagram to unselect the current category' : 'Click a category to see more information'}</em></div>
-        <Link to={{pathname: '/inferences/' + finalValue}}>{pathValue}</Link>
+        
       </div>
     );
   }

@@ -74,3 +74,53 @@ export async function storeInference(info) {
   });
   return ttDb.insertOrReplace().into(inferenceItem).values([inference]).exec();
 }
+
+export async function importData(dataString) {
+  const ttDb = await primaryDbPromise;
+  const pageItem = ttDb.getSchema().table('Pages');
+  const trackerItem = ttDb.getSchema().table('Trackers');
+  const inferenceItem = ttDb.getSchema().table('Inferences');
+
+
+  const data = JSON.parse(dataString);
+
+  if (!data.pages || !data.trackers || !data.inferences) {
+    // bad
+    throw new Error('bad')
+  }
+
+  data.pages.forEach(page => {
+
+    const pageData = pageItem.createRow({
+      'id': page.id,
+      'title': page.title,
+      'domain': page.domain,
+      'path': page.path,
+      'protocol': page.protocol
+    });
+    return ttDb.insertOrReplace().into(pageItem).values([pageData]).exec();
+  })
+
+  data.trackers.forEach(tracker => {
+
+    const row = trackerItem.createRow({
+      'tracker': tracker.tracker,
+      'pageId': tracker.pageId
+    });
+
+    return ttDb.insertOrReplace().into(trackerItem).values([row]).exec();
+  })
+
+  data.inferences.forEach(inference => {
+
+    const row = inferenceItem.createRow({
+      'inference': inference.inference,
+    'inferenceCategory': inference.inferenceCategory,
+    'threshold': inference.threshold,
+    'pageId': inference.pageId
+    });
+
+    return ttDb.insertOrReplace().into(inferenceItem).values([row]).exec();
+  })
+
+}

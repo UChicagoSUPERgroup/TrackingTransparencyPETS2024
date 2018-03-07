@@ -5,14 +5,17 @@
 	position: fixed;
 	bottom: 20px;
 	right: 20px;
-	width: 100px;
+	width: 150px;
 	height: 100px;
     padding: 10px;
 	border: 1px solid rgba(0,0,0,0.5);
 	border-radius: 5px;
-	background-color: #D6D6CE;
+	background-color: #8F3931;
+    color: #fff;
 	opacity: 0.9;
 	animation: fadein 0.5s;
+    font: 10pt sans-serif;
+    overflow-wrap: break-word;
 }
 
 @keyframes fadein {
@@ -20,10 +23,6 @@
     to   { opacity: 0.9; }
 }
 
-
-#trackingtransparency_overlay p {
-	font: 10pt sans-serif;
-}
 
 /* credit: https://jsfiddle.net/elin/67sw12rL/ */
 #trackingtransparency_overlay .tt_closebutton {
@@ -33,7 +32,7 @@
 	right: 30px;
     width: 10px;
 	height: 10px;
-	background-color: #D6D6CE;
+	background-color: inherit;
 	opacity: 0.9;
 }
 
