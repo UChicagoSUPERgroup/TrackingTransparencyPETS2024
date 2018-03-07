@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Provides information about online tracking",
   "scripts": {
-    "test": "cd test && node test.js",
+    "test": "cd test && node test.js | tap-spec",
     "lint:eslint": "eslint .",
     "lint:webext": "web-ext lint -s extension/",
     "lint": "npm run lint:eslint; npm run lint:webext",
@@ -31,6 +31,7 @@
     "puppeteer": "^1.0.0",
     "sinon-chrome": "^2.2.1",
     "style-loader": "^0.19.1",
+    "tap-spec": "^4.1.1",
     "url-loader": "^0.6.2",
     "web-ext": "^2.3.1",
     "webpack": "^3.10.0",

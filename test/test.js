@@ -3,7 +3,11 @@ const puppeteer = require('puppeteer');
 
 const CRX_PATH = '../extension/';
 
-async function runTests() {
+
+test('tests', runTests);
+// runTests();
+
+async function runTests(t) {
   const browser = await puppeteer.launch({
     headless: false, // extensions only supported in full chrome.
     args: [
@@ -18,8 +22,8 @@ async function runTests() {
 
   // visit some pages
   const page = await browser.newPage();
-  await page.goto('https://www.nytimes.com');
-  await page.goto('https://super.cs.uchicago.edu');
+  // await page.goto('https://www.nytimes.com');
+  // await page.goto('https://super.cs.uchicago.edu');
   await page.goto('https://cs.uchicago.edu');
   await page.close();
 
@@ -28,24 +32,26 @@ async function runTests() {
   await background.goto(BASE_URL + '_generated_background_page.html');
   background.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
-  const q = await background.evaluate(async () => {
+  await background.exposeFunction('equal', t.equal);
+  await background.exposeFunction('test', t.test);
+  
+  await background.evaluate(async () => {
 
-    // WRITE TESTS HERE ???
+    const t = {
+      equal: window.equal,
+      test: window.test
+    }
 
     let ping = window.ping();
-    console.log(ping) // this works
+    await t.equal(ping, 'ping', 'ping test');
 
-    // test('ping test', function (t) {
-    //   let ping = window.ping();
-    //   t.equal(ping, 'ping');
-    // });
 
     // let query = await window.queryDatabase('getAllData', {});
     // console.log(query) // this hangs? idk why
 
-
   });
-  console.log(q);
+  t.end();
+  // console.log(q);
 
   // await runTests(id);
   await browser.close();
@@ -67,4 +73,3 @@ async function getExtensionId(browser) {
   return id;
 }
 
-runTests();
