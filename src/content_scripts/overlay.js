@@ -42,7 +42,7 @@ export default class Overlay {
       }
 
       if (tabData.trackers.length > 0) {
-        this.append('<strong>' + tabData.trackers[0] + '</strong> and <span id="num-trackers">' + (tabData.trackers.length - 1) + '</span> other trackers are on this page.');
+        this.append('<strong>' + tabData.trackers[0] + '</strong> and <span id="num-trackers">' + (tabData.trackers.length - 1) + '</span> others are tracking you.');
       } else {
         this.append('There are no trackers on this page!');
       }
