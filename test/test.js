@@ -18,7 +18,19 @@ async function runTests(t) {
   })
   
   const id = await getExtensionId(browser);
-  await visitPages(browser);
+  
+  // visit some pages
+  const page = await browser.newPage();
+  const pages = [
+    'https://super.cs.uchicago.edu',
+    'https://cs.uchicago.edu', 
+    'https://www.nytimes.com',
+    'https://www.google.com/maps/place/Department+of+Computer+Science,+1100+E+58th+St,+Chicago,+IL+60637/@41.7943177,-87.5937424,13z/data=!4m2!3m1!1s0x880e29162042b8f1:0x1e9e400ccfae3c4d'
+  ];
+  for (p of pages) {
+    await page.goto(p);
+  }
+  await page.close();
 
   // do some testing on the extension
   const dashboard = await browser.newPage();
@@ -26,6 +38,7 @@ async function runTests(t) {
   dashboard.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
   await dashboard.exposeFunction('equal', t.equal);
+  await dashboard.exposeFunction('ok', t.ok);
   await dashboard.exposeFunction('test', t.test);
   await dashboard.exposeFunction('sleep', sleep);
   
@@ -33,23 +46,23 @@ async function runTests(t) {
 
     const background = await browser.runtime.getBackgroundPage();
 
-    const t = {
-      equal: window.equal,
-      test: window.test
-    }
-    const sleep = window.sleep;
-
     let ping = background.ping();
     await equal(ping, 'ping', 'ping test');
 
     let query;
 
     query = await background.queryDatabase('getAllData', {});
-    await equal(query.pages.length, pages.length, 'number of pages in database is correct');
+    await ok(query.pages.length >= pages.length, 'pages were stored in database');
+
+    const domains = query.pages.map(x => x.domain);
+    await ok(domains.indexOf('www.google.com') !== -1, 'google maps is stored as www.google.com');
+    await ok(domains.indexOf('41.7943177,-87.5937424,13z') === -1, 'there are not gps-coordinate domains');
 
     query = await background.queryDatabase('getTrackersByDomain', {domain: 'www.nytimes.com'});
     await equal(query.length >= 0, true, 'there are trackers on nytimes in database');
 
+    query = await background.queryDatabase('getInferencesByDomain', {domain: 'cs.uchicago.edu'});
+    await equal(Object.keys(query)[0], 'Internet & Telecom', 'inference for cs.uchicago is Internet & Telecom');
 
   }, pages);
 
@@ -72,16 +85,3 @@ async function getExtensionId(browser) {
   id = id.trim();
   return id;
 }
-
-async function visitPages(browser) {
-  const page = await browser.newPage();
-
-  const pages = ['https://super.cs.uchicago.edu', 'https://cs.uchicago.edu', 'https://www.nytimes.com'];
-
-  for (p of pages) {
-    await page.goto(p);
-  }
-  
-  await page.close();
-}
-
