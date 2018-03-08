@@ -86,11 +86,12 @@ function sleep(ms) {
 async function getExtensionId(browser) {
   // a hack to get id of current extension by loading options page and finding where it is displayed in text
   const page = await browser.newPage();
-  await page.goto('chrome://extensions');
-  const devToggle = await page.click('#toggle-dev-on');
-  const idHandle = await (await page.$('.extension-id'));
-  let id = await page.evaluate(body => body.textContent, idHandle);
+  await page.goto('chrome://system');
+  const moreToggle = await page.click('#extensions-value-btn');
+  const idHandle = await page.$('#extensions-value');
+  let extensions = await page.evaluate(body => body.textContent, idHandle);
   await page.close()
+  let id = extensions.match(/[a-z]*(?= : Tracking Transparency)/)[0];
   id = id.trim();
   return id;
 }
