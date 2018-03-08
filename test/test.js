@@ -15,7 +15,8 @@ async function runTests(t) {
     args: [
       `--disable-extensions-except=${CRX_PATH}`,
       `--load-extension=${CRX_PATH}`,
-      '--user-agent=PuppeteerAgent'
+      '--user-agent=PuppeteerAgent',
+      '--enable-md-extensions --false'
     ]
   })
   
