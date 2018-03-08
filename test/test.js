@@ -8,6 +8,8 @@ test('tests', runTests);
 // runTests();
 
 async function runTests(t) {
+
+  // set up puppeteer
   const browser = await puppeteer.launch({
     headless: false, // extensions only supported in full chrome.
     args: [
@@ -17,6 +19,7 @@ async function runTests(t) {
     ]
   })
   
+  // get browser extension's id
   const id = await getExtensionId(browser);
   
   // visit some pages
@@ -32,16 +35,18 @@ async function runTests(t) {
   }
   await page.close();
 
-  // do some testing on the extension
+  // naviagte to dashboard page
   const dashboard = await browser.newPage();
   await dashboard.goto('chrome-extension://' + id + '/dashboard/index.html');
   dashboard.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
+  // allow us to access testing functions from page context
   await dashboard.exposeFunction('equal', t.equal);
   await dashboard.exposeFunction('ok', t.ok);
   await dashboard.exposeFunction('test', t.test);
   await dashboard.exposeFunction('sleep', sleep);
   
+  // switch to page context and run tests
   await dashboard.evaluate(async (pages) => {
 
     const background = await browser.runtime.getBackgroundPage();
@@ -54,13 +59,16 @@ async function runTests(t) {
     query = await background.queryDatabase('getAllData', {});
     await ok(query.pages.length >= pages.length, 'pages were stored in database');
 
+    // check to make sure google maps url was stored properly
     const domains = query.pages.map(x => x.domain);
     await ok(domains.indexOf('www.google.com') !== -1, 'google maps is stored as www.google.com');
     await ok(domains.indexOf('41.7943177,-87.5937424,13z') === -1, 'there are not gps-coordinate domains');
 
+    // make sure we have some trackers stored
     query = await background.queryDatabase('getTrackersByDomain', {domain: 'www.nytimes.com'});
     await equal(query.length >= 0, true, 'there are trackers on nytimes in database');
 
+    // make sure we have some inferences made
     query = await background.queryDatabase('getInferencesByDomain', {domain: 'cs.uchicago.edu'});
     await equal(Object.keys(query)[0], 'Internet & Telecom', 'inference for cs.uchicago is Internet & Telecom');
 
@@ -75,7 +83,7 @@ function sleep(ms) {
 }
 
 async function getExtensionId(browser) {
-  // a hack to get id of current extension by loading options page and finding where it is displayed in texted
+  // a hack to get id of current extension by loading options page and finding where it is displayed in text
   const page = await browser.newPage();
   await page.goto('chrome://extensions');
   const devToggle = await page.click('#toggle-dev-on');
