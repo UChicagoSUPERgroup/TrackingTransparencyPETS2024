@@ -1,7 +1,9 @@
 import buildCategoryTree from './build';
 import infer from './infer';
 
-// import categories from '../../data/all_categories.json';
+// the keywords file is bundled using webpack as keywordsjson
+// it must NOT have .json as an extension in the bundle because then it goes over a file size limit with mozilla
+import keywordsFile from 'file-loader?name=keywordsjson!../../data/inferencing/keywords.json';
 
 let databaseWorkerPort;
 
@@ -17,7 +19,7 @@ onmessage = function(m) {
   }
 };
 
-const tree = buildCategoryTree('../lib/inferencing_data/categories.json');
+const tree = buildCategoryTree(keywordsFile);
 
 
 // TODO: this function needs to be rewritten
