@@ -18,42 +18,42 @@ async function runTests(t) {
   })
   
   const id = await getExtensionId(browser);
-  const BASE_URL = 'chrome-extension://' + id + '/';
-
-  // visit some pages
-  const page = await browser.newPage();
-  // await page.goto('https://www.nytimes.com');
-  // await page.goto('https://super.cs.uchicago.edu');
-  await page.goto('https://cs.uchicago.edu');
-  await page.close();
+  await visitPages(browser);
 
   // do some testing on the extension
-  const background = await browser.newPage();
-  await background.goto(BASE_URL + '_generated_background_page.html');
-  background.on('console', msg => console.log('PAGE LOG:', msg.text()));
+  const dashboard = await browser.newPage();
+  await dashboard.goto('chrome-extension://' + id + '/dashboard/index.html');
+  dashboard.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
-  await background.exposeFunction('equal', t.equal);
-  await background.exposeFunction('test', t.test);
+  await dashboard.exposeFunction('equal', t.equal);
+  await dashboard.exposeFunction('test', t.test);
+  await dashboard.exposeFunction('sleep', sleep);
   
-  await background.evaluate(async () => {
+  await dashboard.evaluate(async (pages) => {
+
+    const background = await browser.runtime.getBackgroundPage();
 
     const t = {
       equal: window.equal,
       test: window.test
     }
+    const sleep = window.sleep;
 
-    let ping = window.ping();
-    await t.equal(ping, 'ping', 'ping test');
+    let ping = background.ping();
+    await equal(ping, 'ping', 'ping test');
+
+    let query;
+
+    query = await background.queryDatabase('getAllData', {});
+    await equal(query.pages.length, pages.length, 'number of pages in database is correct');
+
+    query = await background.queryDatabase('getTrackersByDomain', {domain: 'www.nytimes.com'});
+    await equal(query.length >= 0, true, 'there are trackers on nytimes in database');
 
 
-    // let query = await window.queryDatabase('getAllData', {});
-    // console.log(query) // this hangs? idk why
+  }, pages);
 
-  });
   t.end();
-  // console.log(q);
-
-  // await runTests(id);
   await browser.close();
 }
 
@@ -71,5 +71,17 @@ async function getExtensionId(browser) {
   await page.close()
   id = id.trim();
   return id;
+}
+
+async function visitPages(browser) {
+  const page = await browser.newPage();
+
+  const pages = ['https://super.cs.uchicago.edu', 'https://cs.uchicago.edu', 'https://www.nytimes.com'];
+
+  for (p of pages) {
+    await page.goto(p);
+  }
+  
+  await page.close();
 }
 
