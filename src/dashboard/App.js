@@ -1,6 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import '../../node_modules/react-vis/dist/style.css';
-import 'typeface-source-sans-pro';
 
 import React, { Component } from 'react';
 import { HashRouter, Route } from 'react-router-dom';
