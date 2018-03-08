@@ -2,6 +2,8 @@ import buildCategoryTree from './build';
 import infer from './infer';
 
 // import categories from '../../data/all_categories.json';
+const keywordsFile = require('file-loader!../../data/inferencing/keywords.json');
+console.log(keywordsFile)
 
 let databaseWorkerPort;
 
@@ -17,7 +19,7 @@ onmessage = function(m) {
   }
 };
 
-const tree = buildCategoryTree('../lib/inferencing_data/categories.json');
+const tree = buildCategoryTree(keywordsFile);
 
 
 // TODO: this function needs to be rewritten
