@@ -11,7 +11,7 @@
   <a href="#"><img src="https://img.shields.io/badge/dependencies%20-up%20to%20date-blue.svg"></a>
 </p>
 
-A browser extension to provide transparency about online tracking and the inferences companies make about your browsing in order to target advertisments and personalize your web experience.
+A browser extension to provide transparency about online tracking and the inferences companies make about your browsing in order to target advertisements and personalize your web experience.
 
 <!-- TODO: include screenshot -->
 <!-- ![screenshot](extension/icons/trackers.gif) -->
