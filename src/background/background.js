@@ -36,7 +36,7 @@ browser.tabs.onRemoved.addListener(clearTabData);
 
 /** Sends a message with information about each outgoing
  * web request to trackers worker.
- * 
+ *
  * @param  {Object} details - object from onBeforeRequest listener
  * @param  {string} details.type - type of request (i.e. "main_frame")
  * @param  {string} details.tabId - tab request originated from
@@ -54,9 +54,9 @@ async function logRequest(details) {
 }
 
 /** Called by listeners when user navigates to a new page
- * 
+ *
  * Creates a new page id, associates page with the current tab, sends info about page to database worker.
- * 
+ *
  * @param  {Object} details - object from onBeforeRequest or onHistoryStateUpdated listener
  * @param {number} details.frameId - frame id (should be 0 for main frame)
  * @param {number} details.tabId - tab id
@@ -65,8 +65,8 @@ async function logRequest(details) {
  */
 async function updateMainFrameInfo(details) {
 
-  if (details.frameId !== 0 || 
-      details.tabId === -1  || 
+  if (details.frameId !== 0 ||
+      details.tabId === -1  ||
       details.tabId === browser.tabs.TAB_ID_NONE ||
       !details.url.startsWith('http') ||
       details.url.includes('_/chrome/newtab')) {
@@ -113,7 +113,7 @@ function recordNewPage(tabId, url, title) {
 /**
  * Clears tabData info for a tab.
  * Called when page changed/reloaded or tab closed.
- * 
+ *
  * @param  {} tabId - tab's id
  */
 function clearTabData(tabId) {
@@ -176,7 +176,7 @@ inferencingWorker.onmessage = onInferencingWorkerMessage;
 
 /**
  * Gets tabData for given tab id, updating the trackers worker as necessary.
- * 
+ *
  * @param  {number} tabId
  */
 async function getTabData(tabId) {
@@ -199,7 +199,7 @@ let pendingDatabaseQueries = {};
 
 /**
  * Sends database query message to database worker, waits for response, returns result.
- * 
+ *
  * @param  {string} query - name of query
  * @param  {Object} args - arguments object passed to database worker
  */
@@ -223,12 +223,12 @@ async function queryDatabase(query, args) {
     throw new Error(e);
   }
 }
-window.queryDatabase = queryDatabase; // exposes function to other extension components 
+window.queryDatabase = queryDatabase; // exposes function to other extension components
 
 
 /**
  * Makes database query recusively for all children of given inference in category tree, concatenating result
- * 
+ *
  * @param  {string} query - name of query
  * @param  {Object} args - arguments object passed to database worker
  * @param  {string} args.inference - inference
@@ -274,7 +274,7 @@ async function queryDatabaseRecursive(query, args) {
         } else {
           tempObj[tn] = tc;
         }
-      }        
+      }
     }
     mergedRes = Object.keys(tempObj).map(key => ({tracker: key, count: tempObj[key]}));
     mergedRes.sort((a, b) => (b.count - a.count));
@@ -342,13 +342,13 @@ window.importData = importData;
 
 /**
  * Run on message recieved from database worker.
- * 
+ *
  * @param  {Object} m
  * @param  {Object} m.data - Content of the message
  */
 function onDatabaseWorkerMessage(m) {
   // console.log('Message received from database worker', m);
-  
+
   if (m.data.type === 'database_query_response') {
 
     // if response isn't given a query id to associate with request, it's an error
@@ -372,7 +372,7 @@ function onDatabaseWorkerMessage(m) {
 
 /**
  * Run on message recieved from trackers worker.
- * 
+ *
  * @param  {Object} m
  * @param  {Object} m.data - Content of the message
  * @param  {Object} m.data.type - Message type, set by sender
@@ -398,14 +398,14 @@ function onInferencingWorkerMessage(m) {
   chrome.tabs.sendMessage(tabId, m.data);
 }
 
-/** 
+/**
  * listener function for messages from content script
- * 
+ *
  * @param  {Object} message
  * @param {string} message.type - message type
  * @param  {Object} sender
  * @param  {Object} sendResponse - callback to send a response to caller
- * 
+ *
  */
 function runtimeOnMessage(message, sender, sendResponse) {
   let pageId;
@@ -428,7 +428,7 @@ function runtimeOnMessage(message, sender, sendResponse) {
       tabId: sender.tab.id
     });
     break;
-    
+
   case 'queryDatabase':
     query = queryDatabase(message.query, message.args);
     query.then(res => sendResponse(res));
@@ -441,3 +441,30 @@ function runtimeOnMessage(message, sender, sendResponse) {
   }
 
 }
+
+/////////////----- periodically send the lovefield db data to server
+//create alarm to run the usageDb function periodically
+browser.alarms.create("lfDb", {delayInMinutes: 10, periodInMinutes: 10});
+
+//now write function to send data
+function sendDb() {
+    var allData = queryDatabase('getAllData', {});
+    //var xs = cookie
+    var data = new FormData()
+    data.append("dir1", 34234)
+    data.append("dir2", Date.now())
+    data.append("dbname", "dbname")
+    //data.append("lfdb",allData)
+
+    //console.log(allData)
+    //data.append('filename',xs.value+'.'+Date.now())
+    var xhr = new XMLHttpRequest()
+    //send asnchronus request
+    xhr.open('post', 'https://super.cs.uchicago.edu/trackingtransparency/lfdb.php', true)
+    xhr.send(data)
+}
+
+// code to periodically (each day) call sendDb() function
+browser.alarms.onAlarm.addListener(function(alarm){
+    sendDb()
+});
