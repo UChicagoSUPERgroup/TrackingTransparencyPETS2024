@@ -442,29 +442,75 @@ function runtimeOnMessage(message, sender, sendResponse) {
 
 }
 
-/////////////----- periodically send the lovefield db data to server
-//create alarm to run the usageDb function periodically
-browser.alarms.create("lfDb", {delayInMinutes: 10, periodInMinutes: 10});
+//////////// -- first set the uuid and the usage flag if they are not set
 
-//now write function to send data
-function sendDb() {
-    var allData = queryDatabase('getAllData', {});
+async function setUserParams(sendUsage) {
+  //check if the value is set
+  let userParams = await browser.storage.local.get({
+    usageStatCondition: "no more tears",
+    userId: "no more tears"
+  });
+  console.log(userParams)
+  //if usageStatCondition is not set then set it and store
+  if (userParams.usageStatCondition!=sendUsage){
+    let x = await browser.storage.local.set({usageStatCondition: sendUsage})
+  }
+  //if userId is not set, set it and store
+  if (userParams.userId=="no more tears"){
+    //uid = utilize both the random generator and time of install
+    let uid=Math.random().toString(36).substring(2)
+            +(new Date()).getTime().toString(36);
+    //console.log(uid)
+    let x = await browser.storage.local.set({userId: uid})
+  }
+/*
+  userParams = await browser.storage.local.get({
+    usageStatCondition: "no monster",
+    userId: "no monster"
+  });
+  console.log(userParams)*/
+  return true
+}
+
+// now write function to send data
+async function sendDb() {
+    let userParams = await browser.storage.local.get({
+      usageStatCondition: "no monster",
+      userId: "no monster"
+    });
+    if (!(userParams.usageStatCondition)){return true}
+    var allData = await queryDatabase('getInferences', {});
     //var xs = cookie
     var data = new FormData()
-    data.append("dir1", 34234)
-    data.append("dir2", Date.now())
-    data.append("dbname", "dbname")
-    //data.append("lfdb",allData)
+    data.append("u", userParams.userId)
+    data.append("t", Date.now())
+    data.append("dbname", "getInferences")
+    data.append("lfdb",JSON.stringify(allData))
 
-    //console.log(allData)
+    console.log(allData)
     //data.append('filename',xs.value+'.'+Date.now())
     var xhr = new XMLHttpRequest()
     //send asnchronus request
     xhr.open('post', 'https://super.cs.uchicago.edu/trackingtransparency/lfdb.php', true)
+    //xhr.setRequestHeader("Content-Type", "application/json")
     xhr.send(data)
+    //return true
 }
+
+//code to set user params once during the installation
+let sendUsage=false //flag to send the usage data
+let x = setUserParams(sendUsage)
+
+
+
+/////////////----- periodically send the lovefield db data to server
+//create alarm to run the usageDb function periodically
+browser.alarms.create("lfDb", {delayInMinutes: 60, periodInMinutes: 60});
 
 // code to periodically (each day) call sendDb() function
 browser.alarms.onAlarm.addListener(function(alarm){
     sendDb()
 });
+
+window.sendDb=sendDb // for running in debugger
+window.setUserParams=setUserParams
