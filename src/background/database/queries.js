@@ -199,7 +199,6 @@ async function getInferencesDomainsToSend(args) {
   return await query.exec();
 }
 
-
 /** get trackers that have made a given inference
  *
  * @param  {Object} args - arguments object
