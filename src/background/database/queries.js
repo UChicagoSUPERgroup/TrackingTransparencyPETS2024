@@ -161,6 +161,7 @@ async function getInferencesByTracker(args) {
  * @param  {number} [args.count] - number of entries to return
  * @param  {number} [args.afterDate]
  */
+
 async function getInferences(args) {
   let query = ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
     .from(Inferences);
@@ -170,6 +171,29 @@ async function getInferences(args) {
   query = query
     .groupBy(Inferences.inference)
     .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC);
+
+  query = args.count ? query.limit(args.count) : query;
+  return await query.exec();
+}
+
+/** gets all inferences alongwith their page Id (which is basically timestamp) and domain
+ *
+ * @param  {Object} args - arguments object
+ * @param  {number} [args.count] - number of entries to return
+ * @param  {number} [args.afterDate]
+ */
+
+async function getInferencesDomainsToSend(args) {
+  //let query = ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
+  //  .from(Inferences);
+  let query = ttDb.select(Inferences.inference, Inferences.pageId, Inferences.id, Pages.domain)
+    .from(Inferences).
+    innerJoin(Pages, Pages.id.eq(Inferences.pageId));
+  query = args.afterDate ? query.where(Inferences.pageId.gte(args.afterDate)) : query;
+
+  //query = query
+  //  .groupBy(Inferences.inference)
+  //  .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC);
 
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
@@ -814,6 +838,8 @@ const QUERIES = {
   getDomainsByInference: getDomainsByInference,
   getTitlesbyInferenceAndDomain: getTitlesbyInferenceAndDomain,
   getDomainsByTracker: getDomainsByTracker,
+  //this is to send data to server contaiing pageIds and inferences and domain names
+  getInferencesDomainsToSend: getInferencesDomainsToSend,
 
   lightbeam: lightbeam,
 
