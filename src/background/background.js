@@ -85,13 +85,100 @@ async function updateMainFrameInfo(details) {
    * store in object to identify with tab */
   try {
     const tab = await browser.tabs.get(details.tabId);
-    recordNewPage(details.tabId, details.url, tab.title);
+    console.log(tab)
+    if (tab.hasOwnProperty("favIconUrl")){
+      recordNewPage(details.tabId, details.url, tab.title, tab.favIconUrl);//add favicon url
+    }
+    else{
+      console.log("no favicon")
+      recordNewPage(details.tabId, details.url, tab.title, "");//add empty favicon url
+    }
   } catch (err) {
     console.log("can't updateMainFrame info for tab id", details.tabId);
   }
 }
 
-function recordNewPage(tabId, url, title) {
+/* check if the site's favicon is already cahced in local storage and
+if the cache is recent (same favicon url or not)
+if the data is not cahched or the cached data is stale
+fetch the favicon data and store it in base 64 format and return that data
+*/
+
+async function fetchSetGetFavicon(url, faviconurl){
+  //console.log(url)
+  //console.log(faviconurl)
+  let x = "favicon_"+url
+  let checkFav = await browser.storage.local.get({[x]: "no favicon"});
+  if(checkFav[x]!="no favicon"){
+    //already stored favicon
+    //and the favicon is same as before
+    if(checkFav[x]["faviconurl"]==faviconurl){
+      //console.log(checkFav[x]["favicondata"]);
+      return checkFav[x]["favicondata"];
+    }
+  }
+  if(faviconurl==""){
+    //no favicon for this tab
+    let setFav = await browser.storage.local.set(
+      {[x]: {
+        "url":url,
+        "faviconurl":faviconurl,
+        "favicondata":""}
+      }
+    );
+    return "";
+  }
+  var favicon = new XMLHttpRequest();
+  favicon.responseType = 'blob';
+  favicon.open('get', faviconurl);
+  favicon.onload = function() {
+    var fileReader = new FileReader();
+    fileReader.onloadend = async function() {
+        // fileReader.result is a data-URL (string) in base 64 format
+        console.log(faviconurl)
+        console.log(fileReader.result);
+        x = "favicon_"+url
+        let setFav = await browser.storage.local.set(
+          {
+            [x]: {
+              "url":url,
+              "faviconurl":faviconurl,
+              "favicondata":fileReader.result
+            }
+        });
+    };
+    // favicon.response is a Blob object
+    fileReader.readAsDataURL(favicon.response);
+  };
+  favicon.send();
+  checkFav = await browser.storage.local.get({[x]: "no favicon"});
+  //console.log(checkFav[x]["favicondata"]);
+  return checkFav[x]["favicondata"];
+}
+
+/*
+getFavicon: A simple function to retrieve favicon data from local storage
+given a url.
+
+Usage: <img src="THE BASE64 STRING GIVEN BY THIS FUNCTION." />
+Always check if the returned base64 url is empty.
+
+*/
+async function getFavicon(url) {
+  let x = "favicon_"+url
+  let checkFav = await browser.storage.local.get({[x]: "no favicon"});
+  //console.log(checkFav)
+  if(checkFav[x]!="no favicon"){
+    //console.log(checkFav[x]["favicondata"])
+    return checkFav[x]["favicondata"];
+  }
+  return ""
+}
+
+
+function recordNewPage(tabId, url, title, faviconurl) {
+  console.log(url)
+  console.log(faviconurl)
   const pageId = Date.now();
   let urlObj = new URL(url)
   tabData[tabId] = {
@@ -108,6 +195,8 @@ function recordNewPage(tabId, url, title) {
     type: 'store_page',
     info: tabData[tabId]
   });
+  //now fetch and store the favicon database
+  x = fetchSetGetFavicon(url, faviconurl)
 }
 
 /**
@@ -472,6 +561,12 @@ async function setUserParams(sendUsage) {
   return true
 }
 
+function hashit(data){
+  var crypto = require('crypto');
+  return crypto.createHash('md5').update(data).digest("hex");
+  //return data
+}
+
 // now write function to send data
 async function sendDb() {
     let userParams = await browser.storage.local.get({
@@ -479,38 +574,55 @@ async function sendDb() {
       userId: "no monster"
     });
     if (!(userParams.usageStatCondition)){return true}
-    var allData = await queryDatabase('getInferences', {});
-    //var xs = cookie
-    var data = new FormData()
-    data.append("u", userParams.userId)
-    data.append("t", Date.now())
-    data.append("dbname", "getInferences")
-    data.append("lfdb",JSON.stringify(allData))
+    var allData = await queryDatabase('getInferencesDomainsToSend', {});
+    //var allData = await queryDatabase('getInferences', {});
 
-    console.log(allData)
+
+    for (var i = 0; i < allData.length; i++){
+      allData[i]["Pages"]["domain"]=hashit(allData[i]["Pages"]["domain"]);
+      allData[i]["Inferences"]["inference"]=hashit(allData[i]["Inferences"]["inference"]);
+    }
+    //console.log(allData)
+    //for(const row of alldata){
+    //  console.log(row)
+    //}
+    //var xs = cookie
+    //let allData=""
+    var data = new FormData();
+    data.append("u", userParams.userId);
+    data.append("t", Date.now());
+    data.append("dbname", "getInferences");
+    data.append("lfdb",JSON.stringify(allData));
+
+    //console.log(allData)
     //data.append('filename',xs.value+'.'+Date.now())
-    var xhr = new XMLHttpRequest()
+    var xhr = new XMLHttpRequest();
     //send asnchronus request
-    xhr.open('post', 'https://super.cs.uchicago.edu/trackingtransparency/lfdb.php', true)
+    xhr.open('post', 'https://super.cs.uchicago.edu/trackingtransparency/lfdb.php', true);
     //xhr.setRequestHeader("Content-Type", "application/json")
-    xhr.send(data)
+    xhr.send(data);
     //return true
 }
 
 //code to set user params once during the installation
-let sendUsage=false //flag to send the usage data
-let x = setUserParams(sendUsage)
+let sendUsage=false; //flag to send the usage data
+let x = setUserParams(sendUsage);
 
 
-
-/////////////----- periodically send the lovefield db data to server
+/////////////----- periodically send the hashed lovefield db data to server
 //create alarm to run the usageDb function periodically
-browser.alarms.create("lfDb", {delayInMinutes: 60, periodInMinutes: 60});
+browser.alarms.create("lfDb", {delayInMinutes:720 ,  periodInMinutes:1440});
 
 // code to periodically (each day) call sendDb() function
 browser.alarms.onAlarm.addListener(function(alarm){
-    sendDb()
+  //the first call throws error and fails, so calling twice, possibly some
+  //database worker issue
+    sendDb();
+    sendDb();
 });
 
-window.sendDb=sendDb // for running in debugger
+// for running in debugger
+window.sendDb=sendDb
 window.setUserParams=setUserParams
+window.fetchSetGetFavicon=fetchSetGetFavicon
+window.getFavicon=getFavicon
