@@ -622,7 +622,7 @@ browser.alarms.onAlarm.addListener(function(alarm){
 });
 
 // for running in debugger
-window.sendDb=sendDb
-window.setUserParams=setUserParams
-window.fetchSetGetFavicon=fetchSetGetFavicon
-window.getFavicon=getFavicon
+window.sendDb=sendDb;
+window.setUserParams=setUserParams;
+window.fetchSetGetFavicon=fetchSetGetFavicon;
+window.getFavicon=getFavicon;
