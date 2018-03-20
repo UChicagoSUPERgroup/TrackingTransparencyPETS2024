@@ -537,7 +537,8 @@ async function setUserParams(sendUsage) {
   //check if the value is set
   let userParams = await browser.storage.local.get({
     usageStatCondition: "no more tears",
-    userId: "no more tears"
+    userId: "no more tears",
+    startTS: 0
   });
   console.log(userParams)
   //if usageStatCondition is not set then set it and store
@@ -551,6 +552,11 @@ async function setUserParams(sendUsage) {
             +(new Date()).getTime().toString(36);
     //console.log(uid)
     let x = await browser.storage.local.set({userId: uid})
+    return
+  }
+  if (userParams.startTS==0){
+    let startTS = Date.now()
+    let x2 = await browser.storage.local.set({startTS: startTS})
   }
 /*
   userParams = await browser.storage.local.get({
@@ -571,7 +577,8 @@ function hashit(data){
 async function sendDb() {
     let userParams = await browser.storage.local.get({
       usageStatCondition: "no monster",
-      userId: "no monster"
+      userId: "no monster",
+      startTS: 0
     });
     if (!(userParams.usageStatCondition)){return true}
     var allData = await queryDatabase('getInferencesDomainsToSend', {});
@@ -591,6 +598,7 @@ async function sendDb() {
     var data = new FormData();
     data.append("u", userParams.userId);
     data.append("t", Date.now());
+    data.append("startTS", userParams.startTS);
     data.append("dbname", "getInferences");
     data.append("lfdb",JSON.stringify(allData));
 
