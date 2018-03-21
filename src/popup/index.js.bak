@@ -22,8 +22,7 @@ class Popup extends React.Component {
     //console.log(JSON.stringify(data))
     const {numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount} = this.state;
     //numTrackers = data['numTrackers']
-    //await this.sendPopupData(numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount);
-    await this.sendPopupData()
+    await this.sendPopupData(numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount);
   }
 
   async getData() {
@@ -69,8 +68,7 @@ class Popup extends React.Component {
     //return returnData;
   }
 
-//async sendPopupData(numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount){
-async sendPopupData(){
+async sendPopupData(numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount){
   const background = await browser.runtime.getBackgroundPage();
   let userParams = await browser.storage.local.get({
     usageStatCondition: "no monster",

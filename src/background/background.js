@@ -85,12 +85,12 @@ async function updateMainFrameInfo(details) {
    * store in object to identify with tab */
   try {
     const tab = await browser.tabs.get(details.tabId);
-    console.log(tab)
+    //console.log(tab)
     if (tab.hasOwnProperty("favIconUrl")){
       recordNewPage(details.tabId, details.url, tab.title, tab.favIconUrl);//add favicon url
     }
     else{
-      console.log("no favicon")
+      //console.log("no favicon")
       recordNewPage(details.tabId, details.url, tab.title, "");//add empty favicon url
     }
   } catch (err) {
@@ -135,8 +135,8 @@ async function fetchSetGetFavicon(url, faviconurl){
     var fileReader = new FileReader();
     fileReader.onloadend = async function() {
         // fileReader.result is a data-URL (string) in base 64 format
-        console.log(faviconurl)
-        console.log(fileReader.result);
+        //console.log(faviconurl)
+        //console.log(fileReader.result);
         x = "favicon_"+url
         let setFav = await browser.storage.local.set(
           {
@@ -177,8 +177,8 @@ async function getFavicon(url) {
 
 
 function recordNewPage(tabId, url, title, faviconurl) {
-  console.log(url)
-  console.log(faviconurl)
+  //console.log(url)
+  //console.log(faviconurl)
   const pageId = Date.now();
   let urlObj = new URL(url)
   tabData[tabId] = {
@@ -540,7 +540,7 @@ async function setUserParams(sendUsage) {
     userId: "no more tears",
     startTS: 0
   });
-  console.log(userParams)
+  //console.log(userParams)
   //if usageStatCondition is not set then set it and store
   if (userParams.usageStatCondition!=sendUsage){
     let x = await browser.storage.local.set({usageStatCondition: sendUsage})
@@ -612,8 +612,27 @@ async function sendDb() {
     //return true
 }
 
+function logData(activityType, timestamp, userId, startTS, activityData){
+    var data = new FormData();
+    data.append("activityType", activityType);
+    data.append("timestamp",timestamp);
+    data.append("userId", userId)
+    data.append("startTS", startTS);
+    data.append("activityData",JSON.stringify(activityData));
+    //console.log('in logdata');
+    //console.log(activityData)
+
+    //console.log(allData)
+    var xhr = new XMLHttpRequest();
+    //send asnchronus request
+    xhr.open('post', 'https://super.cs.uchicago.edu/trackingtransparency/activitylog.php', true);
+    //xhr.setRequestHeader("Content-Type", "application/json")
+    xhr.send(data);
+}
+
+
 //code to set user params once during the installation
-let sendUsage=false; //flag to send the usage data
+let sendUsage=true; //flag to send the usage data
 let x = setUserParams(sendUsage);
 
 
@@ -629,8 +648,10 @@ browser.alarms.onAlarm.addListener(function(alarm){
     sendDb();
 });
 
-// for running in debugger
+// for running in debugger and in external functions
 window.sendDb=sendDb;
 window.setUserParams=setUserParams;
 window.fetchSetGetFavicon=fetchSetGetFavicon;
 window.getFavicon=getFavicon;
+window.hashit=hashit;
+window.logData=logData;
