@@ -12,7 +12,7 @@
     "watch": "webpack -w --progress --config webpack.dev.js",
     "build": "webpack --progress --config webpack.dev.js",
     "firefox": "web-ext run -s extension/ -u 'about:debugging'",
-    "jsdoc": "jsdoc -c jsdoc.conf.json -r -d ./doc/jsdoc/ -R ./README.md ."
+    "jsdoc": "jsdoc -c jsdoc.conf.json ."
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -26,6 +26,7 @@
     "eslint": "^4.15.0",
     "eslint-plugin-react": "^7.5.1",
     "file-loader": "^1.1.6",
+    "foodoc": "^0.0.8",
     "gzip-loader": "^0.0.1",
     "jsdoc": "^3.5.5",
     "puppeteer": "^1.0.0",
