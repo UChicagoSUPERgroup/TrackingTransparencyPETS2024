@@ -6,7 +6,6 @@ import userstudy from './userstudy';
 
 import categoryTree from '../data/categories_tree.json';
 
-
 userstudy.setDefaultOptions();
 
 let tabData = {};
@@ -18,19 +17,26 @@ let trackerMessageId = 0;
 /* WEB REQUEST/TAB LISTENERS */
 /* ========================= */
 
+/**
+ * ping function, used as sanity check for automated tests
+ * 
+ */
 function ping() {
   return 'ping'
 }
 window.ping = ping;
 
+/* listener for all outgoing web requests */
 browser.webRequest.onBeforeRequest.addListener(
   logRequest,
   {urls: ['<all_urls>']}
 );
 
+/* listeners for page navigation (moving to a new page) */
 browser.webNavigation.onDOMContentLoaded.addListener(updateMainFrameInfo);
 browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
 
+/* listener for tab close */
 browser.tabs.onRemoved.addListener(clearTabData);
 
 
@@ -91,9 +97,20 @@ async function updateMainFrameInfo(details) {
   }
 }
 
+
+/**
+ * creates a new record for the tab in database and tabData object
+ * the tabData object stores basic info about the tab in memory
+ * 
+ * @param  {number} tabId
+ * @param  {string} url
+ * @param  {string} title
+ */
 function recordNewPage(tabId, url, title) {
   const pageId = Date.now();
   let urlObj = new URL(url)
+  
+  // store info about the tab in memory
   tabData[tabId] = {
     pageId: pageId,
     domain: urlObj.hostname,
@@ -104,6 +121,7 @@ function recordNewPage(tabId, url, title) {
     trackers: []
   };
 
+  // add new entry to database "Pages" table with into about the page
   databaseWorker.postMessage({
     type: 'store_page',
     info: tabData[tabId]
@@ -111,10 +129,12 @@ function recordNewPage(tabId, url, title) {
 }
 
 /**
- * Clears tabData info for a tab.
+ * Clears tabData info for a tab,
+ * pushing queued web requests to the trackers worker
+ * (which will then store to database)
  * Called when page changed/reloaded or tab closed.
  * 
- * @param  {} tabId - tab's id
+ * @param  {number} tabId - tab's id
  */
 function clearTabData(tabId) {
   if (!tabData[tabId]) {
@@ -132,6 +152,16 @@ function clearTabData(tabId) {
   tabData[tabId] = null;
 }
 
+/**
+ * forces update of tab data
+ * web requests are queued in tabData, and then when this function is called
+ * they are pushed to the trackers worker, which evaluates whether they are trackers
+ * and if so stores them in the database
+ * 
+ * this function also sends the updated data to the in-page overlay
+ *  
+ * @param  {number} tabId - tab's id
+ */
 async function updateTrackers(tabId) {
   if (typeof tabData[tabId] === 'undefined') {
     return;
@@ -306,6 +336,18 @@ async function queryDatabaseRecursive(query, args) {
 }
 window.queryDatabaseRecursive = queryDatabaseRecursive;
 
+
+/**
+ * given a category name in the Google ad-interest categories, and an object for the entire tree,
+ * returns a list with all child subtrees
+ * 
+ * helper for queryDatabaseRecursive
+ * 
+ * @param  {string} cat
+ * @param  {Object} root
+ * @returns {Object[]} branches of tree for each child
+ * 
+ */
 function findChildren(cat, root) {
   for (let c of root.children) {
     if (c.name === cat) {
@@ -320,6 +362,14 @@ function findChildren(cat, root) {
   return false;
 }
 
+/**
+ * given a list of subtrees, returns a flattened list of node names
+ * 
+ * helper for queryDatabaseRecursive
+ * 
+ * @param  {Object[]} children - subtrees of category tree
+ * @returns {string[]} - list of nodes in all subtrees input
+ */
 function collapseChildren(children) {
   let ret = [];
   for (let c of children) {
@@ -331,7 +381,12 @@ function collapseChildren(children) {
   return ret;
 }
 
-
+/**
+ * facilitates bulk import of data
+ * takes in JSON of data to import, passes to database
+ * 
+ * @param  {} dataString - JSON with data to import
+ */
 async function importData(dataString) {
   databaseWorker.postMessage({
     type: 'import_data',
