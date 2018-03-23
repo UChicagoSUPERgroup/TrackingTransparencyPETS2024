@@ -80,6 +80,13 @@ export default class PagesTimeChart extends React.Component {
         y: grouped[day].length
       });
     }
+    console.log(data);
+
+    var timeLabel = function(v) {
+      if (v == Math.floor(v))
+        return v.toString();
+      return "";
+    }
 
 
     return (
@@ -89,7 +96,9 @@ export default class PagesTimeChart extends React.Component {
           height={300}>
           <HorizontalGridLines />
           <VerticalGridLines />
-          <XAxis title={xTitle} />
+          <XAxis
+            title={xTitle}
+            tickFormat={timeLabel}/>
           <YAxis title="Number of Pages" />
           <VerticalRectSeries data={data}/>
         </XYPlot>
