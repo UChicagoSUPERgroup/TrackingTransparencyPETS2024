@@ -212,6 +212,25 @@ async function getTimestamps(args) {
   return await query.exec();
 }
 
+
+/** get pages by time window
+ *
+ * @param  {Object} args - arguments object
+ * @param  {number} [args.startTime] - time start window
+ * @param  {number} [args.endTime] - time end window
+ * @param  {number} [args.count] - number of entries to return
+ */
+async function getPagesByTime(args) {
+  let query = ttDb.select(Pages.title)
+    .from(Pages);
+  query = args.startTime ? query.where(Pages.id.gte(args.startTime)) : query;
+  query = args.endTime ? query.where(Pages.id.lte(args.endTime)) : query;
+  query = args.count ? query.limit(args.count) : query;
+  query = query.orderBy(Pages.id, lf.Order.DESC);
+  return await query.exec();
+}
+
+
 /** gets all timestamps for page visits for a specific inference
  *
  * @param  {Object} args - arguments object
@@ -805,6 +824,7 @@ const QUERIES = {
   getTimestamps: getTimestamps,
   getTimestampsByInference: getTimestampsByInference,
   getTimestampsByTracker: getTimestampsByTracker,
+  getPagesByTime: getPagesByTime,
 
   getNumberOfPages: getNumberOfPages,
   getNumberOfTrackers: getNumberOfTrackers,

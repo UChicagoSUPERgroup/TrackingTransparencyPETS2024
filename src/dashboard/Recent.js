@@ -47,6 +47,7 @@ export default class RecentPage extends React.Component {
       domains: [],
       recent: []
     }
+    this.getByTime = this.getByTime.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -63,10 +64,21 @@ export default class RecentPage extends React.Component {
     });
   }
 
+  async getByTime() {
+    let background = await browser.runtime.getBackgroundPage();
+    let args = {};
+    return background.queryDatabase('getPagesByTime', args);
+  }
+
   handleClick(i) {
     console.log('You clicked! '+ i);
-    this.setState({
-      recent: [i]
+    let pagesByTime = this.getByTime();
+    pagesByTime.then(ps => {
+      this.setState({
+        recent: [i],
+        pagesByTime: ps
+      });
+      console.log(ps);
     });
   }
 
