@@ -78,13 +78,20 @@ export default class PagesTimeScatterplot extends React.Component {
           xDomain={[0,23]}
           yDomain={[0,6]}
           margin={{left: 100, right: 10, top: 10, bottom: 50}}>
-          <XAxis title="Hour" tickValues={hours}/>
-          <YAxis title="Day of Week" tickValues={days} tickFormat={dayOfWeekLabel}/>
           <MarkSeries
             onValueMouseOver={(datapoint, event)=>{
               console.log(datapoint,event);
             }}
             data={data}/>
+          <XAxis
+            title="Hour"
+            tickValues={hours}
+            style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
+          <YAxis
+            title="Day of Week"
+            tickValues={days}
+            tickFormat={dayOfWeekLabel}
+            style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
         </XYPlot>
       </div>
     )

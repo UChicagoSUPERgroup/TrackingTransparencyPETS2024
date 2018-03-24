@@ -109,11 +109,14 @@ export default class PagesTimeChart extends React.Component {
           margin={{left: 40, right: 40, top: 10, bottom: 40}}>
           <HorizontalGridLines />
           <VerticalGridLines />
+          <VerticalRectSeries data={data} />
           <XAxis
             title={xTitle}
-            tickFormat={labelFunc}/>
-          <YAxis title="Number of Pages" />
-          <VerticalRectSeries data={data} />
+            tickFormat={labelFunc}
+            style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
+          <YAxis
+            title="Number of Pages"
+            style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
         </XYPlot>
 
         <ButtonToolbar>
