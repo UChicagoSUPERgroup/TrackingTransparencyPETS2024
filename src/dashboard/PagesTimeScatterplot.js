@@ -16,6 +16,14 @@ import ToggleButton from 'react-bootstrap/lib/ToggleButton';
 
 import tt from '../helpers';
 
+function dayOfWeekLabel(v) {
+  let days = ["Sunday", "Monday", "Tuesday", "Wednesday",
+              "Thursday", "Friday", "Saturday"];
+  if (v == Math.floor(v))
+    return days[v];
+  return "";
+}
+
 export default class PagesTimeScatterplot extends React.Component {
   constructor(props) {
     super(props);
@@ -25,7 +33,7 @@ export default class PagesTimeScatterplot extends React.Component {
     } else {
       console.log('no time data provided');
     }
-    
+
     this.state = {
       times: timestamps
     };
@@ -68,8 +76,8 @@ export default class PagesTimeScatterplot extends React.Component {
           width={600}
           height={300}
           xDomain={[0,23]} yDomain={[0,6]}>
-          <XAxis title="Hour" tickValues={hours} />
-          <YAxis title="Day of Week" tickValues={days} />
+          <XAxis title="Hour" tickValues={hours}/>
+          <YAxis title="Day of Week" tickValues={days} tickFormat={dayOfWeekLabel}/>
           <MarkSeries
             onValueMouseOver={(datapoint, event)=>{
               console.log(datapoint,event);
