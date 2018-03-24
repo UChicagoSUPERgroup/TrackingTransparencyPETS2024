@@ -10,6 +10,8 @@ import PagesTimeScatterplot from './PagesTimeScatterplot';
 
 import las from '../labels';
 const {dateLabel, timeLabel, dayOfWeekLabel, stringLabel} = las;
+const millisecondsInDay = 86400000;
+const millisecondsInHour = 3600000;
 
 function recentVisitsTitle(summary) {
   if (summary[0])
@@ -64,15 +66,26 @@ export default class RecentPage extends React.Component {
     });
   }
 
-  async getByTime() {
+  async getByTime(dayOfWeek, hourStart) {
     let background = await browser.runtime.getBackgroundPage();
-    let args = {};
+    const now = new Date(Date.now());
+    let tempDate = now;
+    console.log(dayOfWeek + "   .   " + now.getDay());
+    while (dayOfWeek != tempDate.getDay()){
+      tempDate = new Date(tempDate.getTime() - millisecondsInDay);
+    }
+    let startDate = new Date(tempDate.getFullYear(),
+      tempDate.getMonth(), tempDate.getDate(), hourStart);
+    console.log(startDate.toDateString());
+    let args = {startTime: startDate.getTime(),
+      endTime: startDate.getTime() + millisecondsInHour};
+    console.log(args);
     return background.queryDatabase('getPagesByTime', args);
   }
 
   handleClick(i) {
     console.log('You clicked! '+ i);
-    let pagesByTime = this.getByTime();
+    let pagesByTime = this.getByTime(i.y, i.x);
     pagesByTime.then(ps => {
       this.setState({
         recent: [i],

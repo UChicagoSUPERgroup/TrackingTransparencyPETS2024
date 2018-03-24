@@ -213,18 +213,22 @@ async function getTimestamps(args) {
 }
 
 
-/** get pages by time window
+/** get pages by time window- needs both start and end times
  *
  * @param  {Object} args - arguments object
- * @param  {number} [args.startTime] - time start window
- * @param  {number} [args.endTime] - time end window
+ * @param  {number} args.startTime - time start window
+ * @param  {number} args.endTime - time end window
  * @param  {number} [args.count] - number of entries to return
  */
 async function getPagesByTime(args) {
+  if (!args.startTime || !args.endTime) {
+    throw new Error('Insufficient args provided for query');
+  }
   let query = ttDb.select(Pages.title)
     .from(Pages);
-  query = args.startTime ? query.where(Pages.id.gte(args.startTime)) : query;
-  query = args.endTime ? query.where(Pages.id.lte(args.endTime)) : query;
+  query = (args.startTime && args.endTime) ?
+    query.where(lf.op.and(Pages.id.gte(args.startTime),
+      Pages.id.lte(args.endTime))) : query;
   query = args.count ? query.limit(args.count) : query;
   query = query.orderBy(Pages.id, lf.Order.DESC);
   return await query.exec();
