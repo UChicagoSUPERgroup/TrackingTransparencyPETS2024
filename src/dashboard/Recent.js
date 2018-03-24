@@ -31,7 +31,18 @@ function RecentVisitsTable(summary, data){
           columns: [
             {Header: "Time",
              id: "id",
-             accessor: d => (new Date(d.id).toLocaleTimeString())
+             accessor: d => (new Date(d.id).toLocaleTimeString()),
+             maxWidth: 150
+            },
+            {Header: "Site",
+             accessor: "domain",
+             Cell: row => (
+               <div key={row.value}>
+                  <Link to={{pathname: '/domains/' + row.value}}>
+                     {row.value}
+                  </Link>
+               </div>),
+             width: 200
             },
             {Header: "Page",
              accessor: "title"}

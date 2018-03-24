@@ -224,7 +224,7 @@ async function getPagesByTime(args) {
   if (!args.startTime || !args.endTime) {
     throw new Error('Insufficient args provided for query');
   }
-  let query = ttDb.select(Pages.title, Pages.id)
+  let query = ttDb.select(Pages.title, Pages.id, Pages.domain)
     .from(Pages);
   query = (args.startTime && args.endTime) ?
     query.where(lf.op.and(Pages.id.gte(args.startTime),
