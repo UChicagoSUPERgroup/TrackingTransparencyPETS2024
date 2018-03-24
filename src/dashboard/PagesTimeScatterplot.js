@@ -15,14 +15,8 @@ import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
 import ToggleButton from 'react-bootstrap/lib/ToggleButton';
 
 import tt from '../helpers';
+import las from '../labels';
 
-function dayOfWeekLabel(v) {
-  let days = ["Sunday", "Monday", "Tuesday", "Wednesday",
-              "Thursday", "Friday", "Saturday"];
-  if (v == Math.floor(v))
-    return days[v];
-  return "";
-}
 
 export default class PagesTimeScatterplot extends React.Component {
   constructor(props) {
@@ -51,6 +45,7 @@ export default class PagesTimeScatterplot extends React.Component {
 
   render() {
     const {times, grouping} = this.state;
+    const {dateLabel, timeLabel, dayOfWeekLabel, stringLabel} = las;
 
     let grouped;
     let data = [];
@@ -69,7 +64,8 @@ export default class PagesTimeScatterplot extends React.Component {
     console.log(data);
 
     const days = [0, 2, 1, 3, 4, 5, 6];
-    const hours = [0, 2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+    const hours = [0, 2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+      14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 
     return (
       <div>
@@ -89,7 +85,7 @@ export default class PagesTimeScatterplot extends React.Component {
             data={data}/>
           <XAxis
             title="Hour"
-            tickValues={hours}
+            tickFormat={timeLabel}
             style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
           <YAxis
             title="Day of Week"

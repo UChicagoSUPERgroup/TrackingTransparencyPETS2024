@@ -15,33 +15,8 @@ import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
 import ToggleButton from 'react-bootstrap/lib/ToggleButton';
 
 import tt from '../helpers';
+import las from '../labels';
 
-function dateLabel(v) {
-  if (v == Math.floor(v))
-    return v.toString();
-  return "";
-}
-
-function timeLabel(v) {
-  let times = ["12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM",
-               "8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM",
-               "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM"];
-  if (v == Math.floor(v))
-    return times[v % 24];
-  return "";
-}
-
-function dayOfWeekLabel(v) {
-  let days = ["Sunday", "Monday", "Tuesday", "Wednesday",
-              "Thursday", "Friday", "Saturday"];
-  if (v == Math.floor(v))
-    return days[v % 7];
-  return "";
-}
-
-function stringLabel(v) {
-  return v.toString();
-}
 
 export default class PagesTimeChart extends React.Component {
   constructor(props) {
@@ -58,6 +33,7 @@ export default class PagesTimeChart extends React.Component {
       times: timestamps,
       grouping: 'weekday'
     };
+
 
     this.changeSelection = this.changeSelection.bind(this);
   }
@@ -78,6 +54,7 @@ export default class PagesTimeChart extends React.Component {
 
   render() {
     const {times, grouping} = this.state;
+    const {dateLabel, timeLabel, dayOfWeekLabel, stringLabel} = las;
 
     let grouped;
     let xTitle;
