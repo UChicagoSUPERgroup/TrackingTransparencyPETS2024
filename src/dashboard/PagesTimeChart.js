@@ -16,6 +16,20 @@ import ToggleButton from 'react-bootstrap/lib/ToggleButton';
 
 import tt from '../helpers';
 
+function timeLabel(v) {
+  if (v == Math.floor(v))
+    return v.toString();
+  return "";
+}
+
+function dayOfWeekLabel(v) {
+  let days = ["Sunday", "Monday", "Tuesday", "Wednesday",
+              "Thursday", "Friday", "Saturday"];
+  if (v == Math.floor(v))
+    return days[v];
+  return "";
+}
+
 export default class PagesTimeChart extends React.Component {
   constructor(props) {
     super(props);
@@ -55,21 +69,25 @@ export default class PagesTimeChart extends React.Component {
     let grouped;
     let xTitle;
     let data = [];
+    let labelFunc;
 
     switch(grouping) {
     case 'weekday':
       grouped = _.groupBy(times, t => t.getDay());
       xTitle = 'Weekday';
+      labelFunc = dayOfWeekLabel;
       break;
 
     case 'month-day':
       grouped = _.groupBy(times, t => t.getDate());
       xTitle = 'Day of Month';
+      labelFunc = timeLabel;
       break;
 
     case 'hour':
       grouped = _.groupBy(times, t => t.getHours());
       xTitle = 'Hour';
+      labelFunc = timeLabel;
       break;
     }
     for (let day in grouped) {
@@ -82,12 +100,6 @@ export default class PagesTimeChart extends React.Component {
     }
     console.log(data);
 
-    var timeLabel = function(v) {
-      if (v == Math.floor(v))
-        return v.toString();
-      return "";
-    }
-
 
     return (
       <div>
@@ -98,7 +110,7 @@ export default class PagesTimeChart extends React.Component {
           <VerticalGridLines />
           <XAxis
             title={xTitle}
-            tickFormat={timeLabel}/>
+            tickFormat={labelFunc}/>
           <YAxis title="Number of Pages" />
           <VerticalRectSeries data={data}/>
         </XYPlot>
