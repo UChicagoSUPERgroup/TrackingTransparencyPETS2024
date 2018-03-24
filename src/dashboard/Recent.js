@@ -68,13 +68,17 @@ export default class RecentPage extends React.Component {
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
-    const timestamps = background.queryDatabase('getTimestamps', {});
+    let tempDate = new Date(Date.now() - (7*millisecondsInDay));
+    let startDate = new Date(tempDate.getFullYear(),
+      tempDate.getMonth(), tempDate.getDate());
+    let args = {afterDate: startDate.getTime()}
+    const timestamps = background.queryDatabase('getTimestamps', args);
     timestamps.then(ts => {
       const times = ts.map(x => (
         (new Date(x.id))
       ));
       this.setState({
-        timestamps: times
+        weektimestamps: times
       });
     });
   }
