@@ -109,7 +109,7 @@ export default class RecentPage extends React.Component {
   }
 
   render() {
-    const {timestamps, recent, pagesByTime} = this.state;
+    const {weektimestamps, recent, pagesByTime} = this.state;
 
     return(
       <div>
@@ -129,14 +129,14 @@ export default class RecentPage extends React.Component {
               </Row>
               <Row>
                 <Col md={7} mdPush={5}>
-                  {timestamps &&
+                  {weektimestamps &&
                     <PagesTimeScatterplot
-                    timestamps={timestamps}
+                    weektimestamps={weektimestamps}
                     update={this.handleClick}/>
                   }
                 </Col>
                 <Col md={5} mdPull={7}>
-                  {timestamps && <PagesTimeChart timestamps={timestamps}/>}
+                  {weektimestamps && <PagesTimeChart weektimestamps={weektimestamps}/>}
                 </Col>
               </Row>
               <br />

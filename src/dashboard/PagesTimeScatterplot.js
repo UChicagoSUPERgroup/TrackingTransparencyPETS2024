@@ -22,8 +22,8 @@ export default class PagesTimeScatterplot extends React.Component {
   constructor(props) {
     super(props);
     let timestamps;
-    if (this.props.timestamps) {
-      timestamps = this.props.timestamps;
+    if (this.props.weektimestamps) {
+      timestamps = this.props.weektimestamps;
     } else {
       console.log('no time data provided');
     }

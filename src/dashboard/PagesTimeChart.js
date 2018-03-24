@@ -22,8 +22,8 @@ export default class PagesTimeChart extends React.Component {
   constructor(props) {
     super(props);
     let timestamps;
-    if (this.props.timestamps) {
-      timestamps = this.props.timestamps;
+    if (this.props.weektimestamps) {
+      timestamps = this.props.weektimestamps;
     } else {
       console.log('no time data provided');
     }
@@ -39,9 +39,9 @@ export default class PagesTimeChart extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.timestamps) {
+    if (nextProps.weektimestamps) {
       this.setState({
-        times: nextProps.timestamps
+        times: nextProps.weektimestamps
       })
     }
   }
