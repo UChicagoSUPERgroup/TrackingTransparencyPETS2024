@@ -26,8 +26,12 @@ function dayOfWeekLabel(v) {
   let days = ["Sunday", "Monday", "Tuesday", "Wednesday",
               "Thursday", "Friday", "Saturday"];
   if (v == Math.floor(v))
-    return days[v];
+    return days[v % 7];
   return "";
+}
+
+function stringLabel(v) {
+  return v.toString();
 }
 
 export default class PagesTimeChart extends React.Component {
@@ -92,7 +96,7 @@ export default class PagesTimeChart extends React.Component {
     }
     for (let day in grouped) {
       data.push({
-        x0: day,
+        x0: parseInt(day),
         x: parseInt(day) + 1,
         y0: 0,
         y: grouped[day].length
