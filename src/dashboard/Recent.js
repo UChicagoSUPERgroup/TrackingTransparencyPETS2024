@@ -72,8 +72,8 @@ export default class RecentPage extends React.Component {
     let startDate = new Date(tempDate.getFullYear(),
       tempDate.getMonth(), tempDate.getDate());
     let args = {afterDate: startDate.getTime()}
-    const timestamps = background.queryDatabase('getTimestamps', args);
-    timestamps.then(ts => {
+    const weektimestamps = background.queryDatabase('getTimestamps', args);
+    weektimestamps.then(ts => {
       const times = ts.map(x => (
         (new Date(x.id))
       ));
@@ -139,7 +139,7 @@ export default class RecentPage extends React.Component {
                   {weektimestamps && <PagesTimeChart weektimestamps={weektimestamps}/>}
                 </Col>
               </Row>
-              <br />
+              <br/>
               <Row>
                 <Col md={12}>
                 {recent && RecentVisitsTable(recent, pagesByTime)}
