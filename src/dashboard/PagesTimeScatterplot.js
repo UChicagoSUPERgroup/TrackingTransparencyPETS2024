@@ -35,7 +35,8 @@ export default class PagesTimeScatterplot extends React.Component {
     }
 
     this.state = {
-      times: timestamps
+      times: timestamps,
+      update: this.props.update
     };
 
     this.changeSelection = this.changeSelection.bind(this);
@@ -81,6 +82,9 @@ export default class PagesTimeScatterplot extends React.Component {
           <MarkSeries
             onValueMouseOver={(datapoint, event)=>{
               console.log(datapoint,event);
+            }}
+            onValueClick={(datapoint, event)=>{
+              this.props.update(datapoint);
             }}
             data={data}/>
           <XAxis

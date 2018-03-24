@@ -117,12 +117,12 @@ export default class PagesTimeChart extends React.Component {
     return (
       <div>
         <XYPlot
-          width={400}
+          width={540}
           height={300}
           margin={{left: 40, right: 40, top: 10, bottom: 40}}>
           <HorizontalGridLines />
           <VerticalGridLines />
-          <VerticalRectSeries data={data} />
+          <VerticalRectSeries data={data} opacity={0.95}/>
           <XAxis
             title={xTitle}
             tickFormat={labelFunc}

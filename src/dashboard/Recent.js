@@ -3,18 +3,39 @@ import { Route, Link } from 'react-router-dom';
 // import { LinkContainer } from 'react-router-bootstrap';
 import tt from '../helpers';
 import {Grid, Row, Col} from 'react-bootstrap';
+import ReactTable from 'react-table';
+
 
 
 import PagesTimeChart from './PagesTimeChart';
 import PagesTimeScatterplot from './PagesTimeScatterplot';
 
 
+function RecentVisitsTable(data){
+  return (
+    <ReactTable
+      data={data}
+      columns={[
+        {Header: "Site",
+         accessor: "x"
+        },
+        {Header: "Page Count",
+         accessor: "size"}
+      ]}
+      defaultPageSize={2}
+      className="-striped -highlight"
+    />
+  );
+}
+
 export default class RecentPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      domains: []
+      domains: [],
+      recent: []
     }
+    this.handleClick = this.handleClick.bind(this);
   }
 
   async componentDidMount() {
@@ -30,8 +51,15 @@ export default class RecentPage extends React.Component {
     });
   }
 
+  handleClick(i) {
+    console.log('You clicked! '+ i);
+    this.setState({
+      recent: [i]
+    });
+  }
+
   render() {
-    const {timestamps} = this.state;
+    const {timestamps, recent} = this.state;
     return(
       <div>
         <h1>Recent Activity</h1>
@@ -50,10 +78,20 @@ export default class RecentPage extends React.Component {
               </Row>
               <Row>
                 <Col md={7} mdPush={5}>
-                  {timestamps && <PagesTimeScatterplot timestamps={timestamps}/>}
+                  {timestamps &&
+                    <PagesTimeScatterplot
+                    timestamps={timestamps}
+                    update={this.handleClick}/>
+                  }
                 </Col>
                 <Col md={5} mdPull={7}>
                   {timestamps && <PagesTimeChart timestamps={timestamps}/>}
+                </Col>
+              </Row>
+              <br />
+              <Row>
+                <Col md={12}>
+                {recent && RecentVisitsTable(recent)}
                 </Col>
               </Row>
             </Grid>
