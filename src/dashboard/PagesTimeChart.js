@@ -9,6 +9,7 @@ import {
   VerticalGridLines,
   VerticalRectSeries
 } from 'react-vis';
+import {Grid, Row, Col} from 'react-bootstrap';
 
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
@@ -93,31 +94,41 @@ export default class PagesTimeChart extends React.Component {
 
     return (
       <div>
-        <XYPlot
-          width={540}
-          height={300}
-          margin={{left: 40, right: 40, top: 10, bottom: 40}}>
-          <HorizontalGridLines />
-          <VerticalGridLines />
-          <VerticalRectSeries data={data} opacity={0.95}/>
-          <XAxis
-            title={xTitle}
-            tickFormat={labelFunc}
-            style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
-          <YAxis
-            title="Number of Pages"
-            style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
-        </XYPlot>
-
-        <ButtonToolbar>
-          <ToggleButtonGroup type="radio" name="grouping-selector" defaultValue={'weekday'} onChange={this.changeSelection}>
-            <ToggleButton value={'hour'}>Hour</ToggleButton>
-            <ToggleButton value={'weekday'}>Weekday</ToggleButton>
-            <ToggleButton value={'month-day'}>Day of Month</ToggleButton>
-          </ToggleButtonGroup>
-        </ButtonToolbar>
+        <Grid>
+          <Row>
+            <XYPlot
+              width={540}
+              height={300}
+              margin={{left: 40, right: 40, top: 10, bottom: 40}}>
+              <HorizontalGridLines />
+              <VerticalGridLines />
+              <VerticalRectSeries data={data} opacity={0.95}/>
+              <XAxis
+                title={xTitle}
+                tickFormat={labelFunc}
+                style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
+              <YAxis
+                title="Number of Pages"
+                style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
+            </XYPlot>
+            </Row>
+            </Row>
+            <ButtonToolbar>
+              <ToggleButtonGroup
+                type="radio"
+                name="grouping-selector"
+                defaultValue={'weekday'}
+                onChange={this.changeSelection}>
+                <ToggleButton value={'hour'}>Hour</ToggleButton>
+                <ToggleButton value={'weekday'}>Weekday</ToggleButton>
+              </ToggleButtonGroup>
+            </ButtonToolbar>
+          </Row>
+        </Grid>
       </div>
     )
   }
 
 }
+
+/* <ToggleButton value={'month-day'}>Day of Month</ToggleButton>*/
