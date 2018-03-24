@@ -14,29 +14,31 @@ const millisecondsInDay = 86400000;
 const millisecondsInHour = 3600000;
 
 function recentVisitsTitle(summary) {
-  if (summary[0])
-    return "Pages visited on " + dayOfWeekLabel(summary[0].y) +
-      " at " + timeLabel(summary[0].x);
+  if (summary.y && summary.x)
+    return "Pages visited on " + dayOfWeekLabel(summary.y) +
+      " at " + timeLabel(summary.x);
   return "Pages visited";
 }
 
-function RecentVisitsTable(summary){
+function RecentVisitsTable(summary, data){
+  console.log(summary);
   return (
     <ReactTable
-      data={summary}
+      data={data}
       columns={[
         {
           Header: recentVisitsTitle(summary),
           columns: [
-            {Header: "Site",
-             accessor: "x"
+            {Header: "Time",
+             id: "id",
+             accessor: d => (new Date(d.id).toLocaleTimeString())
             },
-            {Header: "Page Count",
-             accessor: "size"}
+            {Header: "Page",
+             accessor: "title"}
           ]
         }
       ]}
-      defaultPageSize={2}
+      pageSize= {(summary.size >= 1) ? 20 : 3}
       className="-striped -highlight"
     />
   );
@@ -70,25 +72,21 @@ export default class RecentPage extends React.Component {
     let background = await browser.runtime.getBackgroundPage();
     const now = new Date(Date.now());
     let tempDate = now;
-    console.log(dayOfWeek + "   .   " + now.getDay());
     while (dayOfWeek != tempDate.getDay()){
       tempDate = new Date(tempDate.getTime() - millisecondsInDay);
     }
     let startDate = new Date(tempDate.getFullYear(),
       tempDate.getMonth(), tempDate.getDate(), hourStart);
-    console.log(startDate.toDateString());
     let args = {startTime: startDate.getTime(),
       endTime: startDate.getTime() + millisecondsInHour};
-    console.log(args);
     return background.queryDatabase('getPagesByTime', args);
   }
 
   handleClick(i) {
-    console.log('You clicked! '+ i);
     let pagesByTime = this.getByTime(i.y, i.x);
     pagesByTime.then(ps => {
       this.setState({
-        recent: [i],
+        recent: i,
         pagesByTime: ps
       });
       console.log(ps);
@@ -96,7 +94,7 @@ export default class RecentPage extends React.Component {
   }
 
   render() {
-    const {timestamps, recent} = this.state;
+    const {timestamps, recent, pagesByTime} = this.state;
 
     return(
       <div>
@@ -129,7 +127,7 @@ export default class RecentPage extends React.Component {
               <br />
               <Row>
                 <Col md={12}>
-                {recent && RecentVisitsTable(recent)}
+                {recent && RecentVisitsTable(recent, pagesByTime)}
                 </Col>
               </Row>
             </Grid>
