@@ -75,7 +75,9 @@ export default class PagesTimeScatterplot extends React.Component {
         <XYPlot
           width={600}
           height={300}
-          xDomain={[0,23]} yDomain={[0,6]}>
+          xDomain={[0,23]}
+          yDomain={[0,6]}
+          margin={{left: 100, right: 10, top: 10, bottom: 50}}>
           <XAxis title="Hour" tickValues={hours}/>
           <YAxis title="Day of Week" tickValues={days} tickFormat={dayOfWeekLabel}/>
           <MarkSeries

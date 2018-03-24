@@ -49,10 +49,10 @@ export default class RecentPage extends React.Component {
               </p>
               </Row>
               <Row>
-                <Col md={8} mdPush={4}>
+                <Col md={7} mdPush={5}>
                   {timestamps && <PagesTimeScatterplot timestamps={timestamps}/>}
                 </Col>
-                <Col md={4} mdPull={8}>
+                <Col md={5} mdPull={7}>
                   {timestamps && <PagesTimeChart timestamps={timestamps}/>}
                 </Col>
               </Row>
