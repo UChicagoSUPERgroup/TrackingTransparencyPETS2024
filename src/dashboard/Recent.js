@@ -5,22 +5,34 @@ import tt from '../helpers';
 import {Grid, Row, Col} from 'react-bootstrap';
 import ReactTable from 'react-table';
 
-
-
 import PagesTimeChart from './PagesTimeChart';
 import PagesTimeScatterplot from './PagesTimeScatterplot';
 
+import las from '../labels';
+const {dateLabel, timeLabel, dayOfWeekLabel, stringLabel} = las;
 
-function RecentVisitsTable(data){
+function recentVisitsTitle(summary) {
+  if (summary[0])
+    return "Pages visited on " + dayOfWeekLabel(summary[0].y) +
+      " at " + timeLabel(summary[0].x);
+  return "Pages visited";
+}
+
+function RecentVisitsTable(summary){
   return (
     <ReactTable
-      data={data}
+      data={summary}
       columns={[
-        {Header: "Site",
-         accessor: "x"
-        },
-        {Header: "Page Count",
-         accessor: "size"}
+        {
+          Header: recentVisitsTitle(summary),
+          columns: [
+            {Header: "Site",
+             accessor: "x"
+            },
+            {Header: "Page Count",
+             accessor: "size"}
+          ]
+        }
       ]}
       defaultPageSize={2}
       className="-striped -highlight"
@@ -60,6 +72,7 @@ export default class RecentPage extends React.Component {
 
   render() {
     const {timestamps, recent} = this.state;
+
     return(
       <div>
         <h1>Recent Activity</h1>
