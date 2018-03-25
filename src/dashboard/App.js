@@ -33,6 +33,9 @@ const NavLink = ({to, title}) => (
 
 const TTNavbar = () => {
   const enoughData = tt.enoughData();
+  //const lightbeamcondition = await browser.storage.local.get('lightbeamcondition');
+  const lightbeamcondition = true;
+  //const {lightbeamcondition} = this.state;
   return (
     <Navbar fixedTop>
       <Navbar.Header>
@@ -42,13 +45,20 @@ const TTNavbar = () => {
         <Navbar.Toggle />
       </Navbar.Header>
       <Navbar.Collapse>
-        {enoughData && <Nav>
+        {enoughData && lightbeamcondition && <Nav>
           <NavLink to="/trackers" title="Trackers"/>
           <NavLink to="/inferences" title="Inferences"/>
           <NavLink to="/domains" title="Sites"/>
           <NavLink to="/recent" title="Activity"/>
           <NavLink to="/lightbeam" title="Time"/>
         </Nav>}
+        {enoughData && !lightbeamcondition && <Nav>
+          <NavLink to="/trackers" title="Trackers"/>
+          <NavLink to="/inferences" title="Inferences"/>
+          <NavLink to="/domains" title="Sites"/>
+          <NavLink to="/recent" title="Activity"/>
+        </Nav>}
+
         <Nav pullRight>
           <NavLink to="/debug" title="Debug"/>
           <NavLink to="/about" title="About"/>
@@ -61,7 +71,8 @@ const TTNavbar = () => {
 class App extends Component {
   render() {
     const enoughData = tt.enoughData();
-
+    //const lightbeamcondition = await browser.storage.local.get('lightbeamcondition');
+    const lightbeamcondition = true;
     return(
       <HashRouter>
         <div>
