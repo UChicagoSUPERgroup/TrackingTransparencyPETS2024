@@ -36,7 +36,7 @@ class InferencesPage extends React.Component {
     const background = await browser.runtime.getBackgroundPage();
     this.topInferences = await background.queryDatabase('getInferences', {count: this.inferenceCount});
     this.setState({
-      inferences: this.topInferences 
+      inferences: this.topInferences
     });
   }
 
@@ -137,9 +137,9 @@ class InferencesPage extends React.Component {
   async componentDidMount() {
     this.getInferences();
   }
-  
-  
-  
+
+
+
   render() {
     let {inferences, selectedInference} = this.state;
 
@@ -166,8 +166,8 @@ class InferencesPage extends React.Component {
                 <Col md={6} mdPush={6}>
                   <div className={'inferences-sunburst-filters'}>
                     <h3>Filters</h3>
-                    <div className={'filter-row'}>Inferences sensitivity: <ToggleButtonGroup 
-                      name="sensitivity-filter" 
+                    <div className={'filter-row'}>Inferences sensitivity: <ToggleButtonGroup
+                      name="sensitivity-filter"
                       value={this.state.sensitivitySelection}
                       onChange={this.handleSensitivitySelection}
                       defaultValue={'all-sensitive'}>
@@ -175,8 +175,8 @@ class InferencesPage extends React.Component {
                       <ToggleButton value={'less-sensitive'} bsSize="small">Less sensitive</ToggleButton>
                       <ToggleButton value={'more-sensitive'} bsSize="small">More sensitive</ToggleButton>
                     </ToggleButtonGroup></div>
-                    <div className={'filter-row'}>Recency of inferences: <ToggleButtonGroup 
-                      name="date-filter" 
+                    <div className={'filter-row'}>Recency of inferences: <ToggleButtonGroup
+                      name="date-filter"
                       value={this.state.dateSelection}
                       onChange={this.handleDateSelection}
                       defaultValue={'all-dates'}>

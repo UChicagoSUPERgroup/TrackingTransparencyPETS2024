@@ -33,6 +33,7 @@ export default class PagesTimeChart extends React.Component {
     };
 
     this.changeSelection = this.changeSelection.bind(this);
+    this.logLoad = this.logLoad.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -49,12 +50,34 @@ export default class PagesTimeChart extends React.Component {
     })
   }
 
+  async logLoad(grouping) {
+       //console.log('In the log load page')
+       const background = await browser.runtime.getBackgroundPage();
+       let userParams = await browser.storage.local.get({
+         usageStatCondition: "no monster",
+         userId: "no monster",
+         startTS: 0
+       });
+       if (userParams.usageStatCondition){//get data when the user click on the button.
+         let activityType='click timegroups on dashboard recent activity page';
+         let timestamp=Date.now();
+         let userId=userParams.userId;
+         let startTS=userParams.startTS;
+         let activityData={'chosentimegroup':grouping}
+         background.logData(activityType, timestamp, userId, startTS, activityData);
+       }
+     }
+
+
+
   render() {
     const {times, grouping} = this.state;
 
     let grouped;
     let xTitle;
     let data = [];
+
+    this.logLoad(grouping);
 
     switch(grouping) {
     case 'weekday':

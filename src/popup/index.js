@@ -14,16 +14,19 @@ class Popup extends React.Component {
     this.state = {
 
     }
+    this.sendPopupData = this.sendPopupData.bind(this);
+    this.openDashboard = this.openDashboard.bind(this);
   }
 
   async componentDidMount() {
+    await this.sendPopupData();
     await this.getData();
     //console.log('in mount')
     //console.log(JSON.stringify(data))
     const {numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount} = this.state;
     //numTrackers = data['numTrackers']
     //await this.sendPopupData(numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount);
-    await this.sendPopupData()
+
   }
 
   async getData() {

@@ -13,11 +13,33 @@ export default class RecentPage extends React.Component {
     this.state = {
       domains: []
     }
+  this.logLoad = this.logLoad.bind(this);
   }
+
+  async logLoad() {
+      //console.log('In the log load page')
+      const background = await browser.runtime.getBackgroundPage();
+      let userParams = await browser.storage.local.get({
+        usageStatCondition: "no monster",
+        userId: "no monster",
+        startTS: 0
+      });
+      if (userParams.usageStatCondition){//get data when the user click on the button.
+        let activityType='load dashboard recent activity page';
+        let timestamp=Date.now();
+        let userId=userParams.userId;
+        let startTS=userParams.startTS;
+        let activityData={
+            }
+        background.logData(activityType, timestamp, userId, startTS, activityData);
+      }
+    }
+
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
     const timestamps = background.queryDatabase('getTimestamps', {});
+    this.logLoad();
     timestamps.then(ts => {
       const times = ts.map(x => (
         (new Date(x.id))
@@ -27,7 +49,7 @@ export default class RecentPage extends React.Component {
       });
     });
   }
-  
+
   render() {
     const {timestamps} = this.state;
     return(

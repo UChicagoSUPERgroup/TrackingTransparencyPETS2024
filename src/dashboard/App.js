@@ -44,10 +44,10 @@ const TTNavbar = () => {
       <Navbar.Collapse>
         {enoughData && <Nav>
           <NavLink to="/trackers" title="Trackers"/>
-          <NavLink to="/inferences" title="Inferences Sunburst"/>
-          <NavLink to="/recent" title="Recent Activity"/>
-          <NavLink to="/domains" title="Domains"/>
-          <NavLink to="/lightbeam" title="Lightbeam"/>
+          <NavLink to="/inferences" title="Inferences"/>
+          <NavLink to="/domains" title="Sites"/>
+          <NavLink to="/recent" title="Activity"/>
+          <NavLink to="/lightbeam" title="Time"/>
         </Nav>}
         <Nav pullRight>
           <NavLink to="/debug" title="Debug"/>
@@ -66,7 +66,7 @@ class App extends Component {
       <HashRouter>
         <div>
           <TTNavbar/>
-          
+
           <div className="container containerInner">
 
             {enoughData && <div>

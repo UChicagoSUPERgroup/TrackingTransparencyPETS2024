@@ -13,8 +13,8 @@ const FieldGroup = ({ id, label, ...props }) => {
   return (
     <FormGroup controlId={id} bsSize="small">
       <ControlLabel>{label}</ControlLabel>
-      <FormControl 
-        {...props} 
+      <FormControl
+        {...props}
       />
     </FormGroup>
   );
@@ -43,11 +43,31 @@ class DebugPage extends React.Component {
     this.saveFile = this.saveFile.bind(this);
     this.importData = this.importData.bind(this);
     this.handleClickRecursive = this.handleClickRecursive.bind(this);
+    this.logLoad = this.logLoad.bind(this);
   }
 
-  // componentDidMount() {
+  async logLoad() {
+        //console.log('In the log load page')
+        const background = await browser.runtime.getBackgroundPage();
+        let userParams = await browser.storage.local.get({
+          usageStatCondition: "no monster",
+          userId: "no monster",
+          startTS: 0
+        });
+        if (userParams.usageStatCondition){//get data when the user click on the button.
+          let activityType='load dashboard debug page';
+          let timestamp=Date.now();
+          let userId=userParams.userId;
+          let startTS=userParams.startTS;
+          let activityData={}
+          background.logData(activityType, timestamp, userId, startTS, activityData);
+        }
+      }
 
-  // }
+
+componentDidMount() {
+  this.logLoad();
+}
   async handleClickRecursive() {
     this.recursive = true;
     await this.handleClick();
@@ -120,15 +140,15 @@ class DebugPage extends React.Component {
         <form>
           <FormGroup controlId="queryFormField">
             <ControlLabel>Query</ControlLabel>
-            <FormControl 
-              componentClass="select" 
+            <FormControl
+              componentClass="select"
               placeholder="Query"
               value={this.state.queryFormField}
               onChange={this.handleChange}>
               {queryNames.map(q => <option key={q} value={q}>{q}</option>)}
             </FormControl>
           </FormGroup>
-          
+
           <FieldGroup
             id="trackerFormField"
             type="text"
