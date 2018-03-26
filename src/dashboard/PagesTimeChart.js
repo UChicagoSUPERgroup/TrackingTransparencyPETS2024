@@ -16,7 +16,7 @@ import ToggleButton from 'react-bootstrap/lib/ToggleButton';
 
 import tt from '../helpers';
 import las from '../labels';
-
+const millisecondsInDay = 86400000;
 
 export default class PagesTimeChart extends React.Component {
   constructor(props) {
@@ -34,7 +34,7 @@ export default class PagesTimeChart extends React.Component {
       grouping: 'weekday'
     };
 
-
+    this.getDaysData = this.getDaysData.bind(this);
     this.changeSelection = this.changeSelection.bind(this);
   }
 
@@ -46,15 +46,38 @@ export default class PagesTimeChart extends React.Component {
     }
   }
 
+  async getDaysData(days) {
+    const background = await browser.runtime.getBackgroundPage();
+    let tempDate = new Date(Date.now() - (days * millisecondsInDay));
+    let args = {afterDate: tempDate.getTime()}
+    return background.queryDatabase('getTimestamps', args);
+  }
+
   changeSelection(val) {
-    this.setState({
-      grouping: val
-    })
+    let days;
+    switch(val){
+    case 'hour':
+      days = 1;
+      break;
+    case 'weekday':
+      days = 7;
+      break;
+    }
+    let lastDaysData = this.getDaysData(days);
+    lastDaysData.then(ts => {
+      const daytimestamps = ts.map(x => (
+        (new Date(x.id))
+      ));
+      this.setState({
+        times: daytimestamps,
+        grouping: val
+      });
+    });
   }
 
   render() {
     const {times, grouping} = this.state;
-    const {dateLabel, timeLabel, dayOfWeekLabel, stringLabel} = las;
+    const {dateLabel, timeLabelSimple, timeLabelAdjusted, dayOfWeekLabel, stringLabel} = las;
 
     let grouped;
     let xTitle;
@@ -66,27 +89,47 @@ export default class PagesTimeChart extends React.Component {
       grouped = _.groupBy(times, t => t.getDay());
       xTitle = 'Weekday';
       labelFunc = dayOfWeekLabel;
+      for (let day in grouped) {
+        data.push({
+          x0: parseInt(day),
+          x: parseInt(day) + 1,
+          y0: 0,
+          y: grouped[day].length
+        });
+      }
       break;
-
-    case 'month-day':
-      grouped = _.groupBy(times, t => t.getDate());
-      xTitle = 'Day of Month';
-      labelFunc = dateLabel;
-      break;
-
     case 'hour':
       grouped = _.groupBy(times, t => t.getHours());
       xTitle = 'Hour';
-      labelFunc = timeLabel;
+      labelFunc = timeLabelAdjusted;
+      let hr = (new Date(Date.now())).getHours();
+      for (let i = 0; i < 24; i++) {
+        data.push({
+          x0: i,
+          x: i + 1,
+          y0: 0,
+          y: 0
+        });
+      }
+      for (let d in grouped) {
+        let day = parseInt(d);
+        if (day >= hr) {
+          data[day - hr] = {
+            x0: day - hr,
+            x: day - hr + 1,
+            y0: 0,
+            y: grouped[day].length
+          }
+        } else {
+          data[(24 - hr) + day] = {
+            x0: (24 - hr) + day,
+            x: (24 - hr) + day + 1,
+            y0: 0,
+            y: grouped[day].length
+          }
+        }
+      }
       break;
-    }
-    for (let day in grouped) {
-      data.push({
-        x0: parseInt(day),
-        x: parseInt(day) + 1,
-        y0: 0,
-        y: grouped[day].length
-      });
     }
     console.log(data);
 
@@ -123,5 +166,3 @@ export default class PagesTimeChart extends React.Component {
   }
 
 }
-
-/* <ToggleButton value={'month-day'}>Day of Month</ToggleButton>*/

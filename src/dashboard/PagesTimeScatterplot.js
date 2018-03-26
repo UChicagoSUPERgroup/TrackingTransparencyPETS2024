@@ -45,7 +45,7 @@ export default class PagesTimeScatterplot extends React.Component {
 
   render() {
     const {times, grouping} = this.state;
-    const {dateLabel, timeLabel, dayOfWeekLabel, stringLabel} = las;
+    const {dateLabel, timeLabelSimple, timeLabelAdjusted, dayOfWeekLabel, stringLabel} = las;
 
     let grouped;
     let data = [];
@@ -85,7 +85,7 @@ export default class PagesTimeScatterplot extends React.Component {
             data={data}/>
           <XAxis
             title="Hour"
-            tickFormat={timeLabel}
+            tickFormat={timeLabelSimple}
             style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
           <YAxis
             title="Day of Week"

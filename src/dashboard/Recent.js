@@ -9,14 +9,14 @@ import PagesTimeChart from './PagesTimeChart';
 import PagesTimeScatterplot from './PagesTimeScatterplot';
 
 import las from '../labels';
-const {dateLabel, timeLabel, dayOfWeekLabel, stringLabel} = las;
+const {dateLabel, timeLabelSimple, timeLabelAdjusted, dayOfWeekLabel, stringLabel} = las;
 const millisecondsInDay = 86400000;
 const millisecondsInHour = 3600000;
 
 function recentVisitsTitle(summary) {
   if (summary.y && summary.x)
     return "Pages visited on " + dayOfWeekLabel(summary.y) +
-      " at " + timeLabel(summary.x);
+      " at " + timeLabelSimple(summary.x);
   return "Pages visited";
 }
 
