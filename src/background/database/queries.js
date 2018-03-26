@@ -51,6 +51,8 @@ async function getAllInferences() {
  *
  * @param  {Object} args - arguments object
  * @param  {number} [args.count] - number of entries to return
+ * @param  {number} [args.afterDate] - only include page visits after this date, 
+ *                                     given as an integer for number of milliseconds since 1/1/1970
  */
 async function getDomains(args) {
   let sel = ttDb.select(Pages.domain, lf.fn.count(lf.fn.distinct(Trackers.tracker)))
@@ -75,6 +77,8 @@ async function getDomains(args) {
  * @param  {Object} args - arguments object
  * @param  {string} args.domain - domain
  * @param  {number} [args.count] - number of entries to return
+ * @param  {number} [args.afterDate] - only include page visits after this date, 
+ *                                     given as an integer for number of milliseconds since 1/1/1970
  */
 async function getTrackersByDomain(args) {
   if (!args.domain) {
@@ -159,7 +163,8 @@ async function getInferencesByTracker(args) {
  *
  * @param  {Object} args - arguments object
  * @param  {number} [args.count] - number of entries to return
- * @param  {number} [args.afterDate]
+ * @param  {number} [args.afterDate] - only include page visits after this date, 
+ *                                     given as an integer for number of milliseconds since 1/1/1970
  */
 async function getInferences(args) {
   let query = ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
@@ -203,6 +208,8 @@ async function getTrackersByInference(args) {
  * @param  {Object} args - arguments object
  * @param  {number} [args.afterDate] - date to query for entries after
  * @param  {number} [args.count] - number of entries to return
+ * @param  {number} [args.afterDate] - only include page visits after this date, 
+ *                                     given as an integer for number of milliseconds since 1/1/1970
  */
 async function getTimestamps(args) {
   let query = ttDb.select(Pages.id)
@@ -305,7 +312,7 @@ async function getDomainsByInference(args) {
     ))
   let qRes = await query.exec();
 
-  let merged = _.reduce(qRes, function(result, value, index) {
+  let merged = _.reduce(qRes, function(result, value) {
     const domain = value.Pages.domain;
     if (result[domain]) {
       result[domain]++;
@@ -371,8 +378,6 @@ async function getTitlesbyInferenceAndDomain(args) {
       Inferences.inference.eq(args.inference),
       Pages.domain.eq(args.domain)
     ));
-   // .groupBy(Pages.title)
-   // .orderBy(lf.fn.count(Pages.title), lf.Order.DESC);
 
   let qRes = await query.exec();
 
@@ -389,28 +394,14 @@ async function getTitlesbyInferenceAndDomain(args) {
   return merged;
 }
 
-
-/* OLD QUERIES */
-/* ======= */
-
-
 /**
- * page visit count by tracker (i.e. TRACKERNAME knows # sites you have visited)
- *
+ * simulates mozilla lighbeam 
+ * 
+ * @param {Object} args - args object
+ * @param {string} args.domain - domain
+ * @param {string} args.inference - inference
+ * @returns {Object} object in desired lighbeam format
  */
-async function getPageVisitCountByTracker(args) {
-  let query = await ttDb.select(lf.fn.count(Pages.domain))
-    .from(Pages, Trackers)
-    .where(lf.op.and(
-      Trackers.pageId.eq(Pages.id),
-      Trackers.tracker.eq(args.tracker)
-    ))
-    .exec();
-  return query[0].Pages['COUNT(domain)'];
-}
-
-
-/* simulates lighbeam */
 async function lightbeam(args) {
   // this is very inefficient code but is easier to hack together this way
 
@@ -482,7 +473,20 @@ async function lightbeam(args) {
   return websites;
 }
 
-
+/**
+ * page visit count by tracker (i.e. TRACKERNAME knows # sites you have visited)
+ *
+ */
+async function getPageVisitCountByTracker(args) {
+  let query = await ttDb.select(lf.fn.count(Pages.domain))
+    .from(Pages, Trackers)
+    .where(lf.op.and(
+      Trackers.pageId.eq(Pages.id),
+      Trackers.tracker.eq(args.tracker)
+    ))
+    .exec();
+  return query[0].Pages['COUNT(domain)'];
+}
 
 /**
  * get trackers by inferences count
@@ -707,13 +711,6 @@ async function getInferencesByTrackerCount(args) {
 }
 
 
-
-/**
- * Count of how many times an inference has been made
- *
- * TODO: right now we use this on infopage and make a query for every single possible inferce
- * when it would be better just to have one query that returns counts of all inferences
- */
 async function getInferenceCount(args) {
   let query = await ttDb.select(lf.fn.count(Inferences.inference))
     .from(Inferences)
@@ -734,7 +731,6 @@ async function getInferenceCount(args) {
  *
  *
  */
-
 async function getDomainVisits(args) {
    let query = ttDb.select(Pages.domain, lf.fn.count(Pages.domain))
 	.from(Pages)
@@ -750,8 +746,6 @@ async function getDomainVisits(args) {
  *
  *
  */
-
-
 async function getTitles(args) {
    let query = ttDb.select(Pages.title, lf.fn.count(Pages.title))
 	.from(Pages)
@@ -766,7 +760,6 @@ async function getTitles(args) {
  *
  *
  */
-
 async function getTitlesByDomain(args) {
    let query = ttDb.select(Pages.title, lf.fn.count(Pages.title))
         .from(Pages)
@@ -790,49 +783,49 @@ async function emptyDB() {
 /* ========= */
 
 const QUERIES = {
+
   getAllData: getAllData,
+  getAllInferences: getAllInferences,
   getAllPages: getAllPages,
   getAllTrackers: getAllTrackers,
-  getAllInferences: getAllInferences,
-
-  getDomains: getDomains,
-  getTrackersByDomain: getTrackersByDomain,
-  getTrackers: getTrackers,
-  getTrackersReverse: getTrackersReverse,
-  getInferencesByTracker: getInferencesByTracker,
-  getInferences: getInferences,
-  getTrackersByInference: getTrackersByInference,
-  getTimestamps: getTimestamps,
+  getDomains: getDomains, // used in dashboard
+  getDomainsByInference: getDomainsByInference,
+  getDomainsByTracker: getDomainsByTracker,
+  getInferenceCount: getInferenceCount, // used in dashboard
+  getInferences: getInferences,  // used in dashboard inferences page
+  getInferencesByTracker: getInferencesByTracker, // used in dashboard
+  getNumberOfInferences: getNumberOfInferences, // used in popup, dashboard
+  getNumberOfPages: getNumberOfPages, // used in popup, lighbeam, dashboard
+  getNumberOfTrackers: getNumberOfTrackers, // used in popup, lightbeam, dashboard
+  getPageVisitCountByTracker: getPageVisitCountByTracker, // used in popup
+  getTimestamps: getTimestamps, // used in dashboard
   getTimestampsByInference: getTimestampsByInference,
   getTimestampsByTracker: getTimestampsByTracker,
+  getTrackers: getTrackers, // used in dasboard
+  getTrackersByDomain: getTrackersByDomain, // used in dashboard
+  getTrackersByInference: getTrackersByInference, // used in dashboard
+  lightbeam: lightbeam, // used by lightbeam
 
-  getNumberOfPages: getNumberOfPages,
-  getNumberOfTrackers: getNumberOfTrackers,
-  getNumberOfInferences: getNumberOfInferences,
 
-  getInferencesByDomain: getInferencesByDomain,
-  getDomainsByInference: getDomainsByInference,
-  getTitlesbyInferenceAndDomain: getTitlesbyInferenceAndDomain,
-  getDomainsByTracker: getDomainsByTracker,
+  // OLD QUERIES
+  // WARNING: may be incorrect or not work as expected
 
-  lightbeam: lightbeam,
+  // getDomainsNoTrackers: getDomainsNoTrackers,
+  // getDomainVisits: getDomainVisits,
+  // getInferencesByDomain: getInferencesByDomain,
+  // getInferencesByTrackerCount: getInferencesByTrackerCount,
+  // getInfoAboutTracker: getInfoAboutTracker,
+  // getPagesByTrackerAndDomain: getPagesByTrackerAndDomain,
+  // getPagesByTrackerAndInference: getPagesByTrackerAndInference,
+  // getPagesNoTrackers: getPagesNoTrackers,
+  // getPagesWithNumberOfTrackers: getPagesWithNumberOfTrackers,
+  // getTitles: getTitles,
+  // getTitlesByDomain: getTitlesByDomain,
+  // getTitlesbyInferenceAndDomain: getTitlesbyInferenceAndDomain,
+  // getTrackersByInferenceCount: getTrackersByInferenceCount,
+  // getTrackersReverse: getTrackersReverse,
+  // getTrackerWithInferencesByDomain: getTrackerWithInferencesByDomain,
 
-  // old
-  getPageVisitCountByTracker: getPageVisitCountByTracker,
-  getTrackersByInferenceCount: getTrackersByInferenceCount,
-  getPagesByTrackerAndInference: getPagesByTrackerAndInference,
-  getPagesWithNumberOfTrackers: getPagesWithNumberOfTrackers,
-  // getDomainsWithNumberOfTrackers: getDomainsWithNumberOfTrackers(),
-  getPagesByTrackerAndDomain: getPagesByTrackerAndDomain,
-  getTrackerWithInferencesByDomain: getTrackerWithInferencesByDomain,
-  getInfoAboutTracker: getInfoAboutTracker,
-  getPagesNoTrackers: getPagesNoTrackers,
-  getDomainsNoTrackers: getDomainsNoTrackers,
-  getInferencesByTrackerCount: getInferencesByTrackerCount,
-  getInferenceCount: getInferenceCount,
-  getDomainVisits: getDomainVisits,
-  getTitles: getTitles,
-  getTitlesByDomain: getTitlesByDomain,
   emptyDB: emptyDB
 };
 
