@@ -19,7 +19,7 @@ let trackerMessageId = 0;
 
 /**
  * ping function, used as sanity check for automated tests
- * 
+ * @returns {string} 'ping'
  */
 function ping() {
   return 'ping'
@@ -208,6 +208,7 @@ inferencingWorker.onmessage = onInferencingWorkerMessage;
  * Gets tabData for given tab id, updating the trackers worker as necessary.
  * 
  * @param  {number} tabId
+ * @return {Object} tabData object
  */
 async function getTabData(tabId) {
   if (typeof tabData[tabId] == 'undefined') {
@@ -232,6 +233,7 @@ let pendingDatabaseQueries = {};
  * 
  * @param  {string} query - name of query
  * @param  {Object} args - arguments object passed to database worker
+ * @return {Object} database query response
  */
 async function queryDatabase(query, args) {
   let queryPromise = new Promise((resolve, reject) => {
@@ -262,6 +264,7 @@ window.queryDatabase = queryDatabase; // exposes function to other extension com
  * @param  {string} query - name of query
  * @param  {Object} args - arguments object passed to database worker
  * @param  {string} args.inference - inference
+ * @return {Object} database query response
  */
 async function queryDatabaseRecursive(query, args) {
   if (!args.inference) {
@@ -385,7 +388,7 @@ function collapseChildren(children) {
  * facilitates bulk import of data
  * takes in JSON of data to import, passes to database
  * 
- * @param  {} dataString - JSON with data to import
+ * @param  {Object} dataString - JSON with data to import
  */
 async function importData(dataString) {
   databaseWorker.postMessage({
@@ -460,6 +463,7 @@ function onInferencingWorkerMessage(m) {
  * @param {string} message.type - message type
  * @param  {Object} sender
  * @param  {Object} sendResponse - callback to send a response to caller
+ * @returns {boolean} true
  * 
  */
 function runtimeOnMessage(message, sender, sendResponse) {

@@ -4,7 +4,7 @@
   "description": "Provides information about online tracking",
   "scripts": {
     "test": "cd test && node test.js | tap-spec",
-    "lint:eslint": "eslint .",
+    "lint:eslint": "eslint src",
     "lint:webext": "web-ext lint -s extension/",
     "lint": "npm run lint:eslint; npm run lint:webext",
     "dist": "rm -rf extension/dist && webpack --progress --config webpack.prod.js && web-ext build -s extension/ --overwrite-dest",
