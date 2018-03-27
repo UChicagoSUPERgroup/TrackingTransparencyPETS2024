@@ -69,6 +69,7 @@ class FirstPartyList extends React.Component {
   render() {
     //if(this.state.reload)this.logLoad();
     //this.setState({reload: true});
+    //this.logLoad();
     return(
       <div>
         <h1>Domains</h1>
@@ -96,6 +97,8 @@ class FirstPartyDetails extends React.Component {
     this.logLoad = this.logLoad.bind(this);
   }
 
+
+
   async logLoad() {
       //console.log('In the log load page')
       const background = await browser.runtime.getBackgroundPage();
@@ -122,9 +125,15 @@ class FirstPartyDetails extends React.Component {
       trackers: trackers
     })
     this.logLoad();
+    //the following is to catch the back button event
+    window.onpopstate = async function(event) {
+      const background = await browser.runtime.getBackgroundPage();
+      let userParams = await browser.storage.local.get({usageStatCondition: "no monster"});
+      if (userParams.usageStatCondition){window.location.reload();}
+    };
   }
 
-/*  routerWillLeave(nextLocation) {
+/*routerWillLeave(nextLocation) {
     this.logLoad();
     return null;
   }*/
