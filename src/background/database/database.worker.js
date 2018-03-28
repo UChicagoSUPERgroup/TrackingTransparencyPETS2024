@@ -61,10 +61,11 @@ async function onMessage(m) {
 /**
  * makes sent query and sends reponse
  * 
- * @param  {Number} id  - query id (set by sender)
- * @param  {string} dst - query destination
- * @param  {string} query - query name
- * @param  {Object} args - query arguments
+ * @param {Object} data - arguments from message pased in
+ * @param  {Number} data.id  - query id (set by sender)
+ * @param  {string} data.dst - query destination
+ * @param  {string} data.query - query name
+ * @param  {Object} data.args - query arguments
  */
 async function handleQuery(data) {
   

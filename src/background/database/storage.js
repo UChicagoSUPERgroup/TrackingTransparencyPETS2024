@@ -1,7 +1,6 @@
 /** @module storage */
 
 import {primaryDbPromise} from './setup';
-// import tt from "../helpers";
 
 /* DATA STORAGE */
 /* ============ */
@@ -27,7 +26,7 @@ export async function storePage(info) {
     'path': info.path,
     'protocol': info.protocol
   });
-  return ttDb.insertOrReplace().into(pageItem).values([page]).exec();
+  ttDb.insertOrReplace().into(pageItem).values([page]).exec();
 }
 
 /**
@@ -72,7 +71,7 @@ export async function storeInference(info) {
     'threshold': info.threshold,
     'pageId': info.pageId
   });
-  return ttDb.insertOrReplace().into(inferenceItem).values([inference]).exec();
+  ttDb.insertOrReplace().into(inferenceItem).values([inference]).exec();
 }
 
 export async function importData(dataString) {
@@ -115,9 +114,9 @@ export async function importData(dataString) {
 
     const row = inferenceItem.createRow({
       'inference': inference.inference,
-    'inferenceCategory': inference.inferenceCategory,
-    'threshold': inference.threshold,
-    'pageId': inference.pageId
+      'inferenceCategory': inference.inferenceCategory,
+      'threshold': inference.threshold,
+      'pageId': inference.pageId
     });
 
     return ttDb.insertOrReplace().into(inferenceItem).values([row]).exec();
