@@ -58,7 +58,7 @@ export default class PagesTimeChart extends React.Component {
          userId: "no monster",
          startTS: 0
        });
-       if (userParams.usageStatCondition){//get data when the user click on the button.
+       if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
          let activityType='click timegroups on dashboard recent activity page';
          let timestamp=Date.now();
          let userId=userParams.userId;

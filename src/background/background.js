@@ -533,7 +533,7 @@ function runtimeOnMessage(message, sender, sendResponse) {
 
 //////////// -- first set the uuid and the usage flag if they are not set
 
-async function setUserParams(sendUsage) {
+async function setUserParams() {
   //check if the value is set
   let userParams = await browser.storage.local.get({
     usageStatCondition: "no more tears",
@@ -542,9 +542,10 @@ async function setUserParams(sendUsage) {
   });
   //console.log(userParams)
   //if usageStatCondition is not set then set it and store
-  if (userParams.usageStatCondition!=sendUsage){
-    let x = await browser.storage.local.set({usageStatCondition: sendUsage})
-  }
+  //usageStatCondition should be set in userstudy.js
+  //if (userParams.usageStatCondition!=sendUsage){
+  //  let x = await browser.storage.local.set({usageStatCondition: sendUsage})
+  //}
   //if userId is not set, set it and store
   if (userParams.userId=="no more tears"){
     //uid = utilize both the random generator and time of install
@@ -580,7 +581,7 @@ async function sendDb() {
       userId: "no monster",
       startTS: 0
     });
-    if (!(userParams.usageStatCondition)){return true}
+    if (!JSON.parse(userParams.usageStatCondition)){return true}
     var allData = await queryDatabase('getInferencesDomainsToSend', {});
     //var allData = await queryDatabase('getInferences', {});
 
@@ -632,8 +633,9 @@ function logData(activityType, timestamp, userId, startTS, activityData){
 
 
 //code to set user params once during the installation
-let sendUsage=true; //flag to send the usage data
-let x = setUserParams(sendUsage);
+//let sendUsage=true; //flag to send the usage data
+//the usage flag in the userstudy.js named as usageStatCondition
+let x = setUserParams();
 
 
 /////////////----- periodically send the hashed lovefield db data to server

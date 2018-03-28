@@ -73,19 +73,27 @@ class Popup extends React.Component {
   }
 
 //async sendPopupData(numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount){
+
 async sendPopupData(){
+  //console.log('I am here 1');
   const background = await browser.runtime.getBackgroundPage();
+  //const tabs = await browser.tabs.query({active: true, currentWindow: true});
+  //console.log('I am here 2');
+  //console.log(tabs[0]);
+  //const tab = tabs[0];
+  //const tabData = await background.getTabData(tab.id);
+  //console.log(tabData);
   let userParams = await browser.storage.local.get({
     usageStatCondition: "no monster",
     userId: "no monster",
     startTS: 0
   });
-  if (userParams.usageStatCondition){//get data when the user click on the button.
-    let activityType='open popup'
-    let timestamp=Date.now()
-    let userId=userParams.userId
-    let startTS=userParams.startTS
-    let activityData={
+  if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
+    let activityType = 'open popup'
+    let timestamp = Date.now()
+    let userId = userParams.userId
+    let startTS = userParams.startTS
+    let activityData = {
         'clickedElem':'extension icon',
         'otherdata':{
                   /*'numTrackers':numTrackers,
@@ -116,7 +124,7 @@ async  openDashboard() {
       userId: "no monster",
       startTS: 0
     });
-    if (userParams.usageStatCondition){//get data when the user click on the button.
+    if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
       let activityType='open dashboard'
       let timestamp=Date.now()
       let userId=userParams.userId

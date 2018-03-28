@@ -20,7 +20,7 @@ async logClick(e) {
       userId: "no monster",
       startTS: 0
     });
-    if (userParams.usageStatCondition){//get data when the user click on the button.
+    if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
       let activityType='click dashboard about page';
       let timestamp=Date.now();
       let userId=userParams.userId;
@@ -41,7 +41,7 @@ async logClick(e) {
         userId: "no monster",
         startTS: 0
       });
-      if (userParams.usageStatCondition){//get data when the user load the page.
+      if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
         let activityType='load dashboard about page';
         let timestamp=Date.now();
         let userId=userParams.userId;

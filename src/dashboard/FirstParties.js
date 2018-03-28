@@ -34,7 +34,7 @@ class FirstPartyList extends React.Component {
           userId: "no monster",
           startTS: 0
         });
-        if (userParams.usageStatCondition){//get data when the user click on the button.
+        if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
           let pages = []
           for (let i=0; i < domains.length;i++) {
               let value = domains[i]["Pages"]["domain"]
@@ -107,7 +107,7 @@ class FirstPartyDetails extends React.Component {
         userId: "no monster",
         startTS: 0
       });
-      if (userParams.usageStatCondition){//get data when the user click on the button.
+      if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
         let page = background.hashit(this.domain)
         let activityType='click site link on dashboard sites page';
         let timestamp=Date.now();
@@ -129,7 +129,7 @@ class FirstPartyDetails extends React.Component {
     window.onpopstate = async function(event) {
       const background = await browser.runtime.getBackgroundPage();
       let userParams = await browser.storage.local.get({usageStatCondition: "no monster"});
-      if (userParams.usageStatCondition){window.location.reload();}
+      if (JSON.parse(userParams.usageStatCondition)){window.location.reload();}
     };
   }
 
