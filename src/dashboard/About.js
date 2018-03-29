@@ -20,6 +20,12 @@ async logClick(e) {
       userId: "no monster",
       startTS: 0
     });
+    const tabs = await browser.tabs.query({active: true, currentWindow: true});
+    let tabId = tabs[0].openerTabId;
+    let x = 'clickData_tabId_'+String(tabId);
+    let tabData = await browser.storage.local.get({[x]: "no favicon"});
+    tabData = JSON.parse(tabData[x]);
+
     if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
       let activityType='click dashboard about page';
       let timestamp=Date.now();
@@ -27,7 +33,10 @@ async logClick(e) {
       let startTS=userParams.startTS;
       let activityData={
           'clickedElemId':e.target.id,
-          'otherdata':{}
+          'parentTabId':tabId,
+          'parentDomain':tabData.domain,
+          'parentPageId':tabData.pageId,
+          'parentNumTrackers':tabData.numTrackers
           }
       background.logData(activityType, timestamp, userId, startTS, activityData);
     }
@@ -36,6 +45,13 @@ async logClick(e) {
   async logLoad() {
       //console.log('In the log load page')
       const background = await browser.runtime.getBackgroundPage();
+      const tabs = await browser.tabs.query({active: true, currentWindow: true});
+      let tabId = tabs[0].openerTabId;
+      let x = 'clickData_tabId_'+String(tabId);
+      let tabData = await browser.storage.local.get({[x]: "no favicon"});
+      tabData = JSON.parse(tabData[x]);
+
+      //console.log('About page', tabId, tabData);
       let userParams = await browser.storage.local.get({
         usageStatCondition: "no monster",
         userId: "no monster",
@@ -47,7 +63,11 @@ async logClick(e) {
         let userId=userParams.userId;
         let startTS=userParams.startTS;
         let activityData={
-            }
+          'parentTabId':tabId,
+          'parentDomain':tabData.domain,
+          'parentPageId':tabData.pageId,
+          'parentNumTrackers':tabData.numTrackers
+        }
         background.logData(activityType, timestamp, userId, startTS, activityData);
       }
     }

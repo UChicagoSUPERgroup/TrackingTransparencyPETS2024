@@ -34,18 +34,29 @@ class FirstPartyList extends React.Component {
           userId: "no monster",
           startTS: 0
         });
+        const tabs = await browser.tabs.query({active: true, currentWindow: true});
+        let tabId = tabs[0].openerTabId;
+        let x = 'clickData_tabId_'+String(tabId);
+        let tabData = await browser.storage.local.get({[x]: "no favicon"});
+        tabData = JSON.parse(tabData[x]);
         if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
           let pages = []
           for (let i=0; i < domains.length;i++) {
-              let value = domains[i]["Pages"]["domain"]
-              pages.push(background.hashit(value))
+              let value = await background.hashit_salt(domains[i]["Pages"]["domain"])
+              pages.push(value)
               //console.log(value);
           }
           let activityType='load dashboard sites page';
           let timestamp=Date.now();
           let userId=userParams.userId;
           let startTS=userParams.startTS;
-          let activityData={'shownSites':JSON.stringify(pages)};
+          let activityData={
+            'shownSites':JSON.stringify(pages),
+            'parentTabId':tabId,
+            'parentDomain':tabData.domain,
+            'parentPageId':tabData.pageId,
+            'parentNumTrackers':tabData.numTrackers
+          };
           background.logData(activityType, timestamp, userId, startTS, activityData);
         }
       }
@@ -107,13 +118,24 @@ class FirstPartyDetails extends React.Component {
         userId: "no monster",
         startTS: 0
       });
-      if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
-        let page = background.hashit(this.domain)
+      const tabs = await browser.tabs.query({active: true, currentWindow: true});
+      let tabId = tabs[0].openerTabId;
+      let x = 'clickData_tabId_'+String(tabId);
+      let tabData = await browser.storage.local.get({[x]: "no favicon"});
+      tabData = JSON.parse(tabData[x]);
+    if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
+        let page = await background.hashit_salt(this.domain)
         let activityType='click site link on dashboard sites page';
         let timestamp=Date.now();
         let userId=userParams.userId;
         let startTS=userParams.startTS;
-        let activityData={'clickedSite':JSON.stringify(page)};
+        let activityData = {
+          'clickedSite':JSON.stringify(page),
+          'parentTabId':tabId,
+          'parentDomain':tabData.domain,
+          'parentPageId':tabData.pageId,
+          'parentNumTrackers':tabData.numTrackers
+        };
         background.logData(activityType, timestamp, userId, startTS, activityData);
       }
     }

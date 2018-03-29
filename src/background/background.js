@@ -553,24 +553,45 @@ async function setUserParams() {
             +(new Date()).getTime().toString(36);
     //console.log(uid)
     let x = await browser.storage.local.set({userId: uid})
-    return
+    let salt=Math.random().toString(36).substring(2)
+            +(new Date()).getTime().toString(36);
+    let x1 = await browser.storage.local.set({salt: salt})
+    //return
   }
   if (userParams.startTS==0){
     let startTS = Date.now()
     let x2 = await browser.storage.local.set({startTS: startTS})
   }
-/*
+
+  /* Now log the starting of the extension */
   userParams = await browser.storage.local.get({
     usageStatCondition: "no monster",
-    userId: "no monster"
+    userId: "no monster",
+    startTS: 0
   });
-  console.log(userParams)*/
+  let userId1 = userParams.userId;
+  let startTS1 = userParams.startTS;
+  //console.log(userParams)
+  let activityType='initialized app and created userparams'
+  let timestamp=Date.now()
+  let activityData={'otherdata':{}}
+  logData(activityType, timestamp, userId1, startTS1, activityData);
+  //console.log("in send pop data")
+  //console.log(activityData)
   return true
 }
 
 function hashit(data){
   var crypto = require('crypto');
-  return crypto.createHash('md5').update(data).digest("hex");
+  return crypto.createHash('md5').update(String(data)).digest("hex");
+  //return data
+}
+
+async function hashit_salt(data){
+  var crypto = require('crypto');
+  let salt = await browser.storage.local.get({salt:'salt'});
+  //console.log('SALT', salt.salt);
+  return crypto.createHash('md5').update(String(data)+String(salt.salt)).digest("hex");
   //return data
 }
 
@@ -587,7 +608,7 @@ async function sendDb() {
 
 
     for (var i = 0; i < allData.length; i++){
-      allData[i]["Pages"]["domain"]=hashit(allData[i]["Pages"]["domain"]);
+      allData[i]["Pages"]["domain"]=hashit_salt(allData[i]["Pages"]["domain"]);
       allData[i]["Inferences"]["inference"]=hashit(allData[i]["Inferences"]["inference"]);
     }
     //console.log(allData)
@@ -636,7 +657,8 @@ function logData(activityType, timestamp, userId, startTS, activityData){
 //let sendUsage=true; //flag to send the usage data
 //the usage flag in the userstudy.js named as usageStatCondition
 let x = setUserParams();
-
+//just send the db once when installed, it would be mostly empty
+sendDb();
 
 /////////////----- periodically send the hashed lovefield db data to server
 //create alarm to run the usageDb function periodically
@@ -656,4 +678,5 @@ window.setUserParams=setUserParams;
 window.fetchSetGetFavicon=fetchSetGetFavicon;
 window.getFavicon=getFavicon;
 window.hashit=hashit;
+window.hashit_salt=hashit_salt;
 window.logData=logData;

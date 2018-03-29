@@ -8,10 +8,11 @@ export class Home extends React.Component {
     this.state = {
 
     }
-    this.logClick = this.logClick.bind(this);
+    //this.logClick = this.logClick.bind(this);
     this.logLoad = this.logLoad.bind(this);
   }
 
+/* Extra fucntion -- might come handy to detect clicks on page on random elements.
 async logClick(e) {
     //console.log('We can get the id of the object clicked with e.target.id', e.target.id)
     console.log('We can access more info in the e.target object', e.target)
@@ -34,7 +35,7 @@ async logClick(e) {
       background.logData(activityType, timestamp, userId, startTS, activityData);
     }
   }
-
+*/
   async logLoad() {
       //console.log('In the log load page')
       const background = await browser.runtime.getBackgroundPage();
@@ -43,13 +44,22 @@ async logClick(e) {
         userId: "no monster",
         startTS: 0
       });
-      if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
+      const tabs = await browser.tabs.query({active: true, currentWindow: true});
+      let tabId = tabs[0].openerTabId;
+      let x = 'clickData_tabId_'+String(tabId);
+      let tabData = await browser.storage.local.get({[x]: "no favicon"});
+      tabData = JSON.parse(tabData[x]);
+    if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
         let activityType='load dashboard home page';
         let timestamp=Date.now();
         let userId=userParams.userId;
         let startTS=userParams.startTS;
         let activityData={
-            }
+          'parentTabId':tabId,
+          'parentDomain':tabData.domain,
+          'parentPageId':tabData.pageId,
+          'parentNumTrackers':tabData.numTrackers
+        }
         background.logData(activityType, timestamp, userId, startTS, activityData);
       }
     }

@@ -23,7 +23,7 @@ class Popup extends React.Component {
     await this.getData();
     //console.log('in mount')
     //console.log(JSON.stringify(data))
-    const {numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount} = this.state;
+    //const {numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount} = this.state;
     //numTrackers = data['numTrackers']
     //await this.sendPopupData(numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount);
 
@@ -77,17 +77,26 @@ class Popup extends React.Component {
 async sendPopupData(){
   //console.log('I am here 1');
   const background = await browser.runtime.getBackgroundPage();
-  //const tabs = await browser.tabs.query({active: true, currentWindow: true});
-  //console.log('I am here 2');
-  //console.log(tabs[0]);
-  //const tab = tabs[0];
-  //const tabData = await background.getTabData(tab.id);
+  const tabs = await browser.tabs.query({active: true, currentWindow: true});
+  let tabId = tabs[0].id;
+  const tabData = await background.getTabData(tabId);
   //console.log(tabData);
+
+  let domain = '';
+  let pageId = '';
+  let numTrackers = 0;
+  if (tabData){
+    //console.log('Here I am monster popup', tabData.pageId, tabData.domain, tabData.trackers.length);
+    domain = await background.hashit_salt(tabData.domain);
+    pageId = tabData.pageId;
+    numTrackers = tabData.trackers.length;
+  }
   let userParams = await browser.storage.local.get({
     usageStatCondition: "no monster",
     userId: "no monster",
     startTS: 0
   });
+
   if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
     let activityType = 'open popup'
     let timestamp = Date.now()
@@ -95,43 +104,74 @@ async sendPopupData(){
     let startTS = userParams.startTS
     let activityData = {
         'clickedElem':'extension icon',
-        'otherdata':{
-                  /*'numTrackers':numTrackers,
-                  'numInferences':numInferences,
-                  'numPages':numPages,
-                  'pageTitle':pageTitle,
-                  'trackers.length':trackers.length,
-                  'topTracker':topTracker,
-                  'topTrackerCount':topTrackerCount*/
-                  }
-                }
+        'domain':domain,
+        'tabId': tabId,
+        'pageId':pageId,
+        'numTrackers':numTrackers
+      }
       //console.log("in send pop data")
       //console.log(activityData)
       background.logData(activityType, timestamp, userId, startTS, activityData)
+      //console.log('Finished monster popup', tabData.pageId, tabData.domain, tabData.trackers.length);
   }
 
 }
 
 async  openDashboard() {
+    //console.log('I am here 1');
+    const tabs = await browser.tabs.query({active: true, currentWindow: true});
+    let tabId = tabs[0].id;
     const dashboardData = {
       active: true,
-      url: '../dashboard/index.html'
+      url: '../dashboard/index.html',
+      openerTabId: parseInt(tabId)
     };
+
+    const tabData = JSON.parse(this.state.tab);
     browser.tabs.create(dashboardData);
     const background = await browser.runtime.getBackgroundPage();
+
+    //console.log('I am in dashboard ', tabData);
+    //if (tabData){console.log('will go into the if');}
+    let domain = '';
+    let pageId = '';
+    let numTrackers = 0;
+    if (tabData){
+      //console.log('I am in dashboard ', tabData, tabData.pageId);
+      //console.log('Here I am monster', tabData.pageId, tabData.domain);
+      domain = await background.hashit_salt(tabData.domain);
+      pageId = tabData.pageId;
+      numTrackers = tabData.trackers.length;
+    }
+    let storeData = {
+      'domain':domain,
+      'tabId':tabId,
+      'pageId':pageId,
+      'numTrackers':numTrackers
+    }
+    let x = 'clickData_tabId_'+String(tabId);
+    await browser.storage.local.set(
+      {
+        [x]: JSON.stringify(storeData)
+      }
+    );
+
     let userParams = await browser.storage.local.get({
       usageStatCondition: "no monster",
       userId: "no monster",
       startTS: 0
     });
     if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
-      let activityType='open dashboard'
-      let timestamp=Date.now()
-      let userId=userParams.userId
-      let startTS=userParams.startTS
+      let activityType='open dashboard';
+      let timestamp=Date.now();
+      let userId=userParams.userId;
+      let startTS=userParams.startTS;
       let activityData={
           'clickedElem':'popup button',
-          'otherdata':{}
+          'domain':domain,
+          'tabId': tabId,
+          'pageId':pageId,
+          'numTrackers':numTrackers
         }
         //console.log("in send pop data")
         //console.log(activityData)

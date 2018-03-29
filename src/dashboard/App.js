@@ -102,20 +102,30 @@ class App extends Component {
         userId: "no monster",
         startTS: 0
       });
+      const tabs = await browser.tabs.query({active: true, currentWindow: true});
+      let tabId = tabs[0].openerTabId;
+      let x = 'clickData_tabId_'+String(tabId);
+      let tabData = await browser.storage.local.get({[x]: "no favicon"});
+      tabData = JSON.parse(tabData[x]);
+
       if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
         let activityType='load dashboard home page';
         let timestamp=Date.now();
         let userId=userParams.userId;
         let startTS=userParams.startTS;
         let activityData={
-            }
+          'parentTabId':tabId,
+          'parentDomain':tabData.domain,
+          'parentPageId':tabData.pageId,
+          'parentNumTrackers':tabData.numTrackers
+        }
         background.logData(activityType, timestamp, userId, startTS, activityData);
       }
     }
 
     async logLeave() {
         //console.log('In the log load page')
-        alert('ICH bin here');
+        //alert('ICH bin here');
         const background = await browser.runtime.getBackgroundPage();
         let userParams = await browser.storage.local.get({
           usageStatCondition: "no monster",
@@ -131,7 +141,6 @@ class App extends Component {
           background.logData(activityType, timestamp, userId, startTS, activityData);
         }
       }
-
 
   async componentWillUnmount() {
     this.logLeave();
