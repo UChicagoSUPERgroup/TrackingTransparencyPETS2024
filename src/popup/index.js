@@ -162,12 +162,12 @@ async  openDashboard() {
       startTS: 0
     });
     if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
-      let activityType='open dashboard';
+      let activityType='click dashboard button on popup';
       let timestamp=Date.now();
       let userId=userParams.userId;
       let startTS=userParams.startTS;
       let activityData={
-          'clickedElem':'popup button',
+          'clickedElem':'dashboard button',
           'domain':domain,
           'tabId': tabId,
           'pageId':pageId,

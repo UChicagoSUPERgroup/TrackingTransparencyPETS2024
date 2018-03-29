@@ -37,7 +37,7 @@ class FirstPartyList extends React.Component {
         const tabs = await browser.tabs.query({active: true, currentWindow: true});
         let tabId = tabs[0].openerTabId;
         let x = 'clickData_tabId_'+String(tabId);
-        let tabData = await browser.storage.local.get({[x]: "no favicon"});
+        let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
         tabData = JSON.parse(tabData[x]);
         if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
           let pages = []
@@ -121,7 +121,7 @@ class FirstPartyDetails extends React.Component {
       const tabs = await browser.tabs.query({active: true, currentWindow: true});
       let tabId = tabs[0].openerTabId;
       let x = 'clickData_tabId_'+String(tabId);
-      let tabData = await browser.storage.local.get({[x]: "no favicon"});
+      let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
       tabData = JSON.parse(tabData[x]);
     if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
         let page = await background.hashit_salt(this.domain)

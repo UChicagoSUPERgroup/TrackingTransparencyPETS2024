@@ -105,8 +105,9 @@ class App extends Component {
       const tabs = await browser.tabs.query({active: true, currentWindow: true});
       let tabId = tabs[0].openerTabId;
       let x = 'clickData_tabId_'+String(tabId);
-      let tabData = await browser.storage.local.get({[x]: "no favicon"});
+      let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
       tabData = JSON.parse(tabData[x]);
+      this.setState({tabId: tabId});
 
       if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
         let activityType='load dashboard home page';
@@ -124,7 +125,7 @@ class App extends Component {
     }
 
     async logLeave() {
-        //console.log('In the log load page')
+        //console.log('In the log leave page');
         //alert('ICH bin here');
         const background = await browser.runtime.getBackgroundPage();
         let userParams = await browser.storage.local.get({
@@ -132,28 +133,43 @@ class App extends Component {
           userId: "no monster",
           startTS: 0
         });
+        //const tabs = await browser.tabs.query({active: true, currentWindow: true});
+        //let tabId = tabs[0].openerTabId;
+        const {lightbeamcondition, tabId} = this.state;
+        //console.log('logLeave', tabId);
+        let x = 'clickData_tabId_'+String(tabId);
+        let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
+        //console.log('logLeave', tabData);
+        tabData = JSON.parse(tabData[x]);
         if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
           let activityType='close dashboard home page';
           let timestamp=Date.now();
           let userId=userParams.userId;
           let startTS=userParams.startTS;
-          let activityData={}
+          let activityData={
+            'parentTabId':tabId,
+            'parentDomain':tabData.domain,
+            'parentPageId':tabData.pageId,
+            'parentNumTrackers':tabData.numTrackers
+          }
           background.logData(activityType, timestamp, userId, startTS, activityData);
         }
+        await browser.storage.local.remove([x]);
       }
 
   async componentWillUnmount() {
-    this.logLeave();
+    window.removeEventListener("beforeunload", this.onUnload)
   }
 
   async componentDidMount() {
     const param = await browser.storage.local.get('lightbeamcondition');
     this.setState({lightbeamcondition: JSON.parse(param.lightbeamcondition)});
     this.logLoad();
+    window.addEventListener("beforeunload", this.logLeave)
   }
 
   render() {
-    const {lightbeamcondition} = this.state;
+    const {lightbeamcondition, tabId} = this.state;
     const enoughData = tt.enoughData();
     return(
       <HashRouter>

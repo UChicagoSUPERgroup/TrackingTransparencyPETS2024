@@ -27,12 +27,23 @@ async logLoad() {
          userId: "no monster",
          startTS: 0
        });
+       const tabs = await browser.tabs.query({active: true, currentWindow: true});
+       let tabId = tabs[0].openerTabId;
+       let x = 'clickData_tabId_'+String(tabId);
+       let tabData = await browser.storage.local.get({[x]: "no favicon"});
+       //console.log('logLeave', tabData);
+       tabData = JSON.parse(tabData[x]);
        if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
          let activityType='load lightbeam page';
          let timestamp=Date.now();
          let userId=userParams.userId;
          let startTS=userParams.startTS;
-         let activityData={}
+         let activityData={
+           'parentTabId':tabId,
+           'parentDomain':tabData.domain,
+           'parentPageId':tabData.pageId,
+           'parentNumTrackers':tabData.numTrackers           
+         }
          background.logData(activityType, timestamp, userId, startTS, activityData);
        }
      }
