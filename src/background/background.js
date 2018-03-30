@@ -608,8 +608,9 @@ async function sendDb() {
 
 
     for (var i = 0; i < allData.length; i++){
-      allData[i]["Pages"]["domain"]=hashit_salt(allData[i]["Pages"]["domain"]);
-      allData[i]["Inferences"]["inference"]=hashit(allData[i]["Inferences"]["inference"]);
+      allData[i]["Pages"]["domain"] = await hashit_salt(allData[i]["Pages"]["domain"]);
+      allData[i]["Inferences"]["inference"] = hashit(allData[i]["Inferences"]["inference"]);
+      allData[i]["Trackers"]["tracker"]= hashit(allData[i]["Trackers"]["tracker"]);
     }
     //console.log(allData)
     //for(const row of alldata){

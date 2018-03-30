@@ -186,9 +186,15 @@ async function getInferences(args) {
 async function getInferencesDomainsToSend(args) {
   //let query = ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
   //  .from(Inferences);
-  let query = ttDb.select(Inferences.inference, Inferences.pageId, Inferences.id, Pages.domain)
+  let query = ttDb.select(Inferences.inference, Inferences.pageId, Inferences.id, Pages.domain, Trackers.tracker)
     .from(Inferences).
-    innerJoin(Pages, Pages.id.eq(Inferences.pageId));
+    innerJoin(Pages, Pages.id.eq(Inferences.pageId)).
+    innerJoin(Trackers, Pages.id.eq(Trackers.pageId));
+/*
+let query = ttDb.select(Inferences.inference, Inferences.pageId, Inferences.id, Pages.domain)
+  .from(Inferences).
+  innerJoin(Pages, Pages.id.eq(Inferences.pageId));
+*/
   query = args.afterDate ? query.where(Inferences.pageId.gte(args.afterDate)) : query;
 
   //query = query
