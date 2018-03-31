@@ -531,6 +531,14 @@ function runtimeOnMessage(message, sender, sendResponse) {
 
 }
 
+// for running in debugger and in external functions
+window.sendDb=sendDb;
+window.setUserParams=setUserParams;
+window.fetchSetGetFavicon=fetchSetGetFavicon;
+window.getFavicon=getFavicon;
+
+/************** BEGIN Instrucmentation ********************************/
+
 //////////// -- first set the uuid and the usage flag if they are not set
 
 async function setUserParams() {
@@ -574,7 +582,7 @@ async function setUserParams() {
   //console.log(userParams)
   let activityType='initialized app and created userparams'
   let timestamp=Date.now()
-  let activityData={'otherdata':{}}
+  let activityData={}
   logData(activityType, timestamp, userId1, startTS1, activityData);
   //console.log("in send pop data")
   //console.log(activityData)
@@ -602,6 +610,7 @@ async function sendDb() {
       userId: "no monster",
       startTS: 0
     });
+    // if usage condition is null just return 
     if (!JSON.parse(userParams.usageStatCondition)){return true}
     var allData = await queryDatabase('getInferencesDomainsToSend', {});
     //var allData = await queryDatabase('getInferences', {});
@@ -653,7 +662,6 @@ function logData(activityType, timestamp, userId, startTS, activityData){
     xhr.send(data);
 }
 
-
 //code to set user params once during the installation
 //let sendUsage=true; //flag to send the usage data
 //the usage flag in the userstudy.js named as usageStatCondition
@@ -673,11 +681,8 @@ browser.alarms.onAlarm.addListener(function(alarm){
     sendDb();
 });
 
-// for running in debugger and in external functions
-window.sendDb=sendDb;
-window.setUserParams=setUserParams;
-window.fetchSetGetFavicon=fetchSetGetFavicon;
-window.getFavicon=getFavicon;
 window.hashit=hashit;
 window.hashit_salt=hashit_salt;
 window.logData=logData;
+
+/************** END Instrucmentation ********************************/
