@@ -27,7 +27,7 @@ const DomainTable = (data) => {
          accessor: "domain",
          Cell: row => (
            <div key={row.value}>
-              <Link to={{pathname: '/domains/' + row.value}}>
+              <Link className='domainTableLinkTrackersPage' to={{pathname: '/domains/' + row.value}}>
                  {row.value}
               </Link>
            </div>)
@@ -50,7 +50,7 @@ const InferTable = (data) => {
          accessor: "inference",
          Cell: row => (
            <div key={row.value}>
-              <Link to={{pathname: '/inferences/' + row.value}}>
+              <Link className = 'inferenceTableLinkTrackersPage' to={{pathname: '/inferences/' + row.value}}>
                  {row.value}
               </Link>
            </div>)
@@ -74,7 +74,48 @@ export default class TrackerDetailPage extends React.Component {
       inferences: [],
       domains: []
     }
+    this.logLoad = this.logLoad.bind(this);
   }
+
+  async logLoad(tracker, inferences, domains) {
+      const background = await browser.runtime.getBackgroundPage();
+      let userParams = await browser.storage.local.get({
+        usageStatCondition: "no monster",
+        userId: "no monster",
+        startTS: 0
+      });
+
+      const tabs = await browser.tabs.query({active: true, currentWindow: true});
+      let tabId = tabs[0].openerTabId;
+      let x = 'clickData_tabId_'+String(tabId);
+      let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
+      tabData = JSON.parse(tabData[x]);
+      if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
+        let hashedTracker = background.hashit(tracker);
+        let numDomains = domains.length;
+        let hashedInferences = [];
+        for (let i=0;i<inferences.length;i++){
+          let value = await background.hashit(inferences[i]["inference"])
+          hashedInferences.push(value);
+        }
+        let activityType = 'non-tab-page: show domains and inferences for a tracker';
+        let timestamp = Date.now();
+        let userId = userParams.userId;
+        let startTS = userParams.startTS;
+        let activityData={
+          'hashedTracker':hashedTracker,
+          'numDomainsShown': numDomains,
+          'hashedInferencesShown': JSON.stringify(hashedInferences),
+          'parentTabId':tabId,
+          'parentDomain':tabData.domain,
+          'parentPageId':tabData.pageId,
+          'parentNumTrackers':tabData.numTrackers
+        };
+        background.logData(activityType, timestamp, userId, startTS, activityData);
+      }
+    }
+
+  async componentWillUnmount() {}
 
   async componentDidMount() {
     let queryObj = {tracker: this.tracker};
@@ -90,7 +131,7 @@ export default class TrackerDetailPage extends React.Component {
       times: times2,
       timestamps: timestamps
     });
-
+    this.logLoad(this.tracker, inferences, domains);
   }
 
   render() {

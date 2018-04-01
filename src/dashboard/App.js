@@ -27,7 +27,7 @@ import '../styles/dashboard.css';
 import '../styles/navbar.css';
 
 const NavLink = ({to, title}) => (
-  <LinkContainer to={to}>
+  <LinkContainer to={to} className = "navbarTolog">
     <NavItem>{title}</NavItem>
   </LinkContainer>
 )
@@ -44,15 +44,15 @@ const TTNavbar = () => {
       </Navbar.Header>
       <Navbar.Collapse>
         {enoughData && <Nav>
-          <NavLink to="/trackers" title="Trackers"/>
-          <NavLink to="/inferences" title="Inferences"/>
-          <NavLink to="/domains" title="Sites"/>
-          <NavLink to="/recent" title="Activity"/>
-          <NavLink to="/lightbeam" title="Time"/>
+          <NavLink to="/trackers"  title="Trackers"/>
+          <NavLink to="/inferences"  title="Inferences"/>
+          <NavLink to="/domains"  title="Sites"/>
+          <NavLink to="/recent"  title="Activity"/>
+          <NavLink to="/lightbeam"  title="Time"/>
         </Nav>}
         <Nav pullRight>
-          <NavLink to="/debug" title="Debug"/>
-          <NavLink to="/about" title="About"/>
+          <NavLink to="/debug"  title="Debug"/>
+          <NavLink to="/about"  title="About"/>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
@@ -71,14 +71,14 @@ const TTNavbar_nolight = () => {
       </Navbar.Header>
       <Navbar.Collapse>
         {enoughData && <Nav>
-          <NavLink to="/trackers" title="Trackers"/>
-          <NavLink to="/inferences" title="Inferences"/>
-          <NavLink to="/domains" title="Sites"/>
-          <NavLink to="/recent" title="Activity"/>
+          <NavLink to="/trackers"  title="Trackers"/>
+          <NavLink to="/inferences"  title="Inferencesffsd"/>
+          <NavLink to="/domains"  title="Sites"/>
+          <NavLink to="/recent"  title="Activity"/>
         </Nav>}
         <Nav pullRight>
-          <NavLink to="/debug" title="Debug"/>
-          <NavLink to="/about" title="About"/>
+        <NavLink to="/debug"  title="Debug"/>
+        <NavLink to="/about"  title="About"/>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
@@ -91,8 +91,120 @@ class App extends Component {
     this.state = {}
     this.logLoad = this.logLoad.bind(this);
     this.logLeave = this.logLeave.bind(this);
+    this.logClick = this.logClick.bind(this);
   }
 
+/************** BEGIN Instrumentation code *******************
+The code for logclick logs ALL the click in every single page.
+*************/
+
+
+  async logClick(e){
+    console.log(e);
+    const background = await browser.runtime.getBackgroundPage();
+    let userParams = await browser.storage.local.get({
+      usageStatCondition: "no monster",
+      userId: "no monster",
+      startTS: 0
+    });
+    if (!JSON.parse(userParams.usageStatCondition))return true;
+
+    let activityType = ''
+    let extraData = {}
+          /******** navbar click ********/
+    //log navbar toggle activity
+    if (e.target.localName =='button' && e.target.className.includes("navbar-toggle")){
+      activityType = 'click on navbar toggle button'
+    }
+    //log navbar click activity
+    if (e.target.localName =='a' && e.target.parentNode.className.includes("navbarTolog")){
+      activityType = 'click on navbar link'
+      extraData = {"navLinkClicked":e.target.text}
+    }
+        /******** trackers section click ********/
+
+    //log click on trackers page links
+    if (e.target.localName =='a' && e.target.className.includes("trackerTableLinkTrackersPage")){
+      activityType = 'click on tracker link on Trackers dashboard page'
+      let linkClicked  = e.target.text;
+      linkClicked = await background.hashit(linkClicked);
+      extraData = {"trackerTableLinkTrackersPageClicked":linkClicked}
+    }
+    //log click on domains table for a particular tracker
+    if (e.target.localName =='a' && e.target.className.includes("domainTableLinkTrackersPage")){
+      activityType = 'click on domain link for a tracker on Trackers dashboard page'
+      let linkClicked  = e.target.text;
+      linkClicked = await background.hashit_salt(linkClicked);
+      extraData = {"domainTableLinkTrackersPageClicked":linkClicked}
+    }
+    //log click on inferences table for a particular tracker
+    if (e.target.localName =='a' && e.target.className.includes("inferenceTableLinkTrackersPage")){
+      activityType = 'click on inference link for a tracker on Trackers dashboard page'
+      let linkClicked  = e.target.text;
+      linkClicked = await background.hashit(linkClicked);
+      extraData = {"inferenceTableLinkTrackersPageClicked":linkClicked}
+    }
+
+      /******** Inferences section click ********/
+
+    //log click on domains table for a particular inference
+    if (e.target.localName =='a' && e.target.className.includes("domainTableLinkInferencesPage")){
+      activityType = 'click on domain link for an inference on Inferences dashboard page'
+      let linkClicked  = e.target.text;
+      linkClicked = await background.hashit_salt(linkClicked);
+      extraData = {"domainTableLinkInferencesPageClicked":linkClicked}
+    }
+
+    //log click on trackers table for a particular inference
+    if (e.target.localName =='a' && e.target.className.includes("trackerTableLinkInferencesPage")){
+      activityType = 'click on tracker link for an inference on Inferences dashboard page'
+      let linkClicked  = e.target.text;
+      linkClicked = await background.hashit(linkClicked);
+      extraData = {"trackerTableLinkInferencesPageClicked":linkClicked}
+    }
+
+          /******** domains section click ********/
+
+    //log click on domains table in the domains (Sites) section of the dashbord page
+    if (e.target.localName =='a' && e.target.className.includes("domainsTableLinkDomainsPage")){
+      activityType = 'click on domain link from the list of domains on Domains dashboard page'
+      let linkClicked  = e.target.text;
+      linkClicked = await background.hashit_salt(linkClicked);
+      extraData = {"domainsTableLinkDomainsPageClicked":linkClicked}
+    }
+
+    //console.log('activityType ', activityType);
+
+    /******** recent activity section click ********/
+
+//log click on domains table in the domains (Sites) section of the dashbord page
+    if (e.target.localName =='input' && e.target.name.includes("grouping-selector")){
+      activityType = 'click to select timegroups in recent activity dashboard page'
+      let linkClicked  = e.target.value;
+      extraData = {"timeGroupSelected":linkClicked}
+    }
+
+    if (activityType){
+        const {lightbeamcondition, tabId} = this.state;
+        //console.log('logLeave', tabId);
+        let x = 'clickData_tabId_'+String(tabId);
+        let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
+        //console.log('logLeave', tabData);
+        tabData = JSON.parse(tabData[x]);
+
+        let timestamp=Date.now();
+        let userId=userParams.userId;
+        let startTS=userParams.startTS;
+        let activityData={
+            'parentTabId':tabId,
+            'parentDomain':tabData.domain,
+            'parentPageId':tabData.pageId,
+            'parentNumTrackers':tabData.numTrackers,
+            'extraData' : JSON.stringify(extraData)
+          }
+        background.logData(activityType, timestamp, userId, startTS, activityData);
+      }
+    }
 
   async logLoad() {
       //console.log('In the log load page')
@@ -159,6 +271,7 @@ class App extends Component {
 
   async componentWillUnmount() {
     window.removeEventListener("beforeunload", this.onUnload)
+    window.removeEventListener("click", this.logClick)
   }
 
   async componentDidMount() {
@@ -166,7 +279,10 @@ class App extends Component {
     this.setState({lightbeamcondition: JSON.parse(param.lightbeamcondition)});
     this.logLoad();
     window.addEventListener("beforeunload", this.logLeave)
+    window.addEventListener("click", this.logClick, true)
   }
+
+  /************** END Instrucmentation code ********************************/
 
   render() {
     const {lightbeamcondition, tabId} = this.state;

@@ -20,7 +20,7 @@ const TrackersListItem = (tracker) => {
     <div key={trackerName}>
       <Link to={{
         pathname: '/trackers/' + trackerName
-      }}>
+      }} className = "trackerPageTableLink">
         {trackerName}
       </Link>
     </div>
@@ -61,7 +61,9 @@ export default class TrackersPage extends React.Component {
     }
   }
 
+
   async componentDidMount() {
+      //this.logLoad();
   }
 
   render() {
@@ -81,6 +83,7 @@ class TrackersList extends React.Component {
     this.state = {
       trackers: []
     }
+    this.logLoad = this.logLoad.bind(this);
   }
 
   async getTrackers() {
@@ -100,8 +103,40 @@ class TrackersList extends React.Component {
     console.log(this.state.allTrackers);
   }
 
+  async logLoad() {
+      const background = await browser.runtime.getBackgroundPage();
+      const numTrackersShown = await background.queryDatabase('getNumberOfTrackers', {});
+      //console.log('trackers page', numTrackersShown);
+      let userParams = await browser.storage.local.get({
+        usageStatCondition: "no monster",
+        userId: "no monster",
+        startTS: 0
+      });
+      const tabs = await browser.tabs.query({active: true, currentWindow: true});
+      let tabId = tabs[0].openerTabId;
+      let x = 'clickData_tabId_'+String(tabId);
+      let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
+      tabData = JSON.parse(tabData[x]);
+      if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
+        let activityType='load dashboard trackers page';
+        let timestamp=Date.now();
+        let userId=userParams.userId;
+        let startTS=userParams.startTS;
+        let activityData={
+          'numTrackersShown':numTrackersShown,
+          'parentTabId':tabId,
+          'parentDomain':tabData.domain,
+          'parentPageId':tabData.pageId,
+          'parentNumTrackers':tabData.numTrackers
+        };
+        background.logData(activityType, timestamp, userId, startTS, activityData);
+      }
+    }
+
+
   async componentDidMount() {
     this.getTrackers();
+    this.logLoad();
   }
 
   render() {

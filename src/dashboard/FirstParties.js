@@ -7,7 +7,7 @@ const FirstPartyListItem = (domain) => {
   const domainName = domain.Pages.domain;
   return (
     <div key={domainName}>
-      <Link to={{
+      <Link className = "domainsTableLinkDomainsPage" to={{
         pathname: '/domains/' + domainName
       }}>
         {domainName}
@@ -51,7 +51,8 @@ class FirstPartyList extends React.Component {
           let userId=userParams.userId;
           let startTS=userParams.startTS;
           let activityData={
-            'shownSites':JSON.stringify(pages),
+            'numDomainsShown':pages.length,
+            //'shownSites':JSON.stringify(pages),
             'parentTabId':tabId,
             'parentDomain':tabData.domain,
             'parentPageId':tabData.pageId,
@@ -70,11 +71,12 @@ class FirstPartyList extends React.Component {
       domains: domains
     });
     console.log(this.state.domains);
+
   }
 
   async componentDidMount() {
     this.getDomains();
-    this.logLoad();
+    this.logLoad(); //load here
   }
 
   render() {
@@ -105,11 +107,43 @@ class FirstPartyDetails extends React.Component {
     this.state = {
       trackers: []
     }
-    this.logLoad = this.logLoad.bind(this);
+    //this.logLoad = this.logLoad.bind(this);
+    this.logLeave = this.logLeave.bind(this);
   }
 
 
+  async logLeave(){
+    //console.log('In the log leave page')
+    const background = await browser.runtime.getBackgroundPage();
+    let userParams = await browser.storage.local.get({
+      usageStatCondition: "no monster",
+      userId: "no monster",
+      startTS: 0
+    });
+    const tabs = await browser.tabs.query({active: true, currentWindow: true});
+    let tabId = tabs[0].openerTabId;
+    let x = 'clickData_tabId_'+String(tabId);
+    let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
+    tabData = JSON.parse(tabData[x]);
+  if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
+      let page = await background.hashit_salt(this.domain)
+      let activityType = 'Leaving non-tab-page: tracker details for a domain';
+      let timestamp=Date.now();
+      let userId=userParams.userId;
+      let startTS=userParams.startTS;
+      let activityData = {
+        'shownDomain':JSON.stringify(page),
+        'parentTabId':tabId,
+        'parentDomain':tabData.domain,
+        'parentPageId':tabData.pageId,
+        'parentNumTrackers':tabData.numTrackers
+      };
+      background.logData(activityType, timestamp, userId, startTS, activityData);
+    }
 
+  }
+
+/*
   async logLoad() {
       //console.log('In the log load page')
       const background = await browser.runtime.getBackgroundPage();
@@ -125,12 +159,12 @@ class FirstPartyDetails extends React.Component {
       tabData = JSON.parse(tabData[x]);
     if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
         let page = await background.hashit_salt(this.domain)
-        let activityType='click site link on dashboard sites page';
+        let activityType = 'non-tab-page: show tracker details for a domain';
         let timestamp=Date.now();
         let userId=userParams.userId;
         let startTS=userParams.startTS;
         let activityData = {
-          'clickedSite':JSON.stringify(page),
+          'shownDomain':JSON.stringify(page),
           'parentTabId':tabId,
           'parentDomain':tabData.domain,
           'parentPageId':tabData.pageId,
@@ -139,6 +173,10 @@ class FirstPartyDetails extends React.Component {
         background.logData(activityType, timestamp, userId, startTS, activityData);
       }
     }
+*/
+    async componentWillUnmount() {
+      window.removeEventListener("popstate", this.logLeave)
+    }
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
@@ -146,13 +184,20 @@ class FirstPartyDetails extends React.Component {
     this.setState({
       trackers: trackers
     })
-    this.logLoad();
+    //this.logLoad();
     //the following is to catch the back button event
-    window.onpopstate = async function(event) {
-      const background = await browser.runtime.getBackgroundPage();
-      let userParams = await browser.storage.local.get({usageStatCondition: "no monster"});
-      if (JSON.parse(userParams.usageStatCondition)){window.location.reload();}
-    };
+    //window.onpopstate =
+    window.addEventListener("popstate", this.logLeave)
+
+    //this.logLoad('Pressed the back button Leaving non-tab-page: show tracker details for a domain');//async function(event) {
+      //console.log('OK prime');
+      //const background = await browser.runtime.getBackgroundPage();
+      //let userParams = await browser.storage.local.get({usageStatCondition: "no monster"});
+      //if (JSON.parse(userParams.usageStatCondition)){
+      //  console.log('OK');
+      //  this.logLoad('Pressed the back button Leaving non-tab-page: show tracker details for a domain');
+      //}
+    //};
   }
 
 /*routerWillLeave(nextLocation) {
