@@ -18,17 +18,6 @@ class Popup extends React.Component {
     this.openDashboard = this.openDashboard.bind(this);
   }
 
-  async componentDidMount() {
-    await this.sendPopupData();
-    await this.getData();
-    //console.log('in mount')
-    //console.log(JSON.stringify(data))
-    //const {numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount} = this.state;
-    //numTrackers = data['numTrackers']
-    //await this.sendPopupData(numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount);
-
-  }
-
   async getData() {
     const background = await browser.runtime.getBackgroundPage();
     const numPages = background.queryDatabase('getNumberOfPages', {});
@@ -67,13 +56,9 @@ class Popup extends React.Component {
 
       })
     }
-    //console.log('returnData');
-    //console.log(JSON.stringify(returnData));
-    //return returnData;
   }
 
-//async sendPopupData(numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount){
-
+/************** BEGIN Instrucmentation code ********************************/
 async sendPopupData(){
   //console.log('I am here 1');
   const background = await browser.runtime.getBackgroundPage();
@@ -81,7 +66,6 @@ async sendPopupData(){
   let tabId = tabs[0].id;
   const tabData = await background.getTabData(tabId);
   //console.log(tabData);
-
   let domain = '';
   let pageId = '';
   let numTrackers = 0;
@@ -117,6 +101,10 @@ async sendPopupData(){
 
 }
 
+//first 9 lines should be enough to open dashboard without instrumentation.
+//i.e., till
+//openerTabId: parseInt(tabId)
+//};
 async  openDashboard() {
     //console.log('I am here 1');
     const tabs = await browser.tabs.query({active: true, currentWindow: true});
@@ -178,6 +166,16 @@ async  openDashboard() {
         background.logData(activityType, timestamp, userId, startTS, activityData);
   }
 }
+/************** END Instrucmentation code ********************************/
+
+  async componentDidMount() {
+    /*comment this next line if you want to off logging data
+    Also preserve the order if you want the log, since sometimes getData fails
+    and sendPopupData will not run
+    */
+    await this.sendPopupData();
+    await this.getData();
+  }
 
   render() {
     const {numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount} = this.state;
