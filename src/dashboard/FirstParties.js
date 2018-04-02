@@ -127,7 +127,7 @@ class FirstPartyDetails extends React.Component {
     tabData = JSON.parse(tabData[x]);
   if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
       let page = await background.hashit_salt(this.domain)
-      let activityType = 'Leaving non-tab-page: tracker details for a domain';
+      let activityType = 'leaving non-tab-page: tracker details for a domain';
       let timestamp=Date.now();
       let userId=userParams.userId;
       let startTS=userParams.startTS;

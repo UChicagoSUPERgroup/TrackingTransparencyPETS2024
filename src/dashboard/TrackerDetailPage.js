@@ -98,7 +98,7 @@ export default class TrackerDetailPage extends React.Component {
           let value = await background.hashit(inferences[i]["inference"])
           hashedInferences.push(value);
         }
-        let activityType = 'non-tab-page: show domains and inferences for a tracker';
+        let activityType = 'open non-tab-page: show domains and inferences for a tracker';
         let timestamp = Date.now();
         let userId = userParams.userId;
         let startTS = userParams.startTS;

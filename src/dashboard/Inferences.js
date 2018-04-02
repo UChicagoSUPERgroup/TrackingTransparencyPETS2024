@@ -30,6 +30,7 @@ class InferencesPage extends React.Component {
     this.handleSensitivitySelection = this.handleSensitivitySelection.bind(this);
     this.handleDateSelection = this.handleDateSelection.bind(this);
     this.handleInferenceLinkClick = this.handleInferenceLinkClick.bind(this);
+    this.logLoad = this.logLoad.bind(this);
   }
 
   async getInferences() {
@@ -42,7 +43,7 @@ class InferencesPage extends React.Component {
 
   InferenceLink(inference) {
     return(
-      <a key={inference} onClick={this.handleInferenceLinkClick}>{inference}</a>
+      <a className = "inferencePageTopTextInferenceLink" key={inference} onClick={this.handleInferenceLinkClick}>{inference}</a>
     )
   }
 
@@ -136,9 +137,41 @@ class InferencesPage extends React.Component {
 
   async componentDidMount() {
     this.getInferences();
+    this.logLoad();
   }
 
+    /******* BEGIN Instrumentation  **************/
+  async logLoad() {
+      const background = await browser.runtime.getBackgroundPage();
+      let {inferences, selectedInference} = this.state;
+      //const inferences = await background.queryDatabase('getInferences', {});
+      //console.log('trackers page', numTrackersShown);
+      let userParams = await browser.storage.local.get({
+        usageStatCondition: "no monster",
+        userId: "no monster",
+        startTS: 0
+      });
+      const tabs = await browser.tabs.query({active: true, currentWindow: true});
+      let tabId = tabs[0].openerTabId;
+      let x = 'clickData_tabId_'+String(tabId);
+      let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
+      tabData = JSON.parse(tabData[x]);
+      if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
+        let activityType='load dashboard inferences page';
+        let timestamp=Date.now();
+        let userId=userParams.userId;
+        let startTS=userParams.startTS;
+        let activityData={
+          'parentTabId':tabId,
+          'parentDomain':tabData.domain,
+          'parentPageId':tabData.pageId,
+          'parentNumTrackers':tabData.numTrackers
+        };
+        background.logData(activityType, timestamp, userId, startTS, activityData);
+      }
+    }
 
+          /******* END Instrumentation  **************/
 
   render() {
     let {inferences, selectedInference} = this.state;
@@ -171,23 +204,23 @@ class InferencesPage extends React.Component {
                       value={this.state.sensitivitySelection}
                       onChange={this.handleSensitivitySelection}
                       defaultValue={'all-sensitive'}>
-                      <ToggleButton value={'all-sensitive'} bsSize="small">All inferences</ToggleButton>
-                      <ToggleButton value={'less-sensitive'} bsSize="small">Less sensitive</ToggleButton>
-                      <ToggleButton value={'more-sensitive'} bsSize="small">More sensitive</ToggleButton>
+                      <ToggleButton className = "inferencePageSensitivityChoose" value={'all-sensitive'} bsSize="small">All inferences</ToggleButton>
+                      <ToggleButton className = "inferencePageSensitivityChoose" value={'less-sensitive'} bsSize="small">Less sensitive</ToggleButton>
+                      <ToggleButton className = "inferencePageSensitivityChoose" value={'more-sensitive'} bsSize="small">More sensitive</ToggleButton>
                     </ToggleButtonGroup></div>
                     <div className={'filter-row'}>Recency of inferences: <ToggleButtonGroup
                       name="date-filter"
                       value={this.state.dateSelection}
                       onChange={this.handleDateSelection}
                       defaultValue={'all-dates'}>
-                      <ToggleButton value={'all-dates'} bsSize="small">Since you installed the plugin</ToggleButton>
-                      <ToggleButton value={'past-24'} bsSize="small">Last 24 hours</ToggleButton>
-                      <ToggleButton value={'past-week'} bsSize="small">Last week</ToggleButton>
+                      <ToggleButton className = "inferencePageDateChoose" value={'all-dates'} bsSize="small">Since you installed the plugin</ToggleButton>
+                      <ToggleButton className = "inferencePageDateChoose" value={'past-24'} bsSize="small">Last 24 hours</ToggleButton>
+                      <ToggleButton className = "inferencePageDateChoose" value={'past-week'} bsSize="small">Last week</ToggleButton>
                     </ToggleButtonGroup></div>
                   </div>
 
                   <p className={'selected-inference'}><em>{selectedInference ? 'Click on the diagram to unselect the current category' : 'Click a category to see more information'}</em></p>
-                  <p><strong><Link to={{pathname: '/inferences/' + selectedInference}}>{selectedInference}</Link></strong></p>
+                  <p><strong><Link className = "inferencePageSelected-Inference" to={{pathname: '/inferences/' + selectedInference}}>{selectedInference}</Link></strong></p>
                 </Col>
                 <Col md={6} mdPull={6}>
                   {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference}/>}

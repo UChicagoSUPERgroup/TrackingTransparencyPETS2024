@@ -119,7 +119,7 @@ The code for logclick logs ALL the click in every single page.
     //log navbar click activity
     if (e.target.localName =='a' && e.target.parentNode.className.includes("navbarTolog")){
       activityType = 'click on navbar link'
-      extraData = {"navLinkClicked":e.target.text}
+      extraData = {"navbarTolog_Clicked":e.target.text}
     }
         /******** trackers section click ********/
 
@@ -128,31 +128,66 @@ The code for logclick logs ALL the click in every single page.
       activityType = 'click on tracker link on Trackers dashboard page'
       let linkClicked  = e.target.text;
       linkClicked = await background.hashit(linkClicked);
-      extraData = {"trackerTableLinkTrackersPageClicked":linkClicked}
+      extraData = {"trackerTableLinkTrackersPage_Clicked":linkClicked}
     }
     //log click on domains table for a particular tracker
     if (e.target.localName =='a' && e.target.className.includes("domainTableLinkTrackersPage")){
       activityType = 'click on domain link for a tracker on Trackers dashboard page'
       let linkClicked  = e.target.text;
       linkClicked = await background.hashit_salt(linkClicked);
-      extraData = {"domainTableLinkTrackersPageClicked":linkClicked}
+      extraData = {"domainTableLinkTrackersPage_Clicked":linkClicked}
     }
     //log click on inferences table for a particular tracker
     if (e.target.localName =='a' && e.target.className.includes("inferenceTableLinkTrackersPage")){
       activityType = 'click on inference link for a tracker on Trackers dashboard page'
       let linkClicked  = e.target.text;
       linkClicked = await background.hashit(linkClicked);
-      extraData = {"inferenceTableLinkTrackersPageClicked":linkClicked}
+      extraData = {"inferenceTableLinkTrackersPage_Clicked":linkClicked}
     }
 
       /******** Inferences section click ********/
 
     //log click on domains table for a particular inference
+    if (e.target.localName =='a' && e.target.className.includes("inferencePageTopTextInferenceLink")){
+      activityType = 'click on inference link on Inferences dashboard page top text'
+      let linkClicked  = e.target.text;
+      linkClicked = await background.hashit(linkClicked);
+      extraData = {"inferencePageTopTextInferenceLink_Clicked":linkClicked}
+    }
+
+    if (e.target.localName =='label' && e.target.className.includes("inferencePageDateChoose")){
+      activityType = 'click on date picker button on Inferences dashboard page'
+      let linkClicked  = e.target.innerText;
+      //linkClicked = await background.hashit(linkClicked);
+      extraData = {"inferencePageDateChoose_Chosen":linkClicked}
+    }
+
+    if (e.target.localName =='label' && e.target.className.includes("inferencePageSensitivityChoose")){
+      activityType = 'click on sensitivity picker button on Inferences dashboard paget'
+      let linkClicked  = e.target.innerText;
+      //linkClicked = await background.hashit(linkClicked);
+      extraData = {"inferencePageSensitivityChoose_Chosen":linkClicked}
+    }
+
+    if (e.target.localName =='a' && e.target.className.includes("inferencePageSelected-Inference")){
+      activityType = 'click on inference link for selected inference on Inferences dashboard page '
+      let linkClicked  = e.target.text;
+      linkClicked = await background.hashit(linkClicked);
+      extraData = {"inferencePageSelected-Inference_Clicked":linkClicked}
+    }
+
     if (e.target.localName =='a' && e.target.className.includes("domainTableLinkInferencesPage")){
       activityType = 'click on domain link for an inference on Inferences dashboard page'
       let linkClicked  = e.target.text;
       linkClicked = await background.hashit_salt(linkClicked);
-      extraData = {"domainTableLinkInferencesPageClicked":linkClicked}
+      extraData = {"domainTableLinkInferencesPage_Clicked":linkClicked}
+    }
+
+    if (e.target.localName =='label' && e.target.className.includes("pagesTimeChart-grouping-selector")){
+      activityType = 'select time groups for grouping selector on pagesTimeChart'
+      let linkClicked  = e.target.innerText;
+      //linkClicked = await background.hashit_salt(linkClicked);
+      extraData = {"pagesTimeChart-grouping-selector_chosen":linkClicked}
     }
 
     //log click on trackers table for a particular inference
@@ -160,7 +195,7 @@ The code for logclick logs ALL the click in every single page.
       activityType = 'click on tracker link for an inference on Inferences dashboard page'
       let linkClicked  = e.target.text;
       linkClicked = await background.hashit(linkClicked);
-      extraData = {"trackerTableLinkInferencesPageClicked":linkClicked}
+      extraData = {"trackerTableLinkInferencesPage_Clicked":linkClicked}
     }
 
           /******** domains section click ********/
@@ -170,20 +205,19 @@ The code for logclick logs ALL the click in every single page.
       activityType = 'click on domain link from the list of domains on Domains dashboard page'
       let linkClicked  = e.target.text;
       linkClicked = await background.hashit_salt(linkClicked);
-      extraData = {"domainsTableLinkDomainsPageClicked":linkClicked}
+      extraData = {"domainsTableLinkDomainsPage_Clicked":linkClicked}
     }
 
     //console.log('activityType ', activityType);
 
     /******** recent activity section click ********/
-
-//log click on domains table in the domains (Sites) section of the dashbord page
+    /*
     if (e.target.localName =='input' && e.target.name.includes("grouping-selector")){
       activityType = 'click to select timegroups in recent activity dashboard page'
       let linkClicked  = e.target.value;
       extraData = {"timeGroupSelected":linkClicked}
     }
-
+    */
     if (activityType){
         const {lightbeamcondition, tabId} = this.state;
         //console.log('logLeave', tabId);
@@ -254,7 +288,7 @@ The code for logclick logs ALL the click in every single page.
         //console.log('logLeave', tabData);
         tabData = JSON.parse(tabData[x]);
         if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
-          let activityType='close dashboard home page';
+          let activityType='close dashboard page';
           let timestamp=Date.now();
           let userId=userParams.userId;
           let startTS=userParams.startTS;

@@ -40,7 +40,7 @@ let colorCounter = 0;
  */
 function updateData(data, keyPath, parentColor) {
   // add a fill to all the uncolored cells
-  
+
   if (!data.color) {
     if (!parentColor) {
       // data.color = PRIMARIES[(colorCounter++) % PRIMARIES.length]
@@ -48,7 +48,7 @@ function updateData(data, keyPath, parentColor) {
     } else {
       data.color = parentColor;
     }
-    
+
     // data.style = {
     //   fill: randomColor
     // };
@@ -81,6 +81,7 @@ export default class BasicSunburst extends React.Component {
     }
 
     this.constructSunburstData = this.constructSunburstData.bind(this);
+    this.logSelect = this.logSelect.bind(this);
   }
 
 
@@ -107,7 +108,7 @@ export default class BasicSunburst extends React.Component {
       if (listItem) {
         item.size = listItem['COUNT(inference)'];
       }
-      
+
       if (item.children) {
         this.recursiveApplySizes(item, inferencesList);
       }
@@ -120,19 +121,78 @@ export default class BasicSunburst extends React.Component {
   }
 
   async componentDidMount() {
-    
+
   }
 
-  componentWillReceiveProps(nextProps) {
+  /************** BEGIN Instrumentation  ***************************/
+
+  async logSelect(select, value){
+    const background = await browser.runtime.getBackgroundPage();
+    let userParams = await browser.storage.local.get({
+      usageStatCondition: "no monster",
+      userId: "no monster",
+      startTS: 0
+    });
+    if (!JSON.parse(userParams.usageStatCondition))return true;
+
+    let activityType = ''
+    let extraData = {}
+    if(select){
+      //console.log('SUNBURST LOGSELECT 1', select, value);
+      activityType = 'select sunburst chart area'
+      if(value){
+        let selectedSunburstTopic=await background.hashit(value);
+        extraData = {"selectedSunburstTopic":selectedSunburstTopic};
+      }
+    }
+    else{
+      //console.log('SUNBURST LOGSELECT 2', select, value);
+      activityType = 'unselect sunburst chart area'
+      if(value){
+        let selectedSunburstTopic=await background.hashit(value);
+        extraData = {"unselectedSunburstTopic":selectedSunburstTopic};
+      }
+    }
+    if (activityType != ''){
+        const tabs = await browser.tabs.query({active: true, currentWindow: true});
+        let tabId = tabs[0].openerTabId;
+
+        let x = 'clickData_tabId_'+String(tabId);
+        let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
+        //console.log('logLeave', tabData);
+        tabData = JSON.parse(tabData[x]);
+
+        let timestamp=Date.now();
+        let userId=userParams.userId;
+        let startTS=userParams.startTS;
+        let activityData={
+            'parentTabId':tabId,
+            'parentDomain':tabData.domain,
+            'parentPageId':tabData.pageId,
+            'parentNumTrackers':tabData.numTrackers,
+            'extraData' : JSON.stringify(extraData)
+          }
+        //console.log('SUNBURST LOGSELECT tosend', select, value);
+        background.logData(activityType, timestamp, userId, startTS, activityData);
+      }
+    }
+
+/************** END Instrumentation  ***************************/
+
+async  componentWillReceiveProps(nextProps) {
     colorCounter = 0;
+    let value = this.state.finalValue;
+    if (value === 'Inferences' || value === false){value = ''}
+    //console.log('SUNBURST ', value);
     if (!nextProps.selectedInference) {
-      
+      //console.log('SUNBURST1 ', value);
+      await this.logSelect(false, value);//deselect all
       // clear any selections
       this.setState({
         finalValue: false,
         clicked: false
       });
-      
+
       if (nextProps.inferenceCounts) {
         const data = this.constructSunburstData(nextProps.inferenceCounts);
         this.setState({
@@ -145,9 +205,11 @@ export default class BasicSunburst extends React.Component {
           finalValue: nextProps.selectedInference,
           clicked: true
         });
+        //console.log('SUNBURST2 ', value);
+        await this.logSelect(true, value);//select right stuff
       }
     }
-    
+
   }
 
 
@@ -195,7 +257,7 @@ export default class BasicSunburst extends React.Component {
               this.setState({clicked: true});
               this.props.onSelectionChange(finalValue);
             }
-            
+
           }}
           style={{
             stroke: '#ddd',
@@ -210,7 +272,7 @@ export default class BasicSunburst extends React.Component {
             {x: 0, y: 0, label: finalValue, style: LABEL_STYLE}
           ]} />}
         </Sunburst>
-        
+
       </div>
     );
   }

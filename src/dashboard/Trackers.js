@@ -37,7 +37,7 @@ const TrackerTable = (data) => {
          accessor: "name",
          Cell: row => (
            <div key={row.value}>
-              <Link to={{pathname: '/trackers/' + row.value}}>
+              <Link className = "trackerTableLinkTrackersPage" to={{pathname: '/trackers/' + row.value}}>
                  {row.value}
               </Link>
            </div>)
