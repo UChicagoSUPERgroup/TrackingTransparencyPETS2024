@@ -667,7 +667,7 @@ function logData(activityType, timestamp, userId, startTS, activityData){
 /// function to detect if the window/tabs are closed
 
 async function logLeave(tabId, removeInfo) {
-    console.log('In the log leave page ', tabId, removeInfo);
+    //console.log('In the log leave page ', tabId, removeInfo);
     //logData('hehe', 0, 0, 0, {});
     let userParams = await browser.storage.local.get({
       usageStatCondition: "no monster",
@@ -678,7 +678,7 @@ async function logLeave(tabId, removeInfo) {
     let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':-1,'pageId':'','numTrackers':0})});
     tabData = JSON.parse(tabData[x]);
     if(tabData.tabId == -1) return true
-    console.log('logLeave', JSON.stringify(tabData));
+    //console.log('logLeave', JSON.stringify(tabData));
     if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
       let activityType='close dashboard page';
       let timestamp=Date.now();
