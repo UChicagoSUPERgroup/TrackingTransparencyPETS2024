@@ -32,59 +32,6 @@ const NavLink = ({to, title}) => (
   </LinkContainer>
 )
 
-const TTNavbar = () => {
-  const enoughData = tt.enoughData();
-  return (
-    <Navbar fixedTop>
-      <Navbar.Header>
-        <LinkContainer to="/">
-          <Navbar.Brand>Tracking Transparency</Navbar.Brand>
-        </LinkContainer>
-        <Navbar.Toggle />
-      </Navbar.Header>
-      <Navbar.Collapse>
-        {enoughData && <Nav>
-          <NavLink to="/trackers"  title="Trackers"/>
-          <NavLink to="/inferences"  title="Inferences"/>
-          <NavLink to="/domains"  title="Sites"/>
-          <NavLink to="/recent"  title="Activity"/>
-          <NavLink to="/lightbeam"  title="Time"/>
-        </Nav>}
-        <Nav pullRight>
-          <NavLink to="/debug"  title="Debug"/>
-          <NavLink to="/about"  title="About"/>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
-  )
-}
-
-const TTNavbar_nolight = () => {
-  const enoughData = tt.enoughData();
-  return (
-    <Navbar fixedTop>
-      <Navbar.Header>
-        <LinkContainer to="/">
-          <Navbar.Brand>Tracking Transparency</Navbar.Brand>
-        </LinkContainer>
-        <Navbar.Toggle />
-      </Navbar.Header>
-      <Navbar.Collapse>
-        {enoughData && <Nav>
-          <NavLink to="/trackers"  title="Trackers"/>
-          <NavLink to="/inferences"  title="Inferencesffsd"/>
-          <NavLink to="/domains"  title="Sites"/>
-          <NavLink to="/recent"  title="Activity"/>
-        </Nav>}
-        <Nav pullRight>
-        <NavLink to="/debug"  title="Debug"/>
-        <NavLink to="/about"  title="About"/>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
-  )
-}
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -325,29 +272,48 @@ The code for logclick logs ALL the click in every single page.
   render() {
     const {lightbeamcondition, tabId} = this.state;
     const enoughData = tt.enoughData();
+    const TTNavbar = () => {
+      const enoughData = tt.enoughData();
+      const {lightbeamcondition, tabId} = this.state;
+      return (
+        <Navbar fixedTop>
+          <Navbar.Header>
+            <LinkContainer to="/">
+              <Navbar.Brand>Tracking Transparency</Navbar.Brand>
+            </LinkContainer>
+            <Navbar.Toggle />
+          </Navbar.Header>
+          <Navbar.Collapse>
+            {enoughData && <Nav>
+              <NavLink to="/trackers"  title="Trackers"/>
+              <NavLink to="/inferences"  title="Inferences"/>
+              <NavLink to="/domains"  title="Sites"/>
+              <NavLink to="/recent"  title="Activity"/>
+              {lightbeamcondition && <NavLink to="/lightbeam"  title="Time"/>}
+            </Nav>}
+            <Nav pullRight>
+              <NavLink to="/debug"  title="Debug"/>
+              <NavLink to="/about"  title="About"/>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+      )
+    }
+
     return(
       <HashRouter>
         <div>
-          {lightbeamcondition && <TTNavbar/>}
-          {!lightbeamcondition && <TTNavbar_nolight/>}
+          <TTNavbar/>
 
           <div className="container containerInner">
 
-            {enoughData && lightbeamcondition && <div>
+            {enoughData && <div>
               <Route exact path="/" component={Home}/>
               <Route path="/inferences" component={InferencesPage}/>
               <Route path="/trackers" component={TrackersList}/>
               <Route path="/domains" component={FirstPartyList}/>
               <Route path="/recent" component={RecentPage}/>
-              <Route path="/lightbeam" component={LightbeamWrapper}/>
-            </div>}
-
-            {enoughData && !lightbeamcondition && <div>
-              <Route exact path="/" component={Home}/>
-              <Route path="/inferences" component={InferencesPage}/>
-              <Route path="/trackers" component={TrackersList}/>
-              <Route path="/domains" component={FirstPartyList}/>
-              <Route path="/recent" component={RecentPage}/>
+              {lightbeamcondition && <Route path="/lightbeam" component={LightbeamWrapper}/>}
             </div>}
 
 
