@@ -2,8 +2,6 @@
 
 import domainEntityMap from '../../data/trackers/domainEntityMap.json';
 
-import tt from '../../helpers';
-
 // console.log("trackers worker running");
 let databaseWorkerPort;
 
@@ -57,7 +55,8 @@ function checkForMatch(requestDomain, firstPartyHost) {
 /**
  * called when page is changed, recieves tabData from background script, processes webrequests to find trackers and sends to database
  * 
- * @param  {Object} tabData
+ * @param  {number} oldPageId
+ * @param  {string[]} trackers
  */
 async function onPageChanged(oldPageId, trackers) {
 
@@ -88,6 +87,9 @@ function processWebRequests(pageId, firstPartyHost, webRequests) {
 
 /**
  * function to run when message is received from background script
+ * 
+ * @param {Object} m - web worker message object
+ * @param {Object} m.data - data passed in by sender
  */
 onmessage = function(m) {
   let trackers = [];
