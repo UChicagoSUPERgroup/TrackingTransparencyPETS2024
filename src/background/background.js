@@ -537,7 +537,7 @@ window.setUserParams=setUserParams;
 window.fetchSetGetFavicon=fetchSetGetFavicon;
 window.getFavicon=getFavicon;
 
-/************** BEGIN Instrucmentation ********************************/
+/************** BEGIN Instrumentation ********************************/
 
 //////////// -- first set the uuid and the usage flag if they are not set
 
