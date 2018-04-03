@@ -106,7 +106,7 @@ async sendPopupData(){
 //openerTabId: parseInt(tabId)
 //};
 async  openDashboard() {
-    //console.log('I am here 1');
+    console.log('I am here 1');
     const tabs = await browser.tabs.query({active: true, currentWindow: true});
     let tabId = tabs[0].id;
     const dashboardData = {
@@ -116,7 +116,7 @@ async  openDashboard() {
     };
 
     const tabData = JSON.parse(this.state.tab);
-    browser.tabs.create(dashboardData);
+    await browser.tabs.create(dashboardData);
     const background = await browser.runtime.getBackgroundPage();
 
     //console.log('I am in dashboard ', tabData);
@@ -131,18 +131,6 @@ async  openDashboard() {
       pageId = tabData.pageId;
       numTrackers = tabData.trackers.length;
     }
-    let storeData = {
-      'domain':domain,
-      'tabId':tabId,
-      'pageId':pageId,
-      'numTrackers':numTrackers
-    }
-    let x = 'clickData_tabId_'+String(tabId);
-    await browser.storage.local.set(
-      {
-        [x]: JSON.stringify(storeData)
-      }
-    );
 
     let userParams = await browser.storage.local.get({
       usageStatCondition: "no monster",
@@ -162,9 +150,22 @@ async  openDashboard() {
           'numTrackers':numTrackers
         }
         //console.log("in send pop data")
-        //console.log(activityData)
+        background.printlog(activityData)
         background.logData(activityType, timestamp, userId, startTS, activityData);
   }
+  let storeData = {
+    'domain':domain,
+    'tabId':tabId,
+    'pageId':pageId,
+    'numTrackers':numTrackers
+  }
+  let x = 'clickData_tabId_'+String(tabId);
+  await browser.storage.local.set(
+    {
+      [x]: JSON.stringify(storeData)
+    }
+  );
+
 }
 /************** END Instrucmentation code ********************************/
 

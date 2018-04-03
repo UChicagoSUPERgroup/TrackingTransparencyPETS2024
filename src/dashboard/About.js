@@ -4,49 +4,17 @@ export class AboutPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
     }
-    this.logClick = this.logClick.bind(this);
     this.logLoad = this.logLoad.bind(this);
   }
 
-async logClick(e) {
-    //console.log('We can get the id of the object clicked with e.target.id', e.target.id)
-    console.log('We can access more info in the e.target object', e.target)
-    e.persist();
-    const background = await browser.runtime.getBackgroundPage();
-    let userParams = await browser.storage.local.get({
-      usageStatCondition: "no monster",
-      userId: "no monster",
-      startTS: 0
-    });
-    const tabs = await browser.tabs.query({active: true, currentWindow: true});
-    let tabId = tabs[0].openerTabId;
-    let x = 'clickData_tabId_'+String(tabId);
-    let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
-    tabData = JSON.parse(tabData[x]);
-
-    if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
-      let activityType='click dashboard about page';
-      let timestamp=Date.now();
-      let userId=userParams.userId;
-      let startTS=userParams.startTS;
-      let activityData={
-          'clickedElemId':e.target.id,
-          'parentTabId':tabId,
-          'parentDomain':tabData.domain,
-          'parentPageId':tabData.pageId,
-          'parentNumTrackers':tabData.numTrackers
-          }
-      background.logData(activityType, timestamp, userId, startTS, activityData);
-    }
-  }
 
   async logLoad() {
       //console.log('In the log load page')
       const background = await browser.runtime.getBackgroundPage();
       const tabs = await browser.tabs.query({active: true, currentWindow: true});
-      let tabId = tabs[0].openerTabId;
+      let parentTabId = tabs[0].openerTabId;
+      let tabId = tabs[0].id;
       let x = 'clickData_tabId_'+String(tabId);
       let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
       tabData = JSON.parse(tabData[x]);
@@ -63,7 +31,8 @@ async logClick(e) {
         let userId=userParams.userId;
         let startTS=userParams.startTS;
         let activityData={
-          'parentTabId':tabId,
+          'tabId': tabId,
+          'parentTabId':parentTabId,
           'parentDomain':tabData.domain,
           'parentPageId':tabData.pageId,
           'parentNumTrackers':tabData.numTrackers

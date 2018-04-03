@@ -90,7 +90,7 @@ class App extends Component {
     super(props);
     this.state = {}
     this.logLoad = this.logLoad.bind(this);
-    this.logLeave = this.logLeave.bind(this);
+    //this.logLeave = this.logLeave.bind(this);
     this.logClick = this.logClick.bind(this);
   }
 
@@ -219,8 +219,10 @@ The code for logclick logs ALL the click in every single page.
     }
     */
     if (activityType){
-        const {lightbeamcondition, tabId} = this.state;
+        //const {lightbeamcondition, tabId, parentTabId} = this.state;
         //console.log('logLeave', tabId);
+        let tabId = this.state.tabId;
+        let parentTabId = this.state.parentTabId;
         let x = 'clickData_tabId_'+String(tabId);
         let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
         //console.log('logLeave', tabData);
@@ -230,7 +232,8 @@ The code for logclick logs ALL the click in every single page.
         let userId=userParams.userId;
         let startTS=userParams.startTS;
         let activityData={
-            'parentTabId':tabId,
+            'tabId': tabId,
+            'parentTabId':parentTabId,
             'parentDomain':tabData.domain,
             'parentPageId':tabData.pageId,
             'parentNumTrackers':tabData.numTrackers,
@@ -249,11 +252,36 @@ The code for logclick logs ALL the click in every single page.
         startTS: 0
       });
       const tabs = await browser.tabs.query({active: true, currentWindow: true});
-      let tabId = tabs[0].openerTabId;
-      let x = 'clickData_tabId_'+String(tabId);
-      let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
-      tabData = JSON.parse(tabData[x]);
+      console.log(tabs[0]);
+      let parentTabId = tabs[0].openerTabId;
+      let tabId = tabs[0].id;
+      const tabData_1 = await background.getTabData(parentTabId);
+      let domain = '';
+      let pageId = '';
+      let numTrackers = 0;
+      if (tabData_1){
+        //console.log('I am in dashboard ', tabData, tabData.pageId);
+        //console.log('Here I am monster', tabData.pageId, tabData.domain);
+        domain = await background.hashit_salt(tabData_1.domain);
+        pageId = tabData_1.pageId;
+        numTrackers = tabData_1.trackers.length;
+      }
+      let tabData = {
+        'domain':domain,
+        'tabId':parentTabId,
+        'pageId':pageId,
+        'numTrackers':numTrackers
+      }
+      let x = 'clickData_tabId_'+String(parentTabId);
+      let y = 'clickData_tabId_'+String(tabId);
+      await browser.storage.local.set({[y]: JSON.stringify(tabData)});
+      //console.log('In the log load page ', tabId);
+      //let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
+      //await browser.storage.local.set({[y]: JSON.stringify(tabData[x])});
+      await browser.storage.local.remove([x]);
+      //tabData = JSON.parse(tabData[x]);
       this.setState({tabId: tabId});
+      this.setState({parentTabId: parentTabId});
 
       if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
         let activityType='load dashboard home page';
@@ -261,7 +289,8 @@ The code for logclick logs ALL the click in every single page.
         let userId=userParams.userId;
         let startTS=userParams.startTS;
         let activityData={
-          'parentTabId':tabId,
+          'tabId':tabId,
+          'parentTabId':parentTabId,
           'parentDomain':tabData.domain,
           'parentPageId':tabData.pageId,
           'parentNumTrackers':tabData.numTrackers
@@ -270,41 +299,11 @@ The code for logclick logs ALL the click in every single page.
       }
     }
 
-    async logLeave() {
-        //console.log('In the log leave page');
-        //alert('ICH bin here');
-        const background = await browser.runtime.getBackgroundPage();
-        let userParams = await browser.storage.local.get({
-          usageStatCondition: "no monster",
-          userId: "no monster",
-          startTS: 0
-        });
-        //const tabs = await browser.tabs.query({active: true, currentWindow: true});
-        //let tabId = tabs[0].openerTabId;
-        const {lightbeamcondition, tabId} = this.state;
-        //console.log('logLeave', tabId);
-        let x = 'clickData_tabId_'+String(tabId);
-        let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
-        //console.log('logLeave', tabData);
-        tabData = JSON.parse(tabData[x]);
-        if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
-          let activityType='close dashboard page';
-          let timestamp=Date.now();
-          let userId=userParams.userId;
-          let startTS=userParams.startTS;
-          let activityData={
-            'parentTabId':tabId,
-            'parentDomain':tabData.domain,
-            'parentPageId':tabData.pageId,
-            'parentNumTrackers':tabData.numTrackers
-          }
-          background.logData(activityType, timestamp, userId, startTS, activityData);
-        }
-        await browser.storage.local.remove([x]);
-      }
 
   async componentWillUnmount() {
-    window.removeEventListener("beforeunload", this.onUnload)
+    //window.removeEventListener("beforeunload", this.logLeave)
+    //window.removeEventListener("unload", this.logLeave)
+    //browser.tabs.onRemoved.removeListener(this.logLeave)
     window.removeEventListener("click", this.logClick)
   }
 
@@ -312,8 +311,13 @@ The code for logclick logs ALL the click in every single page.
     const param = await browser.storage.local.get('lightbeamcondition');
     this.setState({lightbeamcondition: JSON.parse(param.lightbeamcondition)});
     this.logLoad();
-    window.addEventListener("beforeunload", this.logLeave)
-    window.addEventListener("click", this.logClick, true)
+    window.addEventListener("click", this.logClick, true);
+
+    //window.addEventListener("unload", this.logLeave, true);
+    //browser.tabs.onRemoved.addListener(this.logLeave)
+    //window.addEventListener("beforeunload", this.logLeave, true);
+    //window.addEventListener("click", this.logClick, true);
+    //window.onbeforeunload = function(){alert('finally');}
   }
 
   /************** END Instrucmentation code ********************************/

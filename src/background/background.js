@@ -603,14 +603,14 @@ async function hashit_salt(data){
   //return data
 }
 
-// now write function to send data
+// now write function to send database
 async function sendDb() {
     let userParams = await browser.storage.local.get({
       usageStatCondition: "no monster",
       userId: "no monster",
       startTS: 0
     });
-    // if usage condition is null just return 
+    // if usage condition is null just return
     if (!JSON.parse(userParams.usageStatCondition)){return true}
     var allData = await queryDatabase('getInferencesDomainsToSend', {});
     //var allData = await queryDatabase('getInferences', {});
@@ -644,6 +644,8 @@ async function sendDb() {
     //return true
 }
 
+//now write fucntion to send activity data to server
+
 function logData(activityType, timestamp, userId, startTS, activityData){
     var data = new FormData();
     data.append("activityType", activityType);
@@ -661,6 +663,40 @@ function logData(activityType, timestamp, userId, startTS, activityData){
     //xhr.setRequestHeader("Content-Type", "application/json")
     xhr.send(data);
 }
+
+/// function to detect if the window/tabs are closed
+
+async function logLeave(tabId, removeInfo) {
+    console.log('In the log leave page ', tabId, removeInfo);
+    //logData('hehe', 0, 0, 0, {});
+    let userParams = await browser.storage.local.get({
+      usageStatCondition: "no monster",
+      userId: "no monster",
+      startTS: 0
+    });
+    let x = 'clickData_tabId_'+String(tabId);
+    let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':-1,'pageId':'','numTrackers':0})});
+    tabData = JSON.parse(tabData[x]);
+    if(tabData.tabId == -1) return true
+    console.log('logLeave', JSON.stringify(tabData));
+    if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
+      let activityType='close dashboard page';
+      let timestamp=Date.now();
+      let userId=userParams.userId;
+      let startTS=userParams.startTS;
+      let activityData={
+        'tabId':tabId,
+        'parentTabId':tabData['tabId'],
+        'parentDomain':tabData['domain'],
+        'parentPageId':tabData['pageId'],
+        'parentNumTrackers':tabData['numTrackers']
+      }
+      logData(activityType, timestamp, userId, startTS, activityData);
+    }
+    await browser.storage.local.remove([x]);
+    //return null;
+  }
+
 
 //code to set user params once during the installation
 //let sendUsage=true; //flag to send the usage data
@@ -681,8 +717,14 @@ browser.alarms.onAlarm.addListener(function(alarm){
     sendDb();
 });
 
+function printlog(msg){console.log(msg);}
+
 window.hashit=hashit;
 window.hashit_salt=hashit_salt;
 window.logData=logData;
+window.printlog=printlog;
+
+/************* Detecting if tab or window is closed ************/
+browser.tabs.onRemoved.addListener(logLeave)
 
 /************** END Instrucmentation ********************************/

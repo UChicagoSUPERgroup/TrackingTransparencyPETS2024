@@ -45,7 +45,8 @@ async logClick(e) {
         startTS: 0
       });
       const tabs = await browser.tabs.query({active: true, currentWindow: true});
-      let tabId = tabs[0].openerTabId;
+      let parentTabId = tabs[0].openerTabId;
+      let tabId = tabs[0].id;
       let x = 'clickData_tabId_'+String(tabId);
       let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
       tabData = JSON.parse(tabData[x]);
@@ -55,7 +56,8 @@ async logClick(e) {
         let userId=userParams.userId;
         let startTS=userParams.startTS;
         let activityData={
-          'parentTabId':tabId,
+          'tabId': tabId,
+          'parentTabId':parentTabId,
           'parentDomain':tabData.domain,
           'parentPageId':tabData.pageId,
           'parentNumTrackers':tabData.numTrackers
