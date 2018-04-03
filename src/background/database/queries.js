@@ -832,6 +832,7 @@ const QUERIES = {
   getDomains: getDomains, // used in dashboard
   getDomainsByInference: getDomainsByInference,
   getDomainsByTracker: getDomainsByTracker,
+  getInferencesByDomain: getInferencesByDomain, // used in tests
   getInferencesDomainsToSend: getInferencesDomainsToSend, //this is to send data to server contaiing pageIds and inferences and domain names
   getInferenceCount: getInferenceCount, // used in dashboard
   getInferences: getInferences,  // used in dashboard inferences page
@@ -854,7 +855,6 @@ const QUERIES = {
 
   // getDomainsNoTrackers: getDomainsNoTrackers,
   // getDomainVisits: getDomainVisits,
-  // getInferencesByDomain: getInferencesByDomain,
   // getInferencesByTrackerCount: getInferencesByTrackerCount,
   // getInfoAboutTracker: getInfoAboutTracker,
   // getPagesByTrackerAndDomain: getPagesByTrackerAndDomain,
