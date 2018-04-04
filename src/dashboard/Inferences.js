@@ -14,6 +14,7 @@ import sensitiveCats from '../data/categories_comfort_list.json';
 import InferenceDetails from './InferenceDetails';
 import InferencesSunburst from './InferencesSunburst';
 
+import logging from './dashboardLogging';
 
 class InferencesPage extends React.Component {
   constructor(props) {
@@ -30,7 +31,6 @@ class InferencesPage extends React.Component {
     this.handleSensitivitySelection = this.handleSensitivitySelection.bind(this);
     this.handleDateSelection = this.handleDateSelection.bind(this);
     this.handleInferenceLinkClick = this.handleInferenceLinkClick.bind(this);
-    this.logLoad = this.logLoad.bind(this);
   }
 
   async getInferences() {
@@ -136,44 +136,10 @@ class InferencesPage extends React.Component {
   }
 
   async componentDidMount() {
+    let activityType='load dashboard inferences page';
+    logging.logLoad(activityType, {});
     this.getInferences();
-    this.logLoad();
   }
-
-    /******* BEGIN Instrumentation  **************/
-  async logLoad() {
-      const background = await browser.runtime.getBackgroundPage();
-      let {inferences, selectedInference} = this.state;
-      //const inferences = await background.queryDatabase('getInferences', {});
-      //console.log('trackers page', numTrackersShown);
-      let userParams = await browser.storage.local.get({
-        usageStatCondition: "no monster",
-        userId: "no monster",
-        startTS: 0
-      });
-      const tabs = await browser.tabs.query({active: true, currentWindow: true});
-      let parentTabId = tabs[0].openerTabId;
-      let tabId = tabs[0].id;
-      let x = 'clickData_tabId_'+String(tabId);
-      let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
-      tabData = JSON.parse(tabData[x]);
-      if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
-        let activityType='load dashboard inferences page';
-        let timestamp=Date.now();
-        let userId=userParams.userId;
-        let startTS=userParams.startTS;
-        let activityData={
-          'tabId': tabId,
-          'parentTabId':parentTabId,
-          'parentDomain':tabData.domain,
-          'parentPageId':tabData.pageId,
-          'parentNumTrackers':tabData.numTrackers
-        };
-        background.logData(activityType, timestamp, userId, startTS, activityData);
-      }
-    }
-
-          /******* END Instrumentation  **************/
 
   render() {
     let {inferences, selectedInference} = this.state;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
+import logging from './dashboardLogging';
 // import { LinkContainer } from 'react-router-bootstrap';
 
 
@@ -22,49 +23,7 @@ class FirstPartyList extends React.Component {
     this.state = {
       domains: []
     }
-    this.logLoad = this.logLoad.bind(this);
   }
-
-    async logLoad() {
-        //console.log('In the log load page')
-        const background = await browser.runtime.getBackgroundPage();
-        let domains = await background.queryDatabase('getDomains', {count: 100});
-        let userParams = await browser.storage.local.get({
-          usageStatCondition: "no monster",
-          userId: "no monster",
-          startTS: 0
-        });
-        const tabs = await browser.tabs.query({active: true, currentWindow: true});
-        let parentTabId = tabs[0].openerTabId;
-        let tabId = tabs[0].id;
-        let x = 'clickData_tabId_'+String(tabId);
-        let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
-        tabData = JSON.parse(tabData[x]);
-        if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
-          let pages = []
-          for (let i=0; i < domains.length;i++) {
-              let value = await background.hashit_salt(domains[i]["Pages"]["domain"])
-              pages.push(value)
-              //console.log(value);
-          }
-          let activityType='load dashboard sites page';
-          let timestamp=Date.now();
-          let userId=userParams.userId;
-          let startTS=userParams.startTS;
-          let activityData={
-            'numDomainsShown':pages.length,
-            //'shownSites':JSON.stringify(pages),
-            'tabId': tabId,
-            'parentTabId':parentTabId,
-            'parentDomain':tabData.domain,
-            'parentPageId':tabData.pageId,
-            'parentNumTrackers':tabData.numTrackers
-          };
-          background.logData(activityType, timestamp, userId, startTS, activityData);
-        }
-      }
-
-
 
   async getDomains() {
     const background = await browser.runtime.getBackgroundPage();
@@ -78,13 +37,20 @@ class FirstPartyList extends React.Component {
 
   async componentDidMount() {
     this.getDomains();
-    this.logLoad(); //load here
+    let domains = this.state.domains;
+    /*
+    const background = await browser.runtime.getBackgroundPage();
+    let pages = []
+    for (let i=0; i < domains.length;i++) {
+      let value = await background.hashit_salt(domains[i]["Pages"]["domain"])
+      pages.push(value)
+    }*/
+    let activityType='load dashboard sites page';
+    let sendDict={'numDomainsShown':pages.length}
+    logging.logLoad(activityType, sendDict);
   }
 
   render() {
-    //if(this.state.reload)this.logLoad();
-    //this.setState({reload: true});
-    //this.logLoad();
     return(
       <div>
         <h1>Domains</h1>
@@ -109,12 +75,10 @@ class FirstPartyDetails extends React.Component {
     this.state = {
       trackers: []
     }
-    //this.logLoad = this.logLoad.bind(this);
-    this.logLeave = this.logLeave.bind(this);
+    this.logPopstate = this.logPopstate.bind(this);
   }
 
-
-  async logLeave(){
+  async logPopstate(){
     //console.log('In the log leave page')
     const background = await browser.runtime.getBackgroundPage();
     let userParams = await browser.storage.local.get({
@@ -147,39 +111,8 @@ class FirstPartyDetails extends React.Component {
 
   }
 
-/*
-  async logLoad() {
-      //console.log('In the log load page')
-      const background = await browser.runtime.getBackgroundPage();
-      let userParams = await browser.storage.local.get({
-        usageStatCondition: "no monster",
-        userId: "no monster",
-        startTS: 0
-      });
-      const tabs = await browser.tabs.query({active: true, currentWindow: true});
-      let tabId = tabs[0].openerTabId;
-      let x = 'clickData_tabId_'+String(tabId);
-      let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
-      tabData = JSON.parse(tabData[x]);
-    if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
-        let page = await background.hashit_salt(this.domain)
-        let activityType = 'non-tab-page: show tracker details for a domain';
-        let timestamp=Date.now();
-        let userId=userParams.userId;
-        let startTS=userParams.startTS;
-        let activityData = {
-          'shownDomain':JSON.stringify(page),
-          'parentTabId':tabId,
-          'parentDomain':tabData.domain,
-          'parentPageId':tabData.pageId,
-          'parentNumTrackers':tabData.numTrackers
-        };
-        background.logData(activityType, timestamp, userId, startTS, activityData);
-      }
-    }
-*/
-    async componentWillUnmount() {
-      window.removeEventListener("popstate", this.logLeave)
+  async componentWillUnmount() {
+      window.removeEventListener("popstate", this.logPopstate)
     }
 
   async componentDidMount() {
@@ -188,26 +121,10 @@ class FirstPartyDetails extends React.Component {
     this.setState({
       trackers: trackers
     })
-    //this.logLoad();
-    //the following is to catch the back button event
-    //window.onpopstate =
-    window.addEventListener("popstate", this.logLeave)
+    window.addEventListener("popstate", this.logPopstate)
 
-    //this.logLoad('Pressed the back button Leaving non-tab-page: show tracker details for a domain');//async function(event) {
-      //console.log('OK prime');
-      //const background = await browser.runtime.getBackgroundPage();
-      //let userParams = await browser.storage.local.get({usageStatCondition: "no monster"});
-      //if (JSON.parse(userParams.usageStatCondition)){
-      //  console.log('OK');
-      //  this.logLoad('Pressed the back button Leaving non-tab-page: show tracker details for a domain');
-      //}
-    //};
   }
 
-/*routerWillLeave(nextLocation) {
-    this.logLoad();
-    return null;
-  }*/
 
   render() {
     return (

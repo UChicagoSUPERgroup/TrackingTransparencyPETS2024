@@ -6,6 +6,7 @@ import '../styles/popup.css';
 import '../styles/button.css';
 import '../styles/navbar2.css';
 
+import logging from '../dashboard/dashboardLogging';
 
 class Popup extends React.Component {
 
@@ -14,7 +15,7 @@ class Popup extends React.Component {
     this.state = {
 
     }
-    this.sendPopupData = this.sendPopupData.bind(this);
+    //this.sendPopupData = this.sendPopupData.bind(this);
     this.openDashboard = this.openDashboard.bind(this);
   }
 
@@ -58,53 +59,6 @@ class Popup extends React.Component {
     }
   }
 
-/************** BEGIN Instrucmentation code ********************************/
-async sendPopupData(){
-  //console.log('I am here 1');
-  const background = await browser.runtime.getBackgroundPage();
-  const tabs = await browser.tabs.query({active: true, currentWindow: true});
-  let tabId = tabs[0].id;
-  const tabData = await background.getTabData(tabId);
-  //console.log(tabData);
-  let domain = '';
-  let pageId = '';
-  let numTrackers = 0;
-  if (tabData){
-    //console.log('Here I am monster popup', tabData.pageId, tabData.domain, tabData.trackers.length);
-    domain = await background.hashit_salt(tabData.domain);
-    pageId = tabData.pageId;
-    numTrackers = tabData.trackers.length;
-  }
-  let userParams = await browser.storage.local.get({
-    usageStatCondition: "no monster",
-    userId: "no monster",
-    startTS: 0
-  });
-
-  if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
-    let activityType = 'open popup'
-    let timestamp = Date.now()
-    let userId = userParams.userId
-    let startTS = userParams.startTS
-    let activityData = {
-        'clickedElem':'extension icon',
-        'domain':domain,
-        'tabId': tabId,
-        'pageId':pageId,
-        'numTrackers':numTrackers
-      }
-      //console.log("in send pop data")
-      //console.log(activityData)
-      background.logData(activityType, timestamp, userId, startTS, activityData)
-      //console.log('Finished monster popup', tabData.pageId, tabData.domain, tabData.trackers.length);
-  }
-
-}
-
-//first 9 lines should be enough to open dashboard without instrumentation.
-//i.e., till
-//openerTabId: parseInt(tabId)
-//};
 async  openDashboard() {
     console.log('I am here 1');
     const tabs = await browser.tabs.query({active: true, currentWindow: true});
@@ -119,62 +73,17 @@ async  openDashboard() {
     await browser.tabs.create(dashboardData);
     const background = await browser.runtime.getBackgroundPage();
 
-    //console.log('I am in dashboard ', tabData);
-    //if (tabData){console.log('will go into the if');}
-    let domain = '';
-    let pageId = '';
-    let numTrackers = 0;
-    if (tabData){
-      //console.log('I am in dashboard ', tabData, tabData.pageId);
-      //console.log('Here I am monster', tabData.pageId, tabData.domain);
-      domain = await background.hashit_salt(tabData.domain);
-      pageId = tabData.pageId;
-      numTrackers = tabData.trackers.length;
-    }
-
-    let userParams = await browser.storage.local.get({
-      usageStatCondition: "no monster",
-      userId: "no monster",
-      startTS: 0
-    });
-    if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
-      let activityType='click dashboard button on popup';
-      let timestamp=Date.now();
-      let userId=userParams.userId;
-      let startTS=userParams.startTS;
-      let activityData={
-          'clickedElem':'dashboard button',
-          'domain':domain,
-          'tabId': tabId,
-          'pageId':pageId,
-          'numTrackers':numTrackers
-        }
-        //console.log("in send pop data")
-        background.printlog(activityData)
-        background.logData(activityType, timestamp, userId, startTS, activityData);
-  }
-  let storeData = {
-    'domain':domain,
-    'tabId':tabId,
-    'pageId':pageId,
-    'numTrackers':numTrackers
-  }
-  let x = 'clickData_tabId_'+String(tabId);
-  await browser.storage.local.set(
-    {
-      [x]: JSON.stringify(storeData)
-    }
-  );
-
+    let activityType= 'click dashboard button on popup';
+    let clickedElem = 'dashboard button';
+    await logging.logPopupActions(activityType, clickedElem);
 }
-/************** END Instrucmentation code ********************************/
 
   async componentDidMount() {
     /*comment this next line if you want to off logging data
     Also preserve the order if you want the log, since sometimes getData fails
     and sendPopupData will not run
     */
-    await this.sendPopupData();
+    await logging.logPopupActions('open popup', 'extension icon');
     await this.getData();
   }
 

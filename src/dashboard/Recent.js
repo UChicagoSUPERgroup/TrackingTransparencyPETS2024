@@ -5,7 +5,7 @@ import tt from '../helpers';
 
 import PagesTimeChart from './PagesTimeChart';
 import PagesTimeScatterplot from './PagesTimeScatterplot';
-
+import logging from './dashboardLogging';
 
 export default class RecentPage extends React.Component {
   constructor(props) {
@@ -13,44 +13,16 @@ export default class RecentPage extends React.Component {
     this.state = {
       domains: []
     }
-  this.logLoad = this.logLoad.bind(this);
+//  this.logLoad = this.logLoad.bind(this);
   }
 
-  async logLoad() {
-      //console.log('In the log load page')
-      const background = await browser.runtime.getBackgroundPage();
-      let userParams = await browser.storage.local.get({
-        usageStatCondition: "no monster",
-        userId: "no monster",
-        startTS: 0
-      });
-      const tabs = await browser.tabs.query({active: true, currentWindow: true});
-      let parentTabId = tabs[0].openerTabId;
-      let tabId = tabs[0].id;
-      let x = 'clickData_tabId_'+String(tabId);
-      let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
-      tabData = JSON.parse(tabData[x]);
-      if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
-        let activityType='load dashboard recent activity page';
-        let timestamp=Date.now();
-        let userId=userParams.userId;
-        let startTS=userParams.startTS;
-        let activityData={
-          'tabId': tabId,
-          'parentTabId':parentTabId,
-          'parentDomain':tabData.domain,
-          'parentPageId':tabData.pageId,
-          'parentNumTrackers':tabData.numTrackers
-        }
-        background.logData(activityType, timestamp, userId, startTS, activityData);
-      }
-    }
 
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
     const timestamps = background.queryDatabase('getTimestamps', {});
-    this.logLoad();
+    let activityType='load dashboard recent activity page';
+    logging.logLoad(activityType, {});
     timestamps.then(ts => {
       const times = ts.map(x => (
         (new Date(x.id))

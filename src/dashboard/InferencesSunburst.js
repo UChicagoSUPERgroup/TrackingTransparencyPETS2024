@@ -8,6 +8,8 @@ import tt from '../helpers';
 
 import categoryTree from '../data/categories_tree.json';
 
+import logging from './dashboardLogging';
+
 import COLORS from '../colors';
 const PRIMARIES = [COLORS.UC_YELLOW_1, COLORS.UC_ORANGE_1, COLORS.UC_RED_1, COLORS.UC_LT_GREEN_1, COLORS.UC_DK_GREEN_1, COLORS.UC_BLUE_1, COLORS.UC_VIOLET_1];
 
@@ -81,7 +83,7 @@ export default class BasicSunburst extends React.Component {
     }
 
     this.constructSunburstData = this.constructSunburstData.bind(this);
-    this.logSelect = this.logSelect.bind(this);
+    //this.logSelect = this.logSelect.bind(this);
   }
 
 
@@ -124,63 +126,6 @@ export default class BasicSunburst extends React.Component {
 
   }
 
-  /************** BEGIN Instrumentation  ***************************/
-
-  async logSelect(select, value){
-    const background = await browser.runtime.getBackgroundPage();
-    let userParams = await browser.storage.local.get({
-      usageStatCondition: "no monster",
-      userId: "no monster",
-      startTS: 0
-    });
-    if (!JSON.parse(userParams.usageStatCondition))return true;
-
-    let activityType = ''
-    let extraData = {}
-    if(select){
-      //console.log('SUNBURST LOGSELECT 1', select, value);
-      activityType = 'select sunburst chart area'
-      if(value){
-        let selectedSunburstTopic=await background.hashit(value);
-        extraData = {"selectedSunburstTopic":selectedSunburstTopic};
-      }
-    }
-    else{
-      //console.log('SUNBURST LOGSELECT 2', select, value);
-      activityType = 'unselect sunburst chart area'
-      if(value){
-        let selectedSunburstTopic=await background.hashit(value);
-        extraData = {"unselectedSunburstTopic":selectedSunburstTopic};
-      }
-    }
-    if (activityType != ''){
-        const tabs = await browser.tabs.query({active: true, currentWindow: true});
-        let parentTabId = tabs[0].openerTabId;
-        let tabId = tabs[0].id;
-
-        let x = 'clickData_tabId_'+String(tabId);
-        let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
-        //console.log('logLeave', tabData);
-        tabData = JSON.parse(tabData[x]);
-
-        let timestamp=Date.now();
-        let userId=userParams.userId;
-        let startTS=userParams.startTS;
-        let activityData={
-            'tabId': tabId,
-            'parentTabId':parentTabId,
-            'parentDomain':tabData.domain,
-            'parentPageId':tabData.pageId,
-            'parentNumTrackers':tabData.numTrackers,
-            'extraData' : JSON.stringify(extraData)
-          }
-        //console.log('SUNBURST LOGSELECT tosend', select, value);
-        background.logData(activityType, timestamp, userId, startTS, activityData);
-      }
-    }
-
-/************** END Instrumentation  ***************************/
-
 async  componentWillReceiveProps(nextProps) {
     colorCounter = 0;
     let value = this.state.finalValue;
@@ -188,7 +133,7 @@ async  componentWillReceiveProps(nextProps) {
     //console.log('SUNBURST ', value);
     if (!nextProps.selectedInference) {
       //console.log('SUNBURST1 ', value);
-      await this.logSelect(false, value);//deselect all
+      await logging.logSunburstSelect(false, value);//deselect all
       // clear any selections
       this.setState({
         finalValue: false,
@@ -208,7 +153,7 @@ async  componentWillReceiveProps(nextProps) {
           clicked: true
         });
         //console.log('SUNBURST2 ', value);
-        await this.logSelect(true, value);//select right stuff
+        await logging.logSunburstSelect(true, value);//select right stuff
       }
     }
 

@@ -184,7 +184,7 @@ async function getFavicon(url) {
 /**
  * creates a new record for the tab in database and tabData object
  * the tabData object stores basic info about the tab in memory
- * 
+ *
  * @param  {number} tabId
  * @param  {string} url
  * @param  {string} title
@@ -192,7 +192,7 @@ async function getFavicon(url) {
 function recordNewPage(tabId, url, title) {
   const pageId = Date.now();
   let urlObj = new URL(url)
-  
+
   // store info about the tab in memory
   tabData[tabId] = {
     pageId: pageId,
@@ -218,7 +218,7 @@ function recordNewPage(tabId, url, title) {
  * pushing queued web requests to the trackers worker
  * (which will then store to database)
  * Called when page changed/reloaded or tab closed.
- * 
+ *
  * @param  {number} tabId - tab's id
  */
 function clearTabData(tabId) {
@@ -242,9 +242,9 @@ function clearTabData(tabId) {
  * web requests are queued in tabData, and then when this function is called
  * they are pushed to the trackers worker, which evaluates whether they are trackers
  * and if so stores them in the database
- * 
+ *
  * this function also sends the updated data to the in-page overlay
- *  
+ *
  * @param  {number} tabId - tab's id
  */
 async function updateTrackers(tabId) {
@@ -428,13 +428,13 @@ window.queryDatabaseRecursive = queryDatabaseRecursive;
 /**
  * given a category name in the Google ad-interest categories, and an object for the entire tree,
  * returns a list with all child subtrees
- * 
+ *
  * helper for queryDatabaseRecursive
- * 
+ *
  * @param  {string} cat
  * @param  {Object} root
  * @returns {Object[]} branches of tree for each child
- * 
+ *
  */
 function findChildren(cat, root) {
   for (let c of root.children) {
@@ -452,9 +452,9 @@ function findChildren(cat, root) {
 
 /**
  * given a list of subtrees, returns a flattened list of node names
- * 
+ *
  * helper for queryDatabaseRecursive
- * 
+ *
  * @param  {Object[]} children - subtrees of category tree
  * @returns {string[]} - list of nodes in all subtrees input
  */
@@ -472,7 +472,7 @@ function collapseChildren(children) {
 /**
  * facilitates bulk import of data
  * takes in JSON of data to import, passes to database
- * 
+ *
  * @param  {Object} dataString - JSON with data to import
  */
 async function importData(dataString) {
@@ -549,7 +549,7 @@ function onInferencingWorkerMessage(m) {
  * @param  {Object} sender
  * @param  {Object} sendResponse - callback to send a response to caller
  * @returns {boolean} true
- * 
+ *
  */
 function runtimeOnMessage(message, sender, sendResponse) {
   let pageId;
@@ -642,6 +642,15 @@ async function setUserParams() {
   //console.log("in send pop data")
   //console.log(activityData)
   return true
+}
+
+async function getUserParams(){
+  let userParams = await browser.storage.local.get({
+    usageStatCondition: "no more tears",
+    userId: "no more tears",
+    startTS: 0
+  });
+  console.log('User parameters: ', userParams.userId, userParams.startTS)
 }
 
 function hashit(data){
@@ -778,6 +787,7 @@ window.hashit=hashit;
 window.hashit_salt=hashit_salt;
 window.logData=logData;
 window.printlog=printlog;
+window.getUserParams=getUserParams;
 
 /************* Detecting if tab or window is closed ************/
 browser.tabs.onRemoved.addListener(logLeave)

@@ -9,9 +9,9 @@ export class AboutPage extends React.Component {
     }
   }
 
-
   async componentDidMount() {
-    logging.logLoad();
+    let activityType='load dashboard about page';
+    logging.logLoad(activityType, {});
   }
 
   render() {
