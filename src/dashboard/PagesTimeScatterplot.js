@@ -91,9 +91,8 @@ export default class PagesTimeScatterplot extends React.Component {
             }}
             onNearestXY={(datapoint, {index}) => {
               console.log(datapoint,event);
-              this.setState({index})};
-              this.props.update(datapoint);
-            }
+              this.setState({index});
+            }}
             data={data}/>
           <XAxis
             title="Hour"
