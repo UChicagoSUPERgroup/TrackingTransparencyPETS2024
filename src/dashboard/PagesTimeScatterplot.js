@@ -30,7 +30,8 @@ export default class PagesTimeScatterplot extends React.Component {
 
     this.state = {
       times: timestamps,
-      update: this.props.update
+      update: this.props.update,
+      index: null
     };
 
     this.changeSelection = this.changeSelection.bind(this);
@@ -44,7 +45,7 @@ export default class PagesTimeScatterplot extends React.Component {
   }
 
   render() {
-    const {times, grouping} = this.state;
+    const {times, grouping, index} = this.state;
     const {dateLabel, timeLabelSimple, timeLabelAdjusted,
        dayOfWeekLabel, dayOfWeekLabelAdjusted, stringLabel} = las;
 
@@ -71,6 +72,7 @@ export default class PagesTimeScatterplot extends React.Component {
       }
     }
     console.log(data);
+    data = data.map((d, i) => ({...d, color: i === index ? 1 : 0}));
 
     return (
       <div>
@@ -79,16 +81,20 @@ export default class PagesTimeScatterplot extends React.Component {
           height={300}
           xDomain={[0,23]}
           yDomain={[0,7]}
-          margin={{left: 100, right: 10, top: 10, bottom: 50}}>
+          margin={{left: 100, right: 10, top: 10, bottom: 50}}
+          colorDomain={[0, 1]}
+          colorRange={["#616530", "#8A9045"]}
+          onMouseLeave={() => this.setState({index: null})}>
           <MarkSeries
-            onValueMouseOver={(datapoint, event)=>{
-              console.log(datapoint,event);
-            }}
             onValueClick={(datapoint, event)=>{
               this.props.update(datapoint);
             }}
-            data={data}
-            color={"#616530"}/>
+            onNearestXY={(datapoint, {index}) => {
+              console.log(datapoint,event);
+              this.setState({index})};
+              this.props.update(datapoint);
+            }
+            data={data}/>
           <XAxis
             title="Hour"
             tickFormat={timeLabelSimple}
