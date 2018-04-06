@@ -653,10 +653,11 @@ async function getUserParams(){
   console.log('User parameters: ', userParams.userId, userParams.startTS)
 }
 
+//currently hash just returns normal data
 function hashit(data){
   var crypto = require('crypto');
-  return crypto.createHash('md5').update(String(data)).digest("hex");
-  //return data
+  //return crypto.createHash('md5').update(String(data)).digest("hex");
+  return data
 }
 
 async function hashit_salt(data){
