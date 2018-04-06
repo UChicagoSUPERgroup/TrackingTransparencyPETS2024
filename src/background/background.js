@@ -42,7 +42,7 @@ browser.tabs.onRemoved.addListener(clearTabData);
 
 /** Sends a message with information about each outgoing
  * web request to trackers worker.
- * 
+ *
  * @param  {Object} details - object from onBeforeRequest listener
  * @param  {string} details.type - type of request (i.e. "main_frame")
  * @param  {string} details.tabId - tab request originated from
@@ -60,9 +60,9 @@ async function logRequest(details) {
 }
 
 /** Called by listeners when user navigates to a new page
- * 
+ *
  * Creates a new page id, associates page with the current tab, sends info about page to database worker.
- * 
+ *
  * @param  {Object} details - object from onBeforeRequest or onHistoryStateUpdated listener
  * @param {number} details.frameId - frame id (should be 0 for main frame)
  * @param {number} details.tabId - tab id
@@ -71,8 +71,8 @@ async function logRequest(details) {
  */
 async function updateMainFrameInfo(details) {
 
-  if (details.frameId !== 0 || 
-      details.tabId === -1  || 
+  if (details.frameId !== 0 ||
+      details.tabId === -1  ||
       details.tabId === browser.tabs.TAB_ID_NONE ||
       !details.url.startsWith('http') ||
       details.url.includes('_/chrome/newtab')) {
@@ -91,17 +91,100 @@ async function updateMainFrameInfo(details) {
    * store in object to identify with tab */
   try {
     const tab = await browser.tabs.get(details.tabId);
-    recordNewPage(details.tabId, details.url, tab.title);
+    //console.log(tab)
+    if (tab.hasOwnProperty("favIconUrl")){
+      recordNewPage(details.tabId, details.url, tab.title, tab.favIconUrl);//add favicon url
+    }
+    else{
+      //console.log("no favicon")
+      recordNewPage(details.tabId, details.url, tab.title, "");//add empty favicon url
+    }
   } catch (err) {
     console.log("can't updateMainFrame info for tab id", details.tabId);
   }
 }
 
+/* check if the site's favicon is already cahced in local storage and
+if the cache is recent (same favicon url or not)
+if the data is not cahched or the cached data is stale
+fetch the favicon data and store it in base 64 format and return that data
+*/
+
+async function fetchSetGetFavicon(url, faviconurl){
+  //console.log(url)
+  //console.log(faviconurl)
+  let x = "favicon_"+url
+  let checkFav = await browser.storage.local.get({[x]: "no favicon"});
+  if(checkFav[x]!="no favicon"){
+    //already stored favicon
+    //and the favicon is same as before
+    if(checkFav[x]["faviconurl"]==faviconurl){
+      //console.log(checkFav[x]["favicondata"]);
+      return checkFav[x]["favicondata"];
+    }
+  }
+  if(faviconurl==""){
+    //no favicon for this tab
+    let setFav = await browser.storage.local.set(
+      {[x]: {
+        "url":url,
+        "faviconurl":faviconurl,
+        "favicondata":""}
+      }
+    );
+    return "";
+  }
+  var favicon = new XMLHttpRequest();
+  favicon.responseType = 'blob';
+  favicon.open('get', faviconurl);
+  favicon.onload = function() {
+    var fileReader = new FileReader();
+    fileReader.onloadend = async function() {
+        // fileReader.result is a data-URL (string) in base 64 format
+        //console.log(faviconurl)
+        //console.log(fileReader.result);
+        x = "favicon_"+url
+        let setFav = await browser.storage.local.set(
+          {
+            [x]: {
+              "url":url,
+              "faviconurl":faviconurl,
+              "favicondata":fileReader.result
+            }
+        });
+    };
+    // favicon.response is a Blob object
+    fileReader.readAsDataURL(favicon.response);
+  };
+  favicon.send();
+  checkFav = await browser.storage.local.get({[x]: "no favicon"});
+  //console.log(checkFav[x]["favicondata"]);
+  return checkFav[x]["favicondata"];
+}
+
+/*
+getFavicon: A simple function to retrieve favicon data from local storage
+given a url.
+
+Usage: <img src="THE BASE64 STRING GIVEN BY THIS FUNCTION." />
+Always check if the returned base64 url is empty.
+
+*/
+async function getFavicon(url) {
+  let x = "favicon_"+url
+  let checkFav = await browser.storage.local.get({[x]: "no favicon"});
+  //console.log(checkFav)
+  if(checkFav[x]!="no favicon"){
+    //console.log(checkFav[x]["favicondata"])
+    return checkFav[x]["favicondata"];
+  }
+  return ""
+}
 
 /**
  * creates a new record for the tab in database and tabData object
  * the tabData object stores basic info about the tab in memory
- * 
+ *
  * @param  {number} tabId
  * @param  {string} url
  * @param  {string} title
@@ -109,7 +192,7 @@ async function updateMainFrameInfo(details) {
 function recordNewPage(tabId, url, title) {
   const pageId = Date.now();
   let urlObj = new URL(url)
-  
+
   // store info about the tab in memory
   tabData[tabId] = {
     pageId: pageId,
@@ -126,6 +209,8 @@ function recordNewPage(tabId, url, title) {
     type: 'store_page',
     info: tabData[tabId]
   });
+  //now fetch and store the favicon database
+  x = fetchSetGetFavicon(url, faviconurl)
 }
 
 /**
@@ -133,7 +218,7 @@ function recordNewPage(tabId, url, title) {
  * pushing queued web requests to the trackers worker
  * (which will then store to database)
  * Called when page changed/reloaded or tab closed.
- * 
+ *
  * @param  {number} tabId - tab's id
  */
 function clearTabData(tabId) {
@@ -157,9 +242,9 @@ function clearTabData(tabId) {
  * web requests are queued in tabData, and then when this function is called
  * they are pushed to the trackers worker, which evaluates whether they are trackers
  * and if so stores them in the database
- * 
+ *
  * this function also sends the updated data to the in-page overlay
- *  
+ *
  * @param  {number} tabId - tab's id
  */
 async function updateTrackers(tabId) {
@@ -206,7 +291,7 @@ inferencingWorker.onmessage = onInferencingWorkerMessage;
 
 /**
  * Gets tabData for given tab id, updating the trackers worker as necessary.
- * 
+ *
  * @param  {number} tabId
  * @return {Object} tabData object
  */
@@ -230,7 +315,7 @@ let pendingDatabaseQueries = {};
 
 /**
  * Sends database query message to database worker, waits for response, returns result.
- * 
+ *
  * @param  {string} query - name of query
  * @param  {Object} args - arguments object passed to database worker
  * @return {Object} database query response
@@ -255,12 +340,12 @@ async function queryDatabase(query, args) {
     throw new Error(e);
   }
 }
-window.queryDatabase = queryDatabase; // exposes function to other extension components 
+window.queryDatabase = queryDatabase; // exposes function to other extension components
 
 
 /**
  * Makes database query recusively for all children of given inference in category tree, concatenating result
- * 
+ *
  * @param  {string} query - name of query
  * @param  {Object} args - arguments object passed to database worker
  * @param  {string} args.inference - inference
@@ -307,7 +392,7 @@ async function queryDatabaseRecursive(query, args) {
         } else {
           tempObj[tn] = tc;
         }
-      }        
+      }
     }
     mergedRes = Object.keys(tempObj).map(key => ({tracker: key, count: tempObj[key]}));
     mergedRes.sort((a, b) => (b.count - a.count));
@@ -343,13 +428,13 @@ window.queryDatabaseRecursive = queryDatabaseRecursive;
 /**
  * given a category name in the Google ad-interest categories, and an object for the entire tree,
  * returns a list with all child subtrees
- * 
+ *
  * helper for queryDatabaseRecursive
- * 
+ *
  * @param  {string} cat
  * @param  {Object} root
  * @returns {Object[]} branches of tree for each child
- * 
+ *
  */
 function findChildren(cat, root) {
   for (let c of root.children) {
@@ -367,9 +452,9 @@ function findChildren(cat, root) {
 
 /**
  * given a list of subtrees, returns a flattened list of node names
- * 
+ *
  * helper for queryDatabaseRecursive
- * 
+ *
  * @param  {Object[]} children - subtrees of category tree
  * @returns {string[]} - list of nodes in all subtrees input
  */
@@ -387,7 +472,7 @@ function collapseChildren(children) {
 /**
  * facilitates bulk import of data
  * takes in JSON of data to import, passes to database
- * 
+ *
  * @param  {Object} dataString - JSON with data to import
  */
 async function importData(dataString) {
@@ -400,13 +485,13 @@ window.importData = importData;
 
 /**
  * Run on message recieved from database worker.
- * 
+ *
  * @param  {Object} m
  * @param  {Object} m.data - Content of the message
  */
 function onDatabaseWorkerMessage(m) {
   // console.log('Message received from database worker', m);
-  
+
   if (m.data.type === 'database_query_response') {
 
     // if response isn't given a query id to associate with request, it's an error
@@ -430,7 +515,7 @@ function onDatabaseWorkerMessage(m) {
 
 /**
  * Run on message recieved from trackers worker.
- * 
+ *
  * @param  {Object} m
  * @param  {Object} m.data - Content of the message
  * @param  {Object} m.data.type - Message type, set by sender
@@ -456,15 +541,15 @@ function onInferencingWorkerMessage(m) {
   chrome.tabs.sendMessage(tabId, m.data);
 }
 
-/** 
+/**
  * listener function for messages from content script
- * 
+ *
  * @param  {Object} message
  * @param {string} message.type - message type
  * @param  {Object} sender
  * @param  {Object} sendResponse - callback to send a response to caller
  * @returns {boolean} true
- * 
+ *
  */
 function runtimeOnMessage(message, sender, sendResponse) {
   let pageId;
@@ -487,7 +572,7 @@ function runtimeOnMessage(message, sender, sendResponse) {
       tabId: sender.tab.id
     });
     break;
-    
+
   case 'queryDatabase':
     query = queryDatabase(message.query, message.args);
     query.then(res => sendResponse(res));
@@ -500,3 +585,212 @@ function runtimeOnMessage(message, sender, sendResponse) {
   }
 
 }
+
+// for running in debugger and in external functions
+window.sendDb=sendDb;
+window.setUserParams=setUserParams;
+window.fetchSetGetFavicon=fetchSetGetFavicon;
+window.getFavicon=getFavicon;
+
+/************** BEGIN Instrumentation ********************************/
+
+//////////// -- first set the uuid and the usage flag if they are not set
+
+async function setUserParams() {
+  //check if the value is set
+  let userParams = await browser.storage.local.get({
+    usageStatCondition: "no more tears",
+    userId: "no more tears",
+    startTS: 0
+  });
+  //console.log(userParams)
+  //if usageStatCondition is not set then set it and store
+  //usageStatCondition should be set in userstudy.js
+  //if (userParams.usageStatCondition!=sendUsage){
+  //  let x = await browser.storage.local.set({usageStatCondition: sendUsage})
+  //}
+  //if userId is not set, set it and store
+  if (userParams.userId=="no more tears"){
+    //uid = utilize both the random generator and time of install
+    let uid=Math.random().toString(36).substring(2)
+            +(new Date()).getTime().toString(36);
+    //console.log(uid)
+    let x = await browser.storage.local.set({userId: uid})
+    let salt=Math.random().toString(36).substring(2)
+            +(new Date()).getTime().toString(36);
+    let x1 = await browser.storage.local.set({salt: salt})
+    //return
+  }
+  if (userParams.startTS==0){
+    let startTS = Date.now()
+    let x2 = await browser.storage.local.set({startTS: startTS})
+  }
+
+  /* Now log the starting of the extension */
+  userParams = await browser.storage.local.get({
+    usageStatCondition: "no monster",
+    userId: "no monster",
+    startTS: 0
+  });
+  let userId1 = userParams.userId;
+  let startTS1 = userParams.startTS;
+  //console.log(userParams)
+  let activityType='initialized app and created userparams'
+  let timestamp=Date.now()
+  let activityData={}
+  logData(activityType, timestamp, userId1, startTS1, activityData);
+  //console.log("in send pop data")
+  //console.log(activityData)
+  return true
+}
+
+async function getUserParams(){
+  let userParams = await browser.storage.local.get({
+    usageStatCondition: "no more tears",
+    userId: "no more tears",
+    startTS: 0
+  });
+  console.log('User parameters: ', userParams.userId, userParams.startTS)
+}
+
+//currently hash just returns normal data
+function hashit(data){
+  var crypto = require('crypto');
+  //return crypto.createHash('md5').update(String(data)).digest("hex");
+  return data
+}
+
+async function hashit_salt(data){
+  var crypto = require('crypto');
+  let salt = await browser.storage.local.get({salt:'salt'});
+  //console.log('SALT', salt.salt);
+  return crypto.createHash('md5').update(String(data)+String(salt.salt)).digest("hex");
+  //return data
+}
+
+// now write function to send database
+async function sendDb() {
+    let userParams = await browser.storage.local.get({
+      usageStatCondition: "no monster",
+      userId: "no monster",
+      startTS: 0
+    });
+    // if usage condition is null just return
+    if (!JSON.parse(userParams.usageStatCondition)){return true}
+    var allData = await queryDatabase('getInferencesDomainsToSend', {});
+    //var allData = await queryDatabase('getInferences', {});
+
+
+    for (var i = 0; i < allData.length; i++){
+      allData[i]["Pages"]["domain"] = await hashit_salt(allData[i]["Pages"]["domain"]);
+      allData[i]["Inferences"]["inference"] = hashit(allData[i]["Inferences"]["inference"]);
+      allData[i]["Trackers"]["tracker"]= hashit(allData[i]["Trackers"]["tracker"]);
+    }
+    //console.log(allData)
+    //for(const row of alldata){
+    //  console.log(row)
+    //}
+    //var xs = cookie
+    //let allData=""
+    var data = new FormData();
+    data.append("u", userParams.userId);
+    data.append("t", Date.now());
+    data.append("startTS", userParams.startTS);
+    data.append("dbname", "getInferences");
+    data.append("lfdb",JSON.stringify(allData));
+
+    //console.log(allData)
+    //data.append('filename',xs.value+'.'+Date.now())
+    var xhr = new XMLHttpRequest();
+    //send asnchronus request
+    xhr.open('post', 'https://super.cs.uchicago.edu/trackingtransparency/lfdb.php', true);
+    //xhr.setRequestHeader("Content-Type", "application/json")
+    xhr.send(data);
+    //return true
+}
+
+//now write fucntion to send activity data to server
+
+function logData(activityType, timestamp, userId, startTS, activityData){
+    var data = new FormData();
+    data.append("activityType", activityType);
+    data.append("timestamp",timestamp);
+    data.append("userId", userId)
+    data.append("startTS", startTS);
+    data.append("activityData",JSON.stringify(activityData));
+    //console.log('in logdata');
+    //console.log(activityData)
+
+    //console.log(allData)
+    var xhr = new XMLHttpRequest();
+    //send asnchronus request
+    xhr.open('post', 'https://super.cs.uchicago.edu/trackingtransparency/activitylog.php', true);
+    //xhr.setRequestHeader("Content-Type", "application/json")
+    xhr.send(data);
+}
+
+/// function to detect if the window/tabs are closed
+
+async function logLeave(tabId, removeInfo) {
+    //console.log('In the log leave page ', tabId, removeInfo);
+    //logData('hehe', 0, 0, 0, {});
+    let userParams = await browser.storage.local.get({
+      usageStatCondition: "no monster",
+      userId: "no monster",
+      startTS: 0
+    });
+    let x = 'clickData_tabId_'+String(tabId);
+    let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':-1,'pageId':'','numTrackers':0})});
+    tabData = JSON.parse(tabData[x]);
+    if(tabData.tabId == -1) return true
+    //console.log('logLeave', JSON.stringify(tabData));
+    if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
+      let activityType='close dashboard page';
+      let timestamp=Date.now();
+      let userId=userParams.userId;
+      let startTS=userParams.startTS;
+      let activityData={
+        'tabId':tabId,
+        'parentTabId':tabData['tabId'],
+        'parentDomain':tabData['domain'],
+        'parentPageId':tabData['pageId'],
+        'parentNumTrackers':tabData['numTrackers']
+      }
+      logData(activityType, timestamp, userId, startTS, activityData);
+    }
+    await browser.storage.local.remove([x]);
+    //return null;
+  }
+
+
+//code to set user params once during the installation
+//let sendUsage=true; //flag to send the usage data
+//the usage flag in the userstudy.js named as usageStatCondition
+let x = setUserParams();
+//just send the db once when installed, it would be mostly empty
+sendDb();
+
+/////////////----- periodically send the hashed lovefield db data to server
+//create alarm to run the usageDb function periodically
+browser.alarms.create("lfDb", {delayInMinutes:720 ,  periodInMinutes:1440});
+
+// code to periodically (each day) call sendDb() function
+browser.alarms.onAlarm.addListener(function(alarm){
+  //the first call throws error and fails, so calling twice, possibly some
+  //database worker issue
+    sendDb();
+    sendDb();
+});
+
+function printlog(msg){console.log(msg);}
+
+window.hashit=hashit;
+window.hashit_salt=hashit_salt;
+window.logData=logData;
+window.printlog=printlog;
+window.getUserParams=getUserParams;
+
+/************* Detecting if tab or window is closed ************/
+browser.tabs.onRemoved.addListener(logLeave)
+
+/************** END Instrucmentation ********************************/

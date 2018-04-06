@@ -7,7 +7,7 @@ import {primaryDbPromise} from './setup';
 
 /**
  * stores new page visit
- * 
+ *
  * @param {Object} info - info about the page
  * @param {Number} info.pageId - page's unique identifer
  * @param {string} info.title - page's title
@@ -31,7 +31,7 @@ export async function storePage(info) {
 
 /**
  * stores records of trackers for given page
- * 
+ *
  * @param {Object} pageId - identifier for page that trackers come from
  * @param {Object[]} trackers - array of objects with information about each tracker
  */
@@ -53,13 +53,13 @@ export async function storeTrackerArray(pageId, trackers) {
 
 /**
  * stores new inference
- * 
+ *
  * @param {Object} info - info about the page
  * @param {Number} info.pageId - page's unique identifer
  * @param {string} info.inference - inference made
  * @param {string} info.inferenceCategory - unused
  * @param {Number} info.threshold - unused
- * 
+ *
  */
 export async function storeInference(info) {
   const ttDb = await primaryDbPromise;

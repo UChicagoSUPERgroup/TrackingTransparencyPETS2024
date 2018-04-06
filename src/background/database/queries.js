@@ -172,6 +172,7 @@ async function getInferencesByTracker(args) {
  *                                     given as an integer for number of milliseconds since 1/1/1970
  * @returns {Object} query result
  */
+
 async function getInferences(args) {
   let query = ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
     .from(Inferences);
@@ -186,6 +187,34 @@ async function getInferences(args) {
   return await query.exec();
 }
 
+/** gets all inferences alongwith their page Id (which is basically timestamp) and domain
+ *
+ * @param  {Object} args - arguments object
+ * @param  {number} [args.count] - number of entries to return
+ * @param  {number} [args.afterDate]
+ */
+
+async function getInferencesDomainsToSend(args) {
+  //let query = ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
+  //  .from(Inferences);
+  let query = ttDb.select(Inferences.inference, Inferences.pageId, Inferences.id, Pages.domain, Trackers.tracker)
+    .from(Inferences).
+    innerJoin(Pages, Pages.id.eq(Inferences.pageId)).
+    innerJoin(Trackers, Pages.id.eq(Trackers.pageId));
+/*
+let query = ttDb.select(Inferences.inference, Inferences.pageId, Inferences.id, Pages.domain)
+  .from(Inferences).
+  innerJoin(Pages, Pages.id.eq(Inferences.pageId));
+*/
+  query = args.afterDate ? query.where(Inferences.pageId.gte(args.afterDate)) : query;
+
+  //query = query
+  //  .groupBy(Inferences.inference)
+  //  .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC);
+
+  query = args.count ? query.limit(args.count) : query;
+  return await query.exec();
+}
 
 /** get trackers that have made a given inference
  *
@@ -803,6 +832,8 @@ const QUERIES = {
   getDomains: getDomains, // used in dashboard
   getDomainsByInference: getDomainsByInference,
   getDomainsByTracker: getDomainsByTracker,
+  getInferencesByDomain: getInferencesByDomain, // used in tests
+  getInferencesDomainsToSend: getInferencesDomainsToSend, //this is to send data to server contaiing pageIds and inferences and domain names
   getInferenceCount: getInferenceCount, // used in dashboard
   getInferences: getInferences,  // used in dashboard inferences page
   getInferencesByTracker: getInferencesByTracker, // used in dashboard
@@ -824,7 +855,6 @@ const QUERIES = {
 
   // getDomainsNoTrackers: getDomainsNoTrackers,
   // getDomainVisits: getDomainVisits,
-  // getInferencesByDomain: getInferencesByDomain,
   // getInferencesByTrackerCount: getInferencesByTrackerCount,
   // getInfoAboutTracker: getInfoAboutTracker,
   // getPagesByTrackerAndDomain: getPagesByTrackerAndDomain,

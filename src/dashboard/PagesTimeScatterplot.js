@@ -25,7 +25,7 @@ export default class PagesTimeScatterplot extends React.Component {
     } else {
       console.log('no time data provided');
     }
-    
+
     this.state = {
       times: timestamps
     };
