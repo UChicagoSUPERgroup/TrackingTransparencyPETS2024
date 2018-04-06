@@ -143,7 +143,7 @@ export default class PagesTimeChart extends React.Component {
           margin={{left: 40, right: 40, top: 10, bottom: 40}}>
           <HorizontalGridLines />
           <VerticalGridLines />
-          <VerticalRectSeries data={data} opacity={0.95}/>
+          <VerticalRectSeries data={data} opacity={0.95} color={"#616530"}/>
           <XAxis
             title={xTitle}
             tickFormat={labelFunc}

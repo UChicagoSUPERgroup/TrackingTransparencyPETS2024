@@ -45,27 +45,32 @@ export default class PagesTimeScatterplot extends React.Component {
 
   render() {
     const {times, grouping} = this.state;
-    const {dateLabel, timeLabelSimple, timeLabelAdjusted, dayOfWeekLabel, stringLabel} = las;
+    const {dateLabel, timeLabelSimple, timeLabelAdjusted,
+       dayOfWeekLabel, dayOfWeekLabelAdjusted, stringLabel} = las;
 
     let grouped;
     let data = [];
 
     grouped = _.groupBy(times, t => [t.getDay(), t.getHours()]);
     console.log(grouped);
+    let day = (new Date(Date.now())).getDay();
     for (let elem in grouped) {
       let xy = elem.split(',');
-      data.push({
-        x: xy[1],
-        y: xy[0],
-        size: grouped[elem].length
-      });
+      if (parseInt(xy[0]) <= day) {
+        data.push({
+          x: parseInt(xy[1]),
+          y: parseInt(xy[0]) + (7 - day),
+          size: grouped[elem].length
+        });
+      } else {
+        data.push({
+          x: parseInt(xy[1]),
+          y: parseInt(xy[0]) - day,
+          size: grouped[elem].length
+        });
+      }
     }
-
     console.log(data);
-
-    const days = [0, 2, 1, 3, 4, 5, 6];
-    const hours = [0, 2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-      14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 
     return (
       <div>
@@ -73,7 +78,7 @@ export default class PagesTimeScatterplot extends React.Component {
           width={600}
           height={300}
           xDomain={[0,23]}
-          yDomain={[0,6]}
+          yDomain={[0,7]}
           margin={{left: 100, right: 10, top: 10, bottom: 50}}>
           <MarkSeries
             onValueMouseOver={(datapoint, event)=>{
@@ -82,15 +87,16 @@ export default class PagesTimeScatterplot extends React.Component {
             onValueClick={(datapoint, event)=>{
               this.props.update(datapoint);
             }}
-            data={data}/>
+            data={data}
+            color={"#616530"}/>
           <XAxis
             title="Hour"
             tickFormat={timeLabelSimple}
             style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
           <YAxis
             title="Day of Week"
-            tickValues={days}
-            tickFormat={dayOfWeekLabel}
+            tickValues={[0,1,2,3,4,5,6,7]}
+            tickFormat={dayOfWeekLabelAdjusted}
             style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
         </XYPlot>
       </div>

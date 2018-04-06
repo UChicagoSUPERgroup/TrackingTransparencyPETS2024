@@ -68,7 +68,7 @@ export default class RecentPage extends React.Component {
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
-    let tempDate = new Date(Date.now() - (7*millisecondsInDay));
+    let tempDate = new Date(Date.now() - (6*millisecondsInDay));
     let startDate = new Date(tempDate.getFullYear(),
       tempDate.getMonth(), tempDate.getDate());
     let args = {afterDate: startDate.getTime()}
@@ -98,7 +98,9 @@ export default class RecentPage extends React.Component {
   }
 
   handleClick(i) {
-    let pagesByTime = this.getByTime(i.y, i.x);
+    let today = (new Date(Date.now())).getDay();
+    i.y = i.y - (7 - today);
+    let pagesByTime = this.getByTime(i.y , i.x);
     pagesByTime.then(ps => {
       this.setState({
         recent: i,
