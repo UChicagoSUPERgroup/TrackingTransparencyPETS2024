@@ -87,10 +87,10 @@ export default class PagesTimeScatterplot extends React.Component {
           onMouseLeave={() => this.setState({index: null})}>
           <MarkSeries
             onValueClick={(datapoint, event)=>{
+              console.log(datapoint,event);
               this.props.update(datapoint);
             }}
             onNearestXY={(datapoint, {index}) => {
-              console.log(datapoint,event);
               this.setState({index});
             }}
             data={data}/>
