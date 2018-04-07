@@ -14,14 +14,15 @@ const millisecondsInDay = 86400000;
 const millisecondsInHour = 3600000;
 
 function recentVisitsTitle(summary) {
-  if (summary.y && summary.x)
-    return "Pages visited on " + dayOfWeekLabel(summary.y) +
-      " at " + timeLabelSimple(summary.x);
-  return "Pages visited";
+  if (summary.size) {
+  return "Pages visited on " + dayOfWeekLabel(summary.y) +
+    " at " + timeLabelSimple(summary.x);
+  } else {
+    return "Pages visited"
+  }
 }
 
 function RecentVisitsTable(summary, data){
-  console.log(summary);
   return (
     <ReactTable
       data={data}
@@ -31,11 +32,12 @@ function RecentVisitsTable(summary, data){
           columns: [
             {Header: "Time",
              id: "id",
-             accessor: d => (new Date(d.id).toLocaleTimeString()),
+             accessor: d => (new Date(d.Pages.id).toLocaleTimeString()),
              maxWidth: 150
             },
             {Header: "Site",
-             accessor: "domain",
+             id: "domain",
+             accessor: d => d.Pages.domain,
              Cell: row => (
                <div key={row.value}>
                   <Link to={{pathname: '/domains/' + row.value}}>
@@ -45,10 +47,21 @@ function RecentVisitsTable(summary, data){
              width: 200
             },
             {Header: "Page",
-             accessor: "title"}
+             id: "title",
+             accessor: d => d.Pages.title},
+            {Header: "Inference",
+              id: "infer",
+              accessor: d => d.Inferences.inference,
+              Cell: row => (
+                <div key={row.value}>
+                   <Link to={{pathname: '/inferences/' + row.value}}>
+                      {row.value}
+                   </Link>
+                </div>)}
           ]
         }
       ]}
+      showPageSizeOptions= {false}
       pageSize= {(summary.size >= 1) ? 20 : 3}
       className="-striped -highlight"
     />
@@ -100,7 +113,7 @@ export default class RecentPage extends React.Component {
   handleClick(i) {
     let today = (new Date(Date.now())).getDay();
     i.y = i.y - (7 - today);
-    let pagesByTime = this.getByTime(i.y , i.x);
+    let pagesByTime = this.getByTime(i.y, i.x);
     pagesByTime.then(ps => {
       this.setState({
         recent: i,
