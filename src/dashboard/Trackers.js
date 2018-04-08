@@ -67,7 +67,6 @@ export default class TrackersPage extends React.Component {
   render() {
     return(
       <div>
-        <h1>Trackers</h1>
         <Route path={`${this.props.match.url}/:name`}  component={TrackerDetails}/>
         <Route exact path={this.props.match.url} component={TrackersList}/>
       </div>
@@ -131,6 +130,7 @@ class TrackersList extends React.Component {
 
     return(
       <div>
+        <h1>Trackers</h1>
         <p><em>{numTrackers} trackers</em> are tracking your browsing. Your most
           frequently encountered tracker is <em>{topTracker}</em> which is
           present on <em>{topPercent}%</em> of
