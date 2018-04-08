@@ -101,7 +101,6 @@ export default class RecentPage extends React.Component {
     let tempDate = new Date(Date.now());
     while (dayOfWeek != tempDate.getDay()){
       tempDate = new Date(tempDate.getTime() - millisecondsInDay);
-      //console.log(tempDate);
     }
     let startDate = new Date(tempDate.getFullYear(),
       tempDate.getMonth(), tempDate.getDate(), hourStart);

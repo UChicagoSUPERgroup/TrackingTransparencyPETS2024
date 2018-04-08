@@ -78,7 +78,8 @@ export default class PagesTimeChart extends React.Component {
 
   render() {
     const {weektimes, daytimes, grouping} = this.state;
-    const {dateLabel, timeLabelSimple, timeLabelAdjusted, dayOfWeekLabel, stringLabel} = las;
+    const {dateLabel, timeLabelSimple, timeLabelAdjusted,
+       dayOfWeekLabel, dayOfWeekLabelAdjusted, stringLabel} = las;
 
     let grouped;
     let xTitle;
@@ -89,14 +90,24 @@ export default class PagesTimeChart extends React.Component {
     case 'weekday':
       grouped = _.groupBy(weektimes, t => t.getDay());
       xTitle = 'Weekday';
-      labelFunc = dayOfWeekLabel;
-      for (let day in grouped) {
-        data.push({
-          x0: parseInt(day),
-          x: parseInt(day) + 1,
-          y0: 0,
-          y: grouped[day].length
-        });
+      labelFunc = dayOfWeekLabelAdjusted;
+      let day = (new Date(Date.now())).getDay();
+      for (let elem in grouped) {
+        if (parseInt(elem) <= day) {
+          data.push({
+            x0: parseInt(elem) + (7 - day),
+            x: parseInt(elem) + (7 - day) + 1,
+            y0: 0,
+            y: grouped[elem].length
+          });
+        } else {
+          data.push({
+            x0: parseInt(elem) - day,
+            x: parseInt(elem) - day + 1,
+            y0: 0,
+            y: grouped[elem].length
+          });
+        }
       }
       break;
     case 'hour':
