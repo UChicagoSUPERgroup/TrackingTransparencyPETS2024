@@ -98,10 +98,10 @@ export default class RecentPage extends React.Component {
 
   async getByTime(dayOfWeek, hourStart) {
     let background = await browser.runtime.getBackgroundPage();
-    const now = new Date(Date.now());
-    let tempDate = now;
+    let tempDate = new Date(Date.now());
     while (dayOfWeek != tempDate.getDay()){
       tempDate = new Date(tempDate.getTime() - millisecondsInDay);
+      //console.log(tempDate);
     }
     let startDate = new Date(tempDate.getFullYear(),
       tempDate.getMonth(), tempDate.getDate(), hourStart);
@@ -112,7 +112,7 @@ export default class RecentPage extends React.Component {
 
   handleClick(i) {
     let today = (new Date(Date.now())).getDay();
-    i.y = i.y - (7 - today);
+    i.y = (i.y + today) % 7;
     let pagesByTime = this.getByTime(i.y, i.x);
     pagesByTime.then(ps => {
       this.setState({
