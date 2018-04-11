@@ -9,6 +9,7 @@ import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
+import FontAwesome from 'react-fontawesome';
 import {LinkContainer} from 'react-router-bootstrap';
 
 import {Home, WaitingDataHome} from './Home';
@@ -17,6 +18,8 @@ import TrackersList from './Trackers';
 import FirstPartyList from  './FirstParties';
 import RecentPage from './Recent';
 import AboutPage from './About';
+import InfoPage from './Info';
+import SettingsPage from './Settings'
 import DebugPage from './Debug';
 import LightbeamWrapper from './LightbeamWrapper';
 import tt from '../helpers';
@@ -27,7 +30,6 @@ import '../styles/dashboard.css';
 import '../styles/navbar.css';
 
 import logging from './dashboardLogging';
-
 
 const NavLink = ({to, title}) => (
   <LinkContainer to={to} className = "navbarTolog">
@@ -75,6 +77,8 @@ The code for logclick logs ALL the click in every single page.
   render() {
     const {lightbeamcondition, tabId} = this.state;
     const enoughData = tt.enoughData();
+    const info = (<FontAwesome name="info-circle fa-lg" />);
+    const settings = (<FontAwesome name="cog fa-lg" />);
     const TTNavbar = () => {
       const enoughData = tt.enoughData();
       const {lightbeamcondition, tabId} = this.state;
@@ -97,6 +101,8 @@ The code for logclick logs ALL the click in every single page.
             <Nav pullRight>
               <NavLink to="/debug"  title="Debug"/>
               <NavLink to="/about"  title="About"/>
+              <NavLink to="/info"   title={info}/>
+              <NavLink to="/settings" title={settings}/>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
@@ -124,6 +130,8 @@ The code for logclick logs ALL the click in every single page.
 
             <Route path="/about" component={AboutPage}/>
             <Route path="/debug" component={DebugPage}/>
+            <Route path="/info" component={InfoPage}/>
+            <Route path="/settings" component={SettingsPage}/>
           </div>
         </div>
       </HashRouter>
