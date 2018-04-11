@@ -7,7 +7,7 @@ import {Grid, Row, Col} from 'react-bootstrap';
 
 import PagesTimeChart from './PagesTimeChart';
 import PagesTimeScatterplot from './PagesTimeScatterplot';
-
+import logging from './dashboardLogging';
 
 export default class RecentPage extends React.Component {
   constructor(props) {
@@ -15,11 +15,16 @@ export default class RecentPage extends React.Component {
     this.state = {
       domains: []
     }
+//  this.logLoad = this.logLoad.bind(this);
   }
+
+
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
     const timestamps = background.queryDatabase('getTimestamps', {});
+    let activityType='load dashboard recent activity page';
+    logging.logLoad(activityType, {});
     timestamps.then(ts => {
       const times = ts.map(x => (
         (new Date(x.id))

@@ -71,7 +71,7 @@ async function runTests(t) {
 
     // make sure we have some inferences made
     query = await background.queryDatabase('getInferencesByDomain', {domain: 'cs.uchicago.edu'});
-    await equal(Object.keys(query)[0], 'Internet & Telecom', 'inference for cs.uchicago is Internet & Telecom');
+    await equal(Object.keys(query)[0], 'Online Journals & Personal Sites', 'inference for cs.uchicago is correct');
 
   }, pages);
 

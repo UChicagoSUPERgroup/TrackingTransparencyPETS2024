@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=https://super.cs.uchicago.edu/UChicagoSUPERnotext.svg alt="SUPERgroup" width="150">
+  <img src="https://super.cs.uchicago.edu/UChicagoSUPERnotext.svg" alt="SUPERgroup" width="150">
 </p>
 
 # Tracking Transparency

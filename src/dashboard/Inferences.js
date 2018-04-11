@@ -14,6 +14,7 @@ import sensitiveCats from '../data/categories_comfort_list.json';
 import InferenceDetails from './InferenceDetails';
 import InferencesSunburst from './InferencesSunburst';
 
+import logging from './dashboardLogging';
 
 class InferencesPage extends React.Component {
   constructor(props) {
@@ -36,13 +37,13 @@ class InferencesPage extends React.Component {
     const background = await browser.runtime.getBackgroundPage();
     this.topInferences = await background.queryDatabase('getInferences', {count: this.inferenceCount});
     this.setState({
-      inferences: this.topInferences 
+      inferences: this.topInferences
     });
   }
 
   InferenceLink(inference) {
     return(
-      <a key={inference} onClick={this.handleInferenceLinkClick}>{inference}</a>
+      <a className = "inferencePageTopTextInferenceLink" key={inference} onClick={this.handleInferenceLinkClick}>{inference}</a>
     )
   }
 
@@ -135,11 +136,11 @@ class InferencesPage extends React.Component {
   }
 
   async componentDidMount() {
+    let activityType='load dashboard inferences page';
+    logging.logLoad(activityType, {});
     this.getInferences();
   }
-  
-  
-  
+
   render() {
     let {inferences, selectedInference} = this.state;
 
@@ -166,28 +167,28 @@ class InferencesPage extends React.Component {
                 <Col md={6} mdPush={6}>
                   <div className={'inferences-sunburst-filters'}>
                     <h3>Filters</h3>
-                    <div className={'filter-row'}>Inferences sensitivity: <ToggleButtonGroup 
-                      name="sensitivity-filter" 
+                    <div className={'filter-row'}>Inferences sensitivity: <ToggleButtonGroup
+                      name="sensitivity-filter"
                       value={this.state.sensitivitySelection}
                       onChange={this.handleSensitivitySelection}
                       defaultValue={'all-sensitive'}>
-                      <ToggleButton value={'all-sensitive'} bsSize="small">All inferences</ToggleButton>
-                      <ToggleButton value={'less-sensitive'} bsSize="small">Less sensitive</ToggleButton>
-                      <ToggleButton value={'more-sensitive'} bsSize="small">More sensitive</ToggleButton>
+                      <ToggleButton className = "inferencePageSensitivityChoose" value={'all-sensitive'} bsSize="small">All inferences</ToggleButton>
+                      <ToggleButton className = "inferencePageSensitivityChoose" value={'less-sensitive'} bsSize="small">Less sensitive</ToggleButton>
+                      <ToggleButton className = "inferencePageSensitivityChoose" value={'more-sensitive'} bsSize="small">More sensitive</ToggleButton>
                     </ToggleButtonGroup></div>
-                    <div className={'filter-row'}>Recency of inferences: <ToggleButtonGroup 
-                      name="date-filter" 
+                    <div className={'filter-row'}>Recency of inferences: <ToggleButtonGroup
+                      name="date-filter"
                       value={this.state.dateSelection}
                       onChange={this.handleDateSelection}
                       defaultValue={'all-dates'}>
-                      <ToggleButton value={'all-dates'} bsSize="small">Since you installed the plugin</ToggleButton>
-                      <ToggleButton value={'past-24'} bsSize="small">Last 24 hours</ToggleButton>
-                      <ToggleButton value={'past-week'} bsSize="small">Last week</ToggleButton>
+                      <ToggleButton className = "inferencePageDateChoose" value={'all-dates'} bsSize="small">Since you installed the plugin</ToggleButton>
+                      <ToggleButton className = "inferencePageDateChoose" value={'past-24'} bsSize="small">Last 24 hours</ToggleButton>
+                      <ToggleButton className = "inferencePageDateChoose" value={'past-week'} bsSize="small">Last week</ToggleButton>
                     </ToggleButtonGroup></div>
                   </div>
 
                   <p className={'selected-inference'}><em>{selectedInference ? 'Click on the diagram to unselect the current category' : 'Click a category to see more information'}</em></p>
-                  <p><strong><Link to={{pathname: '/inferences/' + selectedInference}}>{selectedInference}</Link></strong></p>
+                  <p><strong><Link className = "inferencePageSelected-Inference" to={{pathname: '/inferences/' + selectedInference}}>{selectedInference}</Link></strong></p>
                 </Col>
                 <Col md={6} mdPull={6}>
                   {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference}/>}

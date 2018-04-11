@@ -17,7 +17,7 @@ const SiteTable = (data) => {
          accessor: "domain",
          Cell: row => (
            <div key={row.value}>
-              <Link to={{pathname: '/domains/' + row.value}}>
+              <Link className='domainTableLinkInferencesPage'  to={{pathname: '/domains/' + row.value}}>
                  {row.value}
               </Link>
            </div>)
@@ -40,7 +40,7 @@ const TrackerTable = (data) => {
          accessor: "tracker",
          Cell: row => (
            <div key={row.value}>
-              <Link to={{pathname: '/trackers/' + row.value}}>
+              <Link className = "trackerTableLinkInferencesPage" to={{pathname: '/trackers/' + row.value}}>
                  {row.value}
               </Link>
            </div>)

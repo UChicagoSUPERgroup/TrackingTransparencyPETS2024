@@ -8,11 +8,11 @@ function enoughData() {
   return true;
 }
 
-/** 
+/**
  * Reads a json file with given path.
- * 
+ *
  * credits: https://stackoverflow.com/a/34579496
- * 
+ *
  * @param  {string} path to file
  */
 function readTextFile(file) {
@@ -23,7 +23,7 @@ function readTextFile(file) {
     resolve(rawFile.responseText);
   })
 }
-  
+
 /** Destringifies an object.
  * @param  {string} object
  */
@@ -32,12 +32,13 @@ function deserialize(object) {
 }
 /**
  * Asynchronous sleep function.
- * 
+ *
  * @param  {number} ms - milliseconds to sleep for
  */
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 
 
 export default {enoughData, readTextFile, deserialize, sleep};

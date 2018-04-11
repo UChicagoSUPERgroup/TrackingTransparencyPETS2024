@@ -8,13 +8,14 @@ import Alert from 'react-bootstrap/lib/Alert';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 
 import {queryNames} from '../background/database/queries';
+import logging from './dashboardLogging';
 
 const FieldGroup = ({ id, label, ...props }) => {
   return (
     <FormGroup controlId={id} bsSize="small">
       <ControlLabel>{label}</ControlLabel>
-      <FormControl 
-        {...props} 
+      <FormControl
+        {...props}
       />
     </FormGroup>
   );
@@ -43,11 +44,13 @@ class DebugPage extends React.Component {
     this.saveFile = this.saveFile.bind(this);
     this.importData = this.importData.bind(this);
     this.handleClickRecursive = this.handleClickRecursive.bind(this);
+    //this.logLoad = this.logLoad.bind(this);
   }
 
-  // componentDidMount() {
-
-  // }
+componentDidMount() {
+  let activityType='load dashboard debug page';
+  logging.logLoad(activityType, {});
+}
   async handleClickRecursive() {
     this.recursive = true;
     await this.handleClick();
@@ -120,15 +123,15 @@ class DebugPage extends React.Component {
         <form>
           <FormGroup controlId="queryFormField">
             <ControlLabel>Query</ControlLabel>
-            <FormControl 
-              componentClass="select" 
+            <FormControl
+              componentClass="select"
               placeholder="Query"
               value={this.state.queryFormField}
               onChange={this.handleChange}>
               {queryNames.map(q => <option key={q} value={q}>{q}</option>)}
             </FormControl>
           </FormGroup>
-          
+
           <FieldGroup
             id="trackerFormField"
             type="text"
