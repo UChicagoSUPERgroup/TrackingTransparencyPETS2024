@@ -5,6 +5,7 @@ import ReactTable from 'react-table';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
+import logging from './dashboardLogging';
 
 import _ from 'lodash';
 import {
@@ -27,7 +28,7 @@ const DomainTable = (data) => {
          accessor: "domain",
          Cell: row => (
            <div key={row.value}>
-              <Link to={{pathname: '/domains/' + row.value}}>
+              <Link className='domainTableLinkTrackersPage' to={{pathname: '/domains/' + row.value}}>
                  {row.value}
               </Link>
            </div>)
@@ -50,7 +51,7 @@ const InferTable = (data) => {
          accessor: "inference",
          Cell: row => (
            <div key={row.value}>
-              <Link to={{pathname: '/inferences/' + row.value}}>
+              <Link className = 'inferenceTableLinkTrackersPage' to={{pathname: '/inferences/' + row.value}}>
                  {row.value}
               </Link>
            </div>)
@@ -74,7 +75,11 @@ export default class TrackerDetailPage extends React.Component {
       inferences: [],
       domains: []
     }
+    //this.logLoad = this.logLoad.bind(this);
   }
+
+
+  async componentWillUnmount() {}
 
   async componentDidMount() {
     let queryObj = {tracker: this.tracker};
@@ -91,6 +96,20 @@ export default class TrackerDetailPage extends React.Component {
       timestamps: timestamps
     });
 
+    let hashedTracker = background.hashit(this.tracker);
+    let numDomains = domains.length;
+    let hashedInferences = [];
+    for (let i=0;i<inferences.length;i++){
+      let value = await background.hashit(inferences[i]["inference"])
+      hashedInferences.push(value);
+    }
+    sendDict = {
+      'hashedTracker':hashedTracker,
+      'numDomainsShown': numDomains,
+      'hashedInferencesShown': JSON.stringify(hashedInferences)
+    }
+    let activityType = 'open non-tab-page: show domains and inferences for a tracker';
+    logging.logLoad(activityType, sendDict);
   }
 
   render() {

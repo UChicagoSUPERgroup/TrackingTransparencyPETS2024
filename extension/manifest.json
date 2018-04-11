@@ -14,6 +14,7 @@
         "unlimitedStorage",
         "downloads",
         "tabs",
+        "alarms",
         "webRequest",
         "webNavigation",
         "<all_urls>"

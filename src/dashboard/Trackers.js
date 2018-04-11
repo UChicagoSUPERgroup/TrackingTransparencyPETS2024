@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import ReactTable from 'react-table'
 import "../../node_modules/react-table/react-table.css";
+import logging from './dashboardLogging';
 
 import {
   FlexibleWidthXYPlot,
@@ -20,7 +21,7 @@ const TrackersListItem = (tracker) => {
     <div key={trackerName}>
       <Link to={{
         pathname: '/trackers/' + trackerName
-      }}>
+      }} className = "trackerPageTableLink">
         {trackerName}
       </Link>
     </div>
@@ -37,7 +38,7 @@ const TrackerTable = (data) => {
          accessor: "name",
          Cell: row => (
            <div key={row.value}>
-              <Link to={{pathname: '/trackers/' + row.value}}>
+              <Link className = "trackerTableLinkTrackersPage" to={{pathname: '/trackers/' + row.value}}>
                  {row.value}
               </Link>
            </div>)
@@ -61,7 +62,9 @@ export default class TrackersPage extends React.Component {
     }
   }
 
+
   async componentDidMount() {
+      //this.logLoad();
   }
 
   render() {
@@ -80,6 +83,7 @@ class TrackersList extends React.Component {
     this.state = {
       trackers: []
     }
+    //this.logLoad = this.logLoad.bind(this);
   }
 
   async getTrackers() {
@@ -101,6 +105,13 @@ class TrackersList extends React.Component {
 
   async componentDidMount() {
     this.getTrackers();
+
+    const background = await browser.runtime.getBackgroundPage();
+    const numTrackersShown = await background.queryDatabase('getNumberOfTrackers', {});
+    sendDict = {
+      'numTrackersShown':numTrackersShown
+    }
+    logging.logLoad(activityType, sendDict);
   }
 
   render() {

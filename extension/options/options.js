@@ -37,6 +37,7 @@ async function restoreOptions() {
 
   const overlayCondition = await browser.storage.local.get('overlayCondition');
   document.querySelector('#overlayCondition').value = overlayCondition.overlayCondition;
+
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);

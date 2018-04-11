@@ -169,8 +169,16 @@ export default class PagesTimeChart extends React.Component {
             name="grouping-selector"
             defaultValue={'weekday'}
             onChange={this.changeSelection}>
-            <ToggleButton value={'hour'}>Hour</ToggleButton>
-            <ToggleButton value={'weekday'}>Weekday</ToggleButton>
+            <ToggleButton
+              className = "pagesTimeChart-grouping-selector"
+              value={'hour'}>
+                Hour
+            </ToggleButton>
+            <ToggleButton
+              className = "pagesTimeChart-grouping-selector"
+              value={'weekday'}>
+                Weekday
+            </ToggleButton>
           </ToggleButtonGroup>
         </ButtonToolbar>
       </div>

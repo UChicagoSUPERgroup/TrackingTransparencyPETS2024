@@ -7,6 +7,7 @@ import ReactTable from 'react-table';
 
 import PagesTimeChart from './PagesTimeChart';
 import PagesTimeScatterplot from './PagesTimeScatterplot';
+import logging from './dashboardLogging';
 
 import las from '../labels';
 const {dateLabel, timeLabelSimple, timeLabelAdjusted, dayOfWeekLabel, stringLabel} = las;
@@ -77,7 +78,10 @@ export default class RecentPage extends React.Component {
     }
     this.getByTime = this.getByTime.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    //  this.logLoad = this.logLoad.bind(this);
   }
+
+
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
@@ -86,6 +90,8 @@ export default class RecentPage extends React.Component {
       tempDate.getMonth(), tempDate.getDate());
     let args = {afterDate: startDate.getTime()}
     const weektimestamps = background.queryDatabase('getTimestamps', args);
+    let activityType='load dashboard recent activity page';
+    logging.logLoad(activityType, {});
     weektimestamps.then(ts => {
       const times = ts.map(x => (
         (new Date(x.id))

@@ -8,6 +8,8 @@ import tt from '../helpers';
 
 import categoryTree from '../data/categories_tree.json';
 
+import logging from './dashboardLogging';
+
 import COLORS from '../colors';
 const PRIMARIES = [COLORS.UC_YELLOW_1, COLORS.UC_ORANGE_1, COLORS.UC_RED_1, COLORS.UC_LT_GREEN_1, COLORS.UC_DK_GREEN_1, COLORS.UC_BLUE_1, COLORS.UC_VIOLET_1];
 
@@ -40,7 +42,7 @@ let colorCounter = 0;
  */
 function updateData(data, keyPath, parentColor) {
   // add a fill to all the uncolored cells
-  
+
   if (!data.color) {
     if (!parentColor) {
       // data.color = PRIMARIES[(colorCounter++) % PRIMARIES.length]
@@ -48,7 +50,7 @@ function updateData(data, keyPath, parentColor) {
     } else {
       data.color = parentColor;
     }
-    
+
     // data.style = {
     //   fill: randomColor
     // };
@@ -81,6 +83,7 @@ export default class BasicSunburst extends React.Component {
     }
 
     this.constructSunburstData = this.constructSunburstData.bind(this);
+    //this.logSelect = this.logSelect.bind(this);
   }
 
 
@@ -107,7 +110,7 @@ export default class BasicSunburst extends React.Component {
       if (listItem) {
         item.size = listItem['COUNT(inference)'];
       }
-      
+
       if (item.children) {
         this.recursiveApplySizes(item, inferencesList);
       }
@@ -120,19 +123,23 @@ export default class BasicSunburst extends React.Component {
   }
 
   async componentDidMount() {
-    
+
   }
 
-  componentWillReceiveProps(nextProps) {
+async  componentWillReceiveProps(nextProps) {
     colorCounter = 0;
+    let value = this.state.finalValue;
+    if (value === 'Inferences' || value === false){value = ''}
+    //console.log('SUNBURST ', value);
     if (!nextProps.selectedInference) {
-      
+      //console.log('SUNBURST1 ', value);
+      await logging.logSunburstSelect(false, value);//deselect all
       // clear any selections
       this.setState({
         finalValue: false,
         clicked: false
       });
-      
+
       if (nextProps.inferenceCounts) {
         const data = this.constructSunburstData(nextProps.inferenceCounts);
         this.setState({
@@ -145,9 +152,11 @@ export default class BasicSunburst extends React.Component {
           finalValue: nextProps.selectedInference,
           clicked: true
         });
+        //console.log('SUNBURST2 ', value);
+        await logging.logSunburstSelect(true, value);//select right stuff
       }
     }
-    
+
   }
 
 
@@ -195,7 +204,7 @@ export default class BasicSunburst extends React.Component {
               this.setState({clicked: true});
               this.props.onSelectionChange(finalValue);
             }
-            
+
           }}
           style={{
             stroke: '#ddd',
@@ -210,7 +219,7 @@ export default class BasicSunburst extends React.Component {
             {x: 0, y: 0, label: finalValue, style: LABEL_STYLE}
           ]} />}
         </Sunburst>
-        
+
       </div>
     );
   }

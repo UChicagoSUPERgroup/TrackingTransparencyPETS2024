@@ -6,8 +6,10 @@ export class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+
     }
+    //this.logClick = this.logClick.bind(this);
+    //this.logLoad = this.logLoad.bind(this);
   }
 
   async getData() {
@@ -25,6 +27,7 @@ export class Home extends React.Component {
 
   async componentDidMount() {
     this.getData();
+    //this.logLoad(); //will directly load it in App.js
   }
 
   render() {
