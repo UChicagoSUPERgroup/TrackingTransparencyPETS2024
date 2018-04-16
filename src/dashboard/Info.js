@@ -25,13 +25,17 @@ export class InfoPage extends React.Component {
     const {numTrackers, numInferences, numPages} = this.state;
     return (
       <div>
-        <h1>About</h1>
+        <h1>Info</h1>
         <p>
         Tracking Transparency shows how you interact with trackers when you browse online.
         </p>
         <h2>Tracking</h2>
         <p>
-        When you browse online, third-parties may track your browsing history, email interactions, and website visitors, usually for marketing and advertising purposes. For example, when you visit a site <a href="" target="_blank">foo.com</a>, an online tracker <b>bar</b> may collect what websites and other things you visit on that page.
+        When you browse online, your online activity is tracked by the website you are visiting, as well as by third-party advertising and analytics companies. These third-party companies use these logs of browsing behavior to infer your interests, preferences, and demographics. They can then tailor your internet experience in part based on those inferences, impacting the search results, ads, and social feeds that you see.
+        </p>
+
+        <p>
+        For example, you visit a blog about traveling with dogs and a third-party tracker on that site infers that you are interested in dogs. Later, you might encounter an ad that was targeted specifically to dog lovers.
         </p>
 
         <h2>Tracking Transparency</h2>

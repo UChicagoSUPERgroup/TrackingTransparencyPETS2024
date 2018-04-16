@@ -45,7 +45,7 @@ export class SettingsPage extends React.Component {
               <Panel.Title toggle>Opt-out cookies</Panel.Title>
             </Panel.Heading>
             <Panel.Body collapsible>
-            Cookies are pieces of data maintained by the web browser to store information about the way you browse. They may be used to track you as well. You can disable cookie tracking by going to the advanced settings in your browser. This will still maintain cookies that keep track of your login information on various websites.
+            Cookies are pieces of data maintained by the web browser to store information about the way you browse. They may be used to track you as well. Each advertiser gives you the option to disable cookie tracking. You can learn more  <a href="http://optout.aboutads.info/?c=2#!/" target="_blank" rel="noopener noreferrer">here</a>.
             </Panel.Body>
             <Panel.Footer>
             <FormGroup>
@@ -58,7 +58,7 @@ export class SettingsPage extends React.Component {
               <Panel.Title toggle>Do not track preference</Panel.Title>
             </Panel.Heading>
             <Panel.Body collapsible>
-
+            Do not track (DNT) is a browser setting that sends the request <q> don&#39;st want to be tracked</q> with every website you visit. it’s like a setting in your browser preferences. However, few companies respect this request.
             </Panel.Body>
             <Panel.Footer>
             <FormGroup>
@@ -86,14 +86,9 @@ export class SettingsPage extends React.Component {
         Reset your data by...
         </p>
 
-        <h2>Reset my Data</h2>
-        <p>
-        Reset your data by...
-        </p>
-
         <h2>Stop Tracking Transarency</h2>
         <p>
-        Uninstall app by...
+        You can uninstall Tracking Transparency by visiting your respective browser&#39;s settings or customize tabs, similar to how you installed the extension.
         </p>
 
         <h2>Help</h2>

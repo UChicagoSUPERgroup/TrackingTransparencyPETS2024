@@ -17,7 +17,6 @@ import InferencesPage from './Inferences';
 import TrackersList from './Trackers';
 import FirstPartyList from  './FirstParties';
 import RecentPage from './Recent';
-import AboutPage from './About';
 import InfoPage from './Info';
 import SettingsPage from './Settings'
 import DebugPage from './Debug';
@@ -100,7 +99,6 @@ The code for logclick logs ALL the click in every single page.
             </Nav>}
             <Nav pullRight>
               <NavLink to="/debug"  title="Debug"/>
-              <NavLink to="/about"  title="About"/>
               <NavLink to="/info"   title={info}/>
               <NavLink to="/settings" title={settings}/>
             </Nav>
@@ -128,7 +126,6 @@ The code for logclick logs ALL the click in every single page.
 
             {!enoughData &&<Route exact path="/" component={WaitingDataHome}/>}
 
-            <Route path="/about" component={AboutPage}/>
             <Route path="/debug" component={DebugPage}/>
             <Route path="/info" component={InfoPage}/>
             <Route path="/settings" component={SettingsPage}/>
