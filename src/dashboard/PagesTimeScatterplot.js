@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 
 import {
-  XYPlot,
+  FlexibleWidthXYPlot,
   XAxis,
   YAxis,
   HorizontalGridLines,
@@ -76,12 +76,11 @@ export default class PagesTimeScatterplot extends React.Component {
 
     return (
       <div>
-        <XYPlot
-          width={600}
+        <FlexibleWidthXYPlot
           height={300}
           xDomain={[0,23]}
           yDomain={[0,7]}
-          margin={{left: 100, right: 10, top: 10, bottom: 50}}
+          margin={{left: 100, right: 50, top: 10, bottom: 50}}
           colorDomain={[0, 1]}
           colorRange={["#616530", "#8A9045"]}
           onMouseLeave={() => this.setState({index: null})}>
@@ -103,7 +102,7 @@ export default class PagesTimeScatterplot extends React.Component {
             tickValues={[0,1,2,3,4,5,6,7]}
             tickFormat={dayOfWeekLabelAdjusted}
             style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
-        </XYPlot>
+        </FlexibleWidthXYPlot>
       </div>
     )
   }

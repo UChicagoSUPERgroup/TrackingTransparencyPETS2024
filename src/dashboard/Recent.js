@@ -17,13 +17,15 @@ const millisecondsInHour = 3600000;
 function recentVisitsTitle(summary) {
   if (summary.size) {
   return "Pages visited on " + dayOfWeekLabel(summary.y) +
-    " at " + timeLabelSimple(summary.x);
+    " from " + timeLabelSimple(summary.x) + " to " + timeLabelSimple(summary.x+1);
   } else {
     return "Pages visited"
   }
 }
 
 function RecentVisitsTable(summary, data){
+  console.log(summary);
+  console.log(data);
   return (
     <ReactTable
       data={data}
@@ -63,7 +65,10 @@ function RecentVisitsTable(summary, data){
         }
       ]}
       showPageSizeOptions= {false}
-      pageSize= {(summary.size >= 1) ? 20 : 3}
+      pageSize= {(data && (data.length >= 1)) ? 20 : 3}
+      noDataText= {(data && !(data.length >= 1)) ?
+                     "No inferred interests at this time" :
+                     "Click in the scatterplot for more information"}
       className="-striped -highlight"
     />
   );
@@ -112,6 +117,7 @@ export default class RecentPage extends React.Component {
       tempDate.getMonth(), tempDate.getDate(), hourStart);
     let args = {startTime: startDate.getTime(),
       endTime: startDate.getTime() + millisecondsInHour};
+    console.log(args);
     return background.queryDatabase('getPagesByTime', args);
   }
 
@@ -139,25 +145,17 @@ export default class RecentPage extends React.Component {
             <Grid>
               <Row>
               <p>
-              On this page you can learn about when you've been tracked recently.
-              On the left, the histogram shows how many pages you've visited at different times.
-              You can toggle between time of day, day of week, and day of month filters.
-              On the right, the scatter plot shows when you visit the most pages.
-              The axes show the time and day of week of your page visits.
-              The size of a circle corresponds to the number of pages visited.
+              On this page you can learn about when you have been tracked recently.
+              The scatter plot shows when you visited the most pages this past week.
+              Click on a point to learn more about the tracking that took place.
               </p>
               </Row>
               <Row>
-                <Col md={7} mdPush={5}>
-                  {weektimestamps &&
-                    <PagesTimeScatterplot
-                    weektimestamps={weektimestamps}
-                    update={this.handleClick}/>
-                  }
-                </Col>
-                <Col md={5} mdPull={7}>
-                  {weektimestamps && <PagesTimeChart weektimestamps={weektimestamps}/>}
-                </Col>
+                {weektimestamps &&
+                  <PagesTimeScatterplot
+                  weektimestamps={weektimestamps}
+                  update={this.handleClick}/>
+                }
               </Row>
               <br/>
               <Row>
