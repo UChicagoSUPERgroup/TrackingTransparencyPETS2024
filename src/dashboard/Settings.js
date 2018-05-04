@@ -71,7 +71,7 @@ export class SettingsPage extends React.Component {
               <Panel.Title toggle>Data broker opt-out</Panel.Title>
             </Panel.Heading>
             <Panel.Body collapsible>
-            Data brokers are third-parties that collect data about you when you use your browser. To prevent these third-parties from collecting information about you and remove any profiles they may already have of you, you can follow <a href="https://www.the-parallax.com/2016/04/07/how-to-clean-up-or-delete-data-brokers-profiles-of-you/" target="_blank" rel="noopener noreferrer">this article</a>.
+            Data brokers are third-parties that collect data about you when you use your browser. To prevent these third-parties from collecting information about you and remove any profiles they may already have of you, you can follow <a href="https://www.the-parallax.com/2016/04/07/how-to-clean-up-or-delete-data-brokers-profiles-of-you/" target="_blank" rel="noopener noreferrer">this article</a>. w
             </Panel.Body>
             <Panel.Footer>
             <FormGroup>
