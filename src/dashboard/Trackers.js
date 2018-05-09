@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
+import {Grid, Row, Col} from 'react-bootstrap';
 import ReactTable from 'react-table'
 import "../../node_modules/react-table/react-table.css";
 import logging from './dashboardLogging';
@@ -10,7 +11,7 @@ import {
   YAxis,
   HorizontalGridLines,
   VerticalGridLines,
-  VerticalBarSeries
+  HorizontalBarSeries
 } from 'react-vis';
 
 import TrackerDetails from './TrackerDetailPage';
@@ -34,7 +35,10 @@ const TrackerTable = (data) => {
     <ReactTable
       data={data}
       columns={[
-        {Header: "Tracker",
+        {Header: h => (
+          <div style={{textAlign: "left"}}>
+            Tracker
+          </div>),
          accessor: "name",
          Cell: row => (
            <div key={row.value}>
@@ -43,13 +47,26 @@ const TrackerTable = (data) => {
               </Link>
            </div>)
         },
-        {Header: "Page Count",
-         accessor: "count"},
-        {Header: "Percent of Browsing",
+        {Header: h => (
+          <div style={{textAlign: "left"}}>
+            Page count
+          </div>),
+         accessor: "count",
+         Cell: row =>
+           <div style={{textAlign: "right"}}>
+             {row.value}
+           </div>},
+        {Header: h => (
+          <div style={{textAlign: "left"}}>
+            Percent of Browsing
+          </div>),
          accessor: "percent",
-          Cell: row => ((Math.round(row.value) / 100).toString() + " %")}
+          Cell: row =>
+            <div style={{textAlign: "right"}}>
+              {((Math.round(row.value) / 100).toString() + " %")}
+            </div>}
       ]}
-      defaultPageSize={20}
+      //defaultPageSize={20}
       className="-striped -highlight"
     />
   );
@@ -99,8 +116,8 @@ class TrackersList extends React.Component {
       numTrackers: numTrackers,
       numPages: numPages
     });
-    console.log(this.state.trackers);
-    console.log(this.state.allTrackers);
+    //console.log(this.state.trackers);
+    //console.log(this.state.allTrackers);
   }
 
   async componentDidMount() {
@@ -124,12 +141,13 @@ class TrackersList extends React.Component {
 
     for (let val in trackers){
       data.push({
-        x: trackers[val]["tracker"],
-        y: 100 * trackers[val]["COUNT(tracker)"] / numPages,
+        y: trackers[val]["tracker"],
+        x: 100 * trackers[val]["COUNT(tracker)"] / numPages,
       });
       topTracker = trackers[0]["tracker"];
       topPercent = Math.round(10000 * trackers[0]["COUNT(tracker)"] / numPages) / 100;
     };
+    data.reverse();
     for (let val in allTrackers){
       tempPercent = 10000 * allTrackers[val]["COUNT(tracker)"] / numPages;
       allData.push({
@@ -147,20 +165,28 @@ class TrackersList extends React.Component {
           present on <em>{topPercent}%</em> of
           the pages you visit.
           Here are your 20 most frequently encountered trackers:</p>
-        <FlexibleWidthXYPlot
-          xType={'ordinal'}
-          height={350}
-          margin={{left: 50, right: 10, top: 10, bottom: 70}}>
-          <HorizontalGridLines />
-          <VerticalGridLines />
-          <XAxis
-            height={200}
-            tickLabelAngle={-30} />
-          <YAxis
-            tickFormat={v => v.toString() + "%"} />
-          <VerticalBarSeries data={data} color="#8F3931"/>
-        </FlexibleWidthXYPlot>
-        {TrackerTable(allData)}
+        <Grid>
+          <Row>
+            <Col md={6}>
+              <FlexibleWidthXYPlot
+                yType={'ordinal'}
+                height={800}
+                margin={{left: 100, right: 10, top: 10, bottom: 50}}>
+                <HorizontalGridLines />
+                <VerticalGridLines />
+                <YAxis
+                  height={200}
+                  tickLabelAngle={0} />
+                <XAxis
+                  tickFormat={v => v.toString() + "%"} />
+                <HorizontalBarSeries data={data} color="#8F3931"/>
+              </FlexibleWidthXYPlot>
+            </Col>
+            <Col md={6}>
+              {TrackerTable(allData)}
+            </Col>
+          </Row>
+        </Grid>
       </div>
     );
   }
