@@ -7,7 +7,8 @@ import {
   YAxis,
   HorizontalGridLines,
   VerticalGridLines,
-  MarkSeries
+  MarkSeries,
+  Hint
 } from 'react-vis';
 
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
@@ -31,7 +32,7 @@ export default class PagesTimeScatterplot extends React.Component {
     this.state = {
       times: timestamps,
       update: this.props.update,
-      index: null
+      index: [null,null]
     };
 
     this.changeSelection = this.changeSelection.bind(this);
@@ -53,7 +54,6 @@ export default class PagesTimeScatterplot extends React.Component {
     let data = [];
 
     grouped = _.groupBy(times, t => [t.getDay(), t.getHours()]);
-    console.log(grouped);
     let day = (new Date(Date.now())).getDay();
     for (let elem in grouped) {
       let xy = elem.split(',');
@@ -71,8 +71,8 @@ export default class PagesTimeScatterplot extends React.Component {
         });
       }
     }
-    console.log(data);
-    data = data.map((d, i) => ({...d, color: i === index ? 1 : 0}));
+    //console.log(data);
+    data = data.map((d, i) => ({...d, color: i === index[0] ? 1 : 0}));
 
     return (
       <div>
@@ -83,14 +83,13 @@ export default class PagesTimeScatterplot extends React.Component {
           margin={{left: 100, right: 50, top: 10, bottom: 50}}
           colorDomain={[0, 1]}
           colorRange={["#616530", "#8A9045"]}
-          onMouseLeave={() => this.setState({index: null})}>
+          onMouseLeave={() => this.setState({index: [null,null]})}>
           <MarkSeries
             onValueClick={(datapoint, event)=>{
-              console.log(datapoint,event);
               this.props.update(datapoint);
             }}
             onNearestXY={(datapoint, {index}) => {
-              this.setState({index});
+              this.setState({index: [index, datapoint]});
             }}
             data={data}/>
           <XAxis
@@ -102,6 +101,20 @@ export default class PagesTimeScatterplot extends React.Component {
             tickValues={[0,1,2,3,4,5,6,7]}
             tickFormat={dayOfWeekLabelAdjusted}
             style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
+          {index[1] ?
+            <Hint
+              value={index[1]}>
+              <div className="rv-hint__content">
+                <div>
+                  { `${index[1].size} pages` }
+                </div>
+                <div>
+                { `${dayOfWeekLabelAdjusted(index[1].y)} at ${timeLabelSimple(index[1].x)}`}
+                </div>
+              </div>
+            </Hint> :
+            null
+          }
         </FlexibleWidthXYPlot>
       </div>
     )

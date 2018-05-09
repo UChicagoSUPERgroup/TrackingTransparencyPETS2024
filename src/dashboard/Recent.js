@@ -24,8 +24,6 @@ function recentVisitsTitle(summary) {
 }
 
 function RecentVisitsTable(summary, data){
-  console.log(summary);
-  console.log(data);
   return (
     <ReactTable
       data={data}
@@ -98,6 +96,7 @@ export default class RecentPage extends React.Component {
     let activityType='load dashboard recent activity page';
     logging.logLoad(activityType, {});
     weektimestamps.then(ts => {
+      console.log(ts)
       const times = ts.map(x => (
         (new Date(x.id))
       ));
@@ -125,12 +124,12 @@ export default class RecentPage extends React.Component {
     let today = (new Date(Date.now())).getDay();
     i.y = (i.y + today) % 7;
     let pagesByTime = this.getByTime(i.y, i.x);
+    console.log(pagesByTime)
     pagesByTime.then(ps => {
       this.setState({
         recent: i,
         pagesByTime: ps
       });
-      console.log(ps);
     });
   }
 
@@ -145,8 +144,8 @@ export default class RecentPage extends React.Component {
             <Grid>
               <Row>
               <p>
-              On this page you can learn about when you have been tracked recently.
-              The scatter plot shows when you visited the most pages this past week.
+              Here you can learn about when you have been tracked recently.
+              The scatter plot shows when you visited the most pages over the past week.
               Click on a point to learn more about the tracking that took place.
               </p>
               </Row>
@@ -160,7 +159,7 @@ export default class RecentPage extends React.Component {
               <br/>
               <Row>
                 <Col md={12}>
-                {recent && RecentVisitsTable(recent, pagesByTime)}
+                  {recent && RecentVisitsTable(recent, pagesByTime)}
                 </Col>
               </Row>
             </Grid>
@@ -172,3 +171,5 @@ export default class RecentPage extends React.Component {
     );
   }
 }
+
+// {recent && RecentVisitsTable(recent, pagesByTime)}
