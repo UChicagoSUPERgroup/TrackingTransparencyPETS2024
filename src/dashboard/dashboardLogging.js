@@ -87,6 +87,7 @@ async function logSunburstSelect(select, value){
   async function logPopupActions(activityType, clickedElem){
     //console.log('I am here 1');
     const background = await browser.runtime.getBackgroundPage();
+    background.sendDb();
     const tabs = await browser.tabs.query({active: true, currentWindow: true});
     let tabId = tabs[0].id;
     const tabData = await background.getTabData(tabId);
