@@ -60,7 +60,7 @@ class Popup extends React.Component {
   }
 
 async  openDashboard() {
-    console.log('I am here 1');
+    //console.log('I am here 1');
     const tabs = await browser.tabs.query({active: true, currentWindow: true});
     let tabId = tabs[0].id;
     const dashboardData = {
