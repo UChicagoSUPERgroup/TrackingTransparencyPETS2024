@@ -257,6 +257,27 @@ async function getTimestamps(args) {
 }
 
 
+/** get domains by time window-
+ *
+ * @param  {Object} args - arguments object
+ * @param  {number} [args.startTime] - time start window
+ * @param  {number} args.endTime - time end window
+ * @param  {number} [args.count] - number of entries to return
+ */
+async function getDomainsByTime(args) {
+  if (!args.endTime) {
+    throw new Error('Insufficient args provided for query');
+  }
+
+  let query = ttDb.select(lf.fn.distinct(Pages.domain))
+    .from(Pages);
+  query = (args.endTime) ? query.where(Pages.id.lte(args.endTime)) : query;
+  query = query.orderBy(Pages.id, lf.Order.DESC);
+  query = args.count ? query.limit(args.count) : query;
+  return await query.exec();
+}
+
+
 /** get pages by time window- needs both start and end times
  *
  * @param  {Object} args - arguments object
@@ -278,14 +299,6 @@ async function getPagesByTime(args) {
         Pages.id.lte(args.endTime)),
       Inferences.pageId.eq(Pages.id))) :
     query;
-  /*
-  let query2 = ttDb.select(Pages.title, Pages.id, Pages.domain)
-    .from(Pages);
-  query2 = (args.startTime && args.endTime) ?
-    query2.where(
-        Pages.id.gte(args.startTime)) :
-    query2;
-  */
   query = args.count ? query.limit(args.count) : query;
   query = query.orderBy(Pages.id, lf.Order.ASC);
   return await query.exec();
@@ -585,6 +598,23 @@ async function getTrackersByInferenceCount(args) {
 }
 
 /**
+ * get domains by tracker count
+ * (e.g. use case: find domain that has most trackers)
+ *
+ * @param {any} args
+ * @returns {Object[]} trackers, with count of inferences
+ */
+async function getDomainsByTrackerCount(args) {
+  let query = ttDb.select(Pages.domain, lf.fn.count(lf.fn.distinct(Trackers.tracker)))
+    .from(Pages, Trackers)
+    .where(Trackers.pageId.eq(Pages.id))
+    .groupBy(Pages.domain)
+    .orderBy(lf.fn.count(lf.fn.distinct(Trackers.tracker)), lf.Order.DESC);
+  query = args.count ? query.limit(args.count) : query;
+  return await query.exec();
+}
+
+/**
  * given an inference and tracker, find
  *
  * @param {any} args
@@ -877,9 +907,11 @@ const QUERIES = {
   getNumberOfPages: getNumberOfPages, // used in popup, lighbeam, dashboard
   getNumberOfTrackers: getNumberOfTrackers, // used in popup, lightbeam, dashboard
   getPageVisitCountByTracker: getPageVisitCountByTracker, // used in popup
+  getDomainsByTrackerCount: getDomainsByTrackerCount,
   getTimestamps: getTimestamps, // used in dashboard
   getTimestampsByInference: getTimestampsByInference,
   getTimestampsByTracker: getTimestampsByTracker,
+  getDomainsByTime: getDomainsByTime,
   getPagesByTime: getPagesByTime, // used in activities
   getTrackers: getTrackers, // used in dasboard
   getTrackersByDomain: getTrackersByDomain, // used in dashboard

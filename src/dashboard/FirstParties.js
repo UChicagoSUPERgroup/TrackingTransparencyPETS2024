@@ -1,19 +1,62 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import logging from './dashboardLogging';
+import ReactTable from 'react-table';
+import {Grid, Row, Col} from 'react-bootstrap';
+
+
 // import { LinkContainer } from 'react-router-bootstrap';
 
-
-const FirstPartyListItem = (domain) => {
-  const domainName = domain.Pages.domain;
+const RecentTable = (data) => {
   return (
-    <div key={domainName}>
-      <Link className = "domainsTableLinkDomainsPage" to={{
-        pathname: '/domains/' + domainName
-      }}>
-        {domainName}
-      </Link>
-    </div>
+    <ReactTable
+      data={data}
+      columns={[
+        {Header: "Recently visited sites",
+         accessor: "DISTINCT(domain)",
+         Cell: row => (
+           <div key={row.value}>
+              <Link className='domainTableLinkTrackersPage' to={{pathname: '/domains/' + row.value}}>
+                 {row.value}
+              </Link>
+           </div>)
+        }
+      ]}
+      defaultPageSize={10}
+      showPagination={false}
+      showPageSizeOptions={false}
+      className="-striped -highlight"
+    />
+  );
+}
+
+const ManyTrackersTable = (data) => {
+  return (
+    <ReactTable
+      data={data}
+      columns={[
+        {Header: "Sites with the most trackers",
+         accessor: d => d.Pages.domain,
+         id: "domain",
+         Cell: row => (
+           <div key={row.value}>
+              <Link className='domainTableLinkTrackersPage' to={{pathname: '/domains/' + row.value}}>
+                 {row.value}
+              </Link>
+           </div>)
+        },
+        {Header: "Number of trackers",
+         accessor: d => d.Trackers["COUNT(DISTINCT(tracker))"],
+         id: "trackers",
+         Cell: row => (
+           row.value)
+        }
+      ]}
+      defaultPageSize={10}
+      showPagination={false}
+      showPageSizeOptions={false}
+      className="-striped -highlight"
+    />
   );
 }
 
@@ -23,28 +66,35 @@ class FirstPartyList extends React.Component {
     this.state = {
       domains: []
     }
+    this.getDomains = this.getDomains.bind(this)
   }
 
   async getDomains() {
     const background = await browser.runtime.getBackgroundPage();
-    const domains = await background.queryDatabase('getDomains', {count: 100});
+    let now = new Date(Date.now()).getTime()
+    let args = {count: 10, endTime: now}
+    console.log("hello")
+    const recent = await background.queryDatabase('getDomainsByTime', args);
+    const manyTrackers = await background.queryDatabase('getDomainsByTrackerCount', args)
+    console.log(manyTrackers);
     this.setState({
-      domains: domains
+      recent: recent,
+      manyTrackers: manyTrackers
     });
-    console.log(this.state.domains);
 
   }
 
   async componentDidMount() {
-    this.getDomains();
-    let domains = this.state.domains;
-    /*
+    let d = this.getDomains();
+
+    let recent = this.state.recent;
+
     const background = await browser.runtime.getBackgroundPage();
     let pages = []
-    for (let i=0; i < domains.length;i++) {
+    for (let i=0; i < recent.length;i++) {
       let value = await background.hashit_salt(domains[i]["Pages"]["domain"])
       pages.push(value)
-    }*/
+    }
     let activityType='load dashboard sites page';
     let sendDict={'numDomainsShown':pages.length}
     logging.logLoad(activityType, sendDict);
@@ -54,14 +104,26 @@ class FirstPartyList extends React.Component {
     return(
       <div>
         <h1>Domains</h1>
-        <Route path={`${this.props.match.url}/:name`}  component={FirstPartyDetails}/>
-        <Route exact path={this.props.match.url} render={() => (
-          <div>
-            {this.state.domains.map(domain => FirstPartyListItem(domain))}
-          </div>
-        )}/>
-
-
+        <Grid>
+          <Row>
+            <Col md={4}>
+            <Route path={`${this.props.match.url}/:name`}  component={FirstPartyDetails}/>
+            <Route exact path={this.props.match.url} render={() => (
+              <div>
+                {RecentTable(this.state.recent)}
+              </div>
+            )}/>
+            </Col>
+            <Col md={8}>
+            <Route path={`${this.props.match.url}/:name`}  component={FirstPartyDetails}/>
+            <Route exact path={this.props.match.url} render={() => (
+              <div>
+                {ManyTrackersTable(this.state.manyTrackers)}
+              </div>
+            )}/>
+            </Col>
+          </Row>
+        </Grid>
       </div>
     );
   }
