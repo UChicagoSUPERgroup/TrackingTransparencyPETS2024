@@ -8,11 +8,12 @@ import {Grid, Row, Col} from 'react-bootstrap';
 // import { LinkContainer } from 'react-router-bootstrap';
 
 const RecentTable = (data) => {
+  let numEntries = data ? data.length: 0
   return (
     <ReactTable
       data={data}
       columns={[
-        {Header: "Recently visited sites",
+        {Header: numEntries + " recently visited sites",
          accessor: "DISTINCT(domain)",
          Cell: row => (
            <div key={row.value}>
@@ -134,15 +135,14 @@ class FirstPartyList extends React.Component {
   async getDomains() {
     const background = await browser.runtime.getBackgroundPage();
     let now = new Date(Date.now()).getTime()
-    let args = {count: 10, endTime: now}
-    console.log("hello")
+    let args = {count: 100, endTime: now}
     const recent = await background.queryDatabase('getDomainsByTime', args);
     const manyTrackers = await background.queryDatabase('getDomainsByTrackerCount', args)
     const noTrackers = await background.queryDatabase('getDomainsNoTrackers', {})
     console.log(manyTrackers);
     this.setState({
       recent: recent,
-      manyTrackers: manyTrackers
+      manyTrackers: manyTrackers,
       noTrackers: noTrackers
     });
 
@@ -167,27 +167,31 @@ class FirstPartyList extends React.Component {
   render() {
     return(
       <div>
-        <h1>Domains</h1>
-        <Grid>
-          <Row>
-            <Col md={4}>
-            <Route path={`${this.props.match.url}/:name`}  component={FirstPartyDetails}/>
-            <Route exact path={this.props.match.url} render={() => (
-              <div>
-                {RecentTable(this.state.recent)}
-              </div>
-            )}/>
-            </Col>
-            <Col md={8}>
-            <Route path={`${this.props.match.url}/:name`}  component={FirstPartyDetails}/>
-            <Route exact path={this.props.match.url} render={() => (
-              <div>
-                {ManyTrackersTable(this.state.manyTrackers)}
-              </div>
-            )}/>
-            </Col>
-          </Row>
-        </Grid>
+        <Route path={`${this.props.match.url}/:name`}  component={FirstPartyDetails}/>
+        <Route exact path={this.props.match.url} render={() => (
+          <div>
+          <h1>Domains</h1>
+          <Grid>
+            <Row>
+              <Col md={3}>
+                <div>
+                  {RecentTable(this.state.recent)}
+                </div>
+              </Col>
+              <Col md={6}>
+                <div>
+                  {ManyTrackersTable(this.state.manyTrackers)}
+                </div>
+              </Col>
+              <Col md={3}>
+                <div>
+                  {NoTrackerTable(this.state.noTrackers)}
+                </div>
+              </Col>
+            </Row>
+          </Grid>
+          </div>
+        )}/>
       </div>
     );
   }
