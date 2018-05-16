@@ -694,7 +694,12 @@ async function getPagesNoTrackers() {
 }
 
 
-async function getDomainsNoTrackers() {
+/** gets all domains without any trackers
+ *
+ * @param  {Object} args - no args accepted currently
+ * @returns [domain] query result is an array of strings
+ */
+async function getDomainsNoTrackers(args) {
   let query = ttDb.select(Pages.domain, lf.fn.count(Trackers.tracker))
     .from(Pages)
     .leftOuterJoin(Trackers, Pages.id.eq(Trackers.pageId))
@@ -705,7 +710,9 @@ async function getDomainsNoTrackers() {
   var i;
   const domainsQuery = await query.exec();
   for (i=0; i < domainsQuery.length; i++) {
-    ((domainsQuery[i]['Trackers']['COUNT(tracker)'] == 0) ? domains.push(domainsQuery[i]['Pages']['domain']) : i = domainsQuery.length)
+    ((domainsQuery[i]['Trackers']['COUNT(tracker)'] == 0) ?
+      domains.push(domainsQuery[i]['Pages']['domain']) :
+      i = domainsQuery.length)
   }
   return domains
 
@@ -922,7 +929,7 @@ const QUERIES = {
   // OLD QUERIES
   // WARNING: may be incorrect or not work as expected
 
-  // getDomainsNoTrackers: getDomainsNoTrackers,
+  getDomainsNoTrackers: getDomainsNoTrackers,
   // getDomainVisits: getDomainVisits,
   // getInferencesByTrackerCount: getInferencesByTrackerCount,
   // getInfoAboutTracker: getInfoAboutTracker,

@@ -76,10 +76,12 @@ class FirstPartyList extends React.Component {
     console.log("hello")
     const recent = await background.queryDatabase('getDomainsByTime', args);
     const manyTrackers = await background.queryDatabase('getDomainsByTrackerCount', args)
+    const noTrackers = await background.queryDatabase('getDomainsNoTrackers', {})
     console.log(manyTrackers);
     this.setState({
       recent: recent,
       manyTrackers: manyTrackers
+      noTrackers: noTrackers
     });
 
   }
