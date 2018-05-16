@@ -23,19 +23,47 @@ const RecentTable = (data) => {
         }
       ]}
       defaultPageSize={10}
-      showPagination={false}
+      showPageJump={false}
       showPageSizeOptions={false}
       className="-striped -highlight"
     />
   );
 }
 
-const ManyTrackersTable = (data) => {
+const NoTrackerTable = (data) => {
+  let numEntries = data ? data.length: 0
   return (
     <ReactTable
       data={data}
       columns={[
-        {Header: "Sites with the most trackers",
+        {Header: "Sites without trackers (" + numEntries + ")",
+         accessor: d => d,
+         id: "domain",
+         Cell: row => (
+           <div key={row.value}>
+              <Link className='domainTableLinkTrackersPage' to={{pathname: '/domains/' + row.value}}>
+                 {row.value}
+              </Link>
+           </div>)
+        }
+      ]}
+      defaultPageSize={10}
+      // showPagination={false}
+      showPageJump={false}
+      showPageSizeOptions={false}
+      className="-striped -highlight"
+    />
+  );
+}
+
+
+const ManyTrackersTable = (data) => {
+  let numEntries = data ? data.length: "0"
+  return (
+    <ReactTable
+      data={data}
+      columns={[
+        {Header: numEntries + " sites with the most trackers",
          accessor: d => d.Pages.domain,
          id: "domain",
          Cell: row => (
@@ -49,16 +77,50 @@ const ManyTrackersTable = (data) => {
          accessor: d => d.Trackers["COUNT(DISTINCT(tracker))"],
          id: "trackers",
          Cell: row => (
-           row.value)
+           row.value),
+         maxWidth: 200
         }
       ]}
       defaultPageSize={10}
-      showPagination={false}
+      showPageJump={false}
       showPageSizeOptions={false}
       className="-striped -highlight"
     />
   );
 }
+
+
+const DomainSpecificTable = (data) => {
+  return (
+    <ReactTable
+      data={data}
+      columns={[
+        {Header: "Trackers",
+         accessor: d => d.Trackers.tracker,
+         id: "tracker",
+         Cell: row => (
+           <div key={row.value}>
+              <Link to={{pathname: '/trackers/' + row.value}}>
+                 {row.value}
+              </Link>
+           </div>
+         )
+        },
+        {Header: "Number of pages",
+         accessor: d => d.Pages["COUNT(id)"],
+         id: "trackers",
+         Cell: row => (
+           row.value)
+        }
+      ]}
+      defaultPageSize={10}
+      showPageJump={false}
+      showPageSizeOptions={false}
+      className="-striped -highlight"
+    />
+  );
+}
+
 
 class FirstPartyList extends React.Component {
   constructor(props) {
@@ -181,7 +243,8 @@ class FirstPartyDetails extends React.Component {
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
-    const trackers = await background.queryDatabase('getTrackersByDomain', {domain: this.domain, count: 100});
+    let args = {domain: this.domain}
+    const trackers = await background.queryDatabase('getTrackersByDomain', args);
     this.setState({
       trackers: trackers
     })
@@ -193,8 +256,8 @@ class FirstPartyDetails extends React.Component {
   render() {
     return (
       <div>
-        <h2>{this.domain}</h2>
-        <pre>{JSON.stringify(this.state.trackers, null, '\t')}</pre>
+        <h1>{this.domain}</h1>
+        {DomainSpecificTable(this.state.trackers)}
       </div>
     );
   }
