@@ -418,7 +418,7 @@ async function getDomainsByInference(args) {
  * Inferences by domain (i.e. INFERENCES have been made on DOMAIN)
  * @param {Object} args - args object
  * @param {string} args.domain - domain
- * @returns {string[]} array of inferences
+ * @returns {Object} infernce and count
  */
 async function getInferencesByDomain(args) {
   let query = ttDb.select(Inferences.inference)

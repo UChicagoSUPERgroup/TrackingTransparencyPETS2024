@@ -3,6 +3,7 @@ import { Route, Link } from 'react-router-dom';
 import logging from './dashboardLogging';
 import ReactTable from 'react-table';
 import {Grid, Row, Col} from 'react-bootstrap';
+import WordCloud from 'react-d3-cloud';
 
 
 // import { LinkContainer } from 'react-router-bootstrap';
@@ -59,7 +60,7 @@ const NoTrackerTable = (data) => {
 
 
 const ManyTrackersTable = (data) => {
-  let numEntries = data ? data.length: "0"
+  let numEntries = data ? data.length: 0
   return (
     <ReactTable
       data={data}
@@ -122,6 +123,37 @@ const DomainSpecificTable = (data) => {
   );
 }
 
+const DomainSpecificInferencesTable = (data) => {
+  let new_data = []
+  for (var property in data) {
+    new_data.push({"inference": property, "count": data[property]})
+  }
+  console.log(new_data)
+  return (
+    <ReactTable
+      data={new_data}
+      columns={[
+        {Header: "Likely inferred interests",
+         accessor: d => d.inference,
+         id: "tracker",
+         Cell: row => (
+           <div key={row.value}>
+              <Link to={{pathname: '/inferences/' + row.value}}>
+                 {row.value}
+              </Link>
+           </div>
+         )
+        }
+      ]}
+      defaultPageSize={10}
+      showPageJump={false}
+      showPageSizeOptions={false}
+      className="-striped -highlight"
+    />
+  );
+}
+
+
 
 class FirstPartyList extends React.Component {
   constructor(props) {
@@ -155,9 +187,11 @@ class FirstPartyList extends React.Component {
 
     const background = await browser.runtime.getBackgroundPage();
     let pages = []
-    for (let i=0; i < recent.length;i++) {
-      let value = await background.hashit_salt(domains[i]["Pages"]["domain"])
-      pages.push(value)
+    if (recent) {
+      for (let i=0; i < recent.length; i++) {
+        let value = await background.hashit_salt(domains[i]["Pages"]["domain"])
+        pages.push(value)
+      }
     }
     let activityType='load dashboard sites page';
     let sendDict={'numDomainsShown':pages.length}
@@ -249,19 +283,80 @@ class FirstPartyDetails extends React.Component {
     const background = await browser.runtime.getBackgroundPage();
     let args = {domain: this.domain}
     const trackers = await background.queryDatabase('getTrackersByDomain', args);
+    const inferences = await background.queryDatabase('getInferencesByDomain', args)
     this.setState({
-      trackers: trackers
+      trackers: trackers,
+      inferences: inferences
     })
+    console.log(inferences)
+
+    if (this.refs.content) {
+      console.log(this.refs.content)
+      let contentRect = this.refs.content.getBoundingClientRect();
+      this.setState({
+        divsize: contentRect
+      })
+      console.log(contentRect)
+    }
+
     window.addEventListener("popstate", this.logPopstate)
 
   }
 
 
   render() {
+    let inferences_q = this.state.inferences
+    let inferences = []
+    let min = 0
+    let max = 0
+    for (var property in inferences_q) {
+      min = (inferences_q[property] < min) ? inferences_q[property] : min
+      max = (inferences_q[property] > max) ? inferences_q[property] : max
+      inferences.push({"text": property, "value": inferences_q[property]})
+    }
+    console.log(inferences)
+
+    let size = this.state.divsize
+    let height = size ? size.height : 0
+    let width = size ? 2*size.width : 0
+    let Px = [0.02, 0.01]
+    if (inferences.length < 4) {
+      Px = [0.1, 0.04]
+    } else if (inferences.length < 10) {
+      Px = [0.08, 0.03]
+    } else if (inferences.length < 40) {
+      Px = [0.06, 0.02]
+    } else if (inferences.length < 80) {
+      Px = [0.05, 0.02]
+    }
+    let fontSizeMapper =
+      size ?
+      (word => height * (Px[1] + ((word.value - min) / (1 + max - min)) * Px[0])) :
+      (word => 50)
+
     return (
       <div>
         <h1>{this.domain}</h1>
-        {DomainSpecificTable(this.state.trackers)}
+        <Grid>
+          <Row>
+            <Col md={4}>
+              <div ref='content'>
+              {DomainSpecificTable(this.state.trackers)}
+              </div>
+            </Col>
+            <Col md={8}>
+              <div>
+                <WordCloud
+                  data={inferences}
+                  height={height}
+                  width={width}
+                  fontSizeMapper={fontSizeMapper}
+                  font={'Arial Black'}
+                />
+              </div>
+            </Col>
+          </Row>
+        </Grid>
       </div>
     );
   }
