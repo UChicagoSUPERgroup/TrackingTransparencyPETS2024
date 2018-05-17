@@ -151,6 +151,25 @@ const DomainSpecificInferencesTable = (data) => {
       className="-striped -highlight"
     />
   );
+};
+
+function fontSizeMapper(size, min, max, num_entries) {
+  let Px = [0.02, 0.01]
+  if (num_entries < 4) {
+    Px = [0.1, 0.04]
+  } else if (num_entries < 10) {
+    Px = [0.08, 0.03]
+  } else if (num_entries < 40) {
+    Px = [0.06, 0.02]
+  } else if (num_entries < 80) {
+    Px = [0.05, 0.02]
+  }
+  let fontSizeMapper =
+    size ?
+    (word => size.height * (Px[1] + ((word.value - min) / (1 + max - min)) * Px[0])) :
+    (word => 50)
+  return fontSizeMapper
+
 }
 
 
@@ -319,20 +338,7 @@ class FirstPartyDetails extends React.Component {
     let size = this.state.divsize
     let height = size ? size.height : 0
     let width = size ? 2*size.width : 0
-    let Px = [0.02, 0.01]
-    if (inferences.length < 4) {
-      Px = [0.1, 0.04]
-    } else if (inferences.length < 10) {
-      Px = [0.08, 0.03]
-    } else if (inferences.length < 40) {
-      Px = [0.06, 0.02]
-    } else if (inferences.length < 80) {
-      Px = [0.05, 0.02]
-    }
-    let fontSizeMapper =
-      size ?
-      (word => height * (Px[1] + ((word.value - min) / (1 + max - min)) * Px[0])) :
-      (word => 50)
+    let fontFunction = fontSizeMapper(size, min, max, inferences.length)
 
     return (
       <div>
@@ -350,7 +356,7 @@ class FirstPartyDetails extends React.Component {
                   data={inferences}
                   height={height}
                   width={width}
-                  fontSizeMapper={fontSizeMapper}
+                  fontSizeMapper={fontFunction}
                   font={'Arial Black'}
                 />
               </div>
