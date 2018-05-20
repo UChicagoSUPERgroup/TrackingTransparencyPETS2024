@@ -144,27 +144,14 @@ class InferenceDetails extends React.Component {
               <Col md={6} mdPush={6}>
                 {topSites && <div>
                   <h3>Top Sites</h3>
-                  <p>Words…</p>
                   {SiteTable(topSites)}
                 </div>}
               </Col>
               <Col md={6} mdPull={6}>
                 {trackers && trackers.length > 0 && <div>
                   <h3>Trackers</h3>
-                  <p>Words…</p>
                   {TrackerTable(trackers)}
                 </div>}
-              </Col>
-            </Row>
-            <Row>
-              <Col md={12}>
-                {timestamps && timestamps.length > 1 && <div>
-                  <h3>Time</h3>
-                  <PagesTimeChart timestamps={timestamps}/>
-                  <br/>
-                  <PagesTimeScatterplot timestamps={timestamps}/>
-                </div>}
-                {/* <pre>{JSON.stringify(trackers, null, '\t')}</pre> */}
               </Col>
             </Row>
           </Grid>
