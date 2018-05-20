@@ -117,6 +117,8 @@ export default class RecentPage extends React.Component {
     let args = {startTime: startDate.getTime(),
       endTime: startDate.getTime() + millisecondsInHour};
     console.log(args);
+    //let waiting = background.queryDatabase('getPagesNoInferences', args);
+    //console.log(waiting);
     return background.queryDatabase('getPagesByTime', args);
   }
 
