@@ -289,6 +289,7 @@ async function getPagesByTime(args) {
   if (!args.startTime || !args.endTime) {
     throw new Error('Insufficient args provided for query');
   }
+  let noInferences = await getPagesNoInferences(args);
 
   let query = ttDb.select(Pages.title, Pages.id, Pages.domain, Inferences.inference)
     .from(Pages, Inferences);
@@ -301,7 +302,13 @@ async function getPagesByTime(args) {
     query;
   query = args.count ? query.limit(args.count) : query;
   query = query.orderBy(Pages.id, lf.Order.ASC);
-  return await query.exec();
+  let withInferences = await query.exec();
+  let combined = noInferences
+    .concat(withInferences)
+    .sort(function(a,b) {
+      return a["Pages"]["id"] - b["Pages"]["id"]
+    });
+  return combined;
 }
 
 
@@ -673,7 +680,12 @@ async function getPages(args) {
   return await query.exec();
 }
 
-
+/**
+ * gets pages without trackers
+ *
+ * @param {any} args
+ * @returns {Object[]} pages visited
+ */
 async function getPagesNoTrackers() {
   let query = ttDb.select(Pages.domain, lf.fn.count(Trackers.tracker))
     .from(Pages)
@@ -687,6 +699,39 @@ async function getPagesNoTrackers() {
   for (i=0; i < pagesQuery.length; i++) {
     if ( pagesQuery[i]['Trackers']['COUNT(tracker)'] == 0) {
       pages.add(pagesQuery[i]['Pages']['domain'])
+    }
+  }
+  return Array.from(pages)
+
+}
+
+/**
+ * gets pages without inferences
+ *
+ * @param {any} args
+ * @param  {number} args.startTime - time start window
+ * @param  {number} args.endTime - time end window
+ * @returns {Object[]} pages visited
+ */
+async function getPagesNoInferences(args) {
+  let query = ttDb.select(Pages.domain, Pages.id, Pages.title, lf.fn.count(Inferences.inference))
+    .from(Pages)
+    .leftOuterJoin(Inferences, Pages.id.eq(Inferences.pageId))
+  query = (args.startTime && args.endTime) ?
+    query.where(
+      lf.op.and(
+        Pages.id.gte(args.startTime),
+        Pages.id.lte(args.endTime))) :
+    query;
+  query = query.groupBy(Pages.id)
+    .orderBy(lf.fn.count(Inferences.inference), lf.Order.ASC);
+
+  let pages = new Set();
+  var i;
+  const pagesQuery = await query.exec();
+  for (i=0; i < pagesQuery.length; i++) {
+    if ( pagesQuery[i]['Inferences']['COUNT(inference)'] == 0) {
+      pages.add(pagesQuery[i])
     }
   }
   return Array.from(pages)
@@ -930,6 +975,7 @@ const QUERIES = {
   // WARNING: may be incorrect or not work as expected
 
   getDomainsNoTrackers: getDomainsNoTrackers,
+  getPagesNoInferences: getPagesNoInferences,
   // getDomainVisits: getDomainVisits,
   // getInferencesByTrackerCount: getInferencesByTrackerCount,
   // getInfoAboutTracker: getInfoAboutTracker,
