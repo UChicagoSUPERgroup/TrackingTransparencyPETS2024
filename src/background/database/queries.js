@@ -242,7 +242,6 @@ async function getTrackersByInference(args) {
 /** get timestamps of all page visits
  *
  * @param  {Object} args - arguments object
- * @param  {number} [args.afterDate] - date to query for entries after
  * @param  {number} [args.count] - number of entries to return
  * @param  {number} [args.afterDate] - only include page visits after this date,
  *                                     given as an integer for number of milliseconds since 1/1/1970
@@ -260,19 +259,29 @@ async function getTimestamps(args) {
 /** get domains by time window-
  *
  * @param  {Object} args - arguments object
- * @param  {number} [args.startTime] - time start window
- * @param  {number} args.endTime - time end window
+ * @param  {number} [args.endTime] - time end window
  * @param  {number} [args.count] - number of entries to return
  */
 async function getDomainsByTime(args) {
-  if (!args.endTime) {
-    throw new Error('Insufficient args provided for query');
-  }
 
   let query = ttDb.select(lf.fn.distinct(Pages.domain))
     .from(Pages);
   query = (args.endTime) ? query.where(Pages.id.lte(args.endTime)) : query;
   query = query.orderBy(Pages.id, lf.Order.DESC);
+  query = args.count ? query.limit(args.count) : query;
+  return await query.exec();
+}
+
+/** get inferences by time window-
+ *
+ * @param  {Object} args - arguments object
+ * @param  {number} [args.count] - number of entries to return
+ */
+async function getInferencesByTime(args) {
+
+  let query = ttDb.select(lf.fn.distinct(Inferences.inference))
+    .from(Inferences)
+    .orderBy(Inferences.pageId, lf.Order.DESC);
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
 }
@@ -793,6 +802,22 @@ async function getDomainsByTracker(args) {
   return mergedRes;
 }
 
+
+
+async function getPagesByDomain(args) {
+  if (!args.domain) {
+    throw new Error('Insufficient args provided for query');
+  }
+  let query = ttDb.select(lf.fn.distinct(Pages.title))
+    .from(Pages)
+    .where(Pages.domain.eq(args.domain))
+    .orderBy(Pages.id, lf.Order.DESC)
+  query = args.count ? query.limit(args.count) : query;
+
+  return await query.exec();
+
+}
+
 /**
  * given an tracker and domain, give pages on that domain where tracker is present
  *
@@ -950,6 +975,7 @@ const QUERIES = {
   getDomains: getDomains, // used in dashboard
   getDomainsByInference: getDomainsByInference,
   getDomainsByTracker: getDomainsByTracker,
+  getPagesByDomain: getPagesByDomain,
   getInferencesByDomain: getInferencesByDomain, // used in tests
   getInferencesDomainsToSend: getInferencesDomainsToSend, //this is to send data to server contaiing pageIds and inferences and domain names
   getInferenceCount: getInferenceCount, // used in dashboard
@@ -965,6 +991,7 @@ const QUERIES = {
   getTimestampsByTracker: getTimestampsByTracker,
   getDomainsByTime: getDomainsByTime,
   getPagesByTime: getPagesByTime, // used in activities
+  getInferencesByTime: getInferencesByTime,
   getTrackers: getTrackers, // used in dasboard
   getTrackersByDomain: getTrackersByDomain, // used in dashboard
   getTrackersByInference: getTrackersByInference, // used in dashboard
