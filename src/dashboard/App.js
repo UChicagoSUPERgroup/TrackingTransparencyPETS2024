@@ -25,6 +25,7 @@ import COLORS from '../colors';
 import '../styles/common.css';
 import '../styles/dashboard.css';
 import '../styles/navbar.css';
+import '../styles/panel.css'
 
 import logging from './dashboardLogging';
 
