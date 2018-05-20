@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import logging from './dashboardLogging';
 import ReactTable from 'react-table';
-import {Grid, Row, Col} from 'react-bootstrap';
+import {Panel, Grid, Row, Col} from 'react-bootstrap';
 import WordCloud from 'react-d3-cloud';
 
 
@@ -82,8 +82,27 @@ function fontSizeMapper(size, min, max, num_entries) {
     size ?
     (word => size.height * (Px[1] + ((word.value - min) / (1 + max - min)) * Px[0])) :
     (word => 50)
-  return fontSizeMapper
+  return fontSizeMapper;
 
+}
+
+
+const PageList = (data) => {
+  if (! data || data.length == 0) {
+    return ""
+  } else if (data.length == 1) {
+    return data[0]["DISTINCT(title)"]
+  } else if (data.length ==2) {
+    return data[0]["DISTINCT(title)"] + " and " + data[1]["DISTINCT(title)"]
+  } else {
+    let pageStr = ""
+    let i = 0
+    for (i = 0; i < data.length - 1; i++){
+      pageStr = pageStr + data[i]["DISTINCT(title)"] + ", "
+    }
+    pageStr = pageStr + "and " + data[i]["DISTINCT(title)"]
+    return pageStr
+  }
 }
 
 
@@ -139,21 +158,22 @@ class FirstPartyDetails extends React.Component {
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
     let args = {domain: this.domain}
+    let argsCount = {domain: this.domain, count: 5}
     const trackers = await background.queryDatabase('getTrackersByDomain', args);
     const inferences = await background.queryDatabase('getInferencesByDomain', args)
+    const pages = await background.queryDatabase('getPagesByDomain', argsCount);
     this.setState({
       trackers: trackers,
-      inferences: inferences
+      inferences: inferences,
+      pages: pages
     })
-    console.log(inferences)
+    console.log(pages)
 
     if (this.refs.content) {
-      console.log(this.refs.content)
       let contentRect = this.refs.content.getBoundingClientRect();
       this.setState({
         divsize: contentRect
       })
-      console.log(contentRect)
     }
 
     window.addEventListener("popstate", this.logPopstate)
@@ -182,6 +202,11 @@ class FirstPartyDetails extends React.Component {
       <div>
         <h1>{this.domain}</h1>
         <Grid>
+          <Row>
+            <Panel bsStyle="primary">
+              <Panel.Body><b>Recent Pages:</b> {PageList(this.state.pages)}</Panel.Body>
+            </Panel>
+          </Row>
           <Row>
             <Col md={4}>
               <div ref='content'>
