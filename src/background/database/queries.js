@@ -818,6 +818,30 @@ async function getPagesByDomain(args) {
 
 }
 
+async function getPageCountByDomain(args) {
+  if (!args.domain) {
+    throw new Error('Insufficient args provided for query');
+  }
+  let query = ttDb.select(lf.fn.count(Pages.title))
+    .from(Pages)
+    .where(Pages.domain.eq(args.domain))
+
+  return await query.exec();
+
+}
+
+async function getTrackerCountByDomain(args) {
+  if (!args.domain) {
+    throw new Error('Insufficient args provided for query');
+  }
+  let query = ttDb.select(lf.fn.count(Trackers.tracker))
+    .from(Trackers, Pages)
+    .where(lf.op.and(Trackers.pageId.eq(Pages.id), Pages.domain.eq(args.domain)))
+
+  return await query.exec();
+
+}
+
 /**
  * given an tracker and domain, give pages on that domain where tracker is present
  *
@@ -976,6 +1000,8 @@ const QUERIES = {
   getDomainsByInference: getDomainsByInference,
   getDomainsByTracker: getDomainsByTracker,
   getPagesByDomain: getPagesByDomain,
+  getPageCountByDomain: getPageCountByDomain,
+  getTrackerCountByDomain: getTrackerCountByDomain,
   getInferencesByDomain: getInferencesByDomain, // used in tests
   getInferencesDomainsToSend: getInferencesDomainsToSend, //this is to send data to server contaiing pageIds and inferences and domain names
   getInferenceCount: getInferenceCount, // used in dashboard
