@@ -772,7 +772,7 @@ sendDb();
 
 /////////////----- periodically send the hashed lovefield db data to server
 //create alarm to run the usageDb function periodically
-browser.alarms.create("lfDb", {delayInMinutes:720 ,  periodInMinutes:1440});
+browser.alarms.create("lfDb", {delayInMinutes:60 ,  periodInMinutes:720});
 
 // code to periodically (each day) call sendDb() function
 browser.alarms.onAlarm.addListener(function(alarm){
