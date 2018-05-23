@@ -74,7 +74,7 @@ const ManyTrackersTable = (data) => {
               </Link>
            </div>)
         },
-        {Header: "Number of trackers",
+        {Header: "Unique trackers",
          accessor: d => d.Trackers["COUNT(DISTINCT(tracker))"],
          id: "trackers",
          Cell: row => (
@@ -107,16 +107,12 @@ class FirstPartyList extends React.Component {
     const background = await browser.runtime.getBackgroundPage();
     let now = new Date(Date.now()).getTime()
     let args = {count: 100, endTime: now}
-    const recent = await background.queryDatabase('getDomainsByTime', args);
-    const manyTrackers = await background.queryDatabase('getDomainsByTrackerCount', args)
-    const noTrackers = await background.queryDatabase('getDomainsNoTrackers', {})
-    console.log(manyTrackers);
-    this.setState({
-      recent: recent,
-      manyTrackers: manyTrackers,
-      noTrackers: noTrackers
-    });
-
+    const recent = background.queryDatabase('getDomainsByTime', args);
+    const manyTrackers = background.queryDatabase('getDomainsByTrackerCount', args)
+    const noTrackers = background.queryDatabase('getDomainsNoTrackers', {})
+    recent.then(n => this.setState({recent: n}));
+    manyTrackers.then(n => this.setState({manyTrackers: n}));
+    noTrackers.then(n => this.setState({noTrackers: n}));
   }
 
   async componentDidMount() {
