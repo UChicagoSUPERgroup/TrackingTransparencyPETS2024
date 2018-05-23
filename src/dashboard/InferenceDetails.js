@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
-import {Grid, Row, Col} from 'react-bootstrap';
+import {Panel, Grid, Row, Col} from 'react-bootstrap';
 
 
-import PagesTimeChart from './PagesTimeChart';
-import PagesTimeScatterplot from './PagesTimeScatterplot';
+import categories from '../data/categories_comfort_list.json';
 
 
 const SiteTable = (data) => {
@@ -51,6 +50,22 @@ const TrackerTable = (data) => {
       defaultPageSize={20}
       className="-striped -highlight"
     />
+  );
+}
+
+const SensitivePanel = (inference) => {
+  let sensitive_categories = categories.slice(0,20);
+  let sensitive = (inference && sensitive_categories.includes(inference)) ? true : false;
+  return (
+    <Panel bsStyle="primary">
+      <Panel.Body>
+        <em>{inference}</em>
+        {sensitive ?
+          " may be considered a sensitive topic." :
+          " is likely not a sensitive topic."
+      }
+      </Panel.Body>
+    </Panel>
   );
 }
 
@@ -140,6 +155,9 @@ class InferenceDetails extends React.Component {
       content = (
         <div>
           <Grid>
+            <Row>
+              {SensitivePanel(inference)}
+            </Row>
             <Row>
               <Col md={6} mdPush={6}>
                 {topSites && <div>
