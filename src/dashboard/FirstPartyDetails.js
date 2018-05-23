@@ -4,6 +4,9 @@ import logging from './dashboardLogging';
 import ReactTable from 'react-table';
 import {Panel, Grid, Row, Col} from 'react-bootstrap';
 import WordCloud from 'react-d3-cloud';
+import _ from 'lodash';
+
+import categories from '../data/categories_comfort_list.json';
 
 
 const DomainSpecificTable = (data) => {
@@ -33,6 +36,7 @@ const DomainSpecificTable = (data) => {
       showPageJump={false}
       showPageSizeOptions={false}
       className="-striped -highlight"
+      noDataText="No Trackers Found"
     />
   );
 }
@@ -42,7 +46,6 @@ const DomainSpecificInferencesTable = (data) => {
   for (var property in data) {
     new_data.push({"inference": property, "count": data[property]})
   }
-  console.log(new_data)
   return (
     <ReactTable
       data={new_data}
@@ -67,16 +70,51 @@ const DomainSpecificInferencesTable = (data) => {
   );
 };
 
+const wrappedInDiv = (str) => {
+  return (<div>str</div>)
+}
+
+const SensitiveModule = (data, domain) => {
+  if (data && data.inferred.length > 1) {
+    return (
+      <div>
+        <p>
+          Tracking Transparency detected {data.inferred.length} inferences that may
+          have been inferred about your browsing on {domain} and may be considered sensitive.
+        </p>
+        {data.inferred.map(function(val){ return <div key={val}>{val}</div>})}
+      </div>
+    );
+  } else if (data && data.inferred.length == 1) {
+    return (
+      <div>
+        <p>
+          Tracking Transparency detected 1 inference that may have been inferred
+          about your browsing on {domain} and may be considered sensitive.
+        </p>
+        {data.inferred.map(function(val){ return <div key={val}>{val}</div>})}
+      </div>
+    );
+  } else {
+    return (
+      <p>
+        Tracking Transparency has not detected any sensitive inferences that could
+        have been inferred about your browsing on {domain}.
+      </p>
+    );
+  }
+};
+
 function fontSizeMapper(size, min, max, num_entries) {
   let Px = [0.02, 0.01]
   if (num_entries < 4) {
-    Px = [0.1, 0.04]
+    Px = [0.08, 0.04]
   } else if (num_entries < 10) {
-    Px = [0.08, 0.03]
+    Px = [0.06, 0.03]
   } else if (num_entries < 40) {
-    Px = [0.06, 0.02]
-  } else if (num_entries < 80) {
     Px = [0.05, 0.02]
+  } else if (num_entries < 80) {
+    Px = [0.03, 0.02]
   }
   let fontSizeMapper =
     size ?
@@ -160,14 +198,25 @@ class FirstPartyDetails extends React.Component {
     let args = {domain: this.domain}
     let argsCount = {domain: this.domain, count: 5}
     const trackers = await background.queryDatabase('getTrackersByDomain', args);
-    const inferences = await background.queryDatabase('getInferencesByDomain', args)
+    const inferences = await background.queryDatabase('getInferencesByDomain', args);
     const pages = await background.queryDatabase('getPagesByDomain', argsCount);
+    const page_count = await background.queryDatabase('getPageCountByDomain', args);
+    const tracker_count = await background.queryDatabase('getTrackerCountByDomain', args);
+    let inferred = []
+    for (let key in inferences) {
+      inferred.push(key)
+    }
+    let sensitive = categories.slice(0,20);
+    let sensitive_inferred = _.intersection(inferred, sensitive)
     this.setState({
       trackers: trackers,
       inferences: inferences,
-      pages: pages
+      pages: pages,
+      page_count: page_count ? page_count[0]["COUNT(title)"] : 0,
+      tracker_count: tracker_count ? tracker_count[0]["Trackers"]["COUNT(tracker)"] : 0,
+      sensitive_inferred: {"inferred": sensitive_inferred}
     })
-    console.log(pages)
+    console.log(this.state.tracker_count)
 
     if (this.refs.content) {
       let contentRect = this.refs.content.getBoundingClientRect();
@@ -182,7 +231,8 @@ class FirstPartyDetails extends React.Component {
 
 
   render() {
-    let inferences_q = this.state.inferences
+    let sensitive = this.state.sensitive_inferred;
+    let inferences_q = this.state.inferences;
     let inferences = []
     let min = 0
     let max = 0
@@ -204,7 +254,14 @@ class FirstPartyDetails extends React.Component {
         <Grid>
           <Row>
             <Panel bsStyle="primary">
-              <Panel.Body><b>Recent Pages:</b> {PageList(this.state.pages)}</Panel.Body>
+              <Panel.Body>
+                <p>
+                You have visited {this.state.page_count} pages at {this.domain} with an average
+                of {Math.round(this.state.tracker_count / this.state.page_count)} trackers per page.
+                </p>
+                <b>Recent Pages: </b>
+                {PageList(this.state.pages)}
+              </Panel.Body>
             </Panel>
           </Row>
           <Row>
@@ -224,6 +281,13 @@ class FirstPartyDetails extends React.Component {
                 />
               </div>
             </Col>
+          </Row>
+          <Row>
+            <Panel bsStyle="primary">
+              <Panel.Body>
+                {SensitiveModule(sensitive, String(this.domain))}
+              </Panel.Body>
+            </Panel>
           </Row>
         </Grid>
       </div>
