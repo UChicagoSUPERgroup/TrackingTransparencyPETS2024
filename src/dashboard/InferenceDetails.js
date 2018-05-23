@@ -25,6 +25,8 @@ const SiteTable = (data) => {
          accessor: "count"},
       ]}
       defaultPageSize={20}
+      showPageJump={false}
+      showPageSizeOptions={false}
       className="-striped -highlight"
     />
   );
@@ -48,6 +50,8 @@ const TrackerTable = (data) => {
          accessor: "count"},
       ]}
       defaultPageSize={20}
+      showPageJump={false}
+      showPageSizeOptions={false}
       className="-striped -highlight"
     />
   );
