@@ -1,5 +1,7 @@
 /** @module background */
 
+import tldjs from 'tldjs';
+
 import {trackersWorker, databaseWorker, inferencingWorker} from './workers_setup';
 import userstudy from './userstudy';
 // import tt from '../helpers';
@@ -191,12 +193,16 @@ async function getFavicon(url) {
  */
 function recordNewPage(tabId, url, title) {
   const pageId = Date.now();
-  let urlObj = new URL(url)
+  let urlObj = new URL(url);
+
+  let domain = tldjs.getDomain(urlObj.hostname);
+  domain = domain ? domain : urlObj.hostname; // in case above line returns null
 
   // store info about the tab in memory
   tabData[tabId] = {
     pageId: pageId,
-    domain: urlObj.hostname,
+    domain: domain,
+    hostname: urlObj.hostname,
     path: urlObj.pathname,
     protocol: urlObj.protocol,
     title: title,
