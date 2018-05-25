@@ -1,5 +1,7 @@
 /** @module storage */
 
+import tldjs from 'tldjs';
+
 import {primaryDbPromise} from './setup';
 
 /* DATA STORAGE */
@@ -93,7 +95,12 @@ export async function importData(dataString) {
   data.pages.forEach(page => {
 
     if (!page.hostname) {
-      return new Error('page does not have hostname field')
+      let domain = tldjs.getDomain(page.domain);
+      domain = domain ? domain : page.domain; // in case above line returns null
+
+      page.hostname = page.domain;
+      page.domain = domain;
+
     }
 
     const pageData = pageItem.createRow({
