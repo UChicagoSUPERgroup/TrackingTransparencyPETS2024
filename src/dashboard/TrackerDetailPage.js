@@ -149,28 +149,14 @@ export default class TrackerDetailPage extends React.Component {
 
     return (
       <div>
-        <h2>{this.tracker}</h2>
-        <p>You have encountered trackers
-            from {this.tracker} on <em>{numDomains}</em> different
-            domains. The Tracking Transparency extension has
-            found <em>{numInferences}</em> inferences
-            that {this.tracker} may have made about you.
-            </p>
+        <h2>Trackers - {this.tracker}</h2>
         <Grid>
-          <Row>
-            <Col md={6} mdPush={6}>
-              {InferTable(inferences)}
-            </Col>
-            <Col md={6} mdPull={6}>
-              {DomainTable(domains)}
-            </Col>
-          </Row>
           <Row>
             <Col md={12}>
               <h2>When has {this.tracker} tracked you?</h2>
               <FlexibleWidthXYPlot
-                height={400}
-                margin={{left: 100, right: 10, top: 10, bottom: 100}}>
+                height={200}
+                margin={{left: 100, right: 10, top: 10, bottom: 70}}>
                 <HorizontalGridLines />
                 <LineSeries
                   color="#8F3931"
@@ -178,9 +164,25 @@ export default class TrackerDetailPage extends React.Component {
                 <XAxis
                   height={100}
                   tickFormat={dataLabel}
-                  tickLabelAngle={-30}/>
+                  tickLabelAngle={-20}/>
                 <YAxis />
               </FlexibleWidthXYPlot>
+            </Col>
+          </Row>
+          <Row>
+            <p>You have encountered trackers
+              from {this.tracker} on <em>{numDomains}</em> different
+              domains. The Tracking Transparency extension has
+              found <em>{numInferences}</em> inferences
+              that {this.tracker} may have made about you.
+              </p>
+          </Row>
+          <Row>
+            <Col md={6} mdPush={6}>
+              {InferTable(inferences)}
+            </Col>
+            <Col md={6} mdPull={6}>
+              {DomainTable(domains)}
             </Col>
           </Row>
           <Row>

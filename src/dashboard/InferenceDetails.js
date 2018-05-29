@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
-import {Grid, Row, Col} from 'react-bootstrap';
+import {Panel, Grid, Row, Col} from 'react-bootstrap';
 
 
-import PagesTimeChart from './PagesTimeChart';
-import PagesTimeScatterplot from './PagesTimeScatterplot';
+import categories from '../data/categories_comfort_list.json';
 
 
 const SiteTable = (data) => {
@@ -26,6 +25,8 @@ const SiteTable = (data) => {
          accessor: "count"},
       ]}
       defaultPageSize={20}
+      showPageJump={false}
+      showPageSizeOptions={false}
       className="-striped -highlight"
     />
   );
@@ -49,8 +50,26 @@ const TrackerTable = (data) => {
          accessor: "count"},
       ]}
       defaultPageSize={20}
+      showPageJump={false}
+      showPageSizeOptions={false}
       className="-striped -highlight"
     />
+  );
+}
+
+const SensitivePanel = (inference) => {
+  let sensitive_categories = categories.slice(0,20);
+  let sensitive = (inference && sensitive_categories.includes(inference)) ? true : false;
+  return (
+    <Panel bsStyle="primary">
+      <Panel.Body>
+        <em>{inference}</em>
+        {sensitive ?
+          " may be considered a sensitive topic." :
+          " is likely not a sensitive topic."
+      }
+      </Panel.Body>
+    </Panel>
   );
 }
 
@@ -141,30 +160,20 @@ class InferenceDetails extends React.Component {
         <div>
           <Grid>
             <Row>
+              {SensitivePanel(inference)}
+            </Row>
+            <Row>
               <Col md={6} mdPush={6}>
                 {topSites && <div>
                   <h3>Top Sites</h3>
-                  <p>Words…</p>
                   {SiteTable(topSites)}
                 </div>}
               </Col>
               <Col md={6} mdPull={6}>
                 {trackers && trackers.length > 0 && <div>
                   <h3>Trackers</h3>
-                  <p>Words…</p>
                   {TrackerTable(trackers)}
                 </div>}
-              </Col>
-            </Row>
-            <Row>
-              <Col md={12}>
-                {timestamps && timestamps.length > 1 && <div>
-                  <h3>Time</h3>
-                  <PagesTimeChart timestamps={timestamps}/>
-                  <br/>
-                  <PagesTimeScatterplot timestamps={timestamps}/>
-                </div>}
-                {/* <pre>{JSON.stringify(trackers, null, '\t')}</pre> */}
               </Col>
             </Row>
           </Grid>
