@@ -3,12 +3,13 @@ import lf from 'lovefield';
 /* DATABSE SETUP */
 /* ============= */
 
-var primarySchemaBuilder = lf.schema.create('datastore', 1);
+var primarySchemaBuilder = lf.schema.create('datastore', 2);
 
 primarySchemaBuilder.createTable('Pages').
   addColumn('id', lf.Type.INTEGER).
   addColumn('title', lf.Type.STRING).
   addColumn('domain', lf.Type.STRING).
+  addColumn('hostname', lf.Type.STRING).
   addColumn('path', lf.Type.STRING).
   addColumn('protocol', lf.Type.STRING).
   addPrimaryKey(['id']);

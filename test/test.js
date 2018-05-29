@@ -29,7 +29,9 @@ async function runTests(t) {
     'https://super.cs.uchicago.edu',
     'https://cs.uchicago.edu', 
     'https://www.nytimes.com',
-    'https://www.google.com/maps/place/Department+of+Computer+Science,+1100+E+58th+St,+Chicago,+IL+60637/@41.7943177,-87.5937424,13z/data=!4m2!3m1!1s0x880e29162042b8f1:0x1e9e400ccfae3c4d'
+    'https://www.google.com/maps/place/Department+of+Computer+Science,+1100+E+58th+St,+Chicago,+IL+60637/@41.7943177,-87.5937424,13z/data=!4m2!3m1!1s0x880e29162042b8f1:0x1e9e400ccfae3c4d',
+    'https://js.org/',
+    'https://stats.js.org/'
   ];
   for (p of pages) {
     await page.goto(p);
@@ -60,19 +62,23 @@ async function runTests(t) {
     query = await background.queryDatabase('getAllData', {});
     await ok(query.pages.length >= pages.length, 'pages were stored in database');
 
-    // check to make sure google maps url was stored properly
+    // check to make domains are stored properly
     const domains = query.pages.map(x => x.domain);
-    await ok(domains.indexOf('www.google.com') !== -1, 'google maps is stored as www.google.com');
+    await ok(domains.indexOf('google.com') !== -1, 'google maps is stored as google.com');
     await ok(domains.indexOf('41.7943177,-87.5937424,13z') === -1, 'there are not gps-coordinate domains');
 
+    // some edge cases for tldjs libary
+    await ok(domains.indexOf('js.org') !== -1, 'homepage of a public suffix is stored properly')
+    await ok(domains.indexOf('stats.js.org') !== -1, 'unique subdomain is stored properly')
+
     // make sure we have some trackers stored
-    query = await background.queryDatabase('getTrackersByDomain', {domain: 'www.nytimes.com'});
+    query = await background.queryDatabase('getTrackersByDomain', {domain: 'nytimes.com'});
     await equal(query.length >= 0, true, 'there are trackers on nytimes in database');
 
     // make sure we have some inferences made
-    query = await background.queryDatabase('getInferencesByDomain', {domain: 'cs.uchicago.edu'});
+    query = await background.queryDatabase('getInferencesByDomain', {domain: 'uchicago.edu'});
     // await equal(Object.keys(query)[0], 'Online Journals & Personal Sites', 'inference for cs.uchicago is correct');
-    await ok(Object.keys(query)[0], 'inference for cs.uchicago exists')
+    await ok(Object.keys(query)[0], 'inference for uchicago exists')
 
   }, pages);
 
