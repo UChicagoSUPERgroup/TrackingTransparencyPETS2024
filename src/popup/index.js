@@ -62,7 +62,7 @@ class Popup extends React.Component {
     }
   }
 
-async openDashboard() {
+  async openDashboard() {
     //console.log('I am here 1');
     const tabs = await browser.tabs.query({active: true, currentWindow: true});
     let tabId = tabs[0].id;
@@ -72,14 +72,14 @@ async openDashboard() {
       openerTabId: parseInt(tabId)
     };
 
-    const tabData = JSON.parse(this.state.tab);
     await browser.tabs.create(dashboardData);
+    const tabData = JSON.parse(this.state.tab);
     const background = await browser.runtime.getBackgroundPage();
 
     let activityType= 'click dashboard button on popup';
     let clickedElem = 'dashboard button';
     await logging.logPopupActions(activityType, clickedElem);
-}
+  }
 
   async componentDidMount() {
     /*comment this next line if you want to off logging data
