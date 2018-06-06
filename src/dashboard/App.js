@@ -59,6 +59,9 @@ The code for logclick logs ALL the click in every single page.
   }
 
   async componentDidMount() {
+    const enoughDataP = tt.enoughData();
+    enoughDataP.then(ed => this.setState({enoughData: ed}))
+
     const param = await browser.storage.local.get('lightbeamcondition');
     this.setState({lightbeamcondition: JSON.parse(param.lightbeamcondition)});
     logging.logStartDashboardPage();
@@ -74,10 +77,8 @@ The code for logclick logs ALL the click in every single page.
   /************** END Instrucmentation code ********************************/
 
   render() {
-    const {lightbeamcondition, tabId} = this.state;
-    const enoughData = tt.enoughData();
+    const {lightbeamcondition, tabId, enoughData} = this.state;
     const TTNavbar = () => {
-      const enoughData = tt.enoughData();
       const {lightbeamcondition, tabId} = this.state;
       return (
         <Navbar fixedTop>
@@ -96,7 +97,7 @@ The code for logclick logs ALL the click in every single page.
               {lightbeamcondition && <NavLink to="/lightbeam"  title="Time"/>}
             </Nav>}
             <Nav pullRight>
-              <NavLink to="/debug"  title="Debug"/>
+              {!tt.production && <NavLink to="/debug"  title="Debug"/>}
               <NavLink to="/about"  title="About"/>
             </Nav>
           </Navbar.Collapse>

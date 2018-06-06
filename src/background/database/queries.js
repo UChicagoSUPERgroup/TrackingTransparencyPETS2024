@@ -1067,7 +1067,7 @@ export default async function makeQuery(queryName, args) {
   }
 
   if (!QUERIES[queryName]) {
-    throw new Error('Query does not exist');
+    throw new Error('Query ' + queryName + ' does not exist');
   }
   return await (QUERIES[queryName])(args);
 }
