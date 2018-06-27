@@ -4,6 +4,7 @@ import tldjs from 'tldjs';
 
 import {trackersWorker, databaseWorker, inferencingWorker} from './workers_setup';
 import userstudy from './userstudy';
+import overlayManager from './overlay_manager';
 // import tt from '../helpers';
 
 import categoryTree from '../data/categories_tree.json';
@@ -40,6 +41,9 @@ browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
 
 /* listener for tab close */
 browser.tabs.onRemoved.addListener(clearTabData);
+
+/* listener for overlay injection */
+browser.webNavigation.onCompleted.addListener(onPageLoadFinish);
 
 
 /** Sends a message with information about each outgoing
@@ -102,7 +106,7 @@ async function updateMainFrameInfo(details) {
       recordNewPage(details.tabId, details.url, tab.title, "");//add empty favicon url
     }
   } catch (err) {
-    console.log("can't updateMainFrame info for tab id", details.tabId);
+    console.log("can't updateMainFrameInfo for tab id", details.tabId);
   }
 }
 
@@ -274,13 +278,15 @@ async function updateTrackers(tabId) {
 
   let trackers = await messagePromise;
   tabData[tabId].trackers = trackers;
+}
 
-  // notify content script to update overlay
-  chrome.tabs.sendMessage(tabId, {
-    type: 'page_trackers',
-    trackers: trackers
-  });
-
+async function onPageLoadFinish(details) {
+  if (details.frameId === 0) {
+    // not an iframe
+    const tabId = details.tabId;
+    const data = await getTabData(tabId)
+    overlayManager.createOrUpdate(tabId, data);
+  }
 }
 
 
@@ -549,7 +555,7 @@ function onInferencingWorkerMessage(m) {
     tabData[tabId].inference = m.data.info.inference;
     console.log(tabData[tabId].inference)
   }
-  chrome.tabs.sendMessage(tabId, m.data);
+  overlayManager.createOrUpdate(tabId, tabData[tabId]);
 }
 
 /**
