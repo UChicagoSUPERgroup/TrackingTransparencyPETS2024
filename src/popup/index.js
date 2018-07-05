@@ -34,32 +34,35 @@ class Popup extends React.Component {
     const tab = tabs[0];
     // get tab data with trackers and stuff here
     const tabData = await background.getTabData(tab.id);
-    this.setState({tab: JSON.stringify(tabData)})
 
-    let title = tabData.title;
-    if (title.length >= 30) {
-      title = title.substring(0,30).concat('...');
-    }
+    if (tabData) {
+      this.setState({tab: JSON.stringify(tabData)})
 
-    this.setState({
-      pageTitle: title,
-      trackers: tabData.trackers
-    })
+      let title = tabData.title;
+      if (title.length >= 30) {
+        title = title.substring(0,30).concat('...');
+      }
 
-    if (tabData.trackers.length > 0) {
-      const topTracker = tabData.trackers[0];
-      const topTrackerCount = background.queryDatabase('getPageVisitCountByTracker', {tracker: topTracker});
-      topTrackerCount.then(count => {
-        this.setState({
-          topTracker: topTracker,
-          topTrackerCount: count
-        })
-
+      this.setState({
+        pageTitle: title,
+        trackers: tabData.trackers
       })
+
+      if (tabData.trackers.length > 0) {
+        const topTracker = tabData.trackers[0];
+        const topTrackerCount = background.queryDatabase('getPageVisitCountByTracker', {tracker: topTracker});
+        topTrackerCount.then(count => {
+          this.setState({
+            topTracker: topTracker,
+            topTrackerCount: count
+          })
+
+        })
+      }
     }
   }
 
-async  openDashboard() {
+  async openDashboard() {
     //console.log('I am here 1');
     const tabs = await browser.tabs.query({active: true, currentWindow: true});
     let tabId = tabs[0].id;
@@ -69,14 +72,14 @@ async  openDashboard() {
       openerTabId: parseInt(tabId)
     };
 
-    const tabData = JSON.parse(this.state.tab);
     await browser.tabs.create(dashboardData);
+    const tabData = JSON.parse(this.state.tab);
     const background = await browser.runtime.getBackgroundPage();
 
     let activityType= 'click dashboard button on popup';
     let clickedElem = 'dashboard button';
     await logging.logPopupActions(activityType, clickedElem);
-}
+  }
 
   async componentDidMount() {
     /*comment this next line if you want to off logging data
@@ -89,6 +92,7 @@ async  openDashboard() {
 
   render() {
     const {numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount} = this.state;
+    const isData = (typeof numTrackers !== 'undefined') && (typeof numPages !== 'undefined') && (typeof numInferences !== 'undefined') && (numPages) > 0
     //this.sendPopupData(numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount);
     return (
       <div>
@@ -107,9 +111,10 @@ async  openDashboard() {
             <p>One of these trackers is <strong>{topTracker}</strong>, which knows about your activity on this page and <strong>{topTrackerCount}</strong> others.</p>
           }
 
-          {numTrackers && numPages && numInferences &&
+          {isData &&
             <p>In total, <em>{numTrackers} trackers</em> have seen you visit <em>{numPages} pages</em>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <em>{numInferences} topics</em>.</p>
           }
+          {!isData && <p></p>}
 
           <button type="button" className="btn btn-lt" onClick={this.openDashboard}>Show me more about what the trackers know</button>
 

@@ -316,7 +316,7 @@ async function getTabData(tabId) {
 }
 window.getTabData = getTabData; // exposes function to other extension components
 
-let queryId = 0;
+let queryId = 1; // if it is 0 then the first query fails
 let pendingDatabaseQueries = {};
 
 /**
@@ -500,20 +500,25 @@ function onDatabaseWorkerMessage(m) {
 
   if (m.data.type === 'database_query_response') {
 
-    // if response isn't given a query id to associate with request, it's an error
-    if (!m.data.id) {
-      // since we don't know which promise to reject we have to just throw an error
-      throw new Error ('malformed query response', m);
+    let p;
+    if (m.data.id) {
+      p = pendingDatabaseQueries[m.data.id];
     }
-
-    const p = pendingDatabaseQueries[m.data.id];
     if (m.data.error) {
       // database gave us an error
       // so we reject query promise
-      p.reject(m.data.error);
+      if (p) {
+        p.reject(m.data.error);
+      } else {
+        throw new Error(m.data.error);
+      }
       return;
     }
 
+    if (!p) {
+      console.log(m);
+      throw new Error('unable to resolve promise for database query response');
+    }
     p.resolve(m.data);
 
   }

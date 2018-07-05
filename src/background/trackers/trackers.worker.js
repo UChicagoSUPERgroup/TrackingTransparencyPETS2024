@@ -1,5 +1,7 @@
 /** @module trackers_worker */
 
+import tldjs from 'tldjs';
+
 import domainEntityMap from '../../data/trackers/domainEntityMap.json';
 
 // console.log("trackers worker running");
@@ -16,39 +18,41 @@ let trackersByPageId = {};
  */
 function trackerMatch(details, firstPartyHost) {
   const urlObj = new URL(details.url);
-  let requestDomain = urlObj.hostname;
-
-  let match = checkForMatch(requestDomain, firstPartyHost);
-  if (!match) {
-    const arr = urlObj.hostname.split('.');
-    requestDomain = arr[arr.length -2] + '.' + arr[arr.length - 1];
-    match = checkForMatch(requestDomain, firstPartyHost);
-  }
-  return match;
-}
-  
-function checkForMatch(requestDomain, firstPartyHost) {
-
+  const requestDomain = urlObj.hostname;
+  const requestDomain2 = tldjs.getDomain(urlObj.hostname);
   const firstPartyEntity = domainEntityMap[firstPartyHost];
   const trackerEntity = domainEntityMap[requestDomain];
+  const trackerEntity2 = domainEntityMap[requestDomain2];
 
-  if (!trackerEntity) return null;
-  
-  // check to make sure request didn't come from first party
-  // including other domains controlled by first party
-  // i.e. loads from other google domains on a google site doesn't count as a google tracker
-  if (!trackerEntity ||
-    (requestDomain === firstPartyHost) || 
-    (firstPartyEntity && trackerEntity && (firstPartyEntity === trackerEntity))
-  ) {
+  if (!trackerEntity && !trackerEntity2) {
+    // not a tracker at all
     return null;
   }
 
-  // if we got here we have a known third-party tracker
+  if (firstPartyEntity && 
+      ((requestDomain === firstPartyHost) ||
+       (requestDomain2 === firstPartyHost) ||
+       (trackerEntity === firstPartyEntity) ||
+       (trackerEntity2 === firstPartyEntity))
+  ) {
+    // tracker is from the same first party as domain
+    return null;
+  }
 
-  return {
-    domain: requestDomain,
-    name: domainEntityMap[requestDomain]
+  // we got a match on non-tldjs domain
+  if (trackerEntity) {
+    return {
+      domain: requestDomain,
+      name: trackerEntity
+    }
+  }
+
+  // we got a match on tldjs domain
+  if (trackerEntity2) {
+    return {
+      domain: requestDomain2,
+      name: trackerEntity2
+    }
   }
 }
 

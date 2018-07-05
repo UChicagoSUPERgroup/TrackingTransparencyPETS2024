@@ -1056,8 +1056,18 @@ export const queryNames = Object.keys(QUERIES);
  * @returns {any} result of query
  */
 export default async function makeQuery(queryName, args) {
+  if (!ttDb) {
+    // try to connect to database again
+    ttDb = await primaryDbPromise;
+
+    // if that also fails throw an error
+    if (!ttDb) {
+      throw new Error('database not initialized');
+    }
+  }
+
   if (!QUERIES[queryName]) {
-    throw new Error('Query does not exist');
+    throw new Error('Query ' + queryName + ' does not exist');
   }
   return await (QUERIES[queryName])(args);
 }
