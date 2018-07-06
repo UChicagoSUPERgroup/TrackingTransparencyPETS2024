@@ -26,25 +26,31 @@ export class TakeActionPage extends React.Component {
 
         <h1>Take Action</h1>
         <p>
-        You learned a lot through this extension... now what do you want to do?
+        We hope that you have learned something about online tracking by using our extension!
         <br/>
-        <br/>Note: these settings will NOT change the processing of your browser. These settings are for research purposes only; we will collect your preferences in order to inform what changes should be made.
+        <br/> Indicate your preferences here about online tracking and consumer transparency. Your selections here will <strong>not</strong> change the operation of your browser, but will help us continue our work. We may add your selections as features in the future.
+        <br/>
         </p>
-        <h2>Things you could do</h2>
+        <h2>What do you think about...</h2>
 
         <Panel id="collapsible-panel-example-2">
           <Panel.Heading>
             <Panel.Title toggle>
-              Advertisement Blocking
+              tracking to provide relevant advertisements?
             </Panel.Title>
           </Panel.Heading>
           <Panel.Collapse>
             <Panel.Body>
             <ListGroup>
-              <ListGroupItem href="#" active> 
-              Item 1</ListGroupItem>
-              <ListGroupItem>Item 2</ListGroupItem>
-              <ListGroupItem>&hellip;</ListGroupItem>
+              <ListGroupItem active> 
+              I want no tracking, even if I won't see any relevant advertisements
+              </ListGroupItem>
+              <ListGroupItem>
+              I'm okay with some tracking, if it means that I will see advertisements relevant to me
+              </ListGroupItem>
+              <ListGroupItem>
+              I'm okay with all tracking because I want to see advertisements relevant to me
+              </ListGroupItem>
             </ListGroup>
             </Panel.Body>
           </Panel.Collapse>
@@ -53,16 +59,16 @@ export class TakeActionPage extends React.Component {
         <Panel id="collapsible-panel-example-2">
           <Panel.Heading>
             <Panel.Title toggle>
-              Inference Control
+              your control over inferences made about you?
             </Panel.Title>
           </Panel.Heading>
           <Panel.Collapse>
             <Panel.Body>
 
           <FormGroup>
-            <Checkbox>Opt-out of all inferencing</Checkbox>
-            <Checkbox>Only non-sensitive inferencing</Checkbox>{' '}
-            <Checkbox>All inferencing is fine</Checkbox>
+            <Checkbox>I would opt-out of all inferencing</Checkbox>
+            <Checkbox>I would only want non-sensitive inferencing</Checkbox>{' '}
+            <Checkbox>Any and all inferencing is fine</Checkbox>
           </FormGroup>
 
             </Panel.Body>
@@ -72,7 +78,7 @@ export class TakeActionPage extends React.Component {
         <Panel id="collapsible-panel-example-2">
           <Panel.Heading>
             <Panel.Title toggle>
-              Something else
+              how third-party trackers collect information?
             </Panel.Title>
           </Panel.Heading>
           <Panel.Collapse>
