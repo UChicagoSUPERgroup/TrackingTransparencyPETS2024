@@ -17,6 +17,7 @@ import Checkbox from 'react-bootstrap/lib/Checkbox';
 import {LinkContainer} from 'react-router-bootstrap';
 
 import {Home, WaitingDataHome} from './Home';
+import {Intro, WaitingDataIntro} from './Intro';
 import InferencesPage from './Inferences';
 import TrackersList from './Trackers';
 import FirstPartyList from  './FirstParties';
@@ -96,6 +97,7 @@ The code for logclick logs ALL the click in every single page.
           </Navbar.Header>
           <Navbar.Collapse>
             {enoughData && <Nav>
+              <NavLink to="/intro"  title="Intro"/>
               <NavLink to="/trackers"  title="Trackers"/>
               <NavLink to="/inferences"  title="Inferences"/>
               <NavLink to="/domains"  title="Sites"/>
