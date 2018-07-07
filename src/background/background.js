@@ -349,6 +349,56 @@ async function importData(dataString) {
 window.importData = importData;
 
 /**
+ * resets all data
+ * sends message to database worker to empty database
+ */
+function resetAllData() {
+  databaseWorker.postMessage({
+    type: 'empty_db'
+  })
+
+  userstudy.setDefaultOptions();
+
+  // TODO: send message to server to wipe all data
+}
+window.resetAllData = resetAllData;
+
+/**
+ * Run on message recieved from database worker.
+ *
+ * @param  {Object} m
+ * @param  {Object} m.data - Content of the message
+ */
+function onDatabaseWorkerMessage(m) {
+  // console.log('Message received from database worker', m);
+
+  if (m.data.type === 'database_query_response') {
+
+    let p;
+    if (m.data.id) {
+      p = pendingDatabaseQueries[m.data.id];
+    }
+    if (m.data.error) {
+      // database gave us an error
+      // so we reject query promise
+      if (p) {
+        p.reject(m.data.error);
+      } else {
+        throw new Error(m.data.error);
+      }
+      return;
+    }
+
+    if (!p) {
+      console.log(m);
+      throw new Error('unable to resolve promise for database query response');
+    }
+    p.resolve(m.data);
+
+  }
+}
+
+/**
  * Run on message recieved from trackers worker.
  *
  * @param  {Object} m

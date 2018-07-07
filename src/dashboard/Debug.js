@@ -32,7 +32,7 @@ class DebugPage extends React.Component {
       inferenceFormField: 'Warehousing',
       afterDateFormField: '2018-01-01',
       countFormField: false,
-      importFormField: false,
+      importFormField: 'paste here',
       result: false,
       error: false,
       queryTime: false
@@ -103,6 +103,11 @@ componentDidMount() {
   async importData() {
     const background = await browser.runtime.getBackgroundPage();
     await background.importData(this.state.importFormField);
+  }
+
+  async resetAll() {
+    const background = await browser.runtime.getBackgroundPage();
+    await background.resetAllData();
   }
 
   handleChange(event) {
@@ -181,7 +186,7 @@ componentDidMount() {
               Recursive (on inference categories)
             </Checkbox>
           </FormGroup> */}
-          <Button type="submit" onClick={this.handleClick}>
+          <Button bsStyle="primary" type="submit" onClick={this.handleClick}>
             Query
           </Button>
           <Button type="submit" onClick={this.handleClickRecursive}>
@@ -203,9 +208,16 @@ componentDidMount() {
           value={this.state.importFormField}
           onChange={this.handleChange}
         />
-        <Button type="submit" onClick={this.importData}>
-            Import
-          </Button>
+        <Button bsStyle="info" type="submit" onClick={this.importData}>
+          Import data
+        </Button>
+        <br /> <br />
+        <Button  
+          bsStyle="danger"
+          type="submit"
+          onClick={this.resetAll}>
+          Reset all data
+        </Button>
       </div>
     );
   }

@@ -80,6 +80,13 @@ async function runTests(t) {
     // await equal(Object.keys(query)[0], 'Online Journals & Personal Sites', 'inference for cs.uchicago is correct');
     await ok(Object.keys(query)[0], 'inference for uchicago exists')
 
+    // LAST TEST
+    // try wiping database
+    background.resetAllData();
+    await sleep(5000);
+    query = await background.queryDatabase('getAllData', {});
+    await ok(query.pages.length === 0, 'after emptying database no pages exist')
+
   }, pages);
 
   t.end();

@@ -978,16 +978,6 @@ async function getTitlesByDomain(args) {
 }
 
 
-/**
- * erases all entries in database
- */
-async function emptyDB() {
-  let emptyInferences = ttDb.delete().from(Inferences).exec();
-  let emptyTrackers = ttDb.delete().from(Trackers).exec();
-  let emptyPages = ttDb.delete().from(Pages).exec();
-  await Promise.all([emptyInferences, emptyTrackers, emptyPages]);
-}
-
 /* ========= */
 
 const QUERIES = {
@@ -1042,8 +1032,6 @@ const QUERIES = {
   // getTrackersByInferenceCount: getTrackersByInferenceCount,
   // getTrackersReverse: getTrackersReverse,
   // getTrackerWithInferencesByDomain: getTrackerWithInferencesByDomain,
-
-  emptyDB: emptyDB
 };
 
 export const queryNames = Object.keys(QUERIES);
