@@ -31,6 +31,10 @@ function injectOverlay(innerHTML) {
     });
   })
 
+  // dismiss overlay after 5 seconds
+  setTimeout(() => {
+    iframe.parentElement.removeChild(iframe);
+  }, 5000);
 }
 
 async function runtimeOnMessage(m) {
