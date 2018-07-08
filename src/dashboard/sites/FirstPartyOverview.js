@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
-import logging from './dashboardLogging';
+import logging from '../dashboardLogging';
 import ReactTable from 'react-table';
 import {Grid, Row, Col} from 'react-bootstrap';
 import FirstPartyDetails from './FirstPartyDetails';
@@ -13,14 +13,14 @@ const RecentTable = (data) => {
     <ReactTable
       data={data}
       columns={[
-        {Header: numEntries + " recently visited sites",
-         accessor: "DISTINCT(domain)",
-         Cell: row => (
-           <div key={row.value}>
+        {Header: numEntries + ' recently visited sites',
+          accessor: 'DISTINCT(domain)',
+          Cell: row => (
+            <div key={row.value}>
               <Link className='domainTableLinkTrackersPage' to={{pathname: '/domains/' + row.value}}>
-                 {row.value}
+                {row.value}
               </Link>
-           </div>)
+            </div>)
         }
       ]}
       defaultPageSize={10}
@@ -37,15 +37,15 @@ const NoTrackerTable = (data) => {
     <ReactTable
       data={data}
       columns={[
-        {Header: "Sites without trackers (" + numEntries + ")",
-         accessor: d => d,
-         id: "domain",
-         Cell: row => (
-           <div key={row.value}>
+        {Header: 'Sites without trackers (' + numEntries + ')',
+          accessor: d => d,
+          id: 'domain',
+          Cell: row => (
+            <div key={row.value}>
               <Link className='domainTableLinkTrackersPage' to={{pathname: '/domains/' + row.value}}>
-                 {row.value}
+                {row.value}
               </Link>
-           </div>)
+            </div>)
         }
       ]}
       defaultPageSize={10}
@@ -64,22 +64,22 @@ const ManyTrackersTable = (data) => {
     <ReactTable
       data={data}
       columns={[
-        {Header: numEntries + " sites with the most trackers",
-         accessor: d => d.Pages.domain,
-         id: "domain",
-         Cell: row => (
-           <div key={row.value}>
+        {Header: numEntries + ' sites with the most trackers',
+          accessor: d => d.Pages.domain,
+          id: 'domain',
+          Cell: row => (
+            <div key={row.value}>
               <Link className='domainTableLinkTrackersPage' to={{pathname: '/domains/' + row.value}}>
-                 {row.value}
+                {row.value}
               </Link>
-           </div>)
+            </div>)
         },
-        {Header: "Unique trackers",
-         accessor: d => d.Trackers["COUNT(DISTINCT(tracker))"],
-         id: "trackers",
-         Cell: row => (
-           row.value),
-         maxWidth: 200
+        {Header: 'Unique trackers',
+          accessor: d => d.Trackers['COUNT(DISTINCT(tracker))'],
+          id: 'trackers',
+          Cell: row => (
+            row.value),
+          maxWidth: 200
         }
       ]}
       defaultPageSize={10}
@@ -94,7 +94,7 @@ const ManyTrackersTable = (data) => {
 
 
 
-class FirstPartyList extends React.Component {
+export default class FirstPartyOverview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -124,7 +124,7 @@ class FirstPartyList extends React.Component {
     let pages = []
     if (recent) {
       for (let i=0; i < recent.length; i++) {
-        let value = await background.hashit_salt(domains[i]["Pages"]["domain"])
+        let value = await background.hashit_salt(domains[i]['Pages']['domain'])
         pages.push(value)
       }
     }
@@ -139,32 +139,29 @@ class FirstPartyList extends React.Component {
         <Route path={`${this.props.match.url}/:name`}  component={FirstPartyDetails}/>
         <Route exact path={this.props.match.url} render={() => (
           <div>
-          <h1>Domains</h1>
-          <Grid>
-            <Row>
-              <Col md={3}>
-                <div>
-                  {RecentTable(this.state.recent)}
-                </div>
-              </Col>
-              <Col md={6}>
-                <div>
-                  {ManyTrackersTable(this.state.manyTrackers)}
-                </div>
-              </Col>
-              <Col md={3}>
-                <div>
-                  {NoTrackerTable(this.state.noTrackers)}
-                </div>
-              </Col>
-            </Row>
-          </Grid>
+            <h1>Domains</h1>
+            <Grid>
+              <Row>
+                <Col md={3}>
+                  <div>
+                    {RecentTable(this.state.recent)}
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <div>
+                    {ManyTrackersTable(this.state.manyTrackers)}
+                  </div>
+                </Col>
+                <Col md={3}>
+                  <div>
+                    {NoTrackerTable(this.state.noTrackers)}
+                  </div>
+                </Col>
+              </Row>
+            </Grid>
           </div>
         )}/>
       </div>
     );
   }
 }
-
-
-export default FirstPartyList;

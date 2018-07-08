@@ -7,16 +7,14 @@ import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
-import tt from '../helpers';
-import sensitiveCats from '../data/categories_comfort_list.json';
-
+import sensitiveCats from '../../data/categories_comfort_list.json';
 
 import InferenceDetails from './InferenceDetails';
 import InferencesSunburst from './InferencesSunburst';
 
-import logging from './dashboardLogging';
+import logging from '../dashboardLogging';
 
-class InferencesPage extends React.Component {
+export default class InferencesOverview extends React.Component {
   constructor(props) {
     super(props);
     this.inferenceCount = 100;
@@ -208,6 +206,3 @@ class InferencesPage extends React.Component {
     );
   }
 }
-
-
-export default InferencesPage;

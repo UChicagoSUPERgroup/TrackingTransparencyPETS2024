@@ -5,18 +5,11 @@ import {
   FlexibleWidthXYPlot,
   XAxis,
   YAxis,
-  HorizontalGridLines,
-  VerticalGridLines,
   MarkSeries,
   Hint
 } from 'react-vis';
 
-import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
-import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
-import ToggleButton from 'react-bootstrap/lib/ToggleButton';
-
-import tt from '../helpers';
-import las from '../labels';
+import las from '../../labels';
 
 
 export default class PagesTimeScatterplot extends React.Component {
@@ -48,7 +41,7 @@ export default class PagesTimeScatterplot extends React.Component {
   render() {
     const {times, grouping, index} = this.state;
     const {dateLabel, timeLabelSimple, timeLabelAdjusted,
-       dayOfWeekLabel, dayOfWeekLabelAdjusted, stringLabel} = las;
+      dayOfWeekLabel, dayOfWeekLabelAdjusted, stringLabel} = las;
 
     let grouped;
     let data = [];
@@ -82,7 +75,7 @@ export default class PagesTimeScatterplot extends React.Component {
           yDomain={[0,7]}
           margin={{left: 100, right: 50, top: 10, bottom: 50}}
           colorDomain={[0, 1]}
-          colorRange={["#616530", "#8A9045"]}
+          colorRange={['#616530', '#8A9045']}
           onMouseLeave={() => this.setState({index: [null,null]})}>
           <MarkSeries
             onValueClick={(datapoint, event)=>{
@@ -109,7 +102,7 @@ export default class PagesTimeScatterplot extends React.Component {
                   { `${index[1].size} pages` }
                 </div>
                 <div>
-                { `${dayOfWeekLabelAdjusted(index[1].y)} at ${timeLabelSimple(index[1].x)}`}
+                  { `${dayOfWeekLabelAdjusted(index[1].y)} at ${timeLabelSimple(index[1].x)}`}
                 </div>
               </div>
             </Hint> :

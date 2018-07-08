@@ -4,7 +4,7 @@ import ReactTable from 'react-table';
 import {Panel, Grid, Row, Col} from 'react-bootstrap';
 
 
-import categories from '../data/categories_comfort_list.json';
+import categories from '../../data/categories_comfort_list.json';
 
 
 const SiteTable = (data) => {
@@ -12,17 +12,17 @@ const SiteTable = (data) => {
     <ReactTable
       data={data}
       columns={[
-        {Header: "Site",
-         accessor: "domain",
-         Cell: row => (
-           <div key={row.value}>
+        {Header: 'Site',
+          accessor: 'domain',
+          Cell: row => (
+            <div key={row.value}>
               <Link className='domainTableLinkInferencesPage'  to={{pathname: '/domains/' + row.value}}>
-                 {row.value}
+                {row.value}
               </Link>
-           </div>)
+            </div>)
         },
-        {Header: "Page Visits",
-         accessor: "count"},
+        {Header: 'Page Visits',
+          accessor: 'count'},
       ]}
       defaultPageSize={20}
       showPageJump={false}
@@ -37,17 +37,17 @@ const TrackerTable = (data) => {
     <ReactTable
       data={data}
       columns={[
-        {Header: "Trackers",
-         accessor: "tracker",
-         Cell: row => (
-           <div key={row.value}>
+        {Header: 'Trackers',
+          accessor: 'tracker',
+          Cell: row => (
+            <div key={row.value}>
               <Link className = "trackerTableLinkInferencesPage" to={{pathname: '/trackers/' + row.value}}>
-                 {row.value}
+                {row.value}
               </Link>
-           </div>)
+            </div>)
         },
-        {Header: "Page Visits",
-         accessor: "count"},
+        {Header: 'Page Visits',
+          accessor: 'count'},
       ]}
       defaultPageSize={20}
       showPageJump={false}
@@ -65,9 +65,9 @@ const SensitivePanel = (inference) => {
       <Panel.Body>
         <em>{inference}</em>
         {sensitive ?
-          " may be considered a sensitive topic." :
-          " is likely not a sensitive topic."
-      }
+          ' may be considered a sensitive topic.' :
+          ' is likely not a sensitive topic.'
+        }
       </Panel.Body>
     </Panel>
   );

@@ -12,16 +12,18 @@ import {LinkContainer} from 'react-router-bootstrap';
 
 import {Home, WaitingDataHome} from './Home';
 import IntroModal from './IntroModal';
-import InferencesPage from './Inferences';
-import TrackersList from './Trackers';
-import FirstPartyList from  './FirstParties';
-import RecentPage from './Recent';
+import InferenceOverview from './inferences/InferenceOverview';
+import TrackerOverview from './trackers/TrackerOverview';
+import FirstPartyOverview from  './sites/FirstPartyOverview';
+import ActivityOverview from './activity/ActivityOverview';
 import AboutPage from './About';
 import TakeActionPage from './TakeAction';
 import DebugPage from './Debug';
 import LightbeamWrapper from './LightbeamWrapper';
+
 import tt from '../helpers';
-import COLORS from '../colors';
+
+// import COLORS from '../colors';
 
 import '../styles/common.css';
 import '../styles/dashboard.css';
@@ -107,7 +109,7 @@ The code for logclick logs ALL the click in every single page.
               <NavLink to="/trackers"  title="Trackers"/>
               <NavLink to="/inferences"  title="Inferences"/>
               <NavLink to="/domains"  title="Sites"/>
-              <NavLink to="/recent"  title="Activity"/>
+              <NavLink to="/activty"  title="Activity"/>
               {lightbeamcondition && <NavLink to="/lightbeam"  title="Time"/>}
             </Nav>}
             <Nav pullRight>
@@ -133,10 +135,10 @@ The code for logclick logs ALL the click in every single page.
 
             {enoughData && <div>
               <Route exact path="/" component={Home}/>
-              <Route path="/inferences" component={InferencesPage}/>
-              <Route path="/trackers" component={TrackersList}/>
-              <Route path="/domains" component={FirstPartyList}/>
-              <Route path="/recent" component={RecentPage}/>
+              <Route path="/inferences" component={InferenceOverview}/>
+              <Route path="/trackers" component={TrackerOverview}/>
+              <Route path="/domains" component={FirstPartyOverview}/>
+              <Route path="/activity" component={ActivityOverview}/>
               {lightbeamcondition && <Route path="/lightbeam" component={LightbeamWrapper}/>}
             </div>}
 
