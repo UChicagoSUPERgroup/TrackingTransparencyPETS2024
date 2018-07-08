@@ -116,6 +116,8 @@ The code for logclick logs ALL the click in every single page.
 
             {enoughData && <div>
               <Route exact path="/" component={Home}/>
+              {/* TODO: just so I can see the intro page */}
+              <Route path="/intro" component={Intro}/>
               <Route path="/inferences" component={InferencesPage}/>
               <Route path="/trackers" component={TrackersList}/>
               <Route path="/domains" component={FirstPartyList}/>

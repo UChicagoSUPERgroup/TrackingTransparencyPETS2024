@@ -9,30 +9,23 @@ const inferenceList = (data) => {
     <div>
       {data.map(function(dataValue) {
         let key = dataValue["DISTINCT(inference)"]
-        return (<p key={key}>
+        return (<span key={key}>
           <Link to={{pathname: '/inferences/' + key}}>
-             {key}
+             {key},&nbsp;
           </Link>
-        </p>);
+        </span>);
       })}
     </div>
   )
 }
 
-const domainList = (data) => {
-  return (
-    <div>
-      {data.map(function(dataValue) {
-        let key = dataValue["DISTINCT(domain)"]
-        return (<p key={key}>
-          <Link to={{pathname: '/domains/' + key}}>
-             {key}
-          </Link>
-        </p>);
-      })}
-    </div>
-  )
-}
+const trackerList = (data) => {
+  return (<div>
+      {data.map(p => <span key={p.id}>{p.tracker}</span>)     // get just tracker name
+           .reduce((prev, curr) => [prev, ', ', curr])        // comma-delimit
+      }
+    </div>);
+  }
 
 
 export class Intro extends React.Component {
@@ -53,15 +46,14 @@ export class Intro extends React.Component {
     const numTrackers = background.queryDatabase('getNumberOfTrackers', {});
     const numInferences = background.queryDatabase('getNumberOfInferences', {});
     const recentInferences = background.queryDatabase('getInferencesByTime', args);
-    const recentDomains = background.queryDatabase('getDomainsByTime', args);
-    console.log(recentDomains);
+    const topTrackers = background.queryDatabase('getTrackers', args);
 
     // we use promises here instead of async/await because queries are not dependent on each other
     numPages.then(n => this.setState({numPages: n}));
     numTrackers.then(n => this.setState({numTrackers: n}));
     numInferences.then(n => this.setState({numInferences: n}));
     recentInferences.then(n => this.setState({recentInferences: n}))
-    recentDomains.then(n => this.setState({recentDomains: n}))
+    topTrackers.then(n => this.setState({topTrackers: n}))
   }
 
   async componentDidMount() {
@@ -70,68 +62,14 @@ export class Intro extends React.Component {
   }
 
   render() {
-    const {numTrackers, numInferences, numPages, recentInferences, recentDomains} = this.state;
+    const {numTrackers, numInferences, numPages, recentInferences, topTrackers} = this.state;
     return (
       <div>
-        <h1>Tracking Transparency</h1>
-        <Grid>
-          <Row>
-            <div className="introText">
-
-              <p>There are thousands of trackers on the web. The ones you encounter most frequently are ???, ???, and ???. By seeing your browsing, they have inferred that you are interested in ???, ???, and ??? based on your visits to ??? </p>
-
-              <p>In total, <em>{numTrackers} trackers</em> have seen you visit <em>{numPages} pages</em>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <em>{numInferences} topics</em>.</p>
-
-              {/* <p>See all the the trackers and inferences on a specific domain, such as <Link to={{pathname: '/domains/www.nytimes.com'}}>www.nytimes.com</Link> or <Link to={{pathname: '/domains/www.yahoo.com'}}>www.yahoo.com</Link>. Learn about a specific tracker such as <Link to={{pathname: '/trackers/Google'}}>Google</Link>. See all the <Link to={{pathname: '/inferences'}}>inferences</Link>  companies may have made about your browsing, or view details about a specific inference such as <Link to={{pathname: '/inferences/warehousing'}}>warehousing</Link>.</p> */}
-            </div>
-          </Row>
-          <Row>
-            <Col md={2}>
-            <Panel bsStyle="primary">
-              <Panel.Heading>
-                <Panel.Title>Trackers Seen</Panel.Title>
-              </Panel.Heading>
-              <Panel.Body><h2>{numTrackers}</h2></Panel.Body>
-            </Panel>
-            </Col>
-            <Col md={2}>
-            <Panel bsStyle="primary">
-              <Panel.Heading>
-                <Panel.Title>Pages Visited</Panel.Title>
-              </Panel.Heading>
-              <Panel.Body><h2>{numPages}</h2></Panel.Body>
-            </Panel>
-            </Col>
-            <Col md={2}>
-            <Panel bsStyle="primary">
-              <Panel.Heading>
-                <Panel.Title>Inferred Interests</Panel.Title>
-              </Panel.Heading>
-              <Panel.Body><h2>{numInferences}</h2></Panel.Body>
-            </Panel>
-            </Col>
-            <Col md={3}>
-            <Panel bsStyle="primary">
-              <Panel.Heading>
-                <Panel.Title>Recent Inferences</Panel.Title>
-              </Panel.Heading>
-              <Panel.Body>
-                {recentInferences ? inferenceList(recentInferences) : ""}
-              </Panel.Body>
-            </Panel>
-            </Col>
-            <Col md={3}>
-            <Panel bsStyle="primary">
-              <Panel.Heading>
-                <Panel.Title>Recent Sites</Panel.Title>
-              </Panel.Heading>
-              <Panel.Body>
-                {recentDomains ? domainList(recentDomains) : ""}
-              </Panel.Body>
-            </Panel>
-            </Col>
-          </Row>
-        </Grid>
+        <h1> Welcome to Tracking Transparency!</h1>
+        <p> When you browse the Internet, you will encounter trackers online that track your browsing activity. In the last week, you visited <strong>{numPages} pages</strong> and encountered <strong>{numTrackers} trackers</strong>. </p>
+        <p> The trackers that you have encountered most frequently are {topTrackers ? trackerList(topTrackers) : ""}.</p>
+        <p> These companies could have inferred your interest in <strong>{numInferences} topics</strong>, like {recentInferences ? inferenceList(recentInferences) : ""} </p>
+        <p>Continue to the Tracking Transparency homepage to learn more about the trackers you have encountered, what they might have learned about you, and more.</p>
       </div>
     )
   }
