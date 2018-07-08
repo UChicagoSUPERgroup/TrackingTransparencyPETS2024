@@ -71,7 +71,7 @@ The code for logclick logs ALL the click in every single page.
     //window.removeEventListener("beforeunload", this.logLeave)
     //window.removeEventListener("unload", this.logLeave)
     //browser.tabs.onRemoved.removeListener(this.logLeave)
-    window.removeEventListener("click", logging.logDashboardClick)
+    window.removeEventListener('click', logging.logDashboardClick)
   }
 
   async componentDidMount() {
@@ -81,7 +81,7 @@ The code for logclick logs ALL the click in every single page.
     const param = await browser.storage.local.get('lightbeamcondition');
     this.setState({lightbeamcondition: JSON.parse(param.lightbeamcondition)});
     logging.logStartDashboardPage();
-    window.addEventListener("click", logging.logDashboardClick, true);
+    window.addEventListener('click', logging.logDashboardClick, true);
 
     //window.addEventListener("unload", this.logLeave, true);
     //browser.tabs.onRemoved.addListener(this.logLeave)
