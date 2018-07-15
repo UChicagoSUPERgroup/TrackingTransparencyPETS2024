@@ -19,7 +19,7 @@ module.exports = {
 
     // user facing pages
     popup: './src/popup/index.js',
-    dashboard: './src/dashboard/index.js',
+    dashboard: './src/dashboard/App.js',
 
     lightbeam: './src/lightbeam/lightbeam.js'
   },
