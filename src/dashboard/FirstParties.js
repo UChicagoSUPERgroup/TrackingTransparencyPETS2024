@@ -139,7 +139,7 @@ class FirstPartyList extends React.Component {
         <Route path={`${this.props.match.url}/:name`}  component={FirstPartyDetails}/>
         <Route exact path={this.props.match.url} render={() => (
           <div>
-          <h1>Domains</h1>
+          <h1>Where were you tracked?</h1>
           <Grid>
             <Row>
               <Col md={3}>

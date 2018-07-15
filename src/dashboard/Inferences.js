@@ -151,8 +151,8 @@ class InferencesPage extends React.Component {
         <Route path={`${this.props.match.url}/:name`} component={InferenceDetails}/>
         <Route exact path={this.props.match.url} render={() => (
           <div>
-            <p>The Tracking Transparency extension is able to infer a topic for all the pages that you visit. Online advertisers and trackers most likely are able to make similar inferences about your browsing. This chart shows the {this.inferenceCount} topics that appeared the most in your browsing. You can click on a topic on the diagram to see how companies could have made a specific inference about you.</p>
-            {inferences && inferences.length >= 3 && <p>Some of the most frequent inferences made about you include {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)}</p>}
+            <p>Trackers collect users' information to show targeted ads, for analytics purposes, and more. Based on your browsing history, trackers may have inferred your interest in <strong>{this.inferenceCount} topics</strong>.</p>
+            {inferences && inferences.length >= 3 && <p>Trackers most frequently inferred that you are interested in {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)}.</p>}
             {/* {inferences && <div className='suggested-inferences'>
               <p><strong>Suggested inferences to explore:</strong></p>
               <ul>

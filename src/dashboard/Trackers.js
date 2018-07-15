@@ -159,11 +159,11 @@ class TrackersList extends React.Component {
 
     return(
       <div>
-        <h1>Trackers</h1>
-        <p><em>{numTrackers} trackers</em> are tracking your browsing. Your most
-          frequently encountered tracker is <em>{topTracker}</em> which is
+        <h1>Who is tracking you?</h1>
+        <p><em>{numTrackers} trackers</em> have collected information about you based on your browsing history. Your most
+          frequently encountered tracker is <em>{topTracker}</em>, which was
           present on <em>{topPercent}%</em> of
-          the pages you visit.
+          the sites you visited.
           Here are your 20 most frequently encountered trackers:</p>
         <Grid>
           <Row>

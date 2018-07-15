@@ -140,7 +140,7 @@ export default class RecentPage extends React.Component {
 
     return(
       <div>
-        <h1>Recent Activity</h1>
+        <h1>When were you tracked?</h1>
         <Route exact path={this.props.match.url} render={() => (
           <div>
             <Grid>
