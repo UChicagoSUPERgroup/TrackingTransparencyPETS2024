@@ -1,5 +1,3 @@
-'use strict';
-
 /** @module helpers */
 
 const production = (process.env.NODE_ENV === 'production');
@@ -33,6 +31,7 @@ function readTextFile(file) {
 
 /** Destringifies an object.
  * @param  {string} object
+ * @returns {Object}
  */
 function deserialize(object) {
   return typeof object == 'string' ? JSON.parse(object) : object;

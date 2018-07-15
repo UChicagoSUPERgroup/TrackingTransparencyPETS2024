@@ -1,43 +1,55 @@
 import makeInference from './inferencing';
-import Overlay from './overlay';
+import overlayStyles from './overlay_styles';
 import tt from '../helpers';
+
+let iframe, overlayContent;
 
 makeInference();
 
-let overlay;
+function injectOverlay(innerHTML) {
+  // create div
+  iframe = document.createElement('iframe');
+  iframe.id = 'trackingtransparency_overlay';
+  iframe.srcdoc = '<div id="tt_closebutton">&#10005;</div><div id="tt_overlay_content"></div>'
+  iframe.style = overlayStyles.outer;
 
-async function injectOverlay() {
+  // add to page
+  document.documentElement.appendChild(iframe);
+  iframe.onclick = (() => {
+    iframe.parentElement.removeChild(iframe);
+  });
 
-  const q = await browser.storage.local.get('overlayCondition');
+  iframe.onload = (() => {
+    const style = document.createElement('style');
+    style.textContent = overlayStyles.inner;
+    iframe.contentDocument.head.appendChild(style);
 
-  if (q.overlayCondition == 'none') {
-    return;
-  }
+    iframe.contentDocument.getElementById('tt_overlay_content').innerHTML = innerHTML;
+    overlayContent = iframe.contentDocument.getElementById('tt_overlay_content');
+    iframe.contentDocument.getElementById('tt_closebutton').onclick = (() => {
+      iframe.parentElement.removeChild(iframe);
+    });
+  })
 
-  overlay = new Overlay();
-
-  await tt.sleep(2000);
-  overlay.inject();
-  
-  await tt.sleep(5000);
-  overlay.remove();
+  // dismiss overlay after 5 seconds
+  setTimeout(() => {
+    iframe.parentElement.removeChild(iframe);
+  }, 5000);
 }
 
-injectOverlay();
-
-function runtimeOnMessage(m, sender, sendResponse) {
+async function runtimeOnMessage(m) {
   console.log('got msg from background', m)
   switch (m.type) {
-  case 'page_inference':
-    if (overlay) {
-      overlay.addInference(m.info.inference);
+  case 'create_or_update_overlay':
+    if (overlayContent) {
+      overlayContent.innerHTML = m.innerHTML;
+    } else {
+      injectOverlay(m.innerHTML);
     }
     break;
-  case 'page_trackers':
-    if (overlay) {
-      overlay.updateTrackers(m.trackers);
-    }
+  case 'remove_overlay':
+    iframe.parentElement.removeChild(iframe);
     break;
   }
 }
-chrome.runtime.onMessage.addListener(runtimeOnMessage)
+chrome.runtime.onMessage.addListener(runtimeOnMessage);

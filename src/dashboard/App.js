@@ -17,6 +17,7 @@ import TrackersList from './Trackers';
 import FirstPartyList from  './FirstParties';
 import RecentPage from './Recent';
 import AboutPage from './About';
+import TakeActionPage from './TakeAction';
 import DebugPage from './Debug';
 import LightbeamWrapper from './LightbeamWrapper';
 import tt from '../helpers';
@@ -113,6 +114,7 @@ The code for logclick logs ALL the click in every single page.
               <NavItem onClick={this.handleModalShow}>Show Intro</NavItem>
               {!tt.production && <NavLink to="/debug"  title="Debug"/>}
               <NavLink to="/about"  title="About"/>
+              <NavLink to="/takeaction"  title="Take Action"/>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
@@ -141,6 +143,7 @@ The code for logclick logs ALL the click in every single page.
             {!enoughData &&<Route exact path="/" component={WaitingDataHome}/>}
 
             <Route path="/about" component={AboutPage}/>
+            <Route path="/takeaction" component={TakeActionPage}/>
             <Route path="/debug" component={DebugPage}/>
           </div>
 
