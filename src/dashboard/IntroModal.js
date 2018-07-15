@@ -7,46 +7,33 @@ const millisecondsInDay = 86400000;
 const inferenceList = (data) => {
   console.log(data)
   return (
-    <div>
-      {data.map(p => <span>
-          <strong> {p["DISTINCT(inference)"]} </strong>
-      </span>)
-      .reduce((prev, curr) => [prev, ', ', curr])        // comma-delimit
+    <p>
+      {data.map(p => (
+        <span key={p.id}>
+          <strong>{p["DISTINCT(inference)"]}</strong>
+        </span>))
+        .reduce((prev, curr) => [prev, ', ', curr])
       }
-    </div>);
+    </p>);
 }
 
 const trackerList = (data) => {
-  return (<div>
-      {data.map(p => <span key={p.id}>
+  return (<p>
+    {data.map(p => (
+      <span key={p.id}>
         <strong>{p.tracker}</strong>
-      </span>)     // get just tracker name
-           .reduce((prev, curr) => [prev, ', ', curr])        // comma-delimit
-      }
-    </div>);
+      </span>))
+     .reduce((prev, curr) => [prev, ', ', curr])
+    }
+    </p>);
   }
 
-export class Intro extends React.Component {
+export default class IntroModal extends React.Component {
   constructor(props) {
     super(props);
-
-    this.handleShow = this.handleShow.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-
-    this.state = {
-      show: true
-    };
-    //this.logClick = this.logClick.bind(this);
-    //this.logLoad = this.logLoad.bind(this);
+    this.state = {};
   }
 
-  handleClose() {
-    this.setState({ show: false });
-  }
-
-  handleShow() {
-    this.setState({ show: true });
-  }
 
   async getData() {
     const background = await browser.runtime.getBackgroundPage();
@@ -68,35 +55,32 @@ export class Intro extends React.Component {
 
   async componentDidMount() {
     this.getData();
-    //this.logLoad(); //will directly load it in App.js
   }
 
   render() {
     const {numTrackers, numInferences, numPages, recentInferences, topTrackers} = this.state;
     return (
-      <div>
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Modal.Title closebutton="true"></Modal.Title>
+      <Modal show={this.props.show} onHide={this.props.onHide}>
+        <Modal.Title closebutton="true"></Modal.Title>
 
-          <Modal.Body>
-            <h2>Welcome to Tracking Transparency!</h2>
-            <p> When you browse the Internet, third-party trackers can see your browsing activity and sell this information to advertising companies. We hope this extension will help you understand who is tracking you and what they could have learned.</p>
-            <p> In the last week, you visited <strong>{numPages} pages</strong> and encountered <strong>{numTrackers} trackers</strong>.</p>
-            <hr />
-            <h4> Your top 5 trackers: </h4>
-            <p>{topTrackers ? trackerList(topTrackers) : ""}</p>
-            <hr />
-            <h4> Your top 5 inferred interests: </h4>
-            <p> {recentInferences ? inferenceList(recentInferences) : ""} </p>
-            <hr />
-            <p>Continue to the homepage to learn more about the trackers you have encountered, what they might have learned about you, and more.</p>
-          </Modal.Body>
+        <Modal.Body>
+          <h2>Welcome to Tracking Transparency!</h2>
+          <p> When you browse the Internet, third-party trackers can see your browsing activity and sell this information to advertising companies. We hope this extension will help you understand who is tracking you and what they could have learned.</p>
+          <p> In the last week, you visited <strong>{numPages} pages</strong> and encountered <strong>{numTrackers} trackers</strong>.</p>
+          <hr />
+          <h4> Your top 5 trackers: </h4>
+          <p>{topTrackers ? trackerList(topTrackers) : ""}</p>
+          <hr />
+          <h4> Your top 5 inferred interests: </h4>
+          <p> {recentInferences ? inferenceList(recentInferences) : ""} </p>
+          <hr />
+          <p>Continue to the homepage to learn more about the trackers you have encountered, what they might have learned about you, and more.</p>
+        </Modal.Body>
 
-          <Modal.Footer>
-            <Button onClick={this.handleClose}>Continue</Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+        <Modal.Footer>
+          <Button onClick={this.props.onHide}>Continue</Button>
+        </Modal.Footer>
+      </Modal>
 
       // <div>
       //   <h1> Welcome to Tracking Transparency!</h1>
