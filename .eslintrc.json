@@ -8,19 +8,20 @@
     "mocha": true
   },
   "plugins": [
-      "react"
+      "react",
+      "no-unsanitized"
   ],
   "parserOptions": {
-    "ecmaVersion": 8,
+    "ecmaVersion": 2018,
     "sourceType": "module",
     "ecmaFeatures": {
-        "jsx": true,
-        "experimentalObjectRestSpread": true
+        "jsx": true
     }
   },
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:no-unsanitized/DOM"
   ],
   "rules": {
     "no-console": "off",
