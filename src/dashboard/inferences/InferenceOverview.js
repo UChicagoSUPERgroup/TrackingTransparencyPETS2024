@@ -171,7 +171,7 @@ export default class InferencesOverview extends React.Component {
                 </Col>
                 <Col md={6}>
                   <div className={'inferences-sunburst-filters'}>
-                    <p className={'selected-inference'}><strong>{selectedInference ? 'Click the link below to learn more about this inference.' : 'Hover over the inference wheel to see inferences that trackers could have made about you.'}</strong></p>
+                    <p className={'selected-inference'}><strong>{selectedInference ? 'Click the link below to learn more about this inference.' : 'Click a slice of the inference wheel to see inferences that trackers could have made about you.'}</strong></p>
                     <p><strong><Link className = "inferencePageSelected-Inference" to={{pathname: '/inferences/' + selectedInference}}>{selectedInference}</Link></strong></p>
                     <p><br /><br /><br /><br /><br /><br /></p>
 
