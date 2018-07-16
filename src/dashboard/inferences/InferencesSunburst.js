@@ -31,6 +31,21 @@ function getKeyPath(node) {
 
 let colorCounter = 0;
 
+function rand(min, max) {
+    return parseInt(Math.random() * (max-min+1), 10) + min;
+}
+
+/**
+ * Get a random (bluish) color
+ * @returns {String} a hex color
+ */
+function getPrettyColor() {
+  var h = rand(180, 250);
+  var s = rand(30, 100);
+  var l = rand(20, 70);
+  return 'hsl(' + h + ',' + s + '%,' + l + '%)';
+}
+
 /**
  * Recursively modify data depending on whether or not each cell has been selected by the hover/highlight
  * @param {Object} data - the current node being considered
@@ -44,10 +59,12 @@ function updateData(data, keyPath, parentColor) {
   if (!data.color) {
     if (!parentColor) {
       // data.color = PRIMARIES[(colorCounter++) % PRIMARIES.length]
-      data.color = COLORS.UC_BLUE_1;
+      // data.color = COLORS.UC_BLUE_1;
+      data.color = getPrettyColor();
     } else {
       data.color = parentColor;
     }
+
 
     // data.style = {
     //   fill: randomColor
@@ -211,8 +228,8 @@ export default class InferencesSunburst extends React.Component {
           }}
           colorType="literal"
           data={data}
-          height={400}
-          width={400}>
+          height={500}
+          width={500}>
           {finalValue && <LabelSeries data={[
             {x: 0, y: 0, label: finalValue, style: LABEL_STYLE}
           ]} />}

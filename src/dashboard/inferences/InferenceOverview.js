@@ -145,10 +145,6 @@ export default class InferencesOverview extends React.Component {
 
     return(
       <div>
-
-
-
-
         <Route path={`${this.props.match.url}/:name`} component={InferenceDetails}/>
         <Route exact path={this.props.match.url} render={() => (
           <div>
@@ -170,10 +166,17 @@ export default class InferencesOverview extends React.Component {
 
             <Grid>
               <Row>
-                <Col md={6} mdPush={6}>
+                <Col md={6}>
+                  {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference}/>}
+                </Col>
+                <Col md={6}>
                   <div className={'inferences-sunburst-filters'}>
-                    <h3>Filters</h3>
-                    <div className={'filter-row'}>Inferences sensitivity: <ToggleButtonGroup
+                    <p className={'selected-inference'}><strong>{selectedInference ? 'Click the link below to learn more about this inference.' : 'Hover over the inference wheel to see inferences that trackers could have made about you.'}</strong></p>
+                    <p><strong><Link className = "inferencePageSelected-Inference" to={{pathname: '/inferences/' + selectedInference}}>{selectedInference}</Link></strong></p>
+                    <p><br /><br /><br /><br /><br /><br /></p>
+
+                    <h3>Inference Wheel Filters</h3>
+                    <div className={'filter-row'}>Inference sensitivity: <ToggleButtonGroup
                       name="sensitivity-filter"
                       value={this.state.sensitivitySelection}
                       onChange={this.handleSensitivitySelection}
@@ -192,12 +195,6 @@ export default class InferencesOverview extends React.Component {
                       <ToggleButton className = "inferencePageDateChoose" value={'past-week'} bsSize="small">Last week</ToggleButton>
                     </ToggleButtonGroup></div>
                   </div>
-
-                  <p className={'selected-inference'}><em>{selectedInference ? 'Click on the diagram to unselect the current category' : 'Click a category to see more information'}</em></p>
-                  <p><strong><Link className = "inferencePageSelected-Inference" to={{pathname: '/inferences/' + selectedInference}}>{selectedInference}</Link></strong></p>
-                </Col>
-                <Col md={6} mdPull={6}>
-                  {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference}/>}
                 </Col>
               </Row>
             </Grid>
