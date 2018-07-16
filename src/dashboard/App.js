@@ -109,7 +109,7 @@ The code for logclick logs ALL the click in every single page.
               <NavLink to="/trackers"  title="Trackers"/>
               <NavLink to="/inferences"  title="Inferences"/>
               <NavLink to="/domains"  title="Sites"/>
-              <NavLink to="/activty"  title="Activity"/>
+              <NavLink to="/activity"  title="Activity"/>
               {lightbeamcondition && <NavLink to="/lightbeam"  title="Time"/>}
             </Nav>}
             <Nav pullRight>
