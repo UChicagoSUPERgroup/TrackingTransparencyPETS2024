@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {Panel, Grid, Row, Col} from 'react-bootstrap';
+import {Panel, Grid, Row, Col, Breadcrumb} from 'react-bootstrap';
 const millisecondsInDay = 86400000;
 
 
@@ -73,6 +73,9 @@ export class Home extends React.Component {
     const {numTrackers, numInferences, numPages, recentInferences, recentDomains} = this.state;
     return (
       <div>
+        <Breadcrumb>
+          <Breadcrumb.Item active>Home</Breadcrumb.Item>
+        </Breadcrumb>
         <h1>Tracking Transparency</h1>
         <Grid>
           <Row>

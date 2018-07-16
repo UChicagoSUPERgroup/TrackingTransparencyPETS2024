@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 
+import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
@@ -149,7 +150,13 @@ export default class TrackerDetailPage extends React.Component {
 
     return (
       <div>
-        <h2>Trackers - {this.tracker}</h2>
+        <Breadcrumb>
+          <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
+          <Breadcrumb.Item><Link to={{pathname: '/trackers'}}>Trackers</Link></Breadcrumb.Item>
+          <Breadcrumb.Item active>{this.tracker}</Breadcrumb.Item>
+        </Breadcrumb>
+        <h1>Trackers</h1>
+        <h2>{this.tracker}</h2>
         <Grid>
           <Row>
             <Col md={12}>

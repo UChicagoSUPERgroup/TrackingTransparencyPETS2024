@@ -1,6 +1,6 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
-import {Grid, Row, Col} from 'react-bootstrap';
+import { Route, Link, Switch } from 'react-router-dom';
+import { Grid, Row, Col, Breadcrumb } from 'react-bootstrap';
 import ReactTable from 'react-table'
 import '../../../node_modules/react-table/react-table.css';
 import logging from '../dashboardLogging';
@@ -15,20 +15,6 @@ import {
 } from 'react-vis';
 
 import TrackerDetails from './TrackerDetailPage';
-
-const TrackersListItem = (tracker) => {
-  const trackerName = tracker['tracker'];
-  return (
-    <div key={trackerName}>
-      <Link to={{
-        pathname: '/trackers/' + trackerName
-      }} className = "trackerPageTableLink">
-        {trackerName}
-      </Link>
-    </div>
-  );
-}
-
 
 const TrackerTable = (data) => {
   return (
@@ -159,6 +145,10 @@ class TrackersList extends React.Component {
 
     return(
       <div>
+        <Breadcrumb>
+          <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
+          <Breadcrumb.Item active>Trackers</Breadcrumb.Item>
+        </Breadcrumb>
         <h1>Trackers</h1>
         <p><em>{numTrackers} trackers</em> are tracking your browsing. Your most
           frequently encountered tracker is <em>{topTracker}</em> which is

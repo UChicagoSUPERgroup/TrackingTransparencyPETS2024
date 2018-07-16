@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 // import { LinkContainer } from 'react-router-bootstrap';
-import {Grid, Row, Col} from 'react-bootstrap';
+import { Grid, Row, Col, Breadcrumb } from 'react-bootstrap';
 import ReactTable from 'react-table';
 
 import PagesTimeScatterplot from './PagesTimeScatterplot';
@@ -138,6 +138,10 @@ export default class ActivityOverview extends React.Component {
 
     return(
       <div>
+        <Breadcrumb>
+          <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
+          <Breadcrumb.Item active>Activity</Breadcrumb.Item>
+        </Breadcrumb>
         <h1>Recent Activity</h1>
         <Route exact path={this.props.match.url} render={() => (
           <div>

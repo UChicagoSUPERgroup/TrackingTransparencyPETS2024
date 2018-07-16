@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import logging from '../dashboardLogging';
 import ReactTable from 'react-table';
-import {Panel, Grid, Row, Col} from 'react-bootstrap';
+import { Breadcrumb, Panel, Grid, Row, Col } from 'react-bootstrap';
 import WordCloud from 'react-d3-cloud';
 import _ from 'lodash';
 
@@ -250,7 +250,13 @@ export default class FirstPartyDetails extends React.Component {
 
     return (
       <div>
-        <h1>{this.domain}</h1>
+        <Breadcrumb>
+          <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
+          <Breadcrumb.Item><Link to={{pathname: '/domains'}}>Sites</Link></Breadcrumb.Item>
+          <Breadcrumb.Item active>{this.domain}</Breadcrumb.Item>
+        </Breadcrumb>
+        <h1>Sites</h1>
+        <h2>{this.domain}</h2>
         <Grid>
           <Row>
             <Panel bsStyle="primary">

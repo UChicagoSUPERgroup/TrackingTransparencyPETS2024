@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
-import {Panel, Grid, Row, Col} from 'react-bootstrap';
+import {Breadcrumb, Panel, Grid, Row, Col} from 'react-bootstrap';
 
 
 import categories from '../../data/categories_comfort_list.json';
@@ -182,6 +182,12 @@ class InferenceDetails extends React.Component {
     }
 
     return (<div>
+      <Breadcrumb>
+        <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
+        <Breadcrumb.Item><Link to={{pathname: '/inferences'}}>Inferences</Link></Breadcrumb.Item>
+        <Breadcrumb.Item active>{inference}</Breadcrumb.Item>
+      </Breadcrumb>
+      <h2>What could they have learned?</h2>
       <h2>{inference}</h2>
       {content}
     </div>);
