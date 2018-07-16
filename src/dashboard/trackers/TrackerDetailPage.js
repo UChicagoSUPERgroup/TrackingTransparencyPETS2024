@@ -2,10 +2,11 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 
+import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-import logging from './dashboardLogging';
+import logging from '../dashboardLogging';
 
 import _ from 'lodash';
 import {
@@ -24,17 +25,17 @@ const DomainTable = (data) => {
     <ReactTable
       data={data}
       columns={[
-        {Header: "Site",
-         accessor: "domain",
-         Cell: row => (
-           <div key={row.value}>
+        {Header: 'Site',
+          accessor: 'domain',
+          Cell: row => (
+            <div key={row.value}>
               <Link className='domainTableLinkTrackersPage' to={{pathname: '/domains/' + row.value}}>
-                 {row.value}
+                {row.value}
               </Link>
-           </div>)
+            </div>)
         },
-        {Header: "Page Count",
-         accessor: "count"},
+        {Header: 'Page Count',
+          accessor: 'count'},
       ]}
       defaultPageSize={20}
       className="-striped -highlight"
@@ -47,17 +48,17 @@ const InferTable = (data) => {
     <ReactTable
       data={data}
       columns={[
-        {Header: "Inference",
-         accessor: "inference",
-         Cell: row => (
-           <div key={row.value}>
+        {Header: 'Inference',
+          accessor: 'inference',
+          Cell: row => (
+            <div key={row.value}>
               <Link className = 'inferenceTableLinkTrackersPage' to={{pathname: '/inferences/' + row.value}}>
-                 {row.value}
+                {row.value}
               </Link>
-           </div>)
+            </div>)
         },
-        {Header: "Inference Count",
-         accessor: "COUNT(inference)"},
+        {Header: 'Inference Count',
+          accessor: 'COUNT(inference)'},
       ]}
       defaultPageSize={20}
       className="-striped -highlight"
@@ -100,7 +101,7 @@ export default class TrackerDetailPage extends React.Component {
     let numDomains = domains.length;
     let hashedInferences = [];
     for (let i=0;i<inferences.length;i++){
-      let value = await background.hashit(inferences[i]["inference"])
+      let value = await background.hashit(inferences[i]['inference'])
       hashedInferences.push(value);
     }
     sendDict = {
@@ -149,7 +150,13 @@ export default class TrackerDetailPage extends React.Component {
 
     return (
       <div>
-        <h2>Trackers - {this.tracker}</h2>
+        <Breadcrumb>
+          <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
+          <Breadcrumb.Item><Link to={{pathname: '/trackers'}}>Trackers</Link></Breadcrumb.Item>
+          <Breadcrumb.Item active>{this.tracker}</Breadcrumb.Item>
+        </Breadcrumb>
+        <h1>Trackers</h1>
+        <h2>{this.tracker}</h2>
         <Grid>
           <Row>
             <Col md={12}>
@@ -175,7 +182,7 @@ export default class TrackerDetailPage extends React.Component {
               domains. The Tracking Transparency extension has
               found <em>{numInferences}</em> inferences
               that {this.tracker} may have made about you.
-              </p>
+            </p>
           </Row>
           <Row>
             <Col md={6} mdPush={6}>

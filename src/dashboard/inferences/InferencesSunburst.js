@@ -4,14 +4,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {Sunburst, LabelSeries} from 'react-vis';
 
-import tt from '../helpers';
+import categoryTree from '../../data/categories_tree.json';
 
-import categoryTree from '../data/categories_tree.json';
+import logging from '../dashboardLogging';
 
-import logging from './dashboardLogging';
-
-import COLORS from '../colors';
-const PRIMARIES = [COLORS.UC_YELLOW_1, COLORS.UC_ORANGE_1, COLORS.UC_RED_1, COLORS.UC_LT_GREEN_1, COLORS.UC_DK_GREEN_1, COLORS.UC_BLUE_1, COLORS.UC_VIOLET_1];
+import COLORS from '../../colors';
+// const PRIMARIES = [COLORS.UC_YELLOW_1, COLORS.UC_ORANGE_1, COLORS.UC_RED_1, COLORS.UC_LT_GREEN_1, COLORS.UC_DK_GREEN_1, COLORS.UC_BLUE_1, COLORS.UC_VIOLET_1];
 
 const LABEL_STYLE = {
   fontSize: '14px',
@@ -69,7 +67,7 @@ function updateData(data, keyPath, parentColor) {
 }
 
 
-export default class BasicSunburst extends React.Component {
+export default class InferencesSunburst extends React.Component {
   constructor(props) {
     super(props);
     // this.decoratedData = this.constructSunburstData(this.props.inferencesList);
@@ -126,7 +124,7 @@ export default class BasicSunburst extends React.Component {
 
   }
 
-async  componentWillReceiveProps(nextProps) {
+  async  componentWillReceiveProps(nextProps) {
     colorCounter = 0;
     let value = this.state.finalValue;
     if (value === 'Inferences' || value === false){value = ''}

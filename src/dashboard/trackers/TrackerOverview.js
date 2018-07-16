@@ -1,9 +1,9 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
-import {Grid, Row, Col} from 'react-bootstrap';
+import { Route, Link, Switch } from 'react-router-dom';
+import { Grid, Row, Col, Breadcrumb } from 'react-bootstrap';
 import ReactTable from 'react-table'
-import "../../node_modules/react-table/react-table.css";
-import logging from './dashboardLogging';
+import '../../../node_modules/react-table/react-table.css';
+import logging from '../dashboardLogging';
 
 import {
   FlexibleWidthXYPlot,
@@ -16,55 +16,41 @@ import {
 
 import TrackerDetails from './TrackerDetailPage';
 
-const TrackersListItem = (tracker) => {
-  const trackerName = tracker["tracker"];
-  return (
-    <div key={trackerName}>
-      <Link to={{
-        pathname: '/trackers/' + trackerName
-      }} className = "trackerPageTableLink">
-        {trackerName}
-      </Link>
-    </div>
-  );
-}
-
-
 const TrackerTable = (data) => {
   return (
     <ReactTable
       data={data}
       columns={[
         {Header: h => (
-          <div style={{textAlign: "left"}}>
+          <div style={{textAlign: 'left'}}>
             Tracker
           </div>),
-         accessor: "name",
-         Cell: row => (
-           <div key={row.value}>
-              <Link className = "trackerTableLinkTrackersPage" to={{pathname: '/trackers/' + row.value}}>
-                 {row.value}
-              </Link>
-           </div>)
+        accessor: 'name',
+        Cell: row => (
+          <div key={row.value}>
+            <Link className = "trackerTableLinkTrackersPage" to={{pathname: '/trackers/' + row.value}}>
+              {row.value}
+            </Link>
+          </div>)
         },
         {Header: h => (
-          <div style={{textAlign: "left"}}>
+          <div style={{textAlign: 'left'}}>
             Page count
           </div>),
-         accessor: "count",
-         Cell: row =>
-           <div style={{textAlign: "right"}}>
-             {row.value}
-           </div>},
+        accessor: 'count',
+        Cell: row =>
+          <div style={{textAlign: 'right'}}>
+            {row.value}
+          </div>},
         {Header: h => (
-          <div style={{textAlign: "left"}}>
+          <div style={{textAlign: 'left'}}>
             Percent of Browsing
           </div>),
-         accessor: "percent",
-          Cell: row =>
-            <div style={{textAlign: "right"}}>
-              {((Math.round(row.value) / 100).toString() + " %")}
-            </div>}
+        accessor: 'percent',
+        Cell: row =>
+          <div style={{textAlign: 'right'}}>
+            {((Math.round(row.value) / 100).toString() + ' %')}
+          </div>}
       ]}
       //defaultPageSize={20}
       className="-striped -highlight"
@@ -72,7 +58,7 @@ const TrackerTable = (data) => {
   );
 }
 
-export default class TrackersPage extends React.Component {
+export default class TrackerOverview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -81,7 +67,7 @@ export default class TrackersPage extends React.Component {
 
 
   async componentDidMount() {
-      //this.logLoad();
+    //this.logLoad();
   }
 
   render() {
@@ -133,7 +119,7 @@ class TrackersList extends React.Component {
 
   render() {
     const {trackers, allTrackers, numTrackers, numPages} = this.state;
-    let topTracker = "";
+    let topTracker = '';
     let topPercent = 0;
     let data = [];
     let allData = [];
@@ -141,27 +127,31 @@ class TrackersList extends React.Component {
 
     for (let val in trackers){
       data.push({
-        y: trackers[val]["tracker"],
-        x: 100 * trackers[val]["COUNT(tracker)"] / numPages,
+        y: trackers[val]['tracker'],
+        x: 100 * trackers[val]['COUNT(tracker)'] / numPages,
       });
-      topTracker = trackers[0]["tracker"];
-      topPercent = Math.round(10000 * trackers[0]["COUNT(tracker)"] / numPages) / 100;
-    };
+      topTracker = trackers[0]['tracker'];
+      topPercent = Math.round(10000 * trackers[0]['COUNT(tracker)'] / numPages) / 100;
+    }
     data.reverse();
     for (let val in allTrackers){
-      tempPercent = 10000 * allTrackers[val]["COUNT(tracker)"] / numPages;
+      tempPercent = 10000 * allTrackers[val]['COUNT(tracker)'] / numPages;
       allData.push({
-        name: allTrackers[val]["tracker"],
-        count: allTrackers[val]["COUNT(tracker)"],
+        name: allTrackers[val]['tracker'],
+        count: allTrackers[val]['COUNT(tracker)'],
         percent: tempPercent
       });
-    };
+    }
 
     return(
       <div>
-        <h1>Who is tracking you?</h1>
-        <p><em>{numTrackers} trackers</em> have collected information about you based on your browsing history. Your most
-          frequently encountered tracker is <em>{topTracker}</em>, which was
+        <Breadcrumb>
+          <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
+          <Breadcrumb.Item active>Trackers</Breadcrumb.Item>
+        </Breadcrumb>
+        <h1>Trackers</h1>
+        <p><em>{numTrackers} trackers</em> are tracking your browsing. Your most
+          frequently encountered tracker is <em>{topTracker}</em> which is
           present on <em>{topPercent}%</em> of
           the sites you visited.
           Here are your 20 most frequently encountered trackers:</p>
@@ -178,7 +168,7 @@ class TrackersList extends React.Component {
                   height={200}
                   tickLabelAngle={0} />
                 <XAxis
-                  tickFormat={v => v.toString() + "%"} />
+                  tickFormat={v => v.toString() + '%'} />
                 <HorizontalBarSeries data={data} color="#8F3931"/>
               </FlexibleWidthXYPlot>
             </Col>

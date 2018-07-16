@@ -14,8 +14,7 @@ import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
 import ToggleButton from 'react-bootstrap/lib/ToggleButton';
 
-import tt from '../helpers';
-import las from '../labels';
+import las from '../../labels';
 const millisecondsInDay = 86400000;
 
 export default class PagesTimeChart extends React.Component {
@@ -79,7 +78,7 @@ export default class PagesTimeChart extends React.Component {
   render() {
     const {weektimes, daytimes, grouping} = this.state;
     const {dateLabel, timeLabelSimple, timeLabelAdjusted,
-       dayOfWeekLabel, dayOfWeekLabelAdjusted, stringLabel} = las;
+      dayOfWeekLabel, dayOfWeekLabelAdjusted, stringLabel} = las;
 
     let grouped;
     let xTitle;
@@ -154,7 +153,7 @@ export default class PagesTimeChart extends React.Component {
           margin={{left: 40, right: 40, top: 10, bottom: 40}}>
           <HorizontalGridLines />
           <VerticalGridLines />
-          <VerticalRectSeries data={data} opacity={0.95} color={"#616530"}/>
+          <VerticalRectSeries data={data} opacity={0.95} color={'#616530'}/>
           <XAxis
             title={xTitle}
             tickFormat={labelFunc}

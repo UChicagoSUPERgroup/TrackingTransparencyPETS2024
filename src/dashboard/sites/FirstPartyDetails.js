@@ -1,12 +1,12 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
-import logging from './dashboardLogging';
+import logging from '../dashboardLogging';
 import ReactTable from 'react-table';
-import {Panel, Grid, Row, Col} from 'react-bootstrap';
+import { Breadcrumb, Panel, Grid, Row, Col } from 'react-bootstrap';
 import WordCloud from 'react-d3-cloud';
 import _ from 'lodash';
 
-import categories from '../data/categories_comfort_list.json';
+import categories from '../../data/categories_comfort_list.json';
 
 
 const DomainSpecificTable = (data) => {
@@ -14,22 +14,22 @@ const DomainSpecificTable = (data) => {
     <ReactTable
       data={data}
       columns={[
-        {Header: "Trackers",
-         accessor: d => d.Trackers.tracker,
-         id: "tracker",
-         Cell: row => (
-           <div key={row.value}>
+        {Header: 'Trackers',
+          accessor: d => d.Trackers.tracker,
+          id: 'tracker',
+          Cell: row => (
+            <div key={row.value}>
               <Link to={{pathname: '/trackers/' + row.value}}>
-                 {row.value}
+                {row.value}
               </Link>
-           </div>
-         )
+            </div>
+          )
         },
-        {Header: "Number of pages",
-         accessor: d => d.Pages["COUNT(id)"],
-         id: "trackers",
-         Cell: row => (
-           row.value)
+        {Header: 'Number of pages',
+          accessor: d => d.Pages['COUNT(id)'],
+          id: 'trackers',
+          Cell: row => (
+            row.value)
         }
       ]}
       defaultPageSize={10}
@@ -44,22 +44,22 @@ const DomainSpecificTable = (data) => {
 const DomainSpecificInferencesTable = (data) => {
   let new_data = []
   for (var property in data) {
-    new_data.push({"inference": property, "count": data[property]})
+    new_data.push({'inference': property, 'count': data[property]})
   }
   return (
     <ReactTable
       data={new_data}
       columns={[
-        {Header: "Likely inferred interests",
-         accessor: d => d.inference,
-         id: "tracker",
-         Cell: row => (
-           <div key={row.value}>
+        {Header: 'Likely inferred interests',
+          accessor: d => d.inference,
+          id: 'tracker',
+          Cell: row => (
+            <div key={row.value}>
               <Link to={{pathname: '/inferences/' + row.value}}>
-                 {row.value}
+                {row.value}
               </Link>
-           </div>
-         )
+            </div>
+          )
         }
       ]}
       defaultPageSize={10}
@@ -118,8 +118,8 @@ function fontSizeMapper(size, min, max, num_entries) {
   }
   let fontSizeMapper =
     size ?
-    (word => size.height * (Px[1] + ((word.value - min) / (1 + max - min)) * Px[0])) :
-    (word => 50)
+      (word => size.height * (Px[1] + ((word.value - min) / (1 + max - min)) * Px[0])) :
+      (word => 50)
   return fontSizeMapper;
 
 }
@@ -127,25 +127,25 @@ function fontSizeMapper(size, min, max, num_entries) {
 
 const PageList = (data) => {
   if (! data || data.length == 0) {
-    return ""
+    return ''
   } else if (data.length == 1) {
-    return data[0]["DISTINCT(title)"]
+    return data[0]['DISTINCT(title)']
   } else if (data.length ==2) {
-    return data[0]["DISTINCT(title)"] + " and " + data[1]["DISTINCT(title)"]
+    return data[0]['DISTINCT(title)'] + ' and ' + data[1]['DISTINCT(title)']
   } else {
-    let pageStr = ""
+    let pageStr = ''
     let i = 0
     for (i = 0; i < data.length - 1; i++){
-      pageStr = pageStr + data[i]["DISTINCT(title)"] + ", "
+      pageStr = pageStr + data[i]['DISTINCT(title)'] + ', '
     }
-    pageStr = pageStr + "and " + data[i]["DISTINCT(title)"]
+    pageStr = pageStr + 'and ' + data[i]['DISTINCT(title)']
     return pageStr
   }
 }
 
 
 
-class FirstPartyDetails extends React.Component {
+export default class FirstPartyDetails extends React.Component {
   constructor(props) {
     super(props);
 
@@ -160,8 +160,8 @@ class FirstPartyDetails extends React.Component {
     //console.log('In the log leave page')
     const background = await browser.runtime.getBackgroundPage();
     let userParams = await browser.storage.local.get({
-      usageStatCondition: "no monster",
-      userId: "no monster",
+      usageStatCondition: 'no monster',
+      userId: 'no monster',
       startTS: 0
     });
     const tabs = await browser.tabs.query({active: true, currentWindow: true});
@@ -170,7 +170,7 @@ class FirstPartyDetails extends React.Component {
     let x = 'clickData_tabId_'+String(tabId);
     let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain':'','tabId':tabId,'pageId':'','numTrackers':0})});
     tabData = JSON.parse(tabData[x]);
-  if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
+    if (JSON.parse(userParams.usageStatCondition)){//get data when the user click on the button.
       let page = await background.hashit_salt(this.domain)
       let activityType = 'leaving non-tab-page: tracker details for a domain';
       let timestamp=Date.now();
@@ -190,8 +190,8 @@ class FirstPartyDetails extends React.Component {
   }
 
   async componentWillUnmount() {
-      window.removeEventListener("popstate", this.logPopstate)
-    }
+    window.removeEventListener('popstate', this.logPopstate)
+  }
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
@@ -212,9 +212,9 @@ class FirstPartyDetails extends React.Component {
       trackers: trackers,
       inferences: inferences,
       pages: pages,
-      page_count: page_count ? page_count[0]["COUNT(title)"] : 0,
-      tracker_count: tracker_count ? tracker_count[0]["Trackers"]["COUNT(tracker)"] : 0,
-      sensitive_inferred: {"inferred": sensitive_inferred}
+      page_count: page_count ? page_count[0]['COUNT(title)'] : 0,
+      tracker_count: tracker_count ? tracker_count[0]['Trackers']['COUNT(tracker)'] : 0,
+      sensitive_inferred: {'inferred': sensitive_inferred}
     })
     console.log(this.state.tracker_count)
 
@@ -225,7 +225,7 @@ class FirstPartyDetails extends React.Component {
       })
     }
 
-    window.addEventListener("popstate", this.logPopstate)
+    window.addEventListener('popstate', this.logPopstate)
 
   }
 
@@ -239,7 +239,7 @@ class FirstPartyDetails extends React.Component {
     for (var property in inferences_q) {
       min = (inferences_q[property] < min) ? inferences_q[property] : min
       max = (inferences_q[property] > max) ? inferences_q[property] : max
-      inferences.push({"text": property, "value": inferences_q[property]})
+      inferences.push({'text': property, 'value': inferences_q[property]})
     }
     console.log(inferences)
 
@@ -250,7 +250,13 @@ class FirstPartyDetails extends React.Component {
 
     return (
       <div>
-        <h1>{this.domain}</h1>
+        <Breadcrumb>
+          <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
+          <Breadcrumb.Item><Link to={{pathname: '/domains'}}>Sites</Link></Breadcrumb.Item>
+          <Breadcrumb.Item active>{this.domain}</Breadcrumb.Item>
+        </Breadcrumb>
+        <h1>Sites</h1>
+        <h2>{this.domain}</h2>
         <Grid>
           <Row>
             <Panel bsStyle="primary">
@@ -267,7 +273,7 @@ class FirstPartyDetails extends React.Component {
           <Row>
             <Col md={4}>
               <div ref='content'>
-              {DomainSpecificTable(this.state.trackers)}
+                {DomainSpecificTable(this.state.trackers)}
               </div>
             </Col>
             <Col md={8}>
@@ -294,5 +300,3 @@ class FirstPartyDetails extends React.Component {
     );
   }
 }
-
-export default FirstPartyDetails;
