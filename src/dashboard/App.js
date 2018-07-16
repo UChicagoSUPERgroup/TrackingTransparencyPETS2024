@@ -2,7 +2,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../../node_modules/react-vis/dist/style.css';
 
 import React, { Component } from 'react';
-import { withRouter } from 'react-router'
 import { HashRouter, Route } from 'react-router-dom';
 
 import Navbar from 'react-bootstrap/lib/Navbar';
@@ -12,6 +11,7 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 import {LinkContainer} from 'react-router-bootstrap';
 
 import {Home, WaitingDataHome} from './Home';
+import IntroModal from './IntroModal';
 import InferencesPage from './Inferences';
 import TrackersList from './Trackers';
 import FirstPartyList from  './FirstParties';
@@ -40,10 +40,23 @@ const NavLink = ({to, title}) => (
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      showModal: true 
+    }
+
+    this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleModalShow = this.handleModalShow.bind(this);
     //this.logLoad = this.logLoad.bind(this);
     //this.logLeave = this.logLeave.bind(this);
     //this.logClick = this.logClick.bind(this);
+  }
+
+  handleModalClose() {
+    this.setState({ showModal: false });
+  }
+
+  handleModalShow() {
+    this.setState({ showModal: true });
   }
 
 /************** BEGIN Instrumentation code *******************
@@ -78,7 +91,7 @@ The code for logclick logs ALL the click in every single page.
   /************** END Instrucmentation code ********************************/
 
   render() {
-    const {lightbeamcondition, tabId, enoughData} = this.state;
+    const {lightbeamcondition, tabId, enoughData, showModal} = this.state;
     const TTNavbar = () => {
       const {lightbeamcondition, tabId} = this.state;
       return (
@@ -98,6 +111,7 @@ The code for logclick logs ALL the click in every single page.
               {lightbeamcondition && <NavLink to="/lightbeam"  title="Time"/>}
             </Nav>}
             <Nav pullRight>
+              <NavItem onClick={this.handleModalShow}>Show Intro</NavItem>
               {!tt.production && <NavLink to="/debug"  title="Debug"/>}
               <NavLink to="/about"  title="About"/>
               <NavLink to="/takeaction"  title="Take Action"/>
@@ -108,9 +122,12 @@ The code for logclick logs ALL the click in every single page.
     }
 
     return(
+
       <HashRouter>
         <div>
           <TTNavbar/>
+
+          <IntroModal show={this.state.showModal} onHide={this.handleModalClose} />
 
           <div className="container containerInner">
 
@@ -123,13 +140,13 @@ The code for logclick logs ALL the click in every single page.
               {lightbeamcondition && <Route path="/lightbeam" component={LightbeamWrapper}/>}
             </div>}
 
-
             {!enoughData &&<Route exact path="/" component={WaitingDataHome}/>}
 
             <Route path="/about" component={AboutPage}/>
             <Route path="/takeaction" component={TakeActionPage}/>
             <Route path="/debug" component={DebugPage}/>
           </div>
+
         </div>
       </HashRouter>
     );
