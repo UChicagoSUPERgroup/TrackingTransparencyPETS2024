@@ -149,9 +149,9 @@ class TrackersList extends React.Component {
           <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
           <Breadcrumb.Item active>Trackers</Breadcrumb.Item>
         </Breadcrumb>
-        <h1>Trackers</h1>
-        <p><em>{numTrackers} trackers</em> are tracking your browsing. Your most
-          frequently encountered tracker is <em>{topTracker}</em> which is
+        <h1>Who is tracking you?</h1>
+        <p><strong>{numTrackers} trackers</strong> have collected information about you based on your browsing history. Your most
+          frequently encountered tracker is <strong>{topTracker}</strong> which was
           present on <em>{topPercent}%</em> of
           the sites you visited.
           Here are your 20 most frequently encountered trackers:</p>
