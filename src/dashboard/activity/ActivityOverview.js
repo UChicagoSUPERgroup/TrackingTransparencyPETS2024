@@ -1,25 +1,23 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 // import { LinkContainer } from 'react-router-bootstrap';
-import tt from '../helpers';
-import {Grid, Row, Col} from 'react-bootstrap';
+import { Grid, Row, Col, Breadcrumb } from 'react-bootstrap';
 import ReactTable from 'react-table';
 
-import PagesTimeChart from './PagesTimeChart';
 import PagesTimeScatterplot from './PagesTimeScatterplot';
-import logging from './dashboardLogging';
+import logging from '../dashboardLogging';
 
-import las from '../labels';
+import las from '../../labels';
 const {dateLabel, timeLabelSimple, timeLabelAdjusted, dayOfWeekLabel, stringLabel} = las;
 const millisecondsInDay = 86400000;
 const millisecondsInHour = 3600000;
 
 function recentVisitsTitle(summary) {
   if (summary.size) {
-  return "Pages visited on " + dayOfWeekLabel(summary.y) +
-    " from " + timeLabelSimple(summary.x) + " to " + timeLabelSimple(summary.x+1);
+    return 'Pages visited on ' + dayOfWeekLabel(summary.y) +
+    ' from ' + timeLabelSimple(summary.x) + ' to ' + timeLabelSimple(summary.x+1);
   } else {
-    return "Pages visited"
+    return 'Pages visited'
   }
 }
 
@@ -31,33 +29,33 @@ function RecentVisitsTable(summary, data){
         {
           Header: recentVisitsTitle(summary),
           columns: [
-            {Header: "Time",
-             id: "id",
-             accessor: d => (new Date(d.Pages.id).toLocaleTimeString()),
-             maxWidth: 150
+            {Header: 'Time',
+              id: 'id',
+              accessor: d => (new Date(d.Pages.id).toLocaleTimeString()),
+              maxWidth: 150
             },
-            {Header: "Site",
-             id: "domain",
-             accessor: d => d.Pages.domain,
-             Cell: row => (
-               <div key={row.value}>
+            {Header: 'Site',
+              id: 'domain',
+              accessor: d => d.Pages.domain,
+              Cell: row => (
+                <div key={row.value}>
                   <Link to={{pathname: '/domains/' + row.value}}>
-                     {row.value}
+                    {row.value}
                   </Link>
-               </div>),
-             width: 200
+                </div>),
+              width: 200
             },
-            {Header: "Page",
-             id: "title",
-             accessor: d => d.Pages.title},
-            {Header: "Inference",
-              id: "infer",
+            {Header: 'Page',
+              id: 'title',
+              accessor: d => d.Pages.title},
+            {Header: 'Inference',
+              id: 'infer',
               accessor: d => d.Inferences.inference,
               Cell: row => (
                 <div key={row.value}>
-                   <Link to={{pathname: '/inferences/' + row.value}}>
-                      {row.value}
-                   </Link>
+                  <Link to={{pathname: '/inferences/' + row.value}}>
+                    {row.value}
+                  </Link>
                 </div>)}
           ]
         }
@@ -65,14 +63,14 @@ function RecentVisitsTable(summary, data){
       showPageSizeOptions= {false}
       pageSize= {(data && (data.length >= 1)) ? 20 : 3}
       noDataText= {(data && !(data.length >= 1)) ?
-                     "No inferred interests at this time" :
-                     "Click in the scatterplot for more information"}
+        'No inferred interests at this time' :
+        'Click in the scatterplot for more information'}
       className="-striped -highlight"
     />
   );
 }
 
-export default class RecentPage extends React.Component {
+export default class ActivityOverview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -140,22 +138,26 @@ export default class RecentPage extends React.Component {
 
     return(
       <div>
+        <Breadcrumb>
+          <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
+          <Breadcrumb.Item active>Activity</Breadcrumb.Item>
+        </Breadcrumb>
         <h1>Recent Activity</h1>
         <Route exact path={this.props.match.url} render={() => (
           <div>
             <Grid>
               <Row>
-              <p>
+                <p>
               Here you can learn about when you have been tracked recently.
               The scatter plot shows when you visited the most pages over the past week.
               Click on a point to learn more about the tracking that took place.
-              </p>
+                </p>
               </Row>
               <Row>
                 {weektimestamps &&
                   <PagesTimeScatterplot
-                  weektimestamps={weektimestamps}
-                  update={this.handleClick}/>
+                    weektimestamps={weektimestamps}
+                    update={this.handleClick}/>
                 }
               </Row>
               <br/>
@@ -173,5 +175,3 @@ export default class RecentPage extends React.Component {
     );
   }
 }
-
-// {recent && RecentVisitsTable(recent, pagesByTime)}

@@ -37,6 +37,7 @@ export default class LightbeamWrapper extends React.Component {
           <li>A circle icon with many connections is a site you have visited that has lots of third party sites active on it.</li>
           <li>A triangle icon with many connections is a third party site that has seen you on many different sites online.</li>
         </ul>
+        <IFrame src={browser.runtime.getURL('lightbeam/index.html')} />
       </div>
     )
   }
