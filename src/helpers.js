@@ -1,11 +1,16 @@
-'use strict';
-
 /** @module helpers */
 
-const DEBUG = (process.env.NODE_ENV === 'production');
+const production = (process.env.NODE_ENV === 'production');
 
-function enoughData() {
-  return true;
+async function enoughData() {
+  const background = await browser.runtime.getBackgroundPage();
+  const numPages = await background.queryDatabase('getNumberOfPages', {});
+
+  if (numPages > 0) {
+    return true;
+  }
+
+  return false;
 }
 
 /**
@@ -26,6 +31,7 @@ function readTextFile(file) {
 
 /** Destringifies an object.
  * @param  {string} object
+ * @returns {Object}
  */
 function deserialize(object) {
   return typeof object == 'string' ? JSON.parse(object) : object;
@@ -39,6 +45,4 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-
-
-export default {enoughData, readTextFile, deserialize, sleep};
+export default {production, enoughData, readTextFile, deserialize, sleep};

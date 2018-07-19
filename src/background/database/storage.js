@@ -1,5 +1,7 @@
 /** @module storage */
 
+import tldjs from 'tldjs';
+
 import {primaryDbPromise} from './setup';
 
 /* DATA STORAGE */
@@ -11,7 +13,8 @@ import {primaryDbPromise} from './setup';
  * @param {Object} info - info about the page
  * @param {Number} info.pageId - page's unique identifer
  * @param {string} info.title - page's title
- * @param {string} info.domain - page's domain
+ * @param {string} info.domain - page's domain, which signifies unique website
+ * @param {string} info.hostname - page's hostname, this is the part between // and /
  * @param {string} info.path - page's path
  * @param {string} info.protocol - page's protocol (e.g. http)
  */
@@ -23,6 +26,7 @@ export async function storePage(info) {
     'id': info.pageId,
     'title': info.title,
     'domain': info.domain,
+    'hostname': info.hostname,
     'path': info.path,
     'protocol': info.protocol
   });
@@ -90,10 +94,20 @@ export async function importData(dataString) {
 
   data.pages.forEach(page => {
 
+    if (!page.hostname) {
+      let domain = tldjs.getDomain(page.domain);
+      domain = domain ? domain : page.domain; // in case above line returns null
+
+      page.hostname = page.domain;
+      page.domain = domain;
+
+    }
+
     const pageData = pageItem.createRow({
       'id': page.id,
       'title': page.title,
       'domain': page.domain,
+      'hostname': page.hostname,
       'path': page.path,
       'protocol': page.protocol
     });

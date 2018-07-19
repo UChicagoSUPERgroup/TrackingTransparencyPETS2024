@@ -35,6 +35,8 @@ A browser extension to provide information about online tracking.
 
 - Run webpack: `npm run watch` - this runs Webpack in watch mode and automatically reruns whenever you change any files. Recommended to leave this running in a background terminal.
 
+You can also use [yarn](https://yarnpkg.com/), which is like npm but faster!
+
 ### Chrome
 
  Visit `chrome://extensions` in your browser \(or open up the Chrome menu by clicking the icon to the far right of the window, and select **Extensions** under the **More Tools** menu to get to the same place\).

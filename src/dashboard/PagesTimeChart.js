@@ -15,90 +15,170 @@ import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
 import ToggleButton from 'react-bootstrap/lib/ToggleButton';
 
 import tt from '../helpers';
+import las from '../labels';
+const millisecondsInDay = 86400000;
 
 export default class PagesTimeChart extends React.Component {
   constructor(props) {
     super(props);
     let timestamps;
-    if (this.props.timestamps) {
-      timestamps = this.props.timestamps;
+    if (this.props.weektimestamps) {
+      timestamps = this.props.weektimestamps;
     } else {
       console.log('no time data provided');
     }
 
 
     this.state = {
-      times: timestamps,
+      weektimes: timestamps,
+      daytimes: {},
       grouping: 'weekday'
     };
 
+    this.getDaysData = this.getDaysData.bind(this);
     this.changeSelection = this.changeSelection.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.timestamps) {
+    if (nextProps.weektimestamps) {
       this.setState({
-        times: nextProps.timestamps
+        weektimes: nextProps.weektimestamps
       })
     }
   }
 
+  async getDaysData(days) {
+    const background = await browser.runtime.getBackgroundPage();
+    let tempDate = new Date(Date.now() - (days * millisecondsInDay));
+    let args = {afterDate: tempDate.getTime()}
+    return background.queryDatabase('getTimestamps', args);
+  }
+
   changeSelection(val) {
-    this.setState({
-      grouping: val
-    })
+    let days;
+    switch(val){
+    case 'hour':
+      days = 1;
+      break;
+    case 'weekday':
+      days = 7;
+      break;
+    }
+    let lastDaysData = this.getDaysData(days);
+    lastDaysData.then(ts => {
+      const daytimestamps = ts.map(x => (
+        (new Date(x.id))
+      ));
+      this.setState({
+        daytimes: daytimestamps,
+        grouping: val
+      });
+    });
   }
 
   render() {
-    const {times, grouping} = this.state;
+    const {weektimes, daytimes, grouping} = this.state;
+    const {dateLabel, timeLabelSimple, timeLabelAdjusted,
+       dayOfWeekLabel, dayOfWeekLabelAdjusted, stringLabel} = las;
 
     let grouped;
     let xTitle;
     let data = [];
+    let labelFunc;
 
     switch(grouping) {
     case 'weekday':
-      grouped = _.groupBy(times, t => t.getDay());
+      grouped = _.groupBy(weektimes, t => t.getDay());
       xTitle = 'Weekday';
+      labelFunc = dayOfWeekLabelAdjusted;
+      let day = (new Date(Date.now())).getDay();
+      for (let elem in grouped) {
+        if (parseInt(elem) <= day) {
+          data.push({
+            x0: parseInt(elem) + (7 - day),
+            x: parseInt(elem) + (7 - day) + 1,
+            y0: 0,
+            y: grouped[elem].length
+          });
+        } else {
+          data.push({
+            x0: parseInt(elem) - day,
+            x: parseInt(elem) - day + 1,
+            y0: 0,
+            y: grouped[elem].length
+          });
+        }
+      }
       break;
-
-    case 'month-day':
-      grouped = _.groupBy(times, t => t.getDate());
-      xTitle = 'Day of Month';
-      break;
-
     case 'hour':
-      grouped = _.groupBy(times, t => t.getHours());
+      grouped = _.groupBy(daytimes, t => t.getHours());
       xTitle = 'Hour';
+      labelFunc = timeLabelAdjusted;
+      let hr = (new Date(Date.now())).getHours();
+      for (let i = 0; i < 24; i++) {
+        data.push({
+          x0: i,
+          x: i + 1,
+          y0: 0,
+          y: 0
+        });
+      }
+      for (let d in grouped) {
+        let day = parseInt(d);
+        if (day >= hr) {
+          data[day - hr] = {
+            x0: day - hr,
+            x: day - hr + 1,
+            y0: 0,
+            y: grouped[day].length
+          }
+        } else {
+          data[(24 - hr) + day] = {
+            x0: (24 - hr) + day,
+            x: (24 - hr) + day + 1,
+            y0: 0,
+            y: grouped[day].length
+          }
+        }
+      }
       break;
     }
-    for (let day in grouped) {
-      data.push({
-        x0: day,
-        x: parseInt(day) + 1,
-        y0: 0,
-        y: grouped[day].length
-      });
-    }
+    console.log(data);
 
 
     return (
       <div>
         <XYPlot
-          width={300}
-          height={300}>
+          width={540}
+          height={300}
+          margin={{left: 40, right: 40, top: 10, bottom: 40}}>
           <HorizontalGridLines />
           <VerticalGridLines />
-          <XAxis title={xTitle} />
-          <YAxis title="Number of Pages" />
-          <VerticalRectSeries data={data}/>
+          <VerticalRectSeries data={data} opacity={0.95} color={"#616530"}/>
+          <XAxis
+            title={xTitle}
+            tickFormat={labelFunc}
+            style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
+          <YAxis
+            title="Number of Pages"
+            style={{title: {fill: '#222'}, text: {fill: '#222'}}}/>
         </XYPlot>
-
         <ButtonToolbar>
-          <ToggleButtonGroup type="radio" name="grouping-selector" defaultValue={'weekday'} onChange={this.changeSelection}>
-            <ToggleButton className = "pagesTimeChart-grouping-selector" value={'hour'}>Hour</ToggleButton>
-            <ToggleButton className = "pagesTimeChart-grouping-selector" value={'weekday'}>Weekday</ToggleButton>
-            <ToggleButton className = "pagesTimeChart-grouping-selector" value={'month-day'}>Day of Month</ToggleButton>
+          <ToggleButtonGroup
+            type="radio"
+            name="grouping-selector"
+            defaultValue={'weekday'}
+            onChange={this.changeSelection}>
+            <ToggleButton
+              className = "pagesTimeChart-grouping-selector"
+              value={'hour'}>
+                Hour
+            </ToggleButton>
+            <ToggleButton
+              className = "pagesTimeChart-grouping-selector"
+              value={'weekday'}>
+                Weekday
+            </ToggleButton>
           </ToggleButtonGroup>
         </ButtonToolbar>
       </div>

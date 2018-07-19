@@ -1,6 +1,6 @@
 /** @module database_worker */
 
-// import {primaryDbPromise, primarySchemaBuilder} from "setup.js";
+import { primaryDbPromise, primarySchemaBuilder } from './setup';
 import makeQuery from './queries';
 import * as store from './storage';
 
@@ -54,6 +54,10 @@ async function onMessage(m) {
     store.importData(m.data.data);
     break;
 
+  case 'empty_db':
+    emptyDB();
+    break;
+
   default:
     console.log('database worker recieved bad message');
   }
@@ -70,14 +74,16 @@ async function onMessage(m) {
 async function handleQuery(data) {
   
   try {
+    console.log('database worker making query', data.query)
     const res = await makeQuery(data.query, data.args);
+    console.log('database worker query result', res)
     postMessage({
       type: 'database_query_response',
       id: data.id,
       response: res
     });
   } catch (error) {
-    console.log(error);
+    console.log('database worker query error', error);
     postMessage({
       type: 'database_query_response',
       id: data.id,
@@ -85,4 +91,19 @@ async function handleQuery(data) {
     });
   }
   
+}
+
+/**
+ * erases all entries in database
+ */
+async function emptyDB() {
+  const ttDb = await primaryDbPromise;
+  const Inferences = primarySchemaBuilder.getSchema().table('Inferences');
+  const Trackers = primarySchemaBuilder.getSchema().table('Trackers');
+  const Pages = primarySchemaBuilder.getSchema().table('Pages');
+  
+  let emptyInferences = ttDb.delete().from(Inferences).exec();
+  let emptyTrackers = ttDb.delete().from(Trackers).exec();
+  let emptyPages = ttDb.delete().from(Pages).exec();
+  await Promise.all([emptyInferences, emptyTrackers, emptyPages]);
 }
