@@ -6,6 +6,18 @@ import { FormGroup, FormControl, ControlLabel, Checkbox, Radio, HelpBlock } from
 
 import logging from './dashboardLogging';
 
+// function onCanceled(error) {
+//   console.log(`Canceled: ${error}`);
+// }
+//
+// function uninstallTrackingTransparency() {
+//   var uninstalling = browser.management.uninstallSelf({
+//     showConfirmDialog: true,
+//     dialogMessage: "Testing self-uninstall"
+//   });
+//   uninstalling.then(null, onCanceled);
+// }
+
 export class SettingsPage extends React.Component {
   constructor(props) {
     super(props);
@@ -24,19 +36,22 @@ export class SettingsPage extends React.Component {
       <div>
         <h1>Settings</h1>
 
-        <h2>Reset my Data</h2>
+        <h2>Reset My Data</h2>
         <p>
-          Reset your data by...
+          If you wish to reset all data currently being stored by Tracking Transparency, click the button below.
         </p>
+        <button>
+          Reset Data
+        </button>
 
         <h2>Stop Tracking Transarency</h2>
         <p>
-          You can uninstall Tracking Transparency by visiting your respective browser&#39;s settings or customize tabs, similar to how you installed the extension.
+          You can stop participating at any time by uninstalling Tracking Transparency. To uninstall, follow the appropriate instructions for your browser (e.g.,
+            <a target="_blank" href="https://support.google.com/chrome_webstore/answer/2664769?hl=en"> Chrome</a>,
+            <a target="_blank" href="https://support.mozilla.org/en-US/kb/disable-or-remove-add-ons"> Firefox</a>.)
         </p>
-
-        <h2>Help</h2>
         <p>
-          To learn more about Tracking Transparency, please visit the <Link to="/info" target="_blank">info</Link> page.
+          No further data will be sent after the extention is uninstalled.
         </p>
 
         <h2>Take Action</h2>
@@ -44,14 +59,14 @@ export class SettingsPage extends React.Component {
           We hope that you have learned something about online tracking by using our extension.
         <br/>
         <br/>
-          Indicate your preferences here about online tracking and consumer transparency. Your selections here will <strong>not</strong> change the operation of your browser, but will help us continue our work. We may add your selections as features in the future.
+          Indicate your preferences here about topics related to online tracking and consumer transparency. Your selections here will <strong>not</strong> change the operation of your browser, but will help us continue our work. We may add your selections as features in the future.
         <br/>
         </p>
 
         <Panel id="collapsible-panel-example-2">
           <Panel.Heading>
             <Panel.Title toggle>
-              tracking to provide relevant advertisements?
+              Tracking
             </Panel.Title>
           </Panel.Heading>
           <Panel.Collapse>
@@ -74,7 +89,7 @@ export class SettingsPage extends React.Component {
         <Panel id="collapsible-panel-example-2">
           <Panel.Heading>
             <Panel.Title toggle>
-              your control over inferences made about you?
+              Inferencing
             </Panel.Title>
           </Panel.Heading>
           <Panel.Collapse>
@@ -95,7 +110,7 @@ export class SettingsPage extends React.Component {
         <Panel id="collapsible-panel-example-2">
           <Panel.Heading>
             <Panel.Title toggle>
-              installing tracker blockers?
+              Installing Tracker Blockers
             </Panel.Title>
           </Panel.Heading>
           <Panel.Collapse>
@@ -114,7 +129,7 @@ export class SettingsPage extends React.Component {
         <Panel id="collapsible-panel-example-2">
           <Panel.Heading>
             <Panel.Title toggle>
-              opting out of cookies?
+              Cookies
             </Panel.Title>
           </Panel.Heading>
           <Panel.Collapse>
@@ -133,7 +148,7 @@ export class SettingsPage extends React.Component {
         <Panel id="collapsible-panel-example-2">
           <Panel.Heading>
             <Panel.Title toggle>
-              using the Do Not Track (DNT) setting?
+              Do Not Track (DNT) setting
             </Panel.Title>
           </Panel.Heading>
           <Panel.Collapse>
@@ -152,7 +167,7 @@ export class SettingsPage extends React.Component {
         <Panel id="collapsible-panel-example-2">
           <Panel.Heading>
             <Panel.Title toggle>
-              adjusting data brokers' profile of you?
+              Data Broker Profiles
             </Panel.Title>
           </Panel.Heading>
           <Panel.Collapse>
