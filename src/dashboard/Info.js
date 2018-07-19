@@ -25,7 +25,7 @@ export class InfoPage extends React.Component {
     const {numTrackers, numInferences, numPages} = this.state;
     return (
       <div>
-        <h1>Info</h1>
+        <h1>About Tracking Transparency</h1>
         <p>
         Tracking Transparency shows how you interact with trackers when you browse online.
         </p>
