@@ -96,7 +96,7 @@ The code for logclick logs ALL the click in every single page.
 
   render() {
     const {lightbeamcondition, tabId, enoughData, showModal} = this.state;
-    const enoughData = tt.enoughData();
+    // const enoughData = tt.enoughData();
     const info = (<FontAwesome name="info-circle fa-lg" />);
     const settings = (<FontAwesome name="cog fa-lg" />);
     const TTNavbar = () => {
