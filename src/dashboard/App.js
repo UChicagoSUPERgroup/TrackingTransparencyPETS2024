@@ -8,6 +8,7 @@ import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
+import FontAwesome from 'react-fontawesome';
 import {LinkContainer} from 'react-router-bootstrap';
 
 import {Home, WaitingDataHome} from './Home';
@@ -18,6 +19,8 @@ import FirstPartyOverview from  './sites/FirstPartyOverview';
 import ActivityOverview from './activity/ActivityOverview';
 import AboutPage from './About';
 import TakeActionPage from './TakeAction';
+import InfoPage from './Info';
+import SettingsPage from './Settings'
 import DebugPage from './Debug';
 import LightbeamWrapper from './LightbeamWrapper';
 
@@ -32,7 +35,6 @@ import '../styles/panel.css'
 
 import logging from './dashboardLogging';
 
-
 const NavLink = ({to, title}) => (
   <LinkContainer to={to} className = "navbarTolog">
     <NavItem>{title}</NavItem>
@@ -43,7 +45,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: true 
+      showModal: true
     }
 
     this.handleModalClose = this.handleModalClose.bind(this);
@@ -94,6 +96,9 @@ The code for logclick logs ALL the click in every single page.
 
   render() {
     const {lightbeamcondition, tabId, enoughData, showModal} = this.state;
+    const enoughData = tt.enoughData();
+    const info = (<FontAwesome name="info-circle fa-lg" />);
+    const settings = (<FontAwesome name="cog fa-lg" />);
     const TTNavbar = () => {
       const {lightbeamcondition, tabId} = this.state;
       return (
@@ -115,6 +120,8 @@ The code for logclick logs ALL the click in every single page.
             <Nav pullRight>
               <NavItem onClick={this.handleModalShow}>Show Intro</NavItem>
               {!tt.production && <NavLink to="/debug"  title="Debug"/>}
+              <NavLink to="/info"   title={info}/>
+              <NavLink to="/settings" title={settings}/>
               <NavLink to="/about"  title="About"/>
               <NavLink to="/takeaction"  title="Take Action"/>
             </Nav>
@@ -147,6 +154,8 @@ The code for logclick logs ALL the click in every single page.
             <Route path="/about" component={AboutPage}/>
             <Route path="/takeaction" component={TakeActionPage}/>
             <Route path="/debug" component={DebugPage}/>
+            <Route path="/info" component={InfoPage}/>
+            <Route path="/settings" component={SettingsPage}/>
           </div>
 
         </div>
