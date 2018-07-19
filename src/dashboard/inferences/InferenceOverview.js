@@ -153,16 +153,8 @@ export default class InferencesOverview extends React.Component {
               <Breadcrumb.Item active>Inferences</Breadcrumb.Item>
             </Breadcrumb>
             <h1>What could they have learned?</h1>
-            <p>Trackers collect users' information to show targeted ads, for analytics purposes, and more. Based on your browsing history, trackers may have inferred your interest in <strong>{this.inferenceCount} topics</strong>.</p>
-            {inferences && inferences.length >= 3 && <p>Trackers most frequently inferred that you are interested in {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)}.</p>}
-            {/* {inferences && <div className='suggested-inferences'>
-              <p><strong>Suggested inferences to explore:</strong></p>
-              <ul>
-                <li>{inferences[0].inference}</li>
-                <li>{inferences[1].inference}</li>
-                <li>{inferences[2].inference}</li>
-              </ul>
-            </div>} */}
+            <p>Trackers collect information about the pages you visit in order to make guesses about things you might be interested in. These guesses, or inferences, are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{this.inferenceCount} topics</strong> that trackers might have inferred you are interested in.</p>
+            {inferences && inferences.length >= 3 && <p> {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)} were among the most frequent topics that our algorithm determined the pages you visited recently are about.</p>}
 
             <Grid>
               <Row>
