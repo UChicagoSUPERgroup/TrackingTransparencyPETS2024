@@ -8,25 +8,32 @@ const inferenceList = (data) => {
   console.log(data)
   return (
     <p>
-      {data.map(p => (
-        <span key={p.id}>
-          <strong>{p["DISTINCT(inference)"]}</strong>
-        </span>))
-        .reduce((prev, curr) => [prev, ', ', curr])
-      }
-    </p>);
+      {data.map((p, i, arr) => {
+        const last = (i === (arr.length - 1))
+        return (
+          <span key={p.id}>
+            <strong>{p['DISTINCT(inference)']}{!last ? ', ' : ''}</strong>
+          </span>
+        )
+      })}
+    </p>
+  )
 }
 
 const trackerList = (data) => {
-  return (<p>
-    {data.map(p => (
-      <span key={p.id}>
-        <strong>{p.tracker}</strong>
-      </span>))
-     .reduce((prev, curr) => [prev, ', ', curr])
-    }
-    </p>);
-  }
+  return (
+    <p>
+      {data.map((p, i, arr) => {
+        const last = (i === (arr.length - 1))
+        return (
+          <span key={p.id}>
+            <strong>{p.tracker}{!last ? ', ' : ''}</strong>
+          </span>
+        )
+      })}
+    </p>
+  )
+}
 
 export default class IntroModal extends React.Component {
   constructor(props) {
@@ -57,23 +64,27 @@ export default class IntroModal extends React.Component {
     this.getData();
   }
 
-  render() {
-    const {numTrackers, numInferences, numPages, recentInferences, topTrackers} = this.state;
+  render () {
+    const {numTrackers, numInferences, numPages, recentInferences, topTrackers} = this.state
     return (
       <Modal show={this.props.show} onHide={this.props.onHide}>
-        <Modal.Title closebutton="true"></Modal.Title>
+        <Modal.Title closebutton='true' />
 
         <Modal.Body>
           <h2>Welcome to Tracking Transparency!</h2>
           <p> When you browse the Internet, third-party trackers can see your browsing activity and sell this information to advertising companies. We hope this extension will help you understand who is tracking you and what they could have learned.</p>
           <p> In the last week, you visited <strong>{numPages} pages</strong> and encountered <strong>{numTrackers} trackers</strong>.</p>
           <hr />
-          <h4> Your top 5 trackers: </h4>
-          <p>{topTrackers ? trackerList(topTrackers) : ""}</p>
-          <hr />
-          <h4> Your top 5 inferred interests: </h4>
-          <p> {recentInferences ? inferenceList(recentInferences) : ""} </p>
-          <hr />
+          {topTrackers && topTrackers.length > 0 && <div>
+            <h4> Your top 5 trackers: </h4>
+            <p>trackerList(topTrackers)</p>
+            <hr />
+          </div>}
+          {recentInferences && recentInferences.length > 0 && <div>
+            <h4> Your top 5 inferred interests: </h4>
+            <p>inferenceList(recentInferences)</p>
+            <hr />
+          </div>}
           <p>Continue to the homepage to learn more about the trackers you have encountered, what they might have learned about you, and more.</p>
         </Modal.Body>
 
