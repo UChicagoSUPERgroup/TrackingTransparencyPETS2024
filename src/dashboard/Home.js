@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {Panel, Breadcrumb} from 'react-bootstrap';
+import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
+import Panel from 'react-bootstrap/lib/Panel';
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'

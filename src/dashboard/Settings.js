@@ -1,6 +1,9 @@
 import React from 'react'
 
-import { PanelGroup, Panel, ListGroup, ListGroupItem} from 'react-bootstrap'
+import Panel from 'react-bootstrap/lib/Panel';
+import ListGroup from 'react-bootstrap/lib/ListGroup';
+import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
+
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Button from '@instructure/ui-buttons/lib/components/Button'
