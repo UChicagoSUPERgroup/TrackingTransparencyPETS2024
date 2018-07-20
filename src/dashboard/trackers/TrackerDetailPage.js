@@ -160,11 +160,11 @@ export default class TrackerDetailPage extends React.Component {
           <Breadcrumb.Item active>{this.tracker}</Breadcrumb.Item>
         </Breadcrumb>
         <Heading level='h1'>Trackers</Heading>
-        <Heading level='h2'>{this.tracker}</Heading>
+        <Heading level='h2' margin='small 0 0 0'>{this.tracker}</Heading>
         <Grid startAt="large">
           <GridRow>
             <GridCol>
-              <Heading level='h2'>When has {this.tracker} tracked you?</Heading>
+              <Heading level='h3' margin='small 0 small 0'>When has {this.tracker} tracked you?</Heading>
               <FlexibleWidthXYPlot
                 height={200}
                 margin={{left: 100, right: 10, top: 10, bottom: 70}}>

@@ -151,7 +151,10 @@ export default class FirstPartyOverview extends React.Component {
               <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
               <Breadcrumb.Item active>Sites</Breadcrumb.Item>
             </Breadcrumb>
-            <h1>Sites</h1>
+            <Heading level='h1'>Sites</Heading>
+            <Text>
+              <p>We should put some text here!</p>
+            </Text>
             <Grid startAt='large'>
               <GridRow>
                 <GridCol width={3}>

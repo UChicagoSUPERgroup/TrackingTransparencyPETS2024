@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
-import {Breadcrumb, Panel} from 'react-bootstrap';
+import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
+import Panel from 'react-bootstrap/lib/Panel';
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
@@ -168,13 +169,13 @@ class InferenceDetails extends React.Component {
             <GridRow>
               <GridCol>
                 {topSites && <div>
-                  <h3>Top Sites</h3>
+                  <Heading level='h3' margin='0 0 small 0'>Top Sites</Heading>
                   {SiteTable(topSites)}
                 </div>}
               </GridCol>
               <GridCol>
                 {trackers && trackers.length > 0 && <div>
-                  <h3>Trackers</h3>
+                  <Heading level='h3' margin='0 0 small 0'>Trackers</Heading>
                   {TrackerTable(trackers)}
                 </div>}
               </GridCol>
@@ -190,8 +191,8 @@ class InferenceDetails extends React.Component {
         <Breadcrumb.Item><Link to={{pathname: '/inferences'}}>Inferences</Link></Breadcrumb.Item>
         <Breadcrumb.Item active>{inference}</Breadcrumb.Item>
       </Breadcrumb>
-      <h2>What could they have learned?</h2>
-      <h2>{inference}</h2>
+      <Heading level='h1'>What could they have learned?</Heading>
+      <Heading level='h2' margin='small 0 small 0'>{inference}</Heading>
       {content}
     </div>);
   }

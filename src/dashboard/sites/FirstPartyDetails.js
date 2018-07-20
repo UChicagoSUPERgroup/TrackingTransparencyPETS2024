@@ -262,8 +262,8 @@ export default class FirstPartyDetails extends React.Component {
           <Breadcrumb.Item><Link to={{pathname: '/domains'}}>Sites</Link></Breadcrumb.Item>
           <Breadcrumb.Item active>{this.domain}</Breadcrumb.Item>
         </Breadcrumb>
-        <h1>Sites</h1>
-        <h2>{this.domain}</h2>
+        <Heading level='h1'>Sites</Heading>
+        <Heading level='h2' margin='small 0 small 0'>{this.domain}</Heading>
           <Panel bsStyle="primary">
             <Panel.Body>
               <p>

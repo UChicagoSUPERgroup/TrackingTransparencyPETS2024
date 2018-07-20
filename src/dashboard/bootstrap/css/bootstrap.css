@@ -22,7 +22,7 @@ html {
 body {
   margin: 0;
 }
-article,
+/* article,
 aside,
 details,
 figcaption,
@@ -43,7 +43,7 @@ progress,
 video {
   display: inline-block;
   vertical-align: baseline;
-}
+} */
 audio:not([controls]) {
   display: none;
   height: 0;
@@ -68,10 +68,6 @@ strong {
 }
 dfn {
   font-style: italic;
-}
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
 }
 mark {
   background: #ff0;
@@ -209,7 +205,6 @@ th {
   box-sizing: border-box;
 }
 html {
-  font-size: 10px;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {

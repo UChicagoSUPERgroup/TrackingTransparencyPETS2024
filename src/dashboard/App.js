@@ -30,7 +30,13 @@ import '../styles/dashboard.css';
 import '../styles/navbar.css';
 import '../styles/panel.css'
 
-theme.use()
+theme.use({
+  overrides: {
+    typography: {
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
+    }
+  }
+})
 // TODO: add theme overrides
 
 const NavLink = ({to, title}) => (
