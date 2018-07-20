@@ -17,8 +17,6 @@ import InferenceOverview from './inferences/InferenceOverview';
 import TrackerOverview from './trackers/TrackerOverview';
 import FirstPartyOverview from  './sites/FirstPartyOverview';
 import ActivityOverview from './activity/ActivityOverview';
-import AboutPage from './About';
-import TakeActionPage from './TakeAction';
 import InfoPage from './Info';
 import SettingsPage from './Settings'
 import DebugPage from './Debug';
@@ -122,8 +120,6 @@ The code for logclick logs ALL the click in every single page.
               {!tt.production && <NavLink to="/debug"  title="Debug"/>}
               <NavLink to="/info"   title={info}/>
               <NavLink to="/settings" title={settings}/>
-              <NavLink to="/about"  title="About"/>
-              <NavLink to="/takeaction"  title="Take Action"/>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
@@ -151,8 +147,6 @@ The code for logclick logs ALL the click in every single page.
 
             {!enoughData &&<Route exact path="/" component={WaitingDataHome}/>}
 
-            <Route path="/about" component={AboutPage}/>
-            <Route path="/takeaction" component={TakeActionPage}/>
             <Route path="/debug" component={DebugPage}/>
             <Route path="/info" component={InfoPage}/>
             <Route path="/settings" component={SettingsPage}/>
