@@ -7,9 +7,9 @@ import { HashRouter, Route } from 'react-router-dom';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
-
-import FontAwesome from 'react-fontawesome';
 import {LinkContainer} from 'react-router-bootstrap';
+import IconSettings from '@instructure/ui-icons/lib/Solid/IconSettings'
+import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
 import {Home, WaitingDataHome} from './Home';
 import IntroModal from './IntroModal';
@@ -95,8 +95,8 @@ The code for logclick logs ALL the click in every single page.
   render() {
     const {lightbeamcondition, tabId, enoughData, showModal} = this.state;
     // const enoughData = tt.enoughData();
-    const info = (<FontAwesome name="info-circle fa-lg" />);
-    const settings = (<FontAwesome name="cog fa-lg" />);
+    const info = (<IconInfo />);
+    const settings = (<IconSettings />);
     const TTNavbar = () => {
       const {lightbeamcondition, tabId} = this.state;
       return (

@@ -40,8 +40,7 @@
     "webpack-merge": "^4.1.2"
   },
   "dependencies": {
-    "@fortawesome/fontawesome": "^1.1.5",
-    "@fortawesome/react-fontawesome": "file:node_modules/@fortawesome/react-fontawesome",
+    "@instructure/ui-icons": "^5.20.1",
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "bootstrap": "^3.3.7",
@@ -52,7 +51,6 @@
     "react-bootstrap": "^0.32.1",
     "react-d3-cloud": "^0.6.0",
     "react-dom": "^16.3.2",
-    "react-fontawesome": "^1.6.1",
     "react-router-bootstrap": "^0.24.4",
     "react-router-dom": "^4.2.2",
     "react-table": "^6.8.5",
