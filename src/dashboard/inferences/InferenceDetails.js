@@ -1,8 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
-import {Breadcrumb, Panel, Grid, Row, Col} from 'react-bootstrap';
+import {Breadcrumb, Panel} from 'react-bootstrap';
 
+import Heading from '@instructure/ui-elements/lib/components/Heading'
+import Text from '@instructure/ui-elements/lib/components/Text'
+import Grid from '@instructure/ui-layout/lib/components/Grid'
+import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
+import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 
 import categories from '../../data/categories_comfort_list.json';
 
@@ -158,24 +163,22 @@ class InferenceDetails extends React.Component {
     } else {
       content = (
         <div>
-          <Grid>
-            <Row>
-              {SensitivePanel(inference)}
-            </Row>
-            <Row>
-              <Col md={6} mdPush={6}>
+          {SensitivePanel(inference)}
+          <Grid startAt='large'>
+            <GridRow>
+              <GridCol>
                 {topSites && <div>
                   <h3>Top Sites</h3>
                   {SiteTable(topSites)}
                 </div>}
-              </Col>
-              <Col md={6} mdPull={6}>
+              </GridCol>
+              <GridCol>
                 {trackers && trackers.length > 0 && <div>
                   <h3>Trackers</h3>
                   {TrackerTable(trackers)}
                 </div>}
-              </Col>
-            </Row>
+              </GridCol>
+            </GridRow>
           </Grid>
         </div>
       );

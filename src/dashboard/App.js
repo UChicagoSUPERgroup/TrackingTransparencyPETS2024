@@ -100,7 +100,7 @@ The code for logclick logs ALL the click in every single page.
     const TTNavbar = () => {
       const {lightbeamcondition, tabId} = this.state;
       return (
-        <Navbar fixedTop>
+        <Navbar>
           <Navbar.Header>
             <LinkContainer to="/">
               <Navbar.Brand>Tracking Transparency</Navbar.Brand>

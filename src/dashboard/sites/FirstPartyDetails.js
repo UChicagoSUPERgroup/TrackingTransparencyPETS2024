@@ -2,7 +2,14 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import logging from '../dashboardLogging';
 import ReactTable from 'react-table';
-import { Breadcrumb, Panel, Grid, Row, Col } from 'react-bootstrap';
+import { Breadcrumb, Panel } from 'react-bootstrap';
+
+import Heading from '@instructure/ui-elements/lib/components/Heading'
+import Text from '@instructure/ui-elements/lib/components/Text'
+import Grid from '@instructure/ui-layout/lib/components/Grid'
+import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
+import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+
 import WordCloud from 'react-d3-cloud';
 import _ from 'lodash';
 
@@ -257,26 +264,24 @@ export default class FirstPartyDetails extends React.Component {
         </Breadcrumb>
         <h1>Sites</h1>
         <h2>{this.domain}</h2>
-        <Grid>
-          <Row>
-            <Panel bsStyle="primary">
-              <Panel.Body>
-                <p>
-                You have visited {this.state.page_count} pages at {this.domain} with an average
-                of {Math.round(this.state.tracker_count / this.state.page_count)} trackers per page.
-                </p>
-                <b>Recent Pages: </b>
-                {PageList(this.state.pages)}
-              </Panel.Body>
-            </Panel>
-          </Row>
-          <Row>
-            <Col md={4}>
+          <Panel bsStyle="primary">
+            <Panel.Body>
+              <p>
+              You have visited {this.state.page_count} pages at {this.domain} with an average
+              of {Math.round(this.state.tracker_count / this.state.page_count)} trackers per page.
+              </p>
+              <b>Recent Pages: </b>
+              {PageList(this.state.pages)}
+            </Panel.Body>
+          </Panel>
+        <Grid startAt='large'>
+          <GridRow>
+            <GridCol width={4}>
               <div ref='content'>
                 {DomainSpecificTable(this.state.trackers)}
               </div>
-            </Col>
-            <Col md={8}>
+            </GridCol>
+            <GridCol width={8}>
               <div>
                 <WordCloud
                   data={inferences}
@@ -286,16 +291,14 @@ export default class FirstPartyDetails extends React.Component {
                   font={'Arial Black'}
                 />
               </div>
-            </Col>
-          </Row>
-          <Row>
-            <Panel bsStyle="primary">
-              <Panel.Body>
-                {SensitiveModule(sensitive, String(this.domain))}
-              </Panel.Body>
-            </Panel>
-          </Row>
+            </GridCol>
+          </GridRow>
         </Grid>
+        <Panel bsStyle="primary">
+          <Panel.Body>
+            {SensitiveModule(sensitive, String(this.domain))}
+          </Panel.Body>
+        </Panel>
       </div>
     );
   }

@@ -1,6 +1,14 @@
 import React from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
-import { Grid, Row, Col, Breadcrumb } from 'react-bootstrap';
+
+import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
+
+import Heading from '@instructure/ui-elements/lib/components/Heading'
+import Text from '@instructure/ui-elements/lib/components/Text'
+import Grid from '@instructure/ui-layout/lib/components/Grid'
+import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
+import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+
 import ReactTable from 'react-table'
 import '../../../node_modules/react-table/react-table.css';
 import logging from '../dashboardLogging';
@@ -155,9 +163,9 @@ class TrackersList extends React.Component {
           present on <em>{topPercent}%</em> of
           the pages you visit.
           Here are your 20 most frequently encountered trackers:</p>
-        <Grid>
-          <Row>
-            <Col md={6}>
+        <Grid startAt='large'>
+          <GridRow>
+            <GridCol width={6}>
               <FlexibleWidthXYPlot
                 yType={'ordinal'}
                 height={800}
@@ -171,11 +179,11 @@ class TrackersList extends React.Component {
                   tickFormat={v => v.toString() + '%'} />
                 <HorizontalBarSeries data={data} color="#8F3931"/>
               </FlexibleWidthXYPlot>
-            </Col>
-            <Col md={6}>
+            </GridCol>
+            <GridCol width={6}>
               {TrackerTable(allData)}
-            </Col>
-          </Row>
+            </GridCol>
+          </GridRow>
         </Grid>
       </div>
     );

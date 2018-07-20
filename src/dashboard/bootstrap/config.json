@@ -382,7 +382,6 @@
     "@hr-border": "@gray-lighter"
   },
   "css": [
-    "grid.less",
     "forms.less",
     "buttons.less",
     "button-groups.less",
@@ -392,6 +391,7 @@
     "breadcrumbs.less",
     "labels.less",
     "badges.less",
+    "alerts.less",
     "list-group.less",
     "panels.less",
     "wells.less",

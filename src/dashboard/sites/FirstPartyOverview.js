@@ -2,7 +2,15 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import logging from '../dashboardLogging';
 import ReactTable from 'react-table';
-import { Breadcrumb, Grid, Row, Col } from 'react-bootstrap';
+import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
+
+
+import Heading from '@instructure/ui-elements/lib/components/Heading'
+import Text from '@instructure/ui-elements/lib/components/Text'
+import Grid from '@instructure/ui-layout/lib/components/Grid'
+import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
+import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+
 import FirstPartyDetails from './FirstPartyDetails';
 
 // import { LinkContainer } from 'react-router-bootstrap';
@@ -144,24 +152,24 @@ export default class FirstPartyOverview extends React.Component {
               <Breadcrumb.Item active>Sites</Breadcrumb.Item>
             </Breadcrumb>
             <h1>Sites</h1>
-            <Grid>
-              <Row>
-                <Col md={3}>
+            <Grid startAt='large'>
+              <GridRow>
+                <GridCol width={3}>
                   <div>
                     {RecentTable(this.state.recent)}
                   </div>
-                </Col>
-                <Col md={6}>
+                </GridCol>
+                <GridCol width={6}>
                   <div>
                     {ManyTrackersTable(this.state.manyTrackers)}
                   </div>
-                </Col>
-                <Col md={3}>
+                </GridCol>
+                <GridCol width={3}>
                   <div>
                     {NoTrackerTable(this.state.noTrackers)}
                   </div>
-                </Col>
-              </Row>
+                </GridCol>
+              </GridRow>
             </Grid>
           </div>
         )}/>
