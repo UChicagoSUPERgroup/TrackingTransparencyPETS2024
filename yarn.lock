@@ -16,6 +16,65 @@
     "@cliqz-oss/firefox-client" "0.3.1"
     es6-promise "^2.0.1"
 
+"@instructure/ui-a11y@^5.20.1":
+  version "5.20.1"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-a11y/-/ui-a11y-5.20.1.tgz#be1550be6784c326fcf436621092785e938152eb"
+  dependencies:
+    "@instructure/ui-themeable" "^5.20.1"
+    "@instructure/ui-utils" "^5.20.1"
+    keycode "^2"
+    prop-types "^15"
+    react "^0.14.9 || ^15"
+
+"@instructure/ui-buttons@^5.20.1":
+  version "5.20.1"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-buttons/-/ui-buttons-5.20.1.tgz#b0f7e178c5849b9a46ae0c5364d01e1ac83981e6"
+  dependencies:
+    "@instructure/ui-a11y" "^5.20.1"
+    "@instructure/ui-icons" "^5.20.1"
+    "@instructure/ui-layout" "^5.20.1"
+    "@instructure/ui-themeable" "^5.20.1"
+    "@instructure/ui-utils" "^5.20.1"
+    classnames "^2"
+    keycode "^2"
+    prop-types "^15"
+    react "^0.14.9 || ^15"
+
+"@instructure/ui-container@^5.20.1":
+  version "5.20.1"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-container/-/ui-container-5.20.1.tgz#c90e7528ae8a93023a6707a0ee630936ee7814b7"
+  dependencies:
+    "@instructure/ui-themeable" "^5.20.1"
+    "@instructure/ui-utils" "^5.20.1"
+    classnames "^2"
+    prop-types "^15"
+    react "^0.14.9 || ^15"
+
+"@instructure/ui-elements@^5.20.1":
+  version "5.20.1"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-elements/-/ui-elements-5.20.1.tgz#165493816c65bba164d98daf465c324644c3d46c"
+  dependencies:
+    "@instructure/ui-a11y" "^5.20.1"
+    "@instructure/ui-container" "^5.20.1"
+    "@instructure/ui-icons" "^5.20.1"
+    "@instructure/ui-layout" "^5.20.1"
+    "@instructure/ui-motion" "^5.20.1"
+    "@instructure/ui-themeable" "^5.20.1"
+    "@instructure/ui-utils" "^5.20.1"
+    classnames "^2"
+    prop-types "^15"
+    react "^0.14.9 || ^15"
+
+"@instructure/ui-i18n@^5.20.1":
+  version "5.20.1"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-i18n/-/ui-i18n-5.20.1.tgz#ff371308c8ef3ea8c2d14d792926c619ea3749e8"
+  dependencies:
+    "@instructure/ui-utils" "^5.20.1"
+    decimal.js "^10"
+    moment-timezone "^0.5"
+    prop-types "^15"
+    react "^0.14.9 || ^15"
+
 "@instructure/ui-icons@^5.20.1":
   version "5.20.1"
   resolved "https://registry.yarnpkg.com/@instructure/ui-icons/-/ui-icons-5.20.1.tgz#c14ac5c193d9d693edf859ce4164fa360dfde509"
@@ -23,6 +82,39 @@
     "@instructure/ui-svg-images" "^5.20.1"
     prop-types "^15"
     react "^0.14.9 || ^15"
+
+"@instructure/ui-layout@^5.20.1":
+  version "5.20.1"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-layout/-/ui-layout-5.20.1.tgz#ab8ea9eab9e2786f88db65391be06939a5571268"
+  dependencies:
+    "@instructure/ui-a11y" "^5.20.1"
+    "@instructure/ui-i18n" "^5.20.1"
+    "@instructure/ui-motion" "^5.20.1"
+    "@instructure/ui-portal" "^5.20.1"
+    "@instructure/ui-themeable" "^5.20.1"
+    "@instructure/ui-utils" "^5.20.1"
+    classnames "^2"
+    prop-types "^15"
+    react "^0.14.9 || ^15"
+
+"@instructure/ui-motion@^5.20.1":
+  version "5.20.1"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-motion/-/ui-motion-5.20.1.tgz#c67e71b5eca5c3cab4019724a788e3319a691014"
+  dependencies:
+    "@instructure/ui-themeable" "^5.20.1"
+    "@instructure/ui-utils" "^5.20.1"
+    prop-types "^15"
+    react "^0.14.9 || ^15"
+
+"@instructure/ui-portal@^5.20.1":
+  version "5.20.1"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-portal/-/ui-portal-5.20.1.tgz#53286a365f0aef659e1d073e44f5550803702081"
+  dependencies:
+    "@instructure/ui-i18n" "^5.20.1"
+    "@instructure/ui-utils" "^5.20.1"
+    prop-types "^15"
+    react "^0.14.9 || ^15"
+    react-dom "^0.14.9 || ^15"
 
 "@instructure/ui-svg-images@^5.20.1":
   version "5.20.1"
@@ -43,6 +135,12 @@
     prop-types "^15"
     react "^0.14.9 || ^15"
     tinycolor2 "^1.4.1"
+
+"@instructure/ui-themes@^5.20.1":
+  version "5.20.1"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-themes/-/ui-themes-5.20.1.tgz#ce6f7ce72a0897c6c2f8e8104aed8e219f031b8f"
+  dependencies:
+    "@instructure/ui-themeable" "^5.20.1"
 
 "@instructure/ui-utils@^5.20.1":
   version "5.20.1"
