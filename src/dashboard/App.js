@@ -1,9 +1,8 @@
-import 'bootstrap/dist/css/bootstrap.css';
-import '../../node_modules/react-vis/dist/style.css';
-
 import React, { Component } from 'react';
 import { HashRouter, Route } from 'react-router-dom';
 
+import './bootstrap/css/bootstrap.css'
+import '../../node_modules/react-vis/dist/style.css';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
