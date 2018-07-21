@@ -2,6 +2,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../../node_modules/react-vis/dist/style.css';
 
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { withRouter } from 'react-router'
 import { HashRouter, Route } from 'react-router-dom';
 
 import Navbar from 'react-bootstrap/lib/Navbar';
@@ -158,5 +160,4 @@ The code for logclick logs ALL the click in every single page.
   }
 }
 
-
-export default App;
+ReactDOM.render(<App />, document.getElementById('root'));
