@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { withRouter } from 'react-router'
 import { HashRouter, Route } from 'react-router-dom';
 import {LinkContainer} from 'react-router-bootstrap';
 
@@ -164,5 +166,4 @@ The code for logclick logs ALL the click in every single page.
   }
 }
 
-
-export default App;
+ReactDOM.render(<App />, document.getElementById('root'));
