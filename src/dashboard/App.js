@@ -1,17 +1,17 @@
-import 'bootstrap/dist/css/bootstrap.css';
-import '../../node_modules/react-vis/dist/style.css';
-
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router'
 import { HashRouter, Route } from 'react-router-dom';
+import {LinkContainer} from 'react-router-bootstrap';
 
+import './bootstrap/css/bootstrap.css'
+import theme from '@instructure/ui-themes/lib/canvas'
+import '../../node_modules/react-vis/dist/style.css';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
-
-import FontAwesome from 'react-fontawesome';
-import {LinkContainer} from 'react-router-bootstrap';
+import IconSettings from '@instructure/ui-icons/lib/Solid/IconSettings'
+import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
 import {Home, WaitingDataHome} from './Home';
 import IntroModal from './IntroModal';
@@ -23,17 +23,20 @@ import InfoPage from './Info';
 import SettingsPage from './Settings'
 import DebugPage from './Debug';
 import LightbeamWrapper from './LightbeamWrapper';
+import logging from './dashboardLogging';
 
 import tt from '../helpers';
-
-// import COLORS from '../colors';
+import { instuiOverrides } from '../colors'
 
 import '../styles/common.css';
 import '../styles/dashboard.css';
 import '../styles/navbar.css';
 import '../styles/panel.css'
 
-import logging from './dashboardLogging';
+theme.use({
+  overrides: instuiOverrides
+})
+// TODO: add theme overrides
 
 const NavLink = ({to, title}) => (
   <LinkContainer to={to} className = "navbarTolog">
@@ -97,12 +100,12 @@ The code for logclick logs ALL the click in every single page.
   render() {
     const {lightbeamcondition, tabId, enoughData, showModal} = this.state;
     // const enoughData = tt.enoughData();
-    const info = (<FontAwesome name="info-circle fa-lg" />);
-    const settings = (<FontAwesome name="cog fa-lg" />);
+    const info = (<IconInfo />);
+    const settings = (<IconSettings />);
     const TTNavbar = () => {
       const {lightbeamcondition, tabId} = this.state;
       return (
-        <Navbar fixedTop>
+        <Navbar>
           <Navbar.Header>
             <LinkContainer to="/">
               <Navbar.Brand>Tracking Transparency</Navbar.Brand>

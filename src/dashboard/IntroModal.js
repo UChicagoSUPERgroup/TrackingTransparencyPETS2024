@@ -1,6 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {Panel, Grid, Row, Col, Modal, Button} from 'react-bootstrap';
+import Modal from 'react-bootstrap/lib/Modal';
+
+import Heading from '@instructure/ui-elements/lib/components/Heading'
+import Text from '@instructure/ui-elements/lib/components/Text'
+import Button from '@instructure/ui-buttons/lib/components/Button'
+
 const millisecondsInDay = 86400000;
 
 
@@ -71,21 +76,23 @@ export default class IntroModal extends React.Component {
         <Modal.Title closebutton='true' />
 
         <Modal.Body>
-          <h2>Welcome to Tracking Transparency!</h2>
-          <p> When you browse the Internet, third-party trackers can see your browsing activity and sell this information to advertising companies. We hope this extension will help you understand who is tracking you and what they could have learned.</p>
-          <p> In the last week, you visited <strong>{numPages} pages</strong> and encountered <strong>{numTrackers} trackers</strong>.</p>
-          <hr />
-          {topTrackers && topTrackers.length > 0 && <div>
-            <h4> Your top 5 trackers: </h4>
-            <p>trackerList(topTrackers)</p>
+          <Heading level='h1' as='h2'>Welcome to Tracking Transparency!</Heading>
+          <Text>
+            <p> When you browse the Internet, third-party trackers can see your browsing activity and sell this information to advertising companies. We hope this extension will help you understand who is tracking you and what they could have learned.</p>
+            <p> In the last week, you visited <strong>{numPages} pages</strong> and encountered <strong>{numTrackers} trackers</strong>.</p>
             <hr />
-          </div>}
-          {recentInferences && recentInferences.length > 0 && <div>
-            <h4> Your top 5 inferred interests: </h4>
-            <p>inferenceList(recentInferences)</p>
-            <hr />
-          </div>}
-          <p>Continue to the homepage to learn more about the trackers you have encountered, what they might have learned about you, and more.</p>
+            {topTrackers && topTrackers.length > 0 && <div>
+              <h4> Your top 5 trackers: </h4>
+              <p>{trackerList(topTrackers)}</p>
+              <hr />
+            </div>}
+            {recentInferences && recentInferences.length > 0 && <div>
+              <h4> Your top 5 inferred interests: </h4>
+              <p>{inferenceList(recentInferences)}</p>
+              <hr />
+            </div>}
+            <p>Continue to the homepage to learn more about the trackers you have encountered, what they might have learned about you, and more.</p>
+          </Text>
         </Modal.Body>
 
         <Modal.Footer>

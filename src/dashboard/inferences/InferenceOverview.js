@@ -4,9 +4,13 @@ import { Route, Link } from 'react-router-dom';
 import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
 import ToggleButton from 'react-bootstrap/lib/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
-import Grid from 'react-bootstrap/lib/Grid';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
+
+import Heading from '@instructure/ui-elements/lib/components/Heading'
+import Text from '@instructure/ui-elements/lib/components/Text'
+import Grid from '@instructure/ui-layout/lib/components/Grid'
+import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
+import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+
 
 import sensitiveCats from '../../data/categories_comfort_list.json';
 
@@ -145,10 +149,6 @@ export default class InferencesOverview extends React.Component {
 
     return(
       <div>
-        
-
-        
-
         <Route path={`${this.props.match.url}/:name`} component={InferenceDetails}/>
         <Route exact path={this.props.match.url} render={() => (
           <div>
@@ -156,9 +156,11 @@ export default class InferencesOverview extends React.Component {
               <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
               <Breadcrumb.Item active>Inferences</Breadcrumb.Item>
             </Breadcrumb>
-            <h1>What could they have learned?</h1>
+            <Heading level='h1'>What could they have learned?</Heading>
+            <Text>
             <p>The Tracking Transparency extension is able to infer a topic for all the pages that you visit. Online advertisers and trackers most likely are able to make similar inferences about your browsing. This chart shows the {this.inferenceCount} topics that appeared the most in your browsing. You can click on a topic on the diagram to see how companies could have made a specific inference about you.</p>
             {inferences && inferences.length >= 3 && <p>Some of the most frequent inferences made about you include {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)}</p>}
+          </Text>
             {/* {inferences && <div className='suggested-inferences'>
               <p><strong>Suggested inferences to explore:</strong></p>
               <ul>
@@ -168,9 +170,12 @@ export default class InferencesOverview extends React.Component {
               </ul>
             </div>} */}
 
-            <Grid>
-              <Row>
-                <Col md={6} mdPush={6}>
+            <Grid startAt='large'>
+              <GridRow>
+                <GridCol>
+                  {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference}/>}
+                </GridCol>
+                <GridCol>
                   <div className={'inferences-sunburst-filters'}>
                     <h3>Filters</h3>
                     <div className={'filter-row'}>Inferences sensitivity: <ToggleButtonGroup
@@ -195,11 +200,9 @@ export default class InferencesOverview extends React.Component {
 
                   <p className={'selected-inference'}><em>{selectedInference ? 'Click on the diagram to unselect the current category' : 'Click a category to see more information'}</em></p>
                   <p><strong><Link className = "inferencePageSelected-Inference" to={{pathname: '/inferences/' + selectedInference}}>{selectedInference}</Link></strong></p>
-                </Col>
-                <Col md={6} mdPull={6}>
-                  {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference}/>}
-                </Col>
-              </Row>
+                </GridCol>
+
+              </GridRow>
             </Grid>
 
             {/* {selectedInference && <InferenceDetails inference={selectedInference}/>} */}

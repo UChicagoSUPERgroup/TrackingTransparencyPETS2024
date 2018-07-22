@@ -1,6 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {Panel, Grid, Row, Col, Breadcrumb} from 'react-bootstrap';
+import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
+import Panel from 'react-bootstrap/lib/Panel';
+
+import Heading from '@instructure/ui-elements/lib/components/Heading'
+import Text from '@instructure/ui-elements/lib/components/Text'
+import Grid from '@instructure/ui-layout/lib/components/Grid'
+import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
+import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+
 const millisecondsInDay = 86400000;
 
 
@@ -76,44 +84,42 @@ export class Home extends React.Component {
         <Breadcrumb>
           <Breadcrumb.Item active>Home</Breadcrumb.Item>
         </Breadcrumb>
-        <h1>Tracking Transparency</h1>
-        <Grid>
-          <Row>
-            <div className="homeText">
+        <Heading level='h1'>Tracking Transparency</Heading>
+          <Text>
 
-              <p>The Tracking Transparency extension lets you learn about what companies could have inferrred about your browsing through trackers and advertisments on the web pages you visit.</p>
+            <p>The Tracking Transparency extension lets you learn about what companies could have inferrred about your browsing through trackers and advertisments on the web pages you visit.</p>
 
-              <p>In total, <em>{numTrackers} trackers</em> have seen you visit <em>{numPages} pages</em>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <em>{numInferences} topics</em>.</p>
+            <p>In total, <em>{numTrackers} trackers</em> have seen you visit <em>{numPages} pages</em>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <em>{numInferences} topics</em>.</p>
 
-              {/* <p>See all the the trackers and inferences on a specific domain, such as <Link to={{pathname: '/domains/www.nytimes.com'}}>www.nytimes.com</Link> or <Link to={{pathname: '/domains/www.yahoo.com'}}>www.yahoo.com</Link>. Learn about a specific tracker such as <Link to={{pathname: '/trackers/Google'}}>Google</Link>. See all the <Link to={{pathname: '/inferences'}}>inferences</Link>  companies may have made about your browsing, or view details about a specific inference such as <Link to={{pathname: '/inferences/warehousing'}}>warehousing</Link>.</p> */}
-            </div>
-          </Row>
-          <Row>
-            <Col md={2}>
+            {/* <p>See all the the trackers and inferences on a specific domain, such as <Link to={{pathname: '/domains/www.nytimes.com'}}>www.nytimes.com</Link> or <Link to={{pathname: '/domains/www.yahoo.com'}}>www.yahoo.com</Link>. Learn about a specific tracker such as <Link to={{pathname: '/trackers/Google'}}>Google</Link>. See all the <Link to={{pathname: '/inferences'}}>inferences</Link>  companies may have made about your browsing, or view details about a specific inference such as <Link to={{pathname: '/inferences/warehousing'}}>warehousing</Link>.</p> */}
+            </Text>
+        <Grid startAt='large'>
+          <GridRow>
+            <GridCol width={2}>
             <Panel bsStyle="primary">
               <Panel.Heading>
                 <Panel.Title>Trackers Seen</Panel.Title>
               </Panel.Heading>
               <Panel.Body><h2>{numTrackers}</h2></Panel.Body>
             </Panel>
-            </Col>
-            <Col md={2}>
+            </GridCol>
+            <GridCol width={2}>
             <Panel bsStyle="primary">
               <Panel.Heading>
                 <Panel.Title>Pages Visited</Panel.Title>
               </Panel.Heading>
               <Panel.Body><h2>{numPages}</h2></Panel.Body>
             </Panel>
-            </Col>
-            <Col md={2}>
+            </GridCol>
+            <GridCol width={2}>
             <Panel bsStyle="primary">
               <Panel.Heading>
                 <Panel.Title>Inferred Interests</Panel.Title>
               </Panel.Heading>
               <Panel.Body><h2>{numInferences}</h2></Panel.Body>
             </Panel>
-            </Col>
-            <Col md={3}>
+            </GridCol>
+            <GridCol width={3}>
             <Panel bsStyle="primary">
               <Panel.Heading>
                 <Panel.Title>Recent Inferences</Panel.Title>
@@ -122,8 +128,8 @@ export class Home extends React.Component {
                 {recentInferences ? inferenceList(recentInferences) : ""}
               </Panel.Body>
             </Panel>
-            </Col>
-            <Col md={3}>
+            </GridCol>
+            <GridCol width={3}>
             <Panel bsStyle="primary">
               <Panel.Heading>
                 <Panel.Title>Recent Sites</Panel.Title>
@@ -132,8 +138,8 @@ export class Home extends React.Component {
                 {recentDomains ? domainList(recentDomains) : ""}
               </Panel.Body>
             </Panel>
-            </Col>
-          </Row>
+            </GridCol>
+          </GridRow>
         </Grid>
       </div>
     )
@@ -142,10 +148,10 @@ export class Home extends React.Component {
 
 export const WaitingDataHome = () => (
   <div>
-    <h1>Tracking Transparency</h1>
-    <div className="homeText">
+    <Heading level='h1'>Tracking Transparency</Heading>
+    <Text>
       <p>The Tracking Tranparency extension is currently running in the background to collect information about the trackers in your browsing.</p>
       <p>Continue using the internet and come back here in a few days to see what they might know about your browsing!</p>
-    </div>
+    </Text>
   </div>
 )

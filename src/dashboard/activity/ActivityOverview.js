@@ -1,8 +1,15 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 // import { LinkContainer } from 'react-router-bootstrap';
-import { Grid, Row, Col, Breadcrumb } from 'react-bootstrap';
+import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
 import ReactTable from 'react-table';
+
+import Heading from '@instructure/ui-elements/lib/components/Heading'
+import Text from '@instructure/ui-elements/lib/components/Text'
+import Grid from '@instructure/ui-layout/lib/components/Grid'
+import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
+import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+
 
 import PagesTimeScatterplot from './PagesTimeScatterplot';
 import logging from '../dashboardLogging';
@@ -142,33 +149,28 @@ export default class ActivityOverview extends React.Component {
           <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
           <Breadcrumb.Item active>Activity</Breadcrumb.Item>
         </Breadcrumb>
-        <h1>Recent Activity</h1>
+        <Heading level='h1'>Recent Activity</Heading>
         <Route exact path={this.props.match.url} render={() => (
           <div>
-            <Grid>
-              <Row>
-                <p>
-              Here you can learn about when you have been tracked recently.
-              The scatter plot shows when you visited the most pages over the past week.
-              Click on a point to learn more about the tracking that took place.
-                </p>
-              </Row>
-              <Row>
-                {weektimestamps &&
-                  <PagesTimeScatterplot
-                    weektimestamps={weektimestamps}
-                    update={this.handleClick}/>
-                }
-              </Row>
-              <br/>
-              <Row>
-                <Col md={12}>
-                  {recent && RecentVisitsTable(recent, pagesByTime)}
-                </Col>
-              </Row>
-            </Grid>
+            <Text>
+              <p>
+                Here you can learn about when you have been tracked recently.
+                The scatter plot shows when you visited the most pages over the past week.
+                Click on a point to learn more about the tracking that took place.
+              </p>
+            </Text>
+            <div>
+              {weektimestamps &&
+                <PagesTimeScatterplot
+                  weektimestamps={weektimestamps}
+                  update={this.handleClick}/>
+              }
+            </div>
+            <div>
+            {recent && RecentVisitsTable(recent, pagesByTime)}
+            </div>
           </div>
-        )}/>
+        )} />
 
 
       </div>
