@@ -3,9 +3,13 @@ import { Route, Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 
 import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
-import Grid from 'react-bootstrap/lib/Grid';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
+
+import Heading from '@instructure/ui-elements/lib/components/Heading'
+import Text from '@instructure/ui-elements/lib/components/Text'
+import Grid from '@instructure/ui-layout/lib/components/Grid'
+import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
+import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+
 import logging from '../dashboardLogging';
 
 import _ from 'lodash';
@@ -155,12 +159,12 @@ export default class TrackerDetailPage extends React.Component {
           <Breadcrumb.Item><Link to={{pathname: '/trackers'}}>Trackers</Link></Breadcrumb.Item>
           <Breadcrumb.Item active>{this.tracker}</Breadcrumb.Item>
         </Breadcrumb>
-        <h1>Trackers</h1>
-        <h2>{this.tracker}</h2>
-        <Grid>
-          <Row>
-            <Col md={12}>
-              <h2>When has {this.tracker} tracked you?</h2>
+        <Heading level='h1'>Trackers</Heading>
+        <Heading level='h2' margin='small 0 0 0'>{this.tracker}</Heading>
+        <Grid startAt="large">
+          <GridRow>
+            <GridCol>
+              <Heading level='h3' margin='small 0 small 0'>When has {this.tracker} tracked you?</Heading>
               <FlexibleWidthXYPlot
                 height={200}
                 margin={{left: 100, right: 10, top: 10, bottom: 70}}>
@@ -174,28 +178,26 @@ export default class TrackerDetailPage extends React.Component {
                   tickLabelAngle={-20}/>
                 <YAxis />
               </FlexibleWidthXYPlot>
-            </Col>
-          </Row>
-          <Row>
-            <p>You have encountered trackers
-              from {this.tracker} on <em>{numDomains}</em> different
-              domains. The Tracking Transparency extension has
-              found <em>{numInferences}</em> inferences
-              that {this.tracker} may have made about you.
-            </p>
-          </Row>
-          <Row>
-            <Col md={6} mdPush={6}>
+            </GridCol>
+          </GridRow>
+        </Grid>
+        <Text>
+          <p>You have encountered trackers
+            from {this.tracker} on <em>{numDomains}</em> different
+            domains. The Tracking Transparency extension has
+            found <em>{numInferences}</em> inferences
+            that {this.tracker} may have made about you.
+          </p>
+        </Text>
+        <Grid startAt="large">
+          <GridRow>
+            <GridCol>
               {InferTable(inferences)}
-            </Col>
-            <Col md={6} mdPull={6}>
+            </GridCol>
+            <GridCol>
               {DomainTable(domains)}
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-            </Col>
-          </Row>
+            </GridCol>
+          </GridRow>
         </Grid>
       </div>
     );

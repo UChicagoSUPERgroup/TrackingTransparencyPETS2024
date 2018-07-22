@@ -1,4 +1,4 @@
-const COLORS = {
+export const COLORS = {
   UC_MAROON: '#800000',
   UC_DK_GRAY: '#767676',
   UC_LT_GRAY: '#D6D6CE',
@@ -27,4 +27,46 @@ const COLORS = {
 
   TEXT: '#222'
 }
-export default COLORS;
+
+export const instuiOverrides = {
+  typography: {
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
+  },
+  colors: {
+    brand: COLORS.UC_RED_2,
+
+    textBrand: COLORS.UC_RED_2,
+    // textAlert: colors.barney,
+    // textInfo: colors.brand,
+    // textSuccess: colors.shamrock,
+    // textDanger: colors.crimson,
+    // textWarning: colors.fire,
+
+    // backgroundDarkest: colors.licorice,
+    // backgroundDark: colors.ash,
+    // backgroundMedium: colors.tiara,
+    // backgroundLight: colors.porcelain,
+    // backgroundLightest: colors.white,
+
+    backgroundBrand: COLORS.UC_RED_2,
+    backgroundBrandSecondary: COLORS.UC_RED_3
+    // backgroundAlert: colors.barney,
+    // backgroundInfo: colors.brand,
+    // backgroundSuccess: colors.shamrock,
+    // backgroundDanger: colors.crimson,
+    // backgroundWarning: colors.fire,
+
+    // borderLightest: colors.white,
+    // borderLight: colors.porcelain,
+    // borderMedium: colors.tiara,
+    // borderDark: colors.ash,
+    // borderDarkest: colors.licorice,
+
+    // borderBrand: colors.brand,
+    // borderAlert: colors.barney,
+    // borderInfo: colors.brand,
+    // borderSuccess: colors.shamrock,
+    // borderDanger: colors.crimson,
+    // borderWarning: colors.fire,
+  }
+}

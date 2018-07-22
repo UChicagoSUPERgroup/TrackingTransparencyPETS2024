@@ -4,9 +4,13 @@ import { Route, Link } from 'react-router-dom';
 import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
 import ToggleButton from 'react-bootstrap/lib/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
-import Grid from 'react-bootstrap/lib/Grid';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
+
+import Heading from '@instructure/ui-elements/lib/components/Heading'
+import Text from '@instructure/ui-elements/lib/components/Text'
+import Grid from '@instructure/ui-layout/lib/components/Grid'
+import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
+import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+
 
 import sensitiveCats from '../../data/categories_comfort_list.json';
 
@@ -152,16 +156,26 @@ export default class InferencesOverview extends React.Component {
               <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
               <Breadcrumb.Item active>Inferences</Breadcrumb.Item>
             </Breadcrumb>
-            <h1>What could they have learned?</h1>
+            <Heading level='h1'>What could they have learned?</Heading>
+            <Text>
             <p>Trackers collect information about the pages you visit in order to make guesses about things you might be interested in. These guesses, or inferences, are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{this.inferenceCount} topics</strong> that trackers might have inferred you are interested in.</p>
             {inferences && inferences.length >= 3 && <p> {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)} were among the most frequent topics that our algorithm determined the pages you visited recently are about.</p>}
+          </Text>
+            {/* {inferences && <div className='suggested-inferences'>
+              <p><strong>Suggested inferences to explore:</strong></p>
+              <ul>
+                <li>{inferences[0].inference}</li>
+                <li>{inferences[1].inference}</li>
+                <li>{inferences[2].inference}</li>
+              </ul>
+            </div>} */}
 
-            <Grid>
-              <Row>
-                <Col md={6}>
+            <Grid startAt='large'>
+              <GridRow>
+                <GridCol>
                   {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference}/>}
-                </Col>
-                <Col md={6}>
+                </GridCol>
+                <GridCol>
                   <div className={'inferences-sunburst-filters'}>
                     <p className={'selected-inference'}><strong>{selectedInference ? 'Click the link below to learn more about this inference.' : 'Click a slice of the inference wheel to see inferences that trackers could have made about you.'}</strong></p>
                     <p><strong><Link className = "inferencePageSelected-Inference" to={{pathname: '/inferences/' + selectedInference}}>{selectedInference}</Link></strong></p>
@@ -187,8 +201,8 @@ export default class InferencesOverview extends React.Component {
                       <ToggleButton className = "inferencePageDateChoose" value={'past-week'} bsSize="small">Last week</ToggleButton>
                     </ToggleButtonGroup></div>
                   </div>
-                </Col>
-              </Row>
+                </GridCol>
+              </GridRow>
             </Grid>
 
             {/* {selectedInference && <InferenceDetails inference={selectedInference}/>} */}
