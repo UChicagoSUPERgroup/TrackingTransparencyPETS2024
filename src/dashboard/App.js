@@ -26,6 +26,7 @@ import LightbeamWrapper from './LightbeamWrapper';
 import logging from './dashboardLogging';
 
 import tt from '../helpers';
+import { instuiOverrides } from '../colors'
 
 import '../styles/common.css';
 import '../styles/dashboard.css';
@@ -33,11 +34,7 @@ import '../styles/navbar.css';
 import '../styles/panel.css'
 
 theme.use({
-  overrides: {
-    typography: {
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
-    }
-  }
+  overrides: instuiOverrides
 })
 // TODO: add theme overrides
 

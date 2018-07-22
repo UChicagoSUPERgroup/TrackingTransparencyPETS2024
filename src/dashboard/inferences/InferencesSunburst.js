@@ -8,7 +8,7 @@ import categoryTree from '../../data/categories_tree.json';
 
 import logging from '../dashboardLogging';
 
-import COLORS from '../../colors';
+import { COLORS } from '../../colors';
 // const PRIMARIES = [COLORS.UC_YELLOW_1, COLORS.UC_ORANGE_1, COLORS.UC_RED_1, COLORS.UC_LT_GREEN_1, COLORS.UC_DK_GREEN_1, COLORS.UC_BLUE_1, COLORS.UC_VIOLET_1];
 
 const LABEL_STYLE = {
