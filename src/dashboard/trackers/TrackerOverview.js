@@ -157,18 +157,20 @@ class TrackersList extends React.Component {
           <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
           <Breadcrumb.Item active>Trackers</Breadcrumb.Item>
         </Breadcrumb>
-        <Heading level='h1'>Trackers</Heading>
+
+        <Heading level='h1'>Who is tracking you?</Heading>
 
         <Text>
-          <p><em>{numTrackers} trackers</em> are tracking your browsing. Your most
-            frequently encountered tracker is <em>{topTracker}</em> which is
+          <p><strong>{numTrackers} trackers</strong> have collected information about you based on your browsing history. Your most
+            frequently encountered tracker is <strong>{topTracker}</strong> which was
             present on <em>{topPercent}%</em> of
-            the pages you visit.
+            the sites you visited.
             Here are your 20 most frequently encountered trackers:</p>
         </Text>
         <Grid startAt='large'>
           <GridRow>
             <GridCol width={6}>
+>>>>>>> origin/master
               <FlexibleWidthXYPlot
                 yType={'ordinal'}
                 height={800}

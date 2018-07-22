@@ -158,8 +158,8 @@ export default class InferencesOverview extends React.Component {
             </Breadcrumb>
             <Heading level='h1'>What could they have learned?</Heading>
             <Text>
-            <p>The Tracking Transparency extension is able to infer a topic for all the pages that you visit. Online advertisers and trackers most likely are able to make similar inferences about your browsing. This chart shows the {this.inferenceCount} topics that appeared the most in your browsing. You can click on a topic on the diagram to see how companies could have made a specific inference about you.</p>
-            {inferences && inferences.length >= 3 && <p>Some of the most frequent inferences made about you include {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)}</p>}
+            <p>Trackers collect information about the pages you visit in order to make guesses about things you might be interested in. These guesses, or inferences, are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{this.inferenceCount} topics</strong> that trackers might have inferred you are interested in.</p>
+            {inferences && inferences.length >= 3 && <p> {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)} were among the most frequent topics that our algorithm determined the pages you visited recently are about.</p>}
           </Text>
             {/* {inferences && <div className='suggested-inferences'>
               <p><strong>Suggested inferences to explore:</strong></p>
@@ -177,8 +177,12 @@ export default class InferencesOverview extends React.Component {
                 </GridCol>
                 <GridCol>
                   <div className={'inferences-sunburst-filters'}>
-                    <h3>Filters</h3>
-                    <div className={'filter-row'}>Inferences sensitivity: <ToggleButtonGroup
+                    <p className={'selected-inference'}><strong>{selectedInference ? 'Click the link below to learn more about this inference.' : 'Click a slice of the inference wheel to see inferences that trackers could have made about you.'}</strong></p>
+                    <p><strong><Link className = "inferencePageSelected-Inference" to={{pathname: '/inferences/' + selectedInference}}>{selectedInference}</Link></strong></p>
+                    <p><br /><br /><br /><br /><br /><br /></p>
+
+                    <h3>Inference Wheel Filters</h3>
+                    <div className={'filter-row'}>Inference sensitivity: <ToggleButtonGroup
                       name="sensitivity-filter"
                       value={this.state.sensitivitySelection}
                       onChange={this.handleSensitivitySelection}
@@ -197,11 +201,7 @@ export default class InferencesOverview extends React.Component {
                       <ToggleButton className = "inferencePageDateChoose" value={'past-week'} bsSize="small">Last week</ToggleButton>
                     </ToggleButtonGroup></div>
                   </div>
-
-                  <p className={'selected-inference'}><em>{selectedInference ? 'Click on the diagram to unselect the current category' : 'Click a category to see more information'}</em></p>
-                  <p><strong><Link className = "inferencePageSelected-Inference" to={{pathname: '/inferences/' + selectedInference}}>{selectedInference}</Link></strong></p>
                 </GridCol>
-
               </GridRow>
             </Grid>
 

@@ -149,7 +149,7 @@ export default class ActivityOverview extends React.Component {
           <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
           <Breadcrumb.Item active>Activity</Breadcrumb.Item>
         </Breadcrumb>
-        <Heading level='h1'>Recent Activity</Heading>
+        <Heading level='h1'>When were you tracked?</Heading>
         <Route exact path={this.props.match.url} render={() => (
           <div>
             <Text>
