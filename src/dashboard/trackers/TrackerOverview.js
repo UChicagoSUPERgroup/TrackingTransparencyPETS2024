@@ -170,7 +170,6 @@ class TrackersList extends React.Component {
         <Grid startAt='large'>
           <GridRow>
             <GridCol width={6}>
->>>>>>> origin/master
               <FlexibleWidthXYPlot
                 yType={'ordinal'}
                 height={800}
