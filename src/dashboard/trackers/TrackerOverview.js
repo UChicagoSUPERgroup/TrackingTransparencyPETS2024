@@ -43,7 +43,7 @@ const TrackerTable = (data) => {
         },
         {Header: h => (
           <div style={{textAlign: 'left'}}>
-            Page count
+            Page Count
           </div>),
         accessor: 'count',
         Cell: row =>
