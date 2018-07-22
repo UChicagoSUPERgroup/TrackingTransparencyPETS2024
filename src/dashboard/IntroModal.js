@@ -83,12 +83,12 @@ export default class IntroModal extends React.Component {
             <hr />
             {topTrackers && topTrackers.length > 0 && <div>
               <h4> Your top 5 trackers: </h4>
-              <p>trackerList(topTrackers)</p>
+              <p>{trackerList(topTrackers)}</p>
               <hr />
             </div>}
             {recentInferences && recentInferences.length > 0 && <div>
               <h4> Your top 5 inferred interests: </h4>
-              <p>inferenceList(recentInferences)</p>
+              <p>{inferenceList(recentInferences)}</p>
               <hr />
             </div>}
             <p>Continue to the homepage to learn more about the trackers you have encountered, what they might have learned about you, and more.</p>
