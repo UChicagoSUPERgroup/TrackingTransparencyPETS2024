@@ -40,7 +40,7 @@ const RecentTable = (data) => {
 }
 
 const NoTrackerTable = (data) => {
-  let numEntries = data ? data.length: 0
+  let numEntries = data ? data.length : 0
   return (
     <ReactTable
       data={data}
@@ -113,14 +113,19 @@ export default class FirstPartyOverview extends React.Component {
 
   async getDomains() {
     const background = await browser.runtime.getBackgroundPage();
+
     let now = new Date(Date.now()).getTime()
     let args = {count: 100, endTime: now}
+
     const recent = background.queryDatabase('getDomainsByTime', args);
     const manyTrackers = background.queryDatabase('getDomainsByTrackerCount', args)
     const noTrackers = background.queryDatabase('getDomainsNoTrackers', {})
+    const numPages = background.queryDatabase('getNumberOfPages', {});
+
     recent.then(n => this.setState({recent: n}));
     manyTrackers.then(n => this.setState({manyTrackers: n}));
     noTrackers.then(n => this.setState({noTrackers: n}));
+    numPages.then(n => this.setState({numPages: n}));
   }
 
   async componentDidMount() {
@@ -142,6 +147,10 @@ export default class FirstPartyOverview extends React.Component {
   }
 
   render() {
+    const {numTrackers, numPages} = this.state;
+    let numNoTrackers = this.state.noTrackers ? this.state.noTrackers.length : 0
+    let percentTrackedSites =(((numPages - numNoTrackers) / numPages) * 100).toFixed(1);
+
     return(
       <div>
         <Route path={`${this.props.match.url}/:name`}  component={FirstPartyDetails}/>
@@ -151,9 +160,9 @@ export default class FirstPartyOverview extends React.Component {
               <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
               <Breadcrumb.Item active>Sites</Breadcrumb.Item>
             </Breadcrumb>
-            <Heading level='h1'>Sites</Heading>
+            <Heading level='h1'>Where were you tracked?</Heading>
             <Text>
-              <p>We should put some text here!</p>
+              <p>Trackers see which sites you visited through a variety of tracking methods, including third-party cookies, tracking pixels, and browser fingerprinting. Tracker activity was detected on <strong>{percentTrackedSites}% of the sites you have visited </strong> since downloading Tracking Transparency.</p>
             </Text>
             <Grid startAt='large'>
               <GridRow>
