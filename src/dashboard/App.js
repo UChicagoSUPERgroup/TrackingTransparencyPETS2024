@@ -118,7 +118,7 @@ The code for logclick logs ALL the click in every single page.
               <NavLink to="/inferences"  title="Inferences"/>
               <NavLink to="/domains"  title="Sites"/>
               <NavLink to="/activity"  title="Activity"/>
-              {lightbeamcondition && <NavLink to="/lightbeam"  title="Time"/>}
+              {lightbeamcondition && <NavLink to="/lightbeam"  title="Network"/>}
             </Nav>}
             <Nav pullRight>
               <NavItem onClick={this.handleModalShow}>Show Intro</NavItem>
