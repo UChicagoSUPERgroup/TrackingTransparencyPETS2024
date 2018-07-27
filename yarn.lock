@@ -26,6 +26,29 @@
     prop-types "^15"
     react "^0.14.9 || ^15"
 
+"@instructure/ui-a11y@^5.21.0":
+  version "5.21.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-a11y/-/ui-a11y-5.21.0.tgz#262a1b1e967574fe17194ac5262ff4125e47f4de"
+  dependencies:
+    "@instructure/ui-themeable" "^5.21.0"
+    "@instructure/ui-utils" "^5.21.0"
+    keycode "^2"
+    prop-types "^15"
+    react "^0.14.9 || ^15 || ^16"
+
+"@instructure/ui-breadcrumb@^5.21.0":
+  version "5.21.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-breadcrumb/-/ui-breadcrumb-5.21.0.tgz#dbb9e2e107b12f5fd6c1eb33906e2cadf22044ad"
+  dependencies:
+    "@instructure/ui-elements" "^5.21.0"
+    "@instructure/ui-icons" "^5.21.0"
+    "@instructure/ui-layout" "^5.21.0"
+    "@instructure/ui-themeable" "^5.21.0"
+    "@instructure/ui-utils" "^5.21.0"
+    classnames "^2"
+    prop-types "^15"
+    react "^0.14.9 || ^15 || ^16"
+
 "@instructure/ui-buttons@^5.20.1":
   version "5.20.1"
   resolved "https://registry.yarnpkg.com/@instructure/ui-buttons/-/ui-buttons-5.20.1.tgz#b0f7e178c5849b9a46ae0c5364d01e1ac83981e6"
@@ -50,6 +73,16 @@
     prop-types "^15"
     react "^0.14.9 || ^15"
 
+"@instructure/ui-container@^5.21.0":
+  version "5.21.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-container/-/ui-container-5.21.0.tgz#0692aa660dbbf613794d49adfd35d51379a46321"
+  dependencies:
+    "@instructure/ui-themeable" "^5.21.0"
+    "@instructure/ui-utils" "^5.21.0"
+    classnames "^2"
+    prop-types "^15"
+    react "^0.14.9 || ^15 || ^16"
+
 "@instructure/ui-elements@^5.20.1":
   version "5.20.1"
   resolved "https://registry.yarnpkg.com/@instructure/ui-elements/-/ui-elements-5.20.1.tgz#165493816c65bba164d98daf465c324644c3d46c"
@@ -65,6 +98,21 @@
     prop-types "^15"
     react "^0.14.9 || ^15"
 
+"@instructure/ui-elements@^5.21.0":
+  version "5.21.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-elements/-/ui-elements-5.21.0.tgz#28f40b904629f57217ec756201bad555aba874ce"
+  dependencies:
+    "@instructure/ui-a11y" "^5.21.0"
+    "@instructure/ui-container" "^5.21.0"
+    "@instructure/ui-icons" "^5.21.0"
+    "@instructure/ui-layout" "^5.21.0"
+    "@instructure/ui-motion" "^5.21.0"
+    "@instructure/ui-themeable" "^5.21.0"
+    "@instructure/ui-utils" "^5.21.0"
+    classnames "^2"
+    prop-types "^15"
+    react "^0.14.9 || ^15 || ^16"
+
 "@instructure/ui-i18n@^5.20.1":
   version "5.20.1"
   resolved "https://registry.yarnpkg.com/@instructure/ui-i18n/-/ui-i18n-5.20.1.tgz#ff371308c8ef3ea8c2d14d792926c619ea3749e8"
@@ -75,6 +123,16 @@
     prop-types "^15"
     react "^0.14.9 || ^15"
 
+"@instructure/ui-i18n@^5.21.0":
+  version "5.21.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-i18n/-/ui-i18n-5.21.0.tgz#2448b3bbc3dd4bb57be4d1fb1313821aaf0d5954"
+  dependencies:
+    "@instructure/ui-utils" "^5.21.0"
+    decimal.js "^10"
+    moment-timezone "^0.5"
+    prop-types "^15"
+    react "^0.14.9 || ^15 || ^16"
+
 "@instructure/ui-icons@^5.20.1":
   version "5.20.1"
   resolved "https://registry.yarnpkg.com/@instructure/ui-icons/-/ui-icons-5.20.1.tgz#c14ac5c193d9d693edf859ce4164fa360dfde509"
@@ -82,6 +140,14 @@
     "@instructure/ui-svg-images" "^5.20.1"
     prop-types "^15"
     react "^0.14.9 || ^15"
+
+"@instructure/ui-icons@^5.21.0":
+  version "5.21.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-icons/-/ui-icons-5.21.0.tgz#6dd760dc82de8bea6f9bc5534a24c6c8dc872387"
+  dependencies:
+    "@instructure/ui-svg-images" "^5.21.0"
+    prop-types "^15"
+    react "^0.14.9 || ^15 || ^16"
 
 "@instructure/ui-layout@^5.20.1":
   version "5.20.1"
@@ -97,6 +163,20 @@
     prop-types "^15"
     react "^0.14.9 || ^15"
 
+"@instructure/ui-layout@^5.21.0":
+  version "5.21.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-layout/-/ui-layout-5.21.0.tgz#a9db58ca2def1a39c51324b0c3d0facc3945d0af"
+  dependencies:
+    "@instructure/ui-a11y" "^5.21.0"
+    "@instructure/ui-i18n" "^5.21.0"
+    "@instructure/ui-motion" "^5.21.0"
+    "@instructure/ui-portal" "^5.21.0"
+    "@instructure/ui-themeable" "^5.21.0"
+    "@instructure/ui-utils" "^5.21.0"
+    classnames "^2"
+    prop-types "^15"
+    react "^0.14.9 || ^15 || ^16"
+
 "@instructure/ui-motion@^5.20.1":
   version "5.20.1"
   resolved "https://registry.yarnpkg.com/@instructure/ui-motion/-/ui-motion-5.20.1.tgz#c67e71b5eca5c3cab4019724a788e3319a691014"
@@ -105,6 +185,15 @@
     "@instructure/ui-utils" "^5.20.1"
     prop-types "^15"
     react "^0.14.9 || ^15"
+
+"@instructure/ui-motion@^5.21.0":
+  version "5.21.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-motion/-/ui-motion-5.21.0.tgz#2ce65ae8d59918f74deb89fd95182849db051cce"
+  dependencies:
+    "@instructure/ui-themeable" "^5.21.0"
+    "@instructure/ui-utils" "^5.21.0"
+    prop-types "^15"
+    react "^0.14.9 || ^15 || ^16"
 
 "@instructure/ui-portal@^5.20.1":
   version "5.20.1"
@@ -116,6 +205,16 @@
     react "^0.14.9 || ^15"
     react-dom "^0.14.9 || ^15"
 
+"@instructure/ui-portal@^5.21.0":
+  version "5.21.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-portal/-/ui-portal-5.21.0.tgz#7aa6ad5f2963fa1d7dd5bc78dab2784efacad992"
+  dependencies:
+    "@instructure/ui-i18n" "^5.21.0"
+    "@instructure/ui-utils" "^5.21.0"
+    prop-types "^15"
+    react "^0.14.9 || ^15 || ^16"
+    react-dom "^0.14.9 || ^15 || ^16"
+
 "@instructure/ui-svg-images@^5.20.1":
   version "5.20.1"
   resolved "https://registry.yarnpkg.com/@instructure/ui-svg-images/-/ui-svg-images-5.20.1.tgz#a7167375bf18e20c644c0e5bfd88537864992e4c"
@@ -126,6 +225,16 @@
     prop-types "^15"
     react "^0.14.9 || ^15"
 
+"@instructure/ui-svg-images@^5.21.0":
+  version "5.21.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-svg-images/-/ui-svg-images-5.21.0.tgz#96af7dbde776e1490e8e5688b6cf1db6d75781bf"
+  dependencies:
+    "@instructure/ui-themeable" "^5.21.0"
+    "@instructure/ui-utils" "^5.21.0"
+    classnames "^2"
+    prop-types "^15"
+    react "^0.14.9 || ^15 || ^16"
+
 "@instructure/ui-themeable@^5.20.1":
   version "5.20.1"
   resolved "https://registry.yarnpkg.com/@instructure/ui-themeable/-/ui-themeable-5.20.1.tgz#efbba4be2e1745c99d91624d4364cb52ca05c6b2"
@@ -134,6 +243,16 @@
     glamor "^2.20.37"
     prop-types "^15"
     react "^0.14.9 || ^15"
+    tinycolor2 "^1.4.1"
+
+"@instructure/ui-themeable@^5.21.0":
+  version "5.21.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-themeable/-/ui-themeable-5.21.0.tgz#ac043ebf36027b3d6a0de43c2c177c3653159790"
+  dependencies:
+    "@instructure/ui-utils" "^5.21.0"
+    glamor "^2.20.37"
+    prop-types "^15"
+    react "^0.14.9 || ^15 || ^16"
     tinycolor2 "^1.4.1"
 
 "@instructure/ui-themes@^5.20.1":
@@ -157,6 +276,22 @@
     prop-types "^15"
     react "^0.14.9 || ^15"
     react-dom "^0.14.9 || ^15"
+
+"@instructure/ui-utils@^5.21.0":
+  version "5.21.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-utils/-/ui-utils-5.21.0.tgz#c8510ac85b7c8a8ea2c4ae1afa37a12c24bcfdc5"
+  dependencies:
+    bowser "^1.9.4"
+    decimal.js "^10"
+    fast-deep-equal "^2"
+    keycode "^2"
+    moment-timezone "^0.5"
+    numeral "^2"
+    object.omit "^3"
+    object.pick "^1.2.0"
+    prop-types "^15"
+    react "^0.14.9 || ^15 || ^16"
+    react-dom "^0.14.9 || ^15 || ^16"
 
 "@types/node@*":
   version "10.5.2"
@@ -6286,7 +6421,7 @@ react-d3-cloud@^0.6.0:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react-dom@^16.3.2:
+"react-dom@^0.14.9 || ^15 || ^16", react-dom@^16.3.2:
   version "16.4.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.4.1.tgz#7f8b0223b3a5fbe205116c56deb85de32685dad6"
   dependencies:
@@ -6411,7 +6546,7 @@ react-vis@^1.10.3:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react@^16.3.2:
+"react@^0.14.9 || ^15 || ^16", react@^16.3.2:
   version "16.4.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.4.1.tgz#de51ba5764b5dbcd1f9079037b862bd26b82fe32"
   dependencies:

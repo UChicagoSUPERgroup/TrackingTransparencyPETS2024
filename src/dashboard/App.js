@@ -13,6 +13,7 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 import IconSettings from '@instructure/ui-icons/lib/Solid/IconSettings'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
+import TTBreadcrumbs from './TTBreadcrumbs'
 import {Home, WaitingDataHome} from './Home';
 import IntroModal from './IntroModal';
 import InferenceOverview from './inferences/InferenceOverview';
@@ -132,14 +133,14 @@ The code for logclick logs ALL the click in every single page.
     }
 
     return(
-
       <HashRouter>
         <div>
-          <TTNavbar/>
+          <TTNavbar />
 
           <IntroModal show={this.state.showModal} onHide={this.handleModalClose} />
 
           <div className="container containerInner">
+            <Route path="/*" render={({ match }) => <TTBreadcrumbs url={match.url} />} />
 
             {enoughData && <div>
               <Route exact path="/" component={Home}/>
@@ -159,7 +160,7 @@ The code for logclick logs ALL the click in every single page.
 
         </div>
       </HashRouter>
-    );
+    )
   }
 }
 
