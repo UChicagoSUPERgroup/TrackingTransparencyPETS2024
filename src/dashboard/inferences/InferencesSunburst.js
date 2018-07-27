@@ -19,12 +19,7 @@ const LABEL_STYLE = {
  * @returns {Array} an array of strings describing the key route to the current node
  */
 function getKeyPath (node) {
-  if (!node.parent) {
-    return []
-  }
-
-  const path = [(node.data && node.data.name) || node.name].concat(getKeyPath(node.parent))
-  return path
+  return categoryPaths[(node.data && node.data.name) || node.name] || []
 }
 
 function rand (min, max) {
@@ -66,7 +61,6 @@ function updateData (data, keyPath, parentColor) {
   data.style = {
     ...data.style,
     fillOpacity: keyPath && !keyPath[data.name] ? 0.2 : 1
-    // fill: keyPath && !keyPath[data.name] ? "#cccccc" : data.color
   }
 
   return data
@@ -75,7 +69,6 @@ function updateData (data, keyPath, parentColor) {
 export default class InferencesSunburst extends React.Component {
   constructor (props) {
     super(props)
-    // this.decoratedData = this.constructSunburstData(this.props.inferencesList);
     const data = this.constructSunburstData(props.inferenceCounts)
 
     this.state = {
@@ -145,11 +138,8 @@ export default class InferencesSunburst extends React.Component {
   async componentWillReceiveProps (nextProps) {
     let value = this.state.finalValue
     if (value === 'Inferences' || value === false) { value = '' }
-    // console.log('SUNBURST ', value);
     if (!nextProps.selectedInference) {
-      // console.log('SUNBURST1 ', value);
-      await logging.logSunburstSelect(false, value)// deselect all
-      // clear any selections
+      await logging.logSunburstSelect(false, value) // deselect all
       this.setState({
         finalValue: false,
         clicked: false
@@ -168,14 +158,13 @@ export default class InferencesSunburst extends React.Component {
         this.setState({
           clicked: true
         })
-        // console.log('SUNBURST2 ', value);
-        await logging.logSunburstSelect(true, value)// select right stuff
+        await logging.logSunburstSelect(true, value) // select right stuff
       }
     }
   }
 
   render () {
-    const { clicked, data, finalValue, pathValue } = this.state
+    const { clicked, data, finalValue } = this.state
     if (!data) return null
     if (!data.name) return null
     return (
