@@ -55,15 +55,17 @@ export default class TTBreadcrumbs extends React.Component {
   render () {
     let names = this.urlToArray(this.props.url)
     return (
-      <Breadcrumb label='You are here:' margin='none none medium'>
-        {names.map((x, i, arr) => {
-          if (i === arr.length - 1) {
-            return <BreadcrumbLink key={x.name}>{x.name}</BreadcrumbLink>
-          } else {
-            return <BreadcrumbLink href={x.path} key={x.name}>{x.name}</BreadcrumbLink>
-          }
-        })}
-      </Breadcrumb>
+      <div>
+        <Breadcrumb label='You are here:' margin='none none medium none'>
+          {names.map((x, i, arr) => {
+            if (i === arr.length - 1) {
+              return <BreadcrumbLink key={x.name}>{x.name}</BreadcrumbLink>
+            } else {
+              return <BreadcrumbLink href={x.path} key={x.name}>{x.name}</BreadcrumbLink>
+            }
+          })}
+        </Breadcrumb>
+      </div>
     )
   }
 }

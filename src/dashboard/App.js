@@ -13,7 +13,7 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 import IconSettings from '@instructure/ui-icons/lib/Solid/IconSettings'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
-import TTBreadcrumbs from './TTBreadcrumbs'
+import TTBreadcrumbs from './components/TTBreadcrumbs'
 import {Home, WaitingDataHome} from './Home';
 import IntroModal from './IntroModal';
 import InferenceOverview from './inferences/InferenceOverview';
