@@ -48,7 +48,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: true
+      showModal: false
     }
 
     this.handleModalClose = this.handleModalClose.bind(this);
