@@ -55,7 +55,6 @@ export class Home extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-
     }
     // this.logClick = this.logClick.bind(this);
     // this.logLoad = this.logLoad.bind(this);
@@ -97,7 +96,7 @@ export class Home extends React.Component {
 
           <p>The Tracking Transparency extension lets you learn about what companies could have inferrred about your browsing through trackers and advertisments on the web pages you visit.</p>
 
-          <p>In total, <strong>{numTrackers} trackers</strong> have seen you visit <strong>{numPages} pages</strong>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <strong>{numInferences} topics</strong>.</p>
+          <p>In total, <strong>{numTrackers || 'Loading…'} trackers</strong> have seen you visit <strong>{numPages || 'Loading…'} pages</strong>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <strong>{numInferences || 'Loading…'} topics</strong>.</p>
         </Text>
 
         <TTPanel textAlign='start'>
@@ -105,9 +104,9 @@ export class Home extends React.Component {
             <GridRow>
               <GridCol width={6}>
                 <MetricsList theme={{lineHeight: 2}}>
-                  {numTrackers && <MetricsListItem label='Trackers Seen' value={numTrackers} />}
-                  {numPages && <MetricsListItem label='Pages Visited' value={numPages} />}
-                  {numInferences && <MetricsListItem label='Inferred Interests' value={numInferences} />}
+                  <MetricsListItem label='Trackers Seen' value={numTrackers || 'Loading…'} />
+                  <MetricsListItem label='Pages Visited' value={numPages || 'Loading'} />
+                  <MetricsListItem label='Inferred Interests' value={numInferences || 'Loading'} />
                 </MetricsList>
               </GridCol>
               <GridCol width={6}>
@@ -121,7 +120,7 @@ export class Home extends React.Component {
                   >
                     <Text weight='bold'>Recent Inferences</Text>
                   </View>
-                  {recentInferences && inferenceList(recentInferences)}
+                  {recentInferences ? inferenceList(recentInferences) : 'Loading…'}
                 </View>
                 <View
                   display='inline-block'
@@ -133,7 +132,7 @@ export class Home extends React.Component {
                   >
                     <Text weight='bold'>Recent Domains</Text>
                   </View>
-                  {recentDomains && domainList(recentDomains)}
+                  {recentDomains ? domainList(recentDomains) : 'Loading…'}
                 </View>
               </GridCol>
             </GridRow>
