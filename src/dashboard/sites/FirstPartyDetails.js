@@ -3,16 +3,20 @@ import { Route, Link } from 'react-router-dom';
 import logging from '../dashboardLogging';
 import ReactTable from 'react-table';
 import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
-import Panel from 'react-bootstrap/lib/Panel';
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
+import View from '@instructure/ui-layout/lib/components/View'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+import MetricsList from '@instructure/ui-elements/lib/components/MetricsList'
+import MetricsListItem from '@instructure/ui-elements/lib/components/MetricsList/MetricsListItem'
 
 import WordCloud from 'react-d3-cloud';
 import _ from 'lodash';
+
+import TTPanel from '../components/TTPanel'
 
 import categories from '../../data/categories_comfort_list.json';
 
@@ -239,6 +243,7 @@ export default class FirstPartyDetails extends React.Component {
 
 
   render() {
+    let pageCount = this.state.page_count
     let sensitive = this.state.sensitive_inferred;
     let inferences_q = this.state.inferences;
     let inferences = []
@@ -253,8 +258,11 @@ export default class FirstPartyDetails extends React.Component {
 
     let size = this.state.divsize
     let height = size ? size.height : 0
-    let width = size ? 2*size.width : 0
+    let width = size ? 2 * size.width : 0
     let fontFunction = fontSizeMapper(size, min, max, inferences.length)
+    const fonts = '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
+
+    const trackerPercent = Math.round(this.state.tracker_count / this.state.page_count)
 
     return (
       <div>
@@ -263,18 +271,23 @@ export default class FirstPartyDetails extends React.Component {
           <Breadcrumb.Item><Link to={{pathname: '/domains'}}>Sites</Link></Breadcrumb.Item>
           <Breadcrumb.Item active>{this.domain}</Breadcrumb.Item>
         </Breadcrumb>
-        <Heading level='h1'>Sites</Heading>
-        <Heading level='h2' margin='small 0 small 0'>{this.domain}</Heading>
-          <Panel bsStyle="primary">
-            <Panel.Body>
-              <p>
-              You have visited {this.state.page_count} pages at {this.domain} with an average
-              of {Math.round(this.state.tracker_count / this.state.page_count)} trackers per page.
-              </p>
-              <b>Recent Pages: </b>
-              {PageList(this.state.pages)}
-            </Panel.Body>
-          </Panel>
+        <Heading level='h1' margin='0 0 medium 0'>Sites</Heading>
+        {/* <Heading level='h2' margin='small 0 small 0'>{this.domain}</Heading> */}
+        <TTPanel>
+          <MetricsList>
+            <MetricsListItem label='Site' value={this.domain} />
+            <MetricsListItem label='Pages' value={pageCount || 'Loading…'} />
+            <MetricsListItem label='Average trackers per page' value={Number.isNaN(trackerPercent) ? 'Loading…' : trackerPercent} />
+          </MetricsList>
+        </TTPanel>
+          {/* <p>
+            You have visited {this.state.page_count} pages at <em>{this.domain}</em> with an average
+          of {trackerPercent} trackers per page.
+          </p> */}
+        <Text>
+          <p><strong>Recent Pages: </strong>
+              {PageList(this.state.pages)}</p>
+        </Text>
         <Grid startAt='large'>
           <GridRow>
             <GridCol width={4}>
@@ -289,17 +302,15 @@ export default class FirstPartyDetails extends React.Component {
                   height={height}
                   width={width}
                   fontSizeMapper={fontFunction}
-                  font={'Arial Black'}
+                  font={fonts}
                 />
               </div>
             </GridCol>
           </GridRow>
         </Grid>
-        <Panel bsStyle="primary">
-          <Panel.Body>
+        {/*<Text>
             {SensitiveModule(sensitive, String(this.domain))}
-          </Panel.Body>
-        </Panel>
+          </Text>*/}
       </div>
     );
   }
