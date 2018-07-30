@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 
 import Breadcrumb from 'react-bootstrap/lib/Breadcrumb'
 
@@ -15,6 +15,7 @@ import RadioInputGroup from '@instructure/ui-forms/lib/components/RadioInputGrou
 import sensitiveCats from '../../data/categories_comfort_list.json'
 
 import InferenceDetails from './InferenceDetails'
+import InferenceSummary from './InferenceSummary'
 import InferencesSunburst from './InferencesSunburst'
 import TTPanel from '../components/TTPanel'
 
@@ -206,17 +207,24 @@ export default class InferencesOverview extends React.Component {
                 </GridCol>
                 <GridCol>
                   <TTPanel textAlign='start'>
-                    {!selectedInference && <Text className='selected-inference'><strong>'Click a slice of the inference wheel to see inferences that trackers could have made about you.'</strong></Text>}
-                    <p><strong><Link className='inferencePageSelected-Inference' to={{pathname: '/inferences/' + selectedInference}}>{selectedInference}</Link></strong></p>
+                    {!selectedInference && <Text className='selected-inference' weight='bold'>
+                      Click a slice of the inference wheel to see inferences that trackers could have made about you.
+                    </Text>}
+                    {selectedInference && <div>
+                      <InferenceSummary inference={selectedInference} />
+                      <Link
+                        className='inferencePageSelected-Inference'
+                        href={'#/inferences/' + selectedInference}
+                        icon={IconArrowOpenEnd}
+                        iconPlacement='end'
+                      >
+                        Learn more
+                      </Link>
+                    </div>}
                   </TTPanel>
                 </GridCol>
               </GridRow>
             </Grid>
-
-            {/* {selectedInference && <InferenceDetails inference={selectedInference}/>} */}
-            {/* {this.state.inferences && <InferencesSunburst inferencesList={this.state.inferences}/>} */}
-            {/* <InferencesSunburst inferencesList={this.state.inferences}/> */}
-            {/* {this.state.inferences.map(inference => InferencesListItem(inference))} */}
           </div>
         )} />
 
