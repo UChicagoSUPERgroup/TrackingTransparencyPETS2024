@@ -31,7 +31,6 @@ import { instuiOverrides } from '../colors'
 import '../styles/common.css';
 import '../styles/dashboard.css';
 import '../styles/navbar.css';
-import '../styles/panel.css'
 
 theme.use({
   overrides: instuiOverrides
