@@ -5,12 +5,17 @@ import Breadcrumb from 'react-bootstrap/lib/Breadcrumb'
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
+import Link from '@instructure/ui-elements/lib/components/Link'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import FormFieldGroup from '@instructure/ui-forms/lib/components/FormFieldGroup'
 import RadioInput from '@instructure/ui-forms/lib/components/RadioInput'
 import RadioInputGroup from '@instructure/ui-forms/lib/components/RadioInputGroup'
+import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
+import IconArrowOpenEnd from '@instructure/ui-icons/lib/Solid/IconArrowOpenEnd'
+import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
+
 
 import sensitiveCats from '../../data/categories_comfort_list.json'
 
@@ -88,14 +93,10 @@ export default class InferencesOverview extends React.Component {
       })
       return
     } else if (key === 'less-sensitive') {
-      console.log('less sensitive')
       cats = sensitiveCats.slice(-50).reverse() // 50 least sensitive categories
     } else if (key === 'more-sensitive') {
-      console.log('more sensitive')
-
       cats = sensitiveCats.slice(0, 50)
     }
-    console.log(cats)
 
     const queryPromises = cats.map(cat => {
       return background.queryDatabase('getInferenceCount', {inference: cat})
@@ -154,13 +155,30 @@ export default class InferencesOverview extends React.Component {
   render () {
     let { inferences, selectedInference, numInferences } = this.state
 
+    const sensitivityTooltipText = (
+      <div style={{width: 160}}>
+        Our previous research has found that there are certain inferences that users are more comfortable with, and others that are more sensitive.
+        This toggle will filter the diagram to show only the inferences that are more or less sensitive.
+      </div>
+    )
+
+    const sensitivityTooltip = (
+      <Tooltip
+        tip={sensitivityTooltipText}
+        variant='inverse'
+        placement='end'
+      >
+        Inference sensitivity <IconInfo />
+      </Tooltip>
+    )
+
     const filters = (<TTPanel textAlign='start' className={'inferences-sunburst-filters'}>
       <FormFieldGroup description='Filters'>
         <RadioInputGroup
           name='sensitivity-filter'
           value={this.state.sensitivitySelection}
           onChange={this.handleSensitivitySelection}
-          description='Inference sensitivity:'
+          description={sensitivityTooltip}
           variant='toggle'
           size='small'>
           <RadioInput label='All inferences' value='all-sensitive' context='off' />
@@ -171,7 +189,7 @@ export default class InferencesOverview extends React.Component {
           name='date-filter'
           value={this.state.dateSelection}
           onChange={this.handleDateSelection}
-          description='Recency of inferences:'
+          description='Recency of inferences'
           variant='toggle'
           size='small'>
           <RadioInput label='Since install' value='all-dates' context='off' />
