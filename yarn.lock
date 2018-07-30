@@ -76,6 +76,24 @@
     classnames "^2"
     prop-types "^15"
 
+"@instructure/ui-forms@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-forms/-/ui-forms-5.22.0.tgz#9a8509f92c87360644012af860b24259526717a3"
+  dependencies:
+    "@instructure/ui-a11y" "^5.22.0"
+    "@instructure/ui-buttons" "^5.22.0"
+    "@instructure/ui-elements" "^5.22.0"
+    "@instructure/ui-i18n" "^5.22.0"
+    "@instructure/ui-icons" "^5.22.0"
+    "@instructure/ui-layout" "^5.22.0"
+    "@instructure/ui-overlays" "^5.22.0"
+    "@instructure/ui-svg-images" "^5.22.0"
+    "@instructure/ui-themeable" "^5.22.0"
+    "@instructure/ui-utils" "^5.22.0"
+    classnames "^2"
+    keycode "^2"
+    prop-types "^15"
+
 "@instructure/ui-i18n@^5.22.0":
   version "5.22.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-i18n/-/ui-i18n-5.22.0.tgz#2244b4a785311a3ef1eb130cad9ea9fbfc72a375"

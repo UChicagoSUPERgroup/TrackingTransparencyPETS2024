@@ -4,6 +4,7 @@
   padding-left: 15px;
   padding-right: 15px;
 }
+
 @media (min-width: 768px) {
   .container {
     width: 750px;
@@ -18,17 +19,5 @@
   .container {
     width: 1170px;
   }
-}
-
-.inferences-sunburst {
-  margin: 5px;
-}
-
-.filter-row {
-  margin: 10px;
-}
-
-.selected-inference {
-  margin-top: 40px;
 }
 
