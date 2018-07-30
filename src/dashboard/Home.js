@@ -100,19 +100,17 @@ export class Home extends React.Component {
           <p>In total, <strong>{numTrackers} trackers</strong> have seen you visit <strong>{numPages} pages</strong>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <strong>{numInferences} topics</strong>.</p>
         </Text>
 
-        <Grid startAt='large'>
-          <GridRow>
-            <GridCol width={6}>
-              <TTPanel>
+        <TTPanel textAlign='start'>
+          <Grid startAt='large' vAlign='middle'>
+            <GridRow>
+              <GridCol width={6}>
                 <MetricsList theme={{lineHeight: 2}}>
                   {numTrackers && <MetricsListItem label='Trackers Seen' value={numTrackers} />}
                   {numPages && <MetricsListItem label='Pages Visited' value={numPages} />}
                   {numInferences && <MetricsListItem label='Inferred Interests' value={numInferences} />}
                 </MetricsList>
-              </TTPanel>
-            </GridCol>
-            <GridCol width={6}>
-              <TTPanel textAlign='start'>
+              </GridCol>
+              <GridCol width={6}>
                 <View
                   display='inline-block'
                   margin='small medium small large'
@@ -137,10 +135,10 @@ export class Home extends React.Component {
                   </View>
                   {recentDomains && domainList(recentDomains)}
                 </View>
-              </TTPanel>
-            </GridCol>
-          </GridRow>
-        </Grid>
+              </GridCol>
+            </GridRow>
+          </Grid>
+        </TTPanel>
       </div>
     )
   }
