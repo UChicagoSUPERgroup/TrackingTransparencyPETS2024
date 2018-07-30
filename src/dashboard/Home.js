@@ -105,14 +105,14 @@ export class Home extends React.Component {
             <GridCol width={6}>
               <TTPanel>
                 <MetricsList theme={{lineHeight: 2}}>
-                  <MetricsListItem label='Trackers Seen' value={numTrackers} />
-                  <MetricsListItem label='Pages Visited' value={numPages} />
-                  <MetricsListItem label='Inferred Interests' value={numInferences} />
+                  {numTrackers && <MetricsListItem label='Trackers Seen' value={numTrackers} />}
+                  {numPages && <MetricsListItem label='Pages Visited' value={numPages} />}
+                  {numInferences && <MetricsListItem label='Inferred Interests' value={numInferences} />}
                 </MetricsList>
               </TTPanel>
             </GridCol>
             <GridCol width={6}>
-              <TTPanel textAlign='left'>
+              <TTPanel textAlign='start'>
                 <View
                   display='inline-block'
                   margin='small medium small large'
@@ -135,7 +135,7 @@ export class Home extends React.Component {
                   >
                     <Text weight='bold'>Recent Domains</Text>
                   </View>
-                  {recentInferences && inferenceList(recentInferences)}
+                  {recentDomains && domainList(recentDomains)}
                 </View>
               </TTPanel>
             </GridCol>
