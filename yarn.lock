@@ -16,135 +16,186 @@
     "@cliqz-oss/firefox-client" "0.3.1"
     es6-promise "^2.0.1"
 
-"@instructure/ui-a11y@^5.20.1":
-  version "5.20.1"
-  resolved "https://registry.yarnpkg.com/@instructure/ui-a11y/-/ui-a11y-5.20.1.tgz#be1550be6784c326fcf436621092785e938152eb"
+"@instructure/ui-a11y@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-a11y/-/ui-a11y-5.22.0.tgz#e82d75f74891706a44326569ccabf1fe5c46622e"
   dependencies:
-    "@instructure/ui-themeable" "^5.20.1"
-    "@instructure/ui-utils" "^5.20.1"
+    "@instructure/ui-themeable" "^5.22.0"
+    "@instructure/ui-utils" "^5.22.0"
     keycode "^2"
     prop-types "^15"
-    react "^0.14.9 || ^15"
 
-"@instructure/ui-buttons@^5.20.1":
-  version "5.20.1"
-  resolved "https://registry.yarnpkg.com/@instructure/ui-buttons/-/ui-buttons-5.20.1.tgz#b0f7e178c5849b9a46ae0c5364d01e1ac83981e6"
+"@instructure/ui-alerts@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-alerts/-/ui-alerts-5.22.0.tgz#407017e26d362cd5a55f037720e3a067a72c0c67"
   dependencies:
-    "@instructure/ui-a11y" "^5.20.1"
-    "@instructure/ui-icons" "^5.20.1"
-    "@instructure/ui-layout" "^5.20.1"
-    "@instructure/ui-themeable" "^5.20.1"
-    "@instructure/ui-utils" "^5.20.1"
+    "@instructure/ui-a11y" "^5.22.0"
+    "@instructure/ui-buttons" "^5.22.0"
+    "@instructure/ui-icons" "^5.22.0"
+    "@instructure/ui-layout" "^5.22.0"
+    "@instructure/ui-motion" "^5.22.0"
+    "@instructure/ui-themeable" "^5.22.0"
+    "@instructure/ui-utils" "^5.22.0"
     classnames "^2"
     keycode "^2"
     prop-types "^15"
-    react "^0.14.9 || ^15"
 
-"@instructure/ui-container@^5.20.1":
-  version "5.20.1"
-  resolved "https://registry.yarnpkg.com/@instructure/ui-container/-/ui-container-5.20.1.tgz#c90e7528ae8a93023a6707a0ee630936ee7814b7"
+"@instructure/ui-buttons@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-buttons/-/ui-buttons-5.22.0.tgz#f33dcd5dee580df21d36fef03bb251c483d6e427"
   dependencies:
-    "@instructure/ui-themeable" "^5.20.1"
-    "@instructure/ui-utils" "^5.20.1"
+    "@instructure/ui-a11y" "^5.22.0"
+    "@instructure/ui-icons" "^5.22.0"
+    "@instructure/ui-layout" "^5.22.0"
+    "@instructure/ui-themeable" "^5.22.0"
+    "@instructure/ui-utils" "^5.22.0"
+    classnames "^2"
+    keycode "^2"
+    prop-types "^15"
+
+"@instructure/ui-container@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-container/-/ui-container-5.22.0.tgz#491e830410051dc62ea76793718c1c482d61ba36"
+  dependencies:
+    "@instructure/ui-themeable" "^5.22.0"
+    "@instructure/ui-utils" "^5.22.0"
     classnames "^2"
     prop-types "^15"
-    react "^0.14.9 || ^15"
 
-"@instructure/ui-elements@^5.20.1":
-  version "5.20.1"
-  resolved "https://registry.yarnpkg.com/@instructure/ui-elements/-/ui-elements-5.20.1.tgz#165493816c65bba164d98daf465c324644c3d46c"
+"@instructure/ui-elements@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-elements/-/ui-elements-5.22.0.tgz#8694eb4e3eed8987ed50a6989e08018ba6839a36"
   dependencies:
-    "@instructure/ui-a11y" "^5.20.1"
-    "@instructure/ui-container" "^5.20.1"
-    "@instructure/ui-icons" "^5.20.1"
-    "@instructure/ui-layout" "^5.20.1"
-    "@instructure/ui-motion" "^5.20.1"
-    "@instructure/ui-themeable" "^5.20.1"
-    "@instructure/ui-utils" "^5.20.1"
+    "@instructure/ui-a11y" "^5.22.0"
+    "@instructure/ui-container" "^5.22.0"
+    "@instructure/ui-icons" "^5.22.0"
+    "@instructure/ui-layout" "^5.22.0"
+    "@instructure/ui-motion" "^5.22.0"
+    "@instructure/ui-themeable" "^5.22.0"
+    "@instructure/ui-utils" "^5.22.0"
     classnames "^2"
     prop-types "^15"
-    react "^0.14.9 || ^15"
 
-"@instructure/ui-i18n@^5.20.1":
-  version "5.20.1"
-  resolved "https://registry.yarnpkg.com/@instructure/ui-i18n/-/ui-i18n-5.20.1.tgz#ff371308c8ef3ea8c2d14d792926c619ea3749e8"
+"@instructure/ui-i18n@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-i18n/-/ui-i18n-5.22.0.tgz#2244b4a785311a3ef1eb130cad9ea9fbfc72a375"
   dependencies:
-    "@instructure/ui-utils" "^5.20.1"
+    "@instructure/ui-utils" "^5.22.0"
     decimal.js "^10"
     moment-timezone "^0.5"
     prop-types "^15"
-    react "^0.14.9 || ^15"
 
-"@instructure/ui-icons@^5.20.1":
-  version "5.20.1"
-  resolved "https://registry.yarnpkg.com/@instructure/ui-icons/-/ui-icons-5.20.1.tgz#c14ac5c193d9d693edf859ce4164fa360dfde509"
+"@instructure/ui-icons@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-icons/-/ui-icons-5.22.0.tgz#9bb97370523417c29d8742d882e74e40a3a0b143"
   dependencies:
-    "@instructure/ui-svg-images" "^5.20.1"
+    "@instructure/ui-svg-images" "^5.22.0"
     prop-types "^15"
-    react "^0.14.9 || ^15"
 
-"@instructure/ui-layout@^5.20.1":
-  version "5.20.1"
-  resolved "https://registry.yarnpkg.com/@instructure/ui-layout/-/ui-layout-5.20.1.tgz#ab8ea9eab9e2786f88db65391be06939a5571268"
+"@instructure/ui-layout@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-layout/-/ui-layout-5.22.0.tgz#63851d8a09f054e774dd4df865db83d7572ffd3c"
   dependencies:
-    "@instructure/ui-a11y" "^5.20.1"
-    "@instructure/ui-i18n" "^5.20.1"
-    "@instructure/ui-motion" "^5.20.1"
-    "@instructure/ui-portal" "^5.20.1"
-    "@instructure/ui-themeable" "^5.20.1"
-    "@instructure/ui-utils" "^5.20.1"
+    "@instructure/ui-a11y" "^5.22.0"
+    "@instructure/ui-i18n" "^5.22.0"
+    "@instructure/ui-motion" "^5.22.0"
+    "@instructure/ui-portal" "^5.22.0"
+    "@instructure/ui-themeable" "^5.22.0"
+    "@instructure/ui-utils" "^5.22.0"
     classnames "^2"
     prop-types "^15"
-    react "^0.14.9 || ^15"
 
-"@instructure/ui-motion@^5.20.1":
-  version "5.20.1"
-  resolved "https://registry.yarnpkg.com/@instructure/ui-motion/-/ui-motion-5.20.1.tgz#c67e71b5eca5c3cab4019724a788e3319a691014"
+"@instructure/ui-menu@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-menu/-/ui-menu-5.22.0.tgz#512c00f47f156ee31cc7641ba7b7ff7e1b3236b8"
   dependencies:
-    "@instructure/ui-themeable" "^5.20.1"
-    "@instructure/ui-utils" "^5.20.1"
+    "@instructure/ui-a11y" "^5.22.0"
+    "@instructure/ui-elements" "^5.22.0"
+    "@instructure/ui-icons" "^5.22.0"
+    "@instructure/ui-layout" "^5.22.0"
+    "@instructure/ui-overlays" "^5.22.0"
+    "@instructure/ui-themeable" "^5.22.0"
+    "@instructure/ui-utils" "^5.22.0"
+    classnames "^2"
+    keycode "^2"
     prop-types "^15"
-    react "^0.14.9 || ^15"
 
-"@instructure/ui-portal@^5.20.1":
-  version "5.20.1"
-  resolved "https://registry.yarnpkg.com/@instructure/ui-portal/-/ui-portal-5.20.1.tgz#53286a365f0aef659e1d073e44f5550803702081"
+"@instructure/ui-motion@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-motion/-/ui-motion-5.22.0.tgz#7ac6a4952db4a0c3576f14e14a587f7e41bbb1f0"
   dependencies:
-    "@instructure/ui-i18n" "^5.20.1"
-    "@instructure/ui-utils" "^5.20.1"
+    "@instructure/ui-themeable" "^5.22.0"
+    "@instructure/ui-utils" "^5.22.0"
     prop-types "^15"
-    react "^0.14.9 || ^15"
-    react-dom "^0.14.9 || ^15"
 
-"@instructure/ui-svg-images@^5.20.1":
-  version "5.20.1"
-  resolved "https://registry.yarnpkg.com/@instructure/ui-svg-images/-/ui-svg-images-5.20.1.tgz#a7167375bf18e20c644c0e5bfd88537864992e4c"
+"@instructure/ui-overlays@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-overlays/-/ui-overlays-5.22.0.tgz#2b1336116fadf0dfad4969dc47ca3ba1479a8780"
   dependencies:
-    "@instructure/ui-themeable" "^5.20.1"
-    "@instructure/ui-utils" "^5.20.1"
+    "@instructure/ui-a11y" "^5.22.0"
+    "@instructure/ui-buttons" "^5.22.0"
+    "@instructure/ui-elements" "^5.22.0"
+    "@instructure/ui-i18n" "^5.22.0"
+    "@instructure/ui-layout" "^5.22.0"
+    "@instructure/ui-motion" "^5.22.0"
+    "@instructure/ui-portal" "^5.22.0"
+    "@instructure/ui-themeable" "^5.22.0"
+    "@instructure/ui-utils" "^5.22.0"
+    classnames "^2"
+    no-scroll "^2.1.0"
+    prop-types "^15"
+
+"@instructure/ui-portal@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-portal/-/ui-portal-5.22.0.tgz#6268b4952fbd16c279e7eed36651a4cf706d35c9"
+  dependencies:
+    "@instructure/ui-i18n" "^5.22.0"
+    "@instructure/ui-utils" "^5.22.0"
+    prop-types "^15"
+
+"@instructure/ui-svg-images@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-svg-images/-/ui-svg-images-5.22.0.tgz#0ed2a81dbd2f6705aeab89379f4be41c003b2085"
+  dependencies:
+    "@instructure/ui-themeable" "^5.22.0"
+    "@instructure/ui-utils" "^5.22.0"
     classnames "^2"
     prop-types "^15"
-    react "^0.14.9 || ^15"
 
-"@instructure/ui-themeable@^5.20.1":
-  version "5.20.1"
-  resolved "https://registry.yarnpkg.com/@instructure/ui-themeable/-/ui-themeable-5.20.1.tgz#efbba4be2e1745c99d91624d4364cb52ca05c6b2"
+"@instructure/ui-themeable@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-themeable/-/ui-themeable-5.22.0.tgz#fd9eb88c3285b9f410e608985b6d80ed7bd9b271"
   dependencies:
-    "@instructure/ui-utils" "^5.20.1"
+    "@instructure/ui-utils" "^5.22.0"
     glamor "^2.20.37"
     prop-types "^15"
-    react "^0.14.9 || ^15"
     tinycolor2 "^1.4.1"
 
-"@instructure/ui-themes@^5.20.1":
-  version "5.20.1"
-  resolved "https://registry.yarnpkg.com/@instructure/ui-themes/-/ui-themes-5.20.1.tgz#ce6f7ce72a0897c6c2f8e8104aed8e219f031b8f"
+"@instructure/ui-themes@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-themes/-/ui-themes-5.22.0.tgz#052945e18c136aae396d0ecc6e8e9ed2e6dbef30"
   dependencies:
-    "@instructure/ui-themeable" "^5.20.1"
+    "@instructure/ui-themeable" "^5.22.0"
 
-"@instructure/ui-utils@^5.20.1":
-  version "5.20.1"
-  resolved "https://registry.yarnpkg.com/@instructure/ui-utils/-/ui-utils-5.20.1.tgz#a82c5c11f5bc63b698ab65eb8ab4b34ed9383910"
+"@instructure/ui-toggle-details@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-toggle-details/-/ui-toggle-details-5.22.0.tgz#77e361c8a9a52e976be12a3491a18ab93cd94b43"
+  dependencies:
+    "@instructure/ui-a11y" "^5.22.0"
+    "@instructure/ui-buttons" "^5.22.0"
+    "@instructure/ui-elements" "^5.22.0"
+    "@instructure/ui-icons" "^5.22.0"
+    "@instructure/ui-layout" "^5.22.0"
+    "@instructure/ui-menu" "^5.22.0"
+    "@instructure/ui-motion" "^5.22.0"
+    "@instructure/ui-themeable" "^5.22.0"
+    "@instructure/ui-utils" "^5.22.0"
+    classnames "^2"
+    prop-types "^15"
+
+"@instructure/ui-utils@^5.22.0":
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-utils/-/ui-utils-5.22.0.tgz#c0bd7d650982cd5a25eabe4e99cc78c6efb3bc33"
   dependencies:
     bowser "^1.9.4"
     decimal.js "^10"
@@ -152,11 +203,7 @@
     keycode "^2"
     moment-timezone "^0.5"
     numeral "^2"
-    object.omit "^3"
-    object.pick "^1.2.0"
     prop-types "^15"
-    react "^0.14.9 || ^15"
-    react-dom "^0.14.9 || ^15"
 
 "@types/node@*":
   version "10.5.2"
@@ -2123,14 +2170,6 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@^15.6.0:
-  version "15.6.3"
-  resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
-  dependencies:
-    fbjs "^0.8.9"
-    loose-envify "^1.3.1"
-    object-assign "^4.1.1"
-
 cross-spawn@^5.0.1, cross-spawn@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
@@ -3237,7 +3276,7 @@ fastparse@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/fastparse/-/fastparse-1.1.1.tgz#d1e2643b38a94d7583b479060e6c4affc94071f8"
 
-fbjs@^0.8.12, fbjs@^0.8.16, fbjs@^0.8.9:
+fbjs@^0.8.12, fbjs@^0.8.16:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   dependencies:
@@ -4286,7 +4325,7 @@ is-extendable@^0.1.0, is-extendable@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/is-extendable/-/is-extendable-0.1.1.tgz#62b110e289a471418e3ec36a617d472e301dfc89"
 
-is-extendable@^1.0.0, is-extendable@^1.0.1:
+is-extendable@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/is-extendable/-/is-extendable-1.0.1.tgz#a7470f9e426733d81bd81e1155264e3a3507cab4"
   dependencies:
@@ -5354,6 +5393,10 @@ next-tick@1, next-tick@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
 
+no-scroll@^2.1.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/no-scroll/-/no-scroll-2.1.1.tgz#f37e08cb159b75a5bdbfc0a87cd9223e120e6e27"
+
 node-fetch@^1.0.1:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.7.3.tgz#980f6f72d85211a5347c6b2bc18c5b84c3eb47ef"
@@ -5537,13 +5580,7 @@ object.assign@^4.1.0:
     has-symbols "^1.0.0"
     object-keys "^1.0.11"
 
-object.omit@^3:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/object.omit/-/object.omit-3.0.0.tgz#0e3edc2fce2ba54df5577ff529f6d97bd8a522af"
-  dependencies:
-    is-extendable "^1.0.0"
-
-object.pick@^1.2.0, object.pick@^1.3.0:
+object.pick@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/object.pick/-/object.pick-1.3.0.tgz#87a10ac4c1694bd2e1cbf53591a66141fb5dd747"
   dependencies:
@@ -6277,15 +6314,6 @@ react-d3-cloud@^0.6.0:
     d3-selection "^1.1.0"
     react-faux-dom "^3.0.0"
 
-"react-dom@^0.14.9 || ^15":
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.2.tgz#41cfadf693b757faf2708443a1d1fd5a02bef730"
-  dependencies:
-    fbjs "^0.8.9"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
-
 react-dom@^16.3.2:
   version "16.4.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.4.1.tgz#7f8b0223b3a5fbe205116c56deb85de32685dad6"
@@ -6400,16 +6428,6 @@ react-vis@^1.10.3:
     hoek "4.2.1"
     prop-types "^15.5.8"
     react-motion "^0.5.2"
-
-"react@^0.14.9 || ^15":
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
-  dependencies:
-    create-react-class "^15.6.0"
-    fbjs "^0.8.9"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
 
 react@^16.3.2:
   version "16.4.1"
