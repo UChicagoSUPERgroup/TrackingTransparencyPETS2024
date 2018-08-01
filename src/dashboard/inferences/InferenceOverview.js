@@ -133,6 +133,8 @@ export default class InferencesOverview extends React.Component {
       afterDate = Date.now() - 86400000
     } else if (key === 'past-week') {
       afterDate = Date.now() - 86400000 * 7
+    // } else if (key === 'past-month') {
+    //   afterDate = Date.now() - 86400000 * 7 * 30
     }
 
     console.log(key)
@@ -158,7 +160,7 @@ export default class InferencesOverview extends React.Component {
     const sensitivityTooltipText = (
       <div style={{width: 160}}>
         Our previous research has found that there are certain inferences that users are more comfortable with, and others that are more sensitive.
-        This toggle will filter the diagram to show only the inferences that are more or less sensitive.
+        Toggle between these filters to show only inferences that are more or less sensitive.
       </div>
     )
 
@@ -169,6 +171,22 @@ export default class InferencesOverview extends React.Component {
         placement='end'
       >
         Inference sensitivity <IconInfo />
+      </Tooltip>
+    )
+
+    const recencyTooltipText = (
+      <div style={{width: 160}}>
+        Toggle between these filters to show inferences made about you since you've installed Tracking Transparency, only in the last day, or only in the last week.
+      </div>
+    )
+
+    const recencyTooltip = (
+      <Tooltip
+        tip={recencyTooltipText}
+        variant='inverse'
+        placement='end'
+      >
+        Recency of Inferences <IconInfo />
       </Tooltip>
     )
 
@@ -189,12 +207,13 @@ export default class InferencesOverview extends React.Component {
           name='date-filter'
           value={this.state.dateSelection}
           onChange={this.handleDateSelection}
-          description='Recency of inferences'
+          description={recencyTooltip}
           variant='toggle'
           size='small'>
           <RadioInput label='Since install' value='all-dates' context='off' />
           <RadioInput label='Last day' value='past-24' context='off' />
           <RadioInput label='Last week' value='past-week' context='off' />
+          {/* <RadioInput label='Last month' value='past-month' context='off' /> */}
         </RadioInputGroup>
       </FormFieldGroup>
     </TTPanel>)
@@ -217,8 +236,9 @@ export default class InferencesOverview extends React.Component {
             <Grid startAt='large'>
               <GridRow>
                 <GridCol>
-                  <TTPanel textAlign='start'>
-                    <Text>This diagram shows some of the inferences that may have been made about your browsing and their frequency. Click on a piece of the chart to see more details.</Text>
+                  <TTPanel textAlign='center'>
+                    <Heading level ='h2'>The Inference Wheel</Heading>
+                    {/* <Text>This diagram shows some of the inferences that may have been made about your browsing and their frequency. Click on a piece of the chart to see more details.</Text> */}
                     {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference} />}
                     {filters}
                   </TTPanel>
@@ -226,8 +246,7 @@ export default class InferencesOverview extends React.Component {
                 <GridCol>
                   <TTPanel textAlign='start'>
                     {!selectedInference && <Text className='selected-inference' weight='bold'>
-                      Click a slice of the inference wheel to see inferences that trackers could have made about you.
-                    </Text>}
+                      The Inference Wheel shows inferences that trackers may have made about you, based on your browsing activity. Click a slice of the wheel to see more details. </Text>}
                     {selectedInference && <div>
                       <InferenceSummary inference={selectedInference} />
                       <Link

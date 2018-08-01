@@ -17,13 +17,11 @@ const SensitivePanel = (inference) => {
   let sensitiveCategories = categories.slice(0, 20)
   let sensitive = !!((inference && sensitiveCategories.includes(inference)))
   return (
-    <TTPanel>
       <Text><em>{inference}</em>
         {sensitive
           ? ' may be considered a sensitive topic.'
           : ' is likely not a sensitive topic.'
         }</Text>
-    </TTPanel>
   )
 }
 
@@ -88,8 +86,8 @@ export default class InferenceSummary extends React.Component {
             <MetricsListItem label='Trackers' value={trackers.length} />
           </MetricsList>
           <Text>
-            <p>Our algorithms have found ??? pages that are likely about {inference}. On these pages, there were a total of {trackers.length} unique trackers that could have inferred your level of interest in {inference}.</p>
-            <p>This topic is </p>
+            <p>Our algorithms have determined that {topSites.length} sites were likely about {inference}. On these pages, there were a total of {trackers.length} unique trackers that could have inferred your level of interest in {inference}.</p>
+            {/* <p>This topic </p> */}
           </Text>
         </div>
       )

@@ -74,7 +74,7 @@ export default class InferencesSunburst extends React.Component {
     this.state = {
       pathValue: false,
       data: data,
-      finalValue: 'The Inference Wheel',
+      finalValue: ' ',
       clicked: false
     }
 
