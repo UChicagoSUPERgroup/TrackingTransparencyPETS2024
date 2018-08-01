@@ -4,12 +4,13 @@ import logging from '../dashboardLogging';
 import ReactTable from 'react-table';
 import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
 
-
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
+import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
 import FirstPartyDetails from './FirstPartyDetails';
 
@@ -67,6 +68,22 @@ const NoTrackerTable = (data) => {
 
 
 const ManyTrackersTable = (data) => {
+  const uniquetrackerTooltipText = (
+    <div style={{width: 160}}>
+      This column shows, for each site, the total number of different trackers that tracked your browsing activity.
+    </div>
+  )
+
+  const uniquetrackerTooltip = (
+    <Tooltip
+      tip={uniquetrackerTooltipText}
+      variant='inverse'
+      placement='end'
+    >
+      <IconInfo />
+    </Tooltip>
+  )
+
   let numEntries = data ? data.length: 0
   return (
     <ReactTable
@@ -82,7 +99,10 @@ const ManyTrackersTable = (data) => {
               </Link>
             </div>)
         },
-        {Header: 'Unique Trackers',
+        {Header: h => (
+          <div style={{textAlign: 'center'}}>
+            Unique Trackers {uniquetrackerTooltip}
+          </div>),
           accessor: d => d.Trackers['COUNT(DISTINCT(tracker))'],
           id: 'trackers',
           Cell: row => (

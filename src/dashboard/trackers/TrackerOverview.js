@@ -8,6 +8,8 @@ import Text from '@instructure/ui-elements/lib/components/Text'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
+import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
 import ReactTable from 'react-table'
 import '../../../node_modules/react-table/react-table.css';
@@ -25,12 +27,44 @@ import {
 import TrackerDetails from './TrackerDetailPage';
 
 const TrackerTable = (data) => {
+  const pagecountTooltipText = (
+    <div style={{width: 160}}>
+      This column shows, for each tracker, how many pages you were tracked on.
+    </div>
+  )
+
+  const pagecountTooltip = (
+    <Tooltip
+      tip={pagecountTooltipText}
+      variant='inverse'
+      placement='end'
+    >
+      <IconInfo />
+    </Tooltip>
+  )
+
+  const percentbrowsingTooltipText = (
+    <div style={{width: 160}}>
+      This column, for each tracker, the percentage of your overall browsing that was tracked.
+    </div>
+  )
+
+  const percentbrowsingTooltip = (
+    <Tooltip
+      tip={percentbrowsingTooltipText}
+      variant='inverse'
+      placement='end'
+    >
+      <IconInfo />
+    </Tooltip>
+  )
+
   return (
     <ReactTable
       data={data}
       columns={[
         {Header: h => (
-          <div style={{textAlign: 'left'}}>
+          <div style={{textAlign: 'center'}}>
             Tracker
           </div>),
         accessor: 'name',
@@ -42,8 +76,8 @@ const TrackerTable = (data) => {
           </div>)
         },
         {Header: h => (
-          <div style={{textAlign: 'left'}}>
-            Page Count
+          <div style={{textAlign: 'center'}}>
+            Page Count {pagecountTooltip}
           </div>),
         accessor: 'count',
         Cell: row =>
@@ -51,8 +85,8 @@ const TrackerTable = (data) => {
             {row.value}
           </div>},
         {Header: h => (
-          <div style={{textAlign: 'left'}}>
-            Percent of Browsing
+          <div style={{textAlign: 'center'}}>
+            Percent of Browsing {percentbrowsingTooltip}
           </div>),
         accessor: 'percent',
         Cell: row =>
@@ -164,7 +198,7 @@ class TrackersList extends React.Component {
           <p><strong>{numTrackers} trackers</strong> have collected information about you based on your browsing history. Your most
             frequently encountered tracker is <strong>{topTracker}</strong> which was
             present on <em>{topPercent}%</em> of
-            the sites you visited.
+            the pages you visited.
             Here are your 20 most frequently encountered trackers:</p>
         </Text>
         <Grid startAt='large'>
