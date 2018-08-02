@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 
 import {
   FlexibleWidthXYPlot,
@@ -31,6 +30,11 @@ export default class PagesTimeScatterplot extends React.Component {
     this.changeSelection = this.changeSelection.bind(this);
   }
 
+  componentDidMount() {
+    import(/* webpackChunkName: "lodash" */'lodash')
+      .then(_ => { this._ = _ })
+  }
+
 
   changeSelection(val) {
     this.setState({
@@ -39,6 +43,8 @@ export default class PagesTimeScatterplot extends React.Component {
   }
 
   render() {
+    if (!this._) return null
+
     const {times, grouping, index} = this.state;
     const {dateLabel, timeLabelSimple, timeLabelAdjusted,
       dayOfWeekLabel, dayOfWeekLabelAdjusted, stringLabel} = las;
@@ -46,7 +52,7 @@ export default class PagesTimeScatterplot extends React.Component {
     let grouped;
     let data = [];
 
-    grouped = _.groupBy(times, t => [t.getDay(), t.getHours()]);
+    grouped = this._.groupBy(times, t => [t.getDay(), t.getHours()]);
     let day = (new Date(Date.now())).getDay();
     for (let elem in grouped) {
       let xy = elem.split(',');

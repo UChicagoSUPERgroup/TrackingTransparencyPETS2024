@@ -45,11 +45,17 @@ module.exports = {
               'targets': {
                 'browsers': ['chrome >= 65', 'firefox >= 60']
               },
-              // 'modules': false
+              'modules': false
             }],
             'react'
           ],
-          'plugins': ['transform-eval', 'transform-runtime', 'transform-object-rest-spread']
+          'plugins': [
+            'transform-eval',
+            'transform-runtime',
+            'transform-object-rest-spread',
+            'syntax-dynamic-import',
+            'react-loadable/babel'
+          ]
         }
       },
       {

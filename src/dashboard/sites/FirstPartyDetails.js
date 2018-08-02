@@ -11,11 +11,7 @@ import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 
-import WordCloud from 'react-d3-cloud';
-import _ from 'lodash';
-
 import categories from '../../data/categories_comfort_list.json';
-
 
 const DomainSpecificTable = (data) => {
   return (
@@ -202,6 +198,9 @@ export default class FirstPartyDetails extends React.Component {
   }
 
   async componentDidMount() {
+    import(/* webpackChunkName: "react-d3-cloud" */'react-d3-cloud')
+      .then(wc => { this.WordCloud = wc.default })
+
     const background = await browser.runtime.getBackgroundPage();
     let args = {domain: this.domain}
     let argsCount = {domain: this.domain, count: 5}
@@ -215,6 +214,7 @@ export default class FirstPartyDetails extends React.Component {
       inferred.push(key)
     }
     let sensitive = categories.slice(0,20);
+    const _ = await import(/* webpackChunkName: "lodash" */'lodash')
     let sensitive_inferred = _.intersection(inferred, sensitive)
     this.setState({
       trackers: trackers,
@@ -239,6 +239,8 @@ export default class FirstPartyDetails extends React.Component {
 
 
   render() {
+    const WordCloud = this.WordCloud
+
     let sensitive = this.state.sensitive_inferred;
     let inferences_q = this.state.inferences;
     let inferences = []
@@ -284,13 +286,13 @@ export default class FirstPartyDetails extends React.Component {
             </GridCol>
             <GridCol width={8}>
               <div>
-                <WordCloud
+                {WordCloud && <WordCloud
                   data={inferences}
                   height={height}
                   width={width}
                   fontSizeMapper={fontFunction}
                   font={'Arial Black'}
-                />
+                />}
               </div>
             </GridCol>
           </GridRow>
