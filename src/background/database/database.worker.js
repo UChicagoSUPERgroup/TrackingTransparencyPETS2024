@@ -77,14 +77,14 @@ async function handleQuery(data) {
     console.log('database worker making query', data.query)
     const res = await makeQuery(data.query, data.args);
     console.log('database worker query result', res)
-    postMessage({
+    self.postMessage({
       type: 'database_query_response',
       id: data.id,
       response: res
     });
   } catch (error) {
     console.log('database worker query error', error);
-    postMessage({
+    self.postMessage({
       type: 'database_query_response',
       id: data.id,
       error: error.message

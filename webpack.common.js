@@ -13,11 +13,6 @@ module.exports = {
     // background scripts
     background: './src/background/background.js',
 
-    // web workers for background script
-    trackers_worker: './src/background/trackers/trackers.worker.js',
-    inferencing_worker: './src/background/inferencing/inferencing.worker.js',
-    database_worker: './src/background/database/database.worker.js',
-
     // content scripts
     content: './src/content_scripts/content.js',
 
@@ -30,7 +25,8 @@ module.exports = {
   output: {
     // This copies each source entry into the extension dist folder named
     // after its entry config key.
-    path: path.resolve(__dirname, 'extension/dist')
+    path: path.resolve(__dirname, 'extension/dist'),
+    publicPath: '/dist/'
   },
   module: {
     rules: [
@@ -56,6 +52,13 @@ module.exports = {
             'syntax-dynamic-import',
             'react-loadable/babel'
           ]
+        }
+      },
+      {
+        test: /\.worker\.js$/,
+        use: { 
+          loader: 'worker-loader',
+          options: { name: '[name].js' }
         }
       },
       {

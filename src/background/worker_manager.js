@@ -1,9 +1,13 @@
 import categoryTree from '../data/categories_tree.json';
 
+import TrackersWorker from './trackers/trackers.worker.js'
+import DatabaseWorker from './database/database.worker.js'
+import InferencingWorker from './inferencing/inferencing.worker.js'
+
 /* WORKER SETUP */
-export const trackersWorker = new Worker('/dist/trackers_worker.js');
-export const databaseWorker = new Worker('/dist/database_worker.js');
-export const inferencingWorker = new Worker('/dist/inferencing_worker.js');
+export const trackersWorker = new TrackersWorker();
+export const databaseWorker = new DatabaseWorker();
+export const inferencingWorker = new InferencingWorker();
 
 /* connect database worker and trackers worker */
 /* this involves creating a MessageChannel and passing a message with
@@ -20,7 +24,7 @@ databaseWorker.postMessage({type: 'inferencing_worker_port', port: inferencingDa
 
 /* DATABASE WORKER */
 databaseWorker.onmessage = onDatabaseWorkerMessage;
-window.queryDatabase= queryDatabase;
+window.queryDatabase = queryDatabase;
 window.queryDatabaseRecursive = queryDatabaseRecursive;
 
 /**
