@@ -1,5 +1,3 @@
-import categoryTree from '../data/categories_tree.json';
-
 import TrackersWorker from './trackers/trackers.worker.js'
 import DatabaseWorker from './database/database.worker.js'
 import InferencingWorker from './inferencing/inferencing.worker.js'
@@ -111,6 +109,7 @@ export async function queryDatabaseRecursive(query, args) {
 
   args.count = null; // if we limit count for individual queries things get messed up
 
+  const categoryTree = (await import(/* webpackChunkName: "data/categoryTree" */'../data/categories_tree.json')).default
   const treeElem = findChildren(args.inference, categoryTree);
   console.log(treeElem);
   if (!treeElem) return false;

@@ -56,7 +56,7 @@ module.exports = {
       },
       {
         test: /\.worker\.js$/,
-        use: { 
+        use: {
           loader: 'worker-loader',
           options: { name: '[name].js' }
         }
@@ -85,6 +85,11 @@ module.exports = {
       'node_modules'
     ]
   },
+  // optimization: {
+  //   splitChunks: {
+  //     chunks: 'all'
+  //   }
+  // },
   plugins: [
     new CleanWebpackPlugin(['extension/dist']),
     new MiniCssExtractPlugin({
@@ -97,12 +102,16 @@ module.exports = {
     new webpack.IgnorePlugin(/jsdom$/),
     new HtmlWebpackPlugin({
       filename: 'dashboard.html',
-      chunks: ['dashboard'],
+      chunks: [
+        'dashboard'
+      ],
       template: 'src/template.html'
     }),
     new HtmlWebpackPlugin({
       filename: 'popup.html',
-      chunks: ['popup'],
+      chunks: [
+        'popup'
+      ],
       template: 'src/template.html'
     })
   ],

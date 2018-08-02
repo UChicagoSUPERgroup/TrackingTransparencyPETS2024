@@ -3,7 +3,7 @@ import infer from './infer';
 
 // the keywords file is bundled using webpack as keywordsjson
 // it must NOT have .json as an extension in the bundle because then it goes over a file size limit with mozilla
-import keywordsFile from 'file-loader?name=keywordsjson!../../data/inferencing/keywordsjson';
+import keywordsFile from 'file-loader?name=data/keywords!../../data/inferencing/keywordsjson';
 
 let databaseWorkerPort;
 

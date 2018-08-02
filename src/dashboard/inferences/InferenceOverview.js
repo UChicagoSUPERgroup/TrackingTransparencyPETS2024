@@ -11,9 +11,6 @@ import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 
-
-import sensitiveCats from '../../data/categories_comfort_list.json';
-
 import InferenceDetails from './InferenceDetails';
 import InferencesSunburst from './InferencesSunburst';
 
@@ -65,6 +62,7 @@ export default class InferencesOverview extends React.Component {
     let cats;
 
     const background = await browser.runtime.getBackgroundPage();
+    const sensitiveCats = (await import(/* webpackChunkName: "data/sensitiveCats" */'../../data/categories_comfort_list.json')).default
 
     if (key === 'all-sensitive') {
       console.log('all sensitive')

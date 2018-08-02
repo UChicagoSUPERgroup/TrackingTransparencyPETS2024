@@ -10,9 +10,6 @@ import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 
-import categories from '../../data/categories_comfort_list.json';
-
-
 const SiteTable = (data) => {
   return (
     <ReactTable
@@ -63,8 +60,8 @@ const TrackerTable = (data) => {
   );
 }
 
-const SensitivePanel = (inference) => {
-  let sensitive_categories = categories.slice(0,20);
+const SensitivePanel = ({ inference, sensitiveCats }) => {
+  let sensitive_categories = sensitiveCats.slice(0,20);
   let sensitive = (inference && sensitive_categories.includes(inference)) ? true : false;
   return (
     <Panel bsStyle="primary">
@@ -104,6 +101,10 @@ class InferenceDetails extends React.Component {
 
   componentDidMount() {
     this.updateData();
+    import(/* webpackChunkName: "data/sensitiveCats" */'../../data/categories_comfort_list.json')
+      .then(s => {
+        this.sensitiveCats = s.default
+      })
   }
 
   async updateData() {
@@ -164,7 +165,7 @@ class InferenceDetails extends React.Component {
     } else {
       content = (
         <div>
-          {SensitivePanel(inference)}
+          {this.sensitiveCats && <SensitivePanel inference={inference} sensitiveCats={this.sensitiveCats} />}
           <Grid startAt='large'>
             <GridRow>
               <GridCol>
