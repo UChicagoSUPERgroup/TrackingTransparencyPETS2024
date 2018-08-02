@@ -40,7 +40,7 @@ async function runTests(t) {
 
   // naviagte to dashboard page
   const dashboard = await browser.newPage();
-  await dashboard.goto('chrome-extension://' + id + '/dashboard/index.html');
+  await dashboard.goto('chrome-extension://' + id + '/dist/dashboard.html');
   dashboard.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
   // allow us to access testing functions from page context

@@ -1,8 +1,9 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require('path')
+const webpack = require('webpack')
 
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -29,21 +30,14 @@ module.exports = {
   output: {
     // This copies each source entry into the extension dist folder named
     // after its entry config key.
-    path: path.resolve(__dirname, "extension/dist"),
-    // publicPath: '/dist/'
-    // filename: '[name].js'
+    path: path.resolve(__dirname, 'extension/dist')
   },
-  // optimization: {
-  //   splitChunks: {
-  //     chunks: 'all'
-  //   }
-  // },
   module: {
     rules: [
       {
         // Babel transpilation
-        test: /\.js$/, 
-        exclude: /node_modules/, 
+        test: /\.js$/,
+        exclude: /node_modules/,
         loader: 'babel-loader',
         options: {
           'presets': [
@@ -51,7 +45,7 @@ module.exports = {
               'targets': {
                 'browsers': ['chrome >= 65', 'firefox >= 60']
               },
-              'modules': false
+              // 'modules': false
             }],
             'react'
           ],
@@ -68,20 +62,11 @@ module.exports = {
         // allow importing css files
         test: /\.css$/,
         use: [
-          { loader: "style-loader" },
-          { loader: "css-loader" }
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          'css-loader'
         ]
-        // use: [
-        //   {
-        //     loader: MiniCssExtractPlugin.loader,
-        //     options: {
-        //       // you can specify a publicPath here
-        //       // by default it use publicPath in webpackOptions.output
-        //       publicPath: '../'
-        //     }
-        //   },
-        //   'css-loader'
-        // ]
       }
     ]
   },
@@ -89,27 +74,36 @@ module.exports = {
     // This allows you to import modules just like you would in a NodeJS app.
     modules: [
       'node_modules'
-    ],
+    ]
   },
   plugins: [
     new CleanWebpackPlugin(['extension/dist']),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: "[name].css",
-      chunkFilename: "[id].css"
+      filename: 'css/[name].css',
+      chunkFilename: 'css/[id].css'
     }),
     // fix importing some dependencies that assume filesystem etc.
-    new webpack.IgnorePlugin(/jsdom$/)
+    new webpack.IgnorePlugin(/jsdom$/),
+    new HtmlWebpackPlugin({
+      filename: 'dashboard.html',
+      chunks: ['dashboard'],
+      template: 'src/template.html'
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'popup.html',
+      chunks: ['popup'],
+      template: 'src/template.html'
+    })
   ],
-  
 
   // fix importing some dependencies that assume filesystem etc.
   node: {
-    fs: "empty",
-    net: "empty",
-    tls: "empty",
-    child_process: "empty",
-    jsdom: "empty"
-  },
-};
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty',
+    jsdom: 'empty'
+  }
+}
