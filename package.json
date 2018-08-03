@@ -44,6 +44,7 @@
   "dependencies": {
     "@instructure/ui-buttons": "^5.20.1",
     "@instructure/ui-elements": "^5.20.1",
+    "@instructure/ui-forms": "^5.22.0",
     "@instructure/ui-icons": "^5.20.1",
     "@instructure/ui-layout": "^5.20.1",
     "@instructure/ui-themes": "^5.20.1",
@@ -66,7 +67,9 @@
     "webextension-polyfill": "^0.2.1"
   },
   "standard": {
-    "globals": [ "browser" ],
+    "globals": [
+      "browser"
+    ],
     "ignore": [
       "doc/",
       "extension/lib/",
