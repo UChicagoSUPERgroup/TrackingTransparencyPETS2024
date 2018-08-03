@@ -32,7 +32,8 @@ async function runTests(t) {
     'https://stats.js.org/'
   ];
   for (p of pages) {
-    await page.goto(p);
+    await page.goto(p)
+    await sleep(1000)
   }
   await page.close();
 
@@ -72,7 +73,7 @@ async function runTests(t) {
 
     // make sure we have some trackers stored
     query = await background.queryDatabase('getTrackersByDomain', {domain: 'nytimes.com'});
-    await equal(query.length >= 0, true, 'there are trackers on nytimes in database');
+    await ok(query.length > 0, 'there are trackers on nytimes in database');
 
     // make sure we have some inferences made
     query = await background.queryDatabase('getInferencesByDomain', {domain: 'uchicago.edu'});
