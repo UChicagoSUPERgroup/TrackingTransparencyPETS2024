@@ -47,6 +47,7 @@
     "@instructure/ui-icons": "^5.20.1",
     "@instructure/ui-layout": "^5.20.1",
     "@instructure/ui-themes": "^5.20.1",
+    "@tensorflow/tfjs": "^0.12.4",
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "html-entities": "^1.2.1",
@@ -66,7 +67,9 @@
     "webextension-polyfill": "^0.2.1"
   },
   "standard": {
-    "globals": [ "browser" ],
+    "globals": [
+      "browser"
+    ],
     "ignore": [
       "doc/",
       "extension/lib/",
