@@ -45,6 +45,7 @@
     "@instructure/ui-breadcrumb": "^5.22.0",
     "@instructure/ui-buttons": "^5.22.0",
     "@instructure/ui-elements": "^5.22.0",
+    "@instructure/ui-forms": "^5.22.0",
     "@instructure/ui-icons": "^5.22.0",
     "@instructure/ui-layout": "^5.22.0",
     "@instructure/ui-themes": "^5.22.0",

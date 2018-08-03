@@ -7,18 +7,34 @@ import striptags from 'striptags';
 
 // import tt from "../helpers";
 
+function score_help(w, keywords, l, set_keywords) {
+  if (set_keywords.has(w)) {
+      var k = keywords.indexOf(w);
+      k = (k + 1) / l;
+        return 1 / k;
+  }
+  else {
+    return 0;
+  }
+
+}
+
 
 function scoreCategory(category, words) {
-  var total = words.length;
+    var keywords = category.keywords;
+    var num_words = words.length;
+    var keywords_length = keywords.length;
+    var match_set = new Set(keywords);
 
-  words = words.filter(function(n) {
-    return category.keywords.indexOf(n) !== -1;
-  });
-
-  // console.log(words.length);
-
-  return (words.length / total);
+    var sum = 0;
+    for (var i = 0; i < keywords_length; i++) {
+      var score = score_help(words[i], keywords, keywords_length, match_set);
+      sum += score;
+    }
+    return sum / num_words;
 }
+
+
 
 /* find child category with highest score and return it with its score
  * if it has a higher score than the parent. If not, return null.
@@ -29,7 +45,6 @@ function findBestChild(category, words, parentScore) {
 
   for (let i = 0; i < category.children.length; i++) {
     curScore = scoreCategory(category.children[i], words);
-
     if (curScore > highestScore) {
       highestScore = curScore;
       bestChild = category.children[i];
@@ -38,7 +53,7 @@ function findBestChild(category, words, parentScore) {
     // console.log("trying",category.children[i].name , "score", curScore);
   }
 
-  if (highestScore >= parentScore + 0.015) {
+  if (highestScore >= parentScore + 0.0001) {
     return [bestChild, highestScore];
   } else {
     return null;
@@ -71,6 +86,7 @@ function findBestCategory(root, words, rootScore) {
     return findBestCategory(bestChild, words, bestChildScore);
   }
 }
+
 
 export default function (text, tree) {
   var words, tokenizer, tokens;

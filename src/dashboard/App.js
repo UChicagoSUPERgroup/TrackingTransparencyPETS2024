@@ -20,6 +20,7 @@ import InferenceOverview from './inferences/InferenceOverview';
 import TrackerOverview from './trackers/TrackerOverview';
 import FirstPartyOverview from  './sites/FirstPartyOverview';
 import ActivityOverview from './activity/ActivityOverview';
+import TakeActionPage from './TakeAction';
 import InfoPage from './Info';
 import SettingsPage from './Settings'
 import DebugPage from './Debug';
@@ -119,7 +120,8 @@ The code for logclick logs ALL the click in every single page.
               <NavLink to="/inferences"  title="Inferences"/>
               <NavLink to="/domains"  title="Sites"/>
               <NavLink to="/activity"  title="Activity"/>
-              {lightbeamcondition && <NavLink to="/lightbeam"  title="Network"/>}
+              {lightbeamcondition && <NavLink to="/lightbeam"  title="Time"/>}
+              <NavLink to="/takeaction"  title="Take Action"/>
             </Nav>}
             <Nav pullRight>
               <NavItem onClick={this.handleModalShow}>Show Intro</NavItem>
@@ -149,6 +151,7 @@ The code for logclick logs ALL the click in every single page.
               <Route path="/domains" component={FirstPartyOverview}/>
               <Route path="/activity" component={ActivityOverview}/>
               {lightbeamcondition && <Route path="/lightbeam" component={LightbeamWrapper}/>}
+              <Route path="/takeaction" component={TakeActionPage}/>
             </div>}
 
             {!enoughData &&<Route exact path="/" component={WaitingDataHome}/>}
