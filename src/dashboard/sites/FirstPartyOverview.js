@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import logging from '../dashboardLogging';
 import ReactTable from 'react-table';
-import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
@@ -184,10 +183,6 @@ export default class FirstPartyOverview extends React.Component {
         <Route path={`${this.props.match.url}/:name`}  component={FirstPartyDetails}/>
         <Route exact path={this.props.match.url} render={() => (
           <div>
-            <Breadcrumb>
-              <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
-              <Breadcrumb.Item active>Sites</Breadcrumb.Item>
-            </Breadcrumb>
             <Heading level='h1'>Where were you tracked?</Heading>
             <Text>
               <p>Since installing Tracking Transparency, you have visited {numPages} different pages on {numD} sites.</p>

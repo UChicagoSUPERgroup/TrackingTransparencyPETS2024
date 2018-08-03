@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import logging from '../dashboardLogging';
 import ReactTable from 'react-table';
-import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
@@ -266,11 +265,6 @@ export default class FirstPartyDetails extends React.Component {
 
     return (
       <div>
-        <Breadcrumb>
-          <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
-          <Breadcrumb.Item><Link to={{pathname: '/domains'}}>Sites</Link></Breadcrumb.Item>
-          <Breadcrumb.Item active>{this.domain}</Breadcrumb.Item>
-        </Breadcrumb>
         <Heading level='h1' margin='0 0 medium 0'>Sites</Heading>
         {/* <Heading level='h2' margin='small 0 small 0'>{this.domain}</Heading> */}
         <TTPanel>

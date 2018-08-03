@@ -1,5 +1,4 @@
-import React from 'react'
-import Breadcrumb from 'react-bootstrap/lib/Breadcrumb'
+import React from 'react';
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
@@ -88,9 +87,6 @@ export class Home extends React.Component {
     const {numTrackers, numInferences, numPages, recentInferences, recentDomains} = this.state
     return (
       <div>
-        <Breadcrumb>
-          <Breadcrumb.Item active>Home</Breadcrumb.Item>
-        </Breadcrumb>
         <Heading level='h1'>Tracking Transparency</Heading>
         <Text>
 

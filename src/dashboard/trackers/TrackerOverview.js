@@ -1,8 +1,6 @@
 import React from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
 
-import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
-
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
@@ -187,11 +185,6 @@ class TrackersList extends React.Component {
 
     return(
       <div>
-        <Breadcrumb>
-          <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
-          <Breadcrumb.Item active>Trackers</Breadcrumb.Item>
-        </Breadcrumb>
-
         <Heading level='h1'>Who is tracking you?</Heading>
 
         <Text>

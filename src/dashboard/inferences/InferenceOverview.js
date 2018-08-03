@@ -1,8 +1,6 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-import Breadcrumb from 'react-bootstrap/lib/Breadcrumb'
-
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Link from '@instructure/ui-elements/lib/components/Link'
@@ -15,7 +13,6 @@ import RadioInputGroup from '@instructure/ui-forms/lib/components/RadioInputGrou
 import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 import IconArrowOpenEnd from '@instructure/ui-icons/lib/Solid/IconArrowOpenEnd'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
-
 
 import sensitiveCats from '../../data/categories_comfort_list.json'
 
@@ -223,10 +220,6 @@ export default class InferencesOverview extends React.Component {
         <Route path={`${this.props.match.url}/:name`} component={InferenceDetails} />
         <Route exact path={this.props.match.url} render={() => (
           <div>
-            <Breadcrumb>
-              <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
-              <Breadcrumb.Item active>Inferences</Breadcrumb.Item>
-            </Breadcrumb>
             <Heading level='h1'>What could they have learned?</Heading>
             <Text>
               <p>Trackers collect information about the pages you visit in order to make guesses about things you might be interested in. These guesses, or inferences, are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{numInferences} topics</strong> that trackers might have inferred you are interested in.</p>
