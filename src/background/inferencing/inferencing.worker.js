@@ -12,6 +12,9 @@ import * as tf from '@tensorflow/tfjs';
 // it must NOT have .json as an extension in the bundle because then it goes over a file size limit with mozilla
 import keywordsFile from 'file-loader?name=keywordsjson!../../data/inferencing/keywordsjson';
 import word2idxFile from 'file-loader?name=word2idxjson!../../data/inferencing/word2idxjson';
+import idx2categoryFile from 'file-loader?name=idx2categoryjson!../../data/inferencing/idx2categoryjson';
+
+
 // import lstmModelFile from 'file-loader?name=model.json!../../data/inferencing/lstm_small_model_js/model.json';
 
 let databaseWorkerPort;
@@ -30,9 +33,8 @@ onmessage = function(m) {
 };
 
 
-
 const tree = buildCategoryTree(keywordsFile);
-const model = buildLstmModel(keywordsFile);
+const model = buildLstmModel(word2idxFile, idx2categoryFile);
 
 
 // TODO: this function needs to be rewritten
