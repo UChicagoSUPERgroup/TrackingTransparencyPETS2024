@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
-import Panel from 'react-bootstrap/lib/Panel';
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+import MetricsList from '@instructure/ui-elements/lib/components/MetricsList'
+import MetricsListItem from '@instructure/ui-elements/lib/components/MetricsList/MetricsListItem'
 
+import TTPanel from '../components/TTPanel'
 import categories from '../../data/categories_comfort_list.json';
 
 const SiteTable = (data) => {
@@ -28,7 +30,7 @@ const SiteTable = (data) => {
         {Header: 'Page Visits',
           accessor: 'count'},
       ]}
-      defaultPageSize={20}
+      defaultPageSize={10}
       showPageJump={false}
       showPageSizeOptions={false}
       className="-striped -highlight"
@@ -53,7 +55,7 @@ const TrackerTable = (data) => {
         {Header: 'Page Visits',
           accessor: 'count'},
       ]}
-      defaultPageSize={20}
+      defaultPageSize={10}
       showPageJump={false}
       showPageSizeOptions={false}
       className="-striped -highlight"
@@ -65,15 +67,13 @@ const SensitivePanel = (inference) => {
   let sensitive_categories = categories.slice(0,20);
   let sensitive = (inference && sensitive_categories.includes(inference)) ? true : false;
   return (
-    <Panel bsStyle="primary">
-      <Panel.Body>
-        <em>{inference}</em>
-        {sensitive ?
-          ' may be considered a sensitive topic.' :
-          ' is likely not a sensitive topic.'
-        }
-      </Panel.Body>
-    </Panel>
+    <TTPanel>
+      <Text><em>{inference}</em>
+      {sensitive ?
+        ' may be considered a sensitive topic.' :
+        ' is likely not a sensitive topic.'
+      }</Text>
+    </TTPanel>
   );
 }
 
@@ -108,7 +108,7 @@ class InferenceDetails extends React.Component {
     const background = await browser.runtime.getBackgroundPage();
     const {inference} = this.state;
 
-    const trackers = background.queryDatabaseRecursive('getTrackersByInference', {inference: inference, count: 1});
+    const trackers = background.queryDatabaseRecursive('getTrackersByInference', {inference: inference});
     trackers.then(tr => this.setState({
       trackers: tr
     }));
@@ -122,7 +122,7 @@ class InferenceDetails extends React.Component {
       });
     });
 
-    const topSites = background.queryDatabaseRecursive('getDomainsByInference', {inference: inference, count: 5});
+    const topSites = background.queryDatabaseRecursive('getDomainsByInference', {inference: inference});
     topSites.then(ts => this.setState({
       topSites: ts
     }));
@@ -162,6 +162,12 @@ class InferenceDetails extends React.Component {
     } else {
       content = (
         <div>
+          <TTPanel>
+            <MetricsList>
+              <MetricsListItem label="Sites" value={topSites.length} />
+              <MetricsListItem label="Trackers" value={trackers.length} />
+            </MetricsList>
+          </TTPanel>
           {SensitivePanel(inference)}
           <Grid startAt='large'>
             <GridRow>
@@ -180,7 +186,7 @@ class InferenceDetails extends React.Component {
             </GridRow>
           </Grid>
         </div>
-      );
+      )
     }
 
     return (
@@ -193,4 +199,4 @@ class InferenceDetails extends React.Component {
   }
 }
 
-export default InferenceDetails;
+export default InferenceDetails

@@ -3,9 +3,10 @@ import React from 'react';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
-import Button from 'react-bootstrap/lib/Button';
-import Alert from 'react-bootstrap/lib/Alert';
-import Checkbox from 'react-bootstrap/lib/Checkbox';
+
+import Alert from '@instructure/ui-alerts/lib/components/Alert'
+import Button from '@instructure/ui-buttons/lib/components/Button'
+import ToggleDetails from '@instructure/ui-toggle-details/lib/components/ToggleDetails'
 
 import {queryNames} from '../background/database/queries';
 import logging from './dashboardLogging';
@@ -186,7 +187,7 @@ componentDidMount() {
               Recursive (on inference categories)
             </Checkbox>
           </FormGroup> */}
-          <Button bsStyle="primary" type="submit" onClick={this.handleClick}>
+          <Button variant="primary" type="submit" onClick={this.handleClick}>
             Query
           </Button>
           <Button type="submit" onClick={this.handleClickRecursive}>
@@ -197,7 +198,13 @@ componentDidMount() {
           </Button>
         </form>
         <br/>
-        {error && <Alert bsStyle="danger">{error}</Alert>}
+        {error && <Alert
+          variant="error"
+          closeButtonLabel="Close"
+          margin="small"
+        >
+          {error}
+        </Alert>}
         {result &&<pre id="result">{JSON.stringify(this.state.result, null, '\t')}</pre>}
         {queryTime && <p>Time: {queryTime / 1000} seconds</p>}
 
@@ -208,16 +215,20 @@ componentDidMount() {
           value={this.state.importFormField}
           onChange={this.handleChange}
         />
-        <Button bsStyle="info" type="submit" onClick={this.importData}>
+        <Button type="submit" onClick={this.importData}>
           Import data
         </Button>
         <br /> <br />
-        <Button  
-          bsStyle="danger"
-          type="submit"
-          onClick={this.resetAll}>
-          Reset all data
-        </Button>
+        <ToggleDetails
+          summary="Danger zone"
+        >
+          <Button  
+            variant="danger"
+            type="submit"
+            onClick={this.resetAll}>
+            Reset all data
+          </Button>
+        </ToggleDetails>
       </div>
     );
   }

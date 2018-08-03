@@ -147,9 +147,10 @@ export default class ActivityOverview extends React.Component {
           <div>
             <Text>
               <p>
-                Here you can learn about when you have been tracked recently.
-                The scatter plot shows when you visited the most pages over the past week.
-                Click on a point to learn more about the tracking that took place.
+                Trackers are able to track your browsing activity across many different sites, [[[and may be able to link multiple inferences made about you, based on when you were browsing??]]]. Our algorithms have determined that you were most tracked this week on <strong>[day of the week] between [hours]</strong>.
+              </p>
+              <p>
+                The scatterplot shows how many pages you visited for each hour of the last week. The bigger the point, the more likely you were tracked. Click on a point to learn more about the tracking that took place.
               </p>
             </Text>
             <div>
