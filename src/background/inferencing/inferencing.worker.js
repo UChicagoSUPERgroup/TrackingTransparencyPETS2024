@@ -37,27 +37,31 @@ const model = buildLstmModel(keywordsFile);
 
 // TODO: this function needs to be rewritten
 async function inferencingMessageListener(text, mainFrameReqId, tabId, inferencing_alg) {
-
-  if (inferencing_alg == "tfidf") {
+  let result_category = "foo";
+  let conf_score = 0;
+  if (inferencing_alg === "tfidf") {
     const tr = await tree;
-    const category = infer_lstm(text, tr);
-    let result_category = category[0].name;
-    let conf_score = category[1];
+    const category = await infer_tfidf(text, tr);
+    result_category = category[0].name;
+    conf_score = category[1];
   }
 
-  else if (inferencing_alg == "lstm") {
+  else if (inferencing_alg === "lstm") {
     const lstmModel = await model;
-    const category = infer_tfidf(text, tr); 
-    let result_category = category[0];
-    let conf_score = category[1];
+    const category = await infer_lstm(text, tr); 
+    result_category = category[0];
+    conf_score = category[1];
+  }
+  else {
+    console.log("Please choose an inferencing ALG");
   }
   
   console.log('Inference:', result_category);
 
   let inferenceInfo = {
-    inference: category[0].name,
+    inference: result_category,
     inferenceCategory: '',
-    threshold: category[1],
+    threshold: conf_score,
     pageId: mainFrameReqId,
     tabId: tabId
   };
