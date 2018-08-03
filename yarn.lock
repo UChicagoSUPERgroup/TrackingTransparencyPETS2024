@@ -7396,6 +7396,15 @@ ssri@^5.2.4:
   dependencies:
     safe-buffer "^5.1.1"
 
+standard-engine@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/standard-engine/-/standard-engine-9.0.0.tgz#d3a3d74c4c1b91f51a1e66362465261ca7610316"
+  dependencies:
+    deglob "^2.1.0"
+    get-stdin "^6.0.0"
+    minimist "^1.1.0"
+    pkg-conf "^2.0.0"
+
 standard-engine@~8.0.0:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/standard-engine/-/standard-engine-8.0.1.tgz#0b77be8d7ab963675717dbeac1ef1d6675fb62f0"
@@ -7405,7 +7414,7 @@ standard-engine@~8.0.0:
     minimist "^1.1.0"
     pkg-conf "^2.0.0"
 
-standard@^11.0.1:
+standard@^11.0.0:
   version "11.0.1"
   resolved "https://registry.yarnpkg.com/standard/-/standard-11.0.1.tgz#49be40c76f1d564964b22bbf7309929ad0335e29"
   dependencies:
@@ -7418,6 +7427,13 @@ standard@^11.0.1:
     eslint-plugin-react "~7.7.0"
     eslint-plugin-standard "~3.0.1"
     standard-engine "~8.0.0"
+
+standardx@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/standardx/-/standardx-2.1.0.tgz#4eab66a0f32962f40390dda24400fa71a73b3baf"
+  dependencies:
+    standard "^11.0.0"
+    standard-engine "^9.0.0"
 
 static-extend@^0.1.1:
   version "0.1.2"

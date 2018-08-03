@@ -3,12 +3,10 @@ const puppeteer = require('puppeteer');
 
 const CRX_PATH = '../extension/';
 
-
 test('tests', runTests);
 // runTests();
 
 async function runTests(t) {
-
   // set up puppeteer
   const browser = await puppeteer.launch({
     headless: false, // extensions only supported in full chrome.
@@ -19,15 +17,15 @@ async function runTests(t) {
       '--enable-md-extensions --false'
     ]
   })
-  
+
   // get browser extension's id
   const id = await getExtensionId(browser);
-  
+
   // visit some pages
   const page = await browser.newPage();
   const pages = [
     'https://super.cs.uchicago.edu',
-    'https://cs.uchicago.edu', 
+    'https://cs.uchicago.edu',
     'https://www.nytimes.com',
     'https://www.google.com/maps/place/Department+of+Computer+Science,+1100+E+58th+St,+Chicago,+IL+60637/@41.7943177,-87.5937424,13z/data=!4m2!3m1!1s0x880e29162042b8f1:0x1e9e400ccfae3c4d',
     'https://js.org/',
@@ -48,9 +46,10 @@ async function runTests(t) {
   await dashboard.exposeFunction('ok', t.ok);
   await dashboard.exposeFunction('test', t.test);
   await dashboard.exposeFunction('sleep', sleep);
-  
+
   // switch to page context and run tests
   await dashboard.evaluate(async (pages) => {
+    /* eslint-disable no-undef */
 
     const background = await browser.runtime.getBackgroundPage();
 
@@ -87,6 +86,7 @@ async function runTests(t) {
     query = await background.queryDatabase('getAllData', {});
     await ok(query.pages.length === 0, 'after emptying database no pages exist')
 
+    /* eslint-enable no-undef */
   }, pages);
 
   t.end();
