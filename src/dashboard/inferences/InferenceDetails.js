@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
-import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
 import Panel from 'react-bootstrap/lib/Panel';
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
@@ -11,7 +10,6 @@ import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 
 import categories from '../../data/categories_comfort_list.json';
-
 
 const SiteTable = (data) => {
   return (
@@ -185,16 +183,13 @@ class InferenceDetails extends React.Component {
       );
     }
 
-    return (<div>
-      <Breadcrumb>
-        <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
-        <Breadcrumb.Item><Link to={{pathname: '/inferences'}}>Inferences</Link></Breadcrumb.Item>
-        <Breadcrumb.Item active>{inference}</Breadcrumb.Item>
-      </Breadcrumb>
-      <Heading level='h1'>What could they have learned?</Heading>
-      <Heading level='h2' margin='small 0 small 0'>{inference}</Heading>
-      {content}
-    </div>);
+    return (
+      <div>
+        <Heading level='h1'>What could they have learned?</Heading>
+        <Heading level='h2' margin='small 0 small 0'>{inference}</Heading>
+        {content}
+      </div>
+    )
   }
 }
 
