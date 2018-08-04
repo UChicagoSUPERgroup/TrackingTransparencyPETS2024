@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Provides information about online tracking",
   "scripts": {
-    "test": "cd test && node test.js | tap-spec",
+    "test": "tape test/test.js | tap-spec",
     "lint:js": "standardx",
     "lint:webext": "web-ext lint -s extension/",
     "lint": "npm run lint:js; npm run lint:webext",
@@ -12,6 +12,7 @@
     "watch": "wp -w --progress --config webpack.dev.js",
     "build": "wp --progress --config webpack.dev.js",
     "firefox": "web-ext run -s extension/ -u 'about:debugging'",
+    "chromium": "node test/chromium.js",
     "jsdoc": "jsdoc -c jsdoc.conf.json ."
   },
   "devDependencies": {

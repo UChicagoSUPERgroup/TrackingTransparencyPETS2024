@@ -1,7 +1,7 @@
 const test = require('tape');
 const puppeteer = require('puppeteer');
 
-const CRX_PATH = '../extension/';
+const CRX_PATH = './extension/';
 
 test('tests', runTests);
 // runTests();
