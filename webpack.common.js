@@ -47,7 +47,7 @@ module.exports = {
           ],
           'plugins': [
             'transform-eval',
-            'transform-runtime',
+            // 'transform-runtime',
             'transform-object-rest-spread',
             'syntax-dynamic-import',
             'react-loadable/babel'
@@ -86,9 +86,9 @@ module.exports = {
     ]
   },
   optimization: {
-    // splitChunks: {
-      // chunks: 'all',
-    // },
+    splitChunks: {
+      chunks: 'all',
+    },
     occurrenceOrder: true
   },
   plugins: [

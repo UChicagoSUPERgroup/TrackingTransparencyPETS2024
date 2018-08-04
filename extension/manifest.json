@@ -28,10 +28,7 @@
         "default_title": "Tracking Transparency"
     },
     "background": {
-        "scripts": [
-            "lib/browser-polyfill.min.js",
-            "dist/background.js"
-        ],
+        "page": "dist/background.html",
         "persistent": true
     },
     "content_scripts": [
