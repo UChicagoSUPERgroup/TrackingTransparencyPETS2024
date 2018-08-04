@@ -25,7 +25,7 @@
     keycode "^2"
     prop-types "^15"
 
-"@instructure/ui-breadcrumb@^5.22.0":
+"@instructure/ui-breadcrumb@^5.23.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-breadcrumb/-/ui-breadcrumb-5.23.0.tgz#22b591ff6b86a4f97f75fc960b7af1b2c726d287"
   dependencies:
@@ -37,7 +37,7 @@
     classnames "^2"
     prop-types "^15"
 
-"@instructure/ui-buttons@^5.22.0", "@instructure/ui-buttons@^5.23.0":
+"@instructure/ui-buttons@^5.23.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-buttons/-/ui-buttons-5.23.0.tgz#e80e8ba07dc93ee727048fbd9114c1f93776b3fc"
   dependencies:
@@ -59,7 +59,7 @@
     classnames "^2"
     prop-types "^15"
 
-"@instructure/ui-elements@^5.22.0", "@instructure/ui-elements@^5.23.0":
+"@instructure/ui-elements@^5.23.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-elements/-/ui-elements-5.23.0.tgz#9f91627406251dcc6204876b17706bb0e9175ae2"
   dependencies:
@@ -73,7 +73,7 @@
     classnames "^2"
     prop-types "^15"
 
-"@instructure/ui-forms@^5.22.0":
+"@instructure/ui-forms@^5.23.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-forms/-/ui-forms-5.23.0.tgz#0da2118d0a99fa9a374b7060500cb61d5e158e9d"
   dependencies:
@@ -100,14 +100,14 @@
     moment-timezone "^0.5"
     prop-types "^15"
 
-"@instructure/ui-icons@^5.22.0", "@instructure/ui-icons@^5.23.0":
+"@instructure/ui-icons@^5.23.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-icons/-/ui-icons-5.23.0.tgz#048eddcfec5aef56bb8a95d0d8e1512b8fedd5cf"
   dependencies:
     "@instructure/ui-svg-images" "^5.23.0"
     prop-types "^15"
 
-"@instructure/ui-layout@^5.22.0", "@instructure/ui-layout@^5.23.0":
+"@instructure/ui-layout@^5.23.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-layout/-/ui-layout-5.23.0.tgz#5da0a193833c0e43259cf7e61fb19bc0c887786e"
   dependencies:
@@ -171,7 +171,7 @@
     prop-types "^15"
     tinycolor2 "^1.4.1"
 
-"@instructure/ui-themes@^5.22.0":
+"@instructure/ui-themes@^5.23.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-themes/-/ui-themes-5.23.0.tgz#f1c03da837b09ab58f7af04ed461356f72bd9916"
   dependencies:
