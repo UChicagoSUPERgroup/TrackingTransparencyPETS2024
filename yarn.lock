@@ -25,7 +25,22 @@
     keycode "^2"
     prop-types "^15"
 
-"@instructure/ui-breadcrumb@^5.23.0":
+"@instructure/ui-alerts@^5.22.0":
+  version "5.23.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-alerts/-/ui-alerts-5.23.0.tgz#d2b14850acfb41dfe21edbf0ae6c6bb7a3e50d25"
+  dependencies:
+    "@instructure/ui-a11y" "^5.23.0"
+    "@instructure/ui-buttons" "^5.23.0"
+    "@instructure/ui-icons" "^5.23.0"
+    "@instructure/ui-layout" "^5.23.0"
+    "@instructure/ui-motion" "^5.23.0"
+    "@instructure/ui-themeable" "^5.23.0"
+    "@instructure/ui-utils" "^5.23.0"
+    classnames "^2"
+    keycode "^2"
+    prop-types "^15"
+
+"@instructure/ui-breadcrumb@^5.22.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-breadcrumb/-/ui-breadcrumb-5.23.0.tgz#22b591ff6b86a4f97f75fc960b7af1b2c726d287"
   dependencies:
@@ -37,7 +52,7 @@
     classnames "^2"
     prop-types "^15"
 
-"@instructure/ui-buttons@^5.23.0":
+"@instructure/ui-buttons@^5.20.1", "@instructure/ui-buttons@^5.23.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-buttons/-/ui-buttons-5.23.0.tgz#e80e8ba07dc93ee727048fbd9114c1f93776b3fc"
   dependencies:
@@ -59,7 +74,7 @@
     classnames "^2"
     prop-types "^15"
 
-"@instructure/ui-elements@^5.23.0":
+"@instructure/ui-elements@^5.20.1", "@instructure/ui-elements@^5.23.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-elements/-/ui-elements-5.23.0.tgz#9f91627406251dcc6204876b17706bb0e9175ae2"
   dependencies:
@@ -73,7 +88,7 @@
     classnames "^2"
     prop-types "^15"
 
-"@instructure/ui-forms@^5.23.0":
+"@instructure/ui-forms@^5.22.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-forms/-/ui-forms-5.23.0.tgz#0da2118d0a99fa9a374b7060500cb61d5e158e9d"
   dependencies:
@@ -100,14 +115,14 @@
     moment-timezone "^0.5"
     prop-types "^15"
 
-"@instructure/ui-icons@^5.23.0":
+"@instructure/ui-icons@^5.20.1", "@instructure/ui-icons@^5.23.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-icons/-/ui-icons-5.23.0.tgz#048eddcfec5aef56bb8a95d0d8e1512b8fedd5cf"
   dependencies:
     "@instructure/ui-svg-images" "^5.23.0"
     prop-types "^15"
 
-"@instructure/ui-layout@^5.23.0":
+"@instructure/ui-layout@^5.20.1", "@instructure/ui-layout@^5.23.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-layout/-/ui-layout-5.23.0.tgz#5da0a193833c0e43259cf7e61fb19bc0c887786e"
   dependencies:
@@ -120,6 +135,21 @@
     classnames "^2"
     prop-types "^15"
 
+"@instructure/ui-menu@^5.23.0":
+  version "5.23.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-menu/-/ui-menu-5.23.0.tgz#180f23d692523a563fb37b1e9799f04b1add56f7"
+  dependencies:
+    "@instructure/ui-a11y" "^5.23.0"
+    "@instructure/ui-elements" "^5.23.0"
+    "@instructure/ui-icons" "^5.23.0"
+    "@instructure/ui-layout" "^5.23.0"
+    "@instructure/ui-overlays" "^5.23.0"
+    "@instructure/ui-themeable" "^5.23.0"
+    "@instructure/ui-utils" "^5.23.0"
+    classnames "^2"
+    keycode "^2"
+    prop-types "^15"
+
 "@instructure/ui-motion@^5.23.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-motion/-/ui-motion-5.23.0.tgz#cfb22864fb2eb9221a9f49a788d6859226c27b6a"
@@ -128,7 +158,7 @@
     "@instructure/ui-utils" "^5.23.0"
     prop-types "^15"
 
-"@instructure/ui-overlays@^5.23.0":
+"@instructure/ui-overlays@^5.22.0", "@instructure/ui-overlays@^5.23.0":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-overlays/-/ui-overlays-5.23.0.tgz#f3bf85c12764d9023c7177c034b15ea7b101353c"
   dependencies:
@@ -171,11 +201,27 @@
     prop-types "^15"
     tinycolor2 "^1.4.1"
 
-"@instructure/ui-themes@^5.23.0":
+"@instructure/ui-themes@^5.20.1":
   version "5.23.0"
   resolved "https://registry.yarnpkg.com/@instructure/ui-themes/-/ui-themes-5.23.0.tgz#f1c03da837b09ab58f7af04ed461356f72bd9916"
   dependencies:
     "@instructure/ui-themeable" "^5.23.0"
+
+"@instructure/ui-toggle-details@^5.22.0":
+  version "5.23.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-toggle-details/-/ui-toggle-details-5.23.0.tgz#b34bbd3091e4b291bfa9cf09195de40f432f9130"
+  dependencies:
+    "@instructure/ui-a11y" "^5.23.0"
+    "@instructure/ui-buttons" "^5.23.0"
+    "@instructure/ui-elements" "^5.23.0"
+    "@instructure/ui-icons" "^5.23.0"
+    "@instructure/ui-layout" "^5.23.0"
+    "@instructure/ui-menu" "^5.23.0"
+    "@instructure/ui-motion" "^5.23.0"
+    "@instructure/ui-themeable" "^5.23.0"
+    "@instructure/ui-utils" "^5.23.0"
+    classnames "^2"
+    prop-types "^15"
 
 "@instructure/ui-utils@^5.23.0":
   version "5.23.0"
@@ -189,13 +235,105 @@
     numeral "^2"
     prop-types "^15"
 
-"@types/node@*":
+"@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
+
+"@protobufjs/base64@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@protobufjs/base64/-/base64-1.1.2.tgz#4c85730e59b9a1f1f349047dbf24296034bb2735"
+
+"@protobufjs/codegen@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@protobufjs/codegen/-/codegen-2.0.4.tgz#7ef37f0d010fb028ad1ad59722e506d9262815cb"
+
+"@protobufjs/eventemitter@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@protobufjs/eventemitter/-/eventemitter-1.1.0.tgz#355cbc98bafad5978f9ed095f397621f1d066b70"
+
+"@protobufjs/fetch@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@protobufjs/fetch/-/fetch-1.1.0.tgz#ba99fb598614af65700c1619ff06d454b0d84c45"
+  dependencies:
+    "@protobufjs/aspromise" "^1.1.1"
+    "@protobufjs/inquire" "^1.1.0"
+
+"@protobufjs/float@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@protobufjs/float/-/float-1.0.2.tgz#5e9e1abdcb73fc0a7cb8b291df78c8cbd97b87d1"
+
+"@protobufjs/inquire@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@protobufjs/inquire/-/inquire-1.1.0.tgz#ff200e3e7cf2429e2dcafc1140828e8cc638f089"
+
+"@protobufjs/path@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@protobufjs/path/-/path-1.1.2.tgz#6cc2b20c5c9ad6ad0dccfd21ca7673d8d7fbf68d"
+
+"@protobufjs/pool@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@protobufjs/pool/-/pool-1.1.0.tgz#09fd15f2d6d3abfa9b65bc366506d6ad7846ff54"
+
+"@protobufjs/utf8@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
+
+"@tensorflow/tfjs-converter@0.5.5":
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-converter/-/tfjs-converter-0.5.5.tgz#0b8ced232d598e70bc52a4a6d95ba69f88af1b8d"
+  dependencies:
+    "@types/long" "~3.0.32"
+    protobufjs "~6.8.6"
+    url "~0.11.0"
+
+"@tensorflow/tfjs-core@0.12.8":
+  version "0.12.8"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-core/-/tfjs-core-0.12.8.tgz#d7bb5fb17da080374a4918aa5cd423378c0cdc0c"
+  dependencies:
+    "@types/seedrandom" "~2.4.27"
+    "@types/webgl-ext" "~0.0.29"
+    "@types/webgl2" "~0.0.4"
+    seedrandom "~2.4.3"
+
+"@tensorflow/tfjs-layers@0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-layers/-/tfjs-layers-0.7.2.tgz#3a8c083255c72da272245ae5b435c66af9573eb8"
+
+"@tensorflow/tfjs@^0.12.4":
+  version "0.12.4"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs/-/tfjs-0.12.4.tgz#dbdcd0389eb68a0974b2b52472ff97e21e664017"
+  dependencies:
+    "@tensorflow/tfjs-converter" "0.5.5"
+    "@tensorflow/tfjs-core" "0.12.8"
+    "@tensorflow/tfjs-layers" "0.7.2"
+
+"@types/long@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/long/-/long-4.0.0.tgz#719551d2352d301ac8b81db732acb6bdc28dbdef"
+
+"@types/long@~3.0.32":
+  version "3.0.32"
+  resolved "https://registry.yarnpkg.com/@types/long/-/long-3.0.32.tgz#f4e5af31e9e9b196d8e5fca8a5e2e20aa3d60b69"
+
+"@types/node@*", "@types/node@^10.1.0":
   version "10.5.6"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.5.6.tgz#1640f021dd0eaf12e731e54198c12ad2e020dc8e"
+
+"@types/seedrandom@~2.4.27":
+  version "2.4.27"
+  resolved "https://registry.yarnpkg.com/@types/seedrandom/-/seedrandom-2.4.27.tgz#9db563937dd86915f69092bc43259d2f48578e41"
 
 "@types/tapable@1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-1.0.2.tgz#e13182e1b69871a422d7863e11a4a6f5b814a4bd"
+
+"@types/webgl-ext@~0.0.29":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@types/webgl-ext/-/webgl-ext-0.0.29.tgz#4d479baf1124795f53d54bdc85b386e0f194d90a"
+
+"@types/webgl2@~0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@types/webgl2/-/webgl2-0.0.4.tgz#c3b0f9d6b465c66138e84e64cb3bdf8373c2c279"
 
 "@webassemblyjs/ast@1.5.13":
   version "1.5.13"
@@ -4789,7 +4927,7 @@ loglevelnext@^1.0.1:
     es6-symbol "^3.1.1"
     object.assign "^4.1.0"
 
-long@4.0.0:
+long@4.0.0, long@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/long/-/long-4.0.0.tgz#9a7b71cfb7d361a194ea555241c92f7468d5bf28"
 
@@ -5961,6 +6099,24 @@ prop-types@^15, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.8, pro
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
+protobufjs@~6.8.6:
+  version "6.8.8"
+  resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-6.8.8.tgz#c8b4f1282fd7a90e6f5b109ed11c84af82908e7c"
+  dependencies:
+    "@protobufjs/aspromise" "^1.1.2"
+    "@protobufjs/base64" "^1.1.2"
+    "@protobufjs/codegen" "^2.0.4"
+    "@protobufjs/eventemitter" "^1.1.0"
+    "@protobufjs/fetch" "^1.1.0"
+    "@protobufjs/float" "^1.0.2"
+    "@protobufjs/inquire" "^1.1.0"
+    "@protobufjs/path" "^1.1.2"
+    "@protobufjs/pool" "^1.1.0"
+    "@protobufjs/utf8" "^1.1.0"
+    "@types/long" "^4.0.0"
+    "@types/node" "^10.1.0"
+    long "^4.0.0"
+
 proxy-agent@^2.0.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/proxy-agent/-/proxy-agent-2.3.1.tgz#3d49d863d46cf5f37ca8394848346ea02373eac6"
@@ -6723,6 +6879,10 @@ secure-keys@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/secure-keys/-/secure-keys-1.0.0.tgz#f0c82d98a3b139a8776a8808050b824431087fca"
 
+seedrandom@~2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/seedrandom/-/seedrandom-2.4.3.tgz#2438504dad33917314bff18ac4d794f16d6aaecc"
+
 semver-diff@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/semver-diff/-/semver-diff-2.1.0.tgz#4bbb8437c8d37e4b0cf1a68fd726ec6d645d6d36"
@@ -6897,6 +7057,10 @@ snapdragon@^0.8.1:
     source-map "^0.5.6"
     source-map-resolve "^0.5.0"
     use "^3.1.0"
+
+snowball@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/snowball/-/snowball-0.3.1.tgz#627b19fb6574118bef06ad6810d84ddbee3ef993"
 
 snyk-config@2.1.0:
   version "2.1.0"
@@ -7910,7 +8074,7 @@ url-parse-lax@^1.0.0:
   dependencies:
     prepend-http "^1.0.1"
 
-url@^0.11.0:
+url@^0.11.0, url@~0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/url/-/url-0.11.0.tgz#3838e97cfc60521eb73c525a8e55bfdd9e2e28f1"
   dependencies:

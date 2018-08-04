@@ -7,10 +7,23 @@ import logging from './dashboardLogging';
 
 class IFrame extends React.Component {
   // https://stackoverflow.com/a/33915153
-  render() {
-    return(
+  constructor (props) {
+    super(props)
+
+    this.styles = {
+      border: 'none',
+      margin: 0,
+      padding: 0,
+      display: 'block',
+      width: '100%',
+      height: '700px'
+    }
+  }
+
+  render () {
+    return (
       <div>
-        <iframe src={this.props.src} className='lightbeam-iframe'/>
+        <iframe src={this.props.src} style={this.styles} className='lightbeam-iframe' />
       </div>
     )
   }

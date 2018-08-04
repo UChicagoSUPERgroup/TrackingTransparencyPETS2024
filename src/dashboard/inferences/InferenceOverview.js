@@ -1,66 +1,81 @@
-import React from 'react';
-import { Route, Link } from 'react-router-dom';
-
-import ToggleButton from 'react-bootstrap/lib/ToggleButton';
-import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
+import React from 'react'
+import { Route } from 'react-router-dom'
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
+import Link from '@instructure/ui-elements/lib/components/Link'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+import FormFieldGroup from '@instructure/ui-forms/lib/components/FormFieldGroup'
+import RadioInput from '@instructure/ui-forms/lib/components/RadioInput'
+import RadioInputGroup from '@instructure/ui-forms/lib/components/RadioInputGroup'
+import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
+import IconArrowOpenEnd from '@instructure/ui-icons/lib/Solid/IconArrowOpenEnd'
+import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
-import InferenceDetails from './InferenceDetails';
-import InferencesSunburst from './InferencesSunburst';
+import InferenceDetails from './InferenceDetails'
+import InferenceSummary from './InferenceSummary'
+import InferencesSunburst from './InferencesSunburst'
+import TTPanel from '../components/TTPanel'
 
-import logging from '../dashboardLogging';
+import logging from '../dashboardLogging'
 
 export default class InferencesOverview extends React.Component {
-  constructor(props) {
-    super(props);
-    this.inferenceCount = 100;
+  constructor (props) {
+    super(props)
+    this.inferenceCount = 100
     this.state = {
       selectedInference: false,
       inferences: null,
       sensitivitySelection: 'all-sensitive',
-      dateSelection: 'all-dates'
-    };
+      dateSelection: 'all-dates',
+      numInferences: null
+    }
 
-    this.handleSunburstSelection = this.handleSunburstSelection.bind(this);
-    this.handleSensitivitySelection = this.handleSensitivitySelection.bind(this);
-    this.handleDateSelection = this.handleDateSelection.bind(this);
-    this.handleInferenceLinkClick = this.handleInferenceLinkClick.bind(this);
+    this.handleSunburstSelection = this.handleSunburstSelection.bind(this)
+    this.handleSensitivitySelection = this.handleSensitivitySelection.bind(this)
+    this.handleDateSelection = this.handleDateSelection.bind(this)
+    this.handleInferenceLinkClick = this.handleInferenceLinkClick.bind(this)
   }
 
-  async getInferences() {
-    const background = await browser.runtime.getBackgroundPage();
-    this.topInferences = await background.queryDatabase('getInferences', {count: this.inferenceCount});
-    this.setState({
-      inferences: this.topInferences
-    });
+  async getInferences () {
+    const background = await browser.runtime.getBackgroundPage()
+    background.queryDatabase('getNumberOfInferences', {}).then(i => {
+      this.setState({
+        numInferences: i
+      })
+    })
+    background.queryDatabase('getInferences', {count: this.inferenceCount}).then(i => {
+      this.topInferences = i
+      this.setState({
+        inferences: i
+      })
+    })
   }
 
-  InferenceLink(inference) {
-    return(
-      <a className = "inferencePageTopTextInferenceLink" key={inference} onClick={this.handleInferenceLinkClick}>{inference}</a>
+  InferenceLink (inference) {
+    return (
+      <a className='inferencePageTopTextInferenceLink' key={inference} onClick={this.handleInferenceLinkClick}>{inference}</a>
     )
   }
 
-  handleInferenceLinkClick(e) {
-    e.preventDefault();
-    const inference = e.currentTarget.text;
-    this.setState({selectedInference: inference});
+  handleInferenceLinkClick (e) {
+    e.preventDefault()
+    const inference = e.currentTarget.text
+    this.setState({selectedInference: inference})
   }
 
-  handleSunburstSelection(inference) {
-    this.setState({selectedInference: inference});
+  handleSunburstSelection (inference) {
+    this.setState({selectedInference: inference})
   }
 
-  async handleSensitivitySelection(key) {
+  async handleSensitivitySelection (event) {
+    let cats
+    const key = event.target.value
+    console.log('key is', key)
 
-    let cats;
-
-    const background = await browser.runtime.getBackgroundPage();
+    const background = await browser.runtime.getBackgroundPage()
     const sensitiveCats = (await import(/* webpackChunkName: "data/sensitiveCats" */'../../data/categories_comfort_list.json')).default
 
     if (key === 'all-sensitive') {
@@ -72,31 +87,25 @@ export default class InferencesOverview extends React.Component {
         sensitivitySelection: key,
         dateSelection: 'all-dates'
       })
-      return;
-
+      return
     } else if (key === 'less-sensitive') {
-      console.log('less sensitive')
-      cats = sensitiveCats.slice(-50).reverse(); // 50 least sensitive categories
-
+      cats = sensitiveCats.slice(-50).reverse() // 50 least sensitive categories
     } else if (key === 'more-sensitive') {
-      console.log('more sensitive')
-
-      cats = sensitiveCats.slice(0,50);
+      cats = sensitiveCats.slice(0, 50)
     }
-    console.log(cats);
 
     const queryPromises = cats.map(cat => {
-      return background.queryDatabase('getInferenceCount', {inference: cat});
-    });
+      return background.queryDatabase('getInferenceCount', {inference: cat})
+    })
 
-    const counts = await Promise.all(queryPromises); // lets all queries happen async
+    const counts = await Promise.all(queryPromises) // lets all queries happen async
 
     const data = cats.map((cat, i) => {
       return {
         'inference': cat,
         'COUNT(inference)': counts[i]
       }
-    });
+    })
     console.log(data)
 
     this.setState({
@@ -107,25 +116,25 @@ export default class InferencesOverview extends React.Component {
     })
   }
 
-  async handleDateSelection(key) {
+  async handleDateSelection (event) {
+    let afterDate
+    const key = event.target.value
 
-    let afterDate;
-
-    const background = await browser.runtime.getBackgroundPage();
+    const background = await browser.runtime.getBackgroundPage()
 
     if (key === 'all-dates') {
       // reset to default
-      afterDate = 0;
-
+      afterDate = 0
     } else if (key === 'past-24') {
-      afterDate = Date.now() - 86400000;
-
+      afterDate = Date.now() - 86400000
     } else if (key === 'past-week') {
-      afterDate = Date.now() - 86400000 * 7;
+      afterDate = Date.now() - 86400000 * 7
+    // } else if (key === 'past-month') {
+    //   afterDate = Date.now() - 86400000 * 7 * 30
     }
 
     console.log(key)
-    const data = await background.queryDatabase('getInferences', {count: this.inferenceCount, afterDate: afterDate});
+    const data = await background.queryDatabase('getInferences', {count: this.inferenceCount, afterDate: afterDate})
 
     this.setState({
       inferences: data,
@@ -135,78 +144,120 @@ export default class InferencesOverview extends React.Component {
     })
   }
 
-  async componentDidMount() {
-    let activityType='load dashboard inferences page';
-    logging.logLoad(activityType, {});
-    this.getInferences();
+  async componentDidMount () {
+    let activityType = 'load dashboard inferences page'
+    logging.logLoad(activityType, {})
+    this.getInferences()
   }
 
-  render() {
-    let {inferences, selectedInference} = this.state;
+  render () {
+    let { inferences, selectedInference, numInferences } = this.state
 
-    return(
+    const sensitivityTooltipText = (
+      <div style={{width: 160}}>
+        Our previous research has found that there are certain inferences that users are more comfortable with, and others that are more sensitive.
+        Toggle between these filters to show only inferences that are more or less sensitive.
+      </div>
+    )
+
+    const sensitivityTooltip = (
+      <Tooltip
+        tip={sensitivityTooltipText}
+        variant='inverse'
+        placement='end'
+      >
+        Inference sensitivity <IconInfo />
+      </Tooltip>
+    )
+
+    const recencyTooltipText = (
+      <div style={{width: 160}}>
+        Toggle between these filters to show inferences made about you since you've installed Tracking Transparency, only in the last day, or only in the last week.
+      </div>
+    )
+
+    const recencyTooltip = (
+      <Tooltip
+        tip={recencyTooltipText}
+        variant='inverse'
+        placement='end'
+      >
+        Recency of Inferences <IconInfo />
+      </Tooltip>
+    )
+
+    const filters = (<TTPanel textAlign='start' className={'inferences-sunburst-filters'}>
+      <FormFieldGroup description='Filters'>
+        <RadioInputGroup
+          name='sensitivity-filter'
+          value={this.state.sensitivitySelection}
+          onChange={this.handleSensitivitySelection}
+          description={sensitivityTooltip}
+          variant='toggle'
+          size='small'>
+          <RadioInput label='All inferences' value='all-sensitive' context='off' />
+          <RadioInput label='Less sensitive' value='less-sensitive' context='off' />
+          <RadioInput label='More sensitive' value='more-sensitive' context='off' />
+        </RadioInputGroup>
+        <RadioInputGroup
+          name='date-filter'
+          value={this.state.dateSelection}
+          onChange={this.handleDateSelection}
+          description={recencyTooltip}
+          variant='toggle'
+          size='small'>
+          <RadioInput label='Since install' value='all-dates' context='off' />
+          <RadioInput label='Last day' value='past-24' context='off' />
+          <RadioInput label='Last week' value='past-week' context='off' />
+          {/* <RadioInput label='Last month' value='past-month' context='off' /> */}
+        </RadioInputGroup>
+      </FormFieldGroup>
+    </TTPanel>)
+
+    return (
       <div>
-        <Route path={`${this.props.match.url}/:name`} component={InferenceDetails}/>
+        <Route path={`${this.props.match.url}/:name`} component={InferenceDetails} />
         <Route exact path={this.props.match.url} render={() => (
           <div>
             <Heading level='h1'>What could they have learned?</Heading>
             <Text>
-            <p>Trackers collect information about the pages you visit in order to make guesses about things you might be interested in. These guesses, or inferences, are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{this.inferenceCount} topics</strong> that trackers might have inferred you are interested in.</p>
-            {inferences && inferences.length >= 3 && <p> {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)} were among the most frequent topics that our algorithm determined the pages you visited recently are about.</p>}
-          </Text>
-            {/* {inferences && <div className='suggested-inferences'>
-              <p><strong>Suggested inferences to explore:</strong></p>
-              <ul>
-                <li>{inferences[0].inference}</li>
-                <li>{inferences[1].inference}</li>
-                <li>{inferences[2].inference}</li>
-              </ul>
-            </div>} */}
+              <p>Trackers collect information about the pages you visit in order to make guesses about things you might be interested in. These guesses, or inferences, are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{numInferences} topics</strong> that trackers might have inferred you are interested in.</p>
+              {inferences && inferences.length >= 3 && <p> {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)} were among the most frequent topics that our algorithm determined the pages you visited recently are about.</p>}
+            </Text>
 
             <Grid startAt='large'>
               <GridRow>
                 <GridCol>
-                  {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference}/>}
+                  <TTPanel textAlign='center'>
+                    <Heading level ='h2'>The Inference Wheel</Heading>
+                    {/* <Text>This diagram shows some of the inferences that may have been made about your browsing and their frequency. Click on a piece of the chart to see more details.</Text> */}
+                    {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference} />}
+                    {filters}
+                  </TTPanel>
                 </GridCol>
                 <GridCol>
-                  <div className={'inferences-sunburst-filters'}>
-                    <p className={'selected-inference'}><strong>{selectedInference ? 'Click the link below to learn more about this inference.' : 'Click a slice of the inference wheel to see inferences that trackers could have made about you.'}</strong></p>
-                    <p><strong><Link className = "inferencePageSelected-Inference" to={{pathname: '/inferences/' + selectedInference}}>{selectedInference}</Link></strong></p>
-                    <p><br /><br /><br /><br /><br /><br /></p>
-
-                    <h3>Inference Wheel Filters</h3>
-                    <div className={'filter-row'}>Inference sensitivity: <ToggleButtonGroup
-                      name="sensitivity-filter"
-                      value={this.state.sensitivitySelection}
-                      onChange={this.handleSensitivitySelection}
-                      defaultValue={'all-sensitive'}>
-                      <ToggleButton className = "inferencePageSensitivityChoose" value={'all-sensitive'} bsSize="small">All inferences</ToggleButton>
-                      <ToggleButton className = "inferencePageSensitivityChoose" value={'less-sensitive'} bsSize="small">Less sensitive</ToggleButton>
-                      <ToggleButton className = "inferencePageSensitivityChoose" value={'more-sensitive'} bsSize="small">More sensitive</ToggleButton>
-                    </ToggleButtonGroup></div>
-                    <div className={'filter-row'}>Recency of inferences: <ToggleButtonGroup
-                      name="date-filter"
-                      value={this.state.dateSelection}
-                      onChange={this.handleDateSelection}
-                      defaultValue={'all-dates'}>
-                      <ToggleButton className = "inferencePageDateChoose" value={'all-dates'} bsSize="small">Since you installed the plugin</ToggleButton>
-                      <ToggleButton className = "inferencePageDateChoose" value={'past-24'} bsSize="small">Last 24 hours</ToggleButton>
-                      <ToggleButton className = "inferencePageDateChoose" value={'past-week'} bsSize="small">Last week</ToggleButton>
-                    </ToggleButtonGroup></div>
-                  </div>
+                  <TTPanel textAlign='start'>
+                    {!selectedInference && <Text className='selected-inference' weight='bold'>
+                      The Inference Wheel shows inferences that trackers may have made about you, based on your browsing activity. Click a slice of the wheel to see more details. </Text>}
+                    {selectedInference && <div>
+                      <InferenceSummary inference={selectedInference} />
+                      <Link
+                        className='inferencePageSelected-Inference'
+                        href={'#/inferences/' + selectedInference}
+                        icon={IconArrowOpenEnd}
+                        iconPlacement='end'
+                      >
+                        Learn more
+                      </Link>
+                    </div>}
+                  </TTPanel>
                 </GridCol>
               </GridRow>
             </Grid>
-
-            {/* {selectedInference && <InferenceDetails inference={selectedInference}/>} */}
-            {/* {this.state.inferences && <InferencesSunburst inferencesList={this.state.inferences}/>} */}
-            {/* <InferencesSunburst inferencesList={this.state.inferences}/> */}
-            {/* {this.state.inferences.map(inference => InferencesListItem(inference))} */}
           </div>
-        )}/>
-
+        )} />
 
       </div>
-    );
+    )
   }
 }

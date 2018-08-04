@@ -33,7 +33,6 @@ import { instuiOverrides } from '../colors'
 import '../styles/common.css';
 import '../styles/dashboard.css';
 import '../styles/navbar.css';
-import '../styles/panel.css'
 
 theme.use({
   overrides: instuiOverrides
@@ -50,7 +49,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: true
+      showModal: false
     }
 
     this.handleModalClose = this.handleModalClose.bind(this);
