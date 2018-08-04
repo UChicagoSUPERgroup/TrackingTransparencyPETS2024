@@ -83,7 +83,7 @@ async function runTests(t) {
     // LAST TEST
     // try wiping database
     background.resetAllData();
-    await sleep(5000);
+    await sleep(1000);
     query = await background.queryDatabase('getAllData', {});
     await ok(query.pages.length === 0, 'after emptying database no pages exist')
 

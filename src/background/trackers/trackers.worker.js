@@ -2,6 +2,8 @@
 
 import tldjs from 'tldjs';
 
+import domainEntityMap from '../../data/trackers/domainEntityMap.json';
+
 // console.log("trackers worker running");
 let databaseWorkerPort;
 
@@ -14,8 +16,7 @@ let trackersByPageId = {};
  * @param {string} firstPartyHost - domain of page that originated request
  * @returns {string} domain of tracker, if request is known tracker domain
  */
-async function trackerMatch(details, firstPartyHost) {
-  const domainEntityMap = (await import(/* webpackChunkName: "data/domainEntityMap" */'../../data/trackers/domainEntityMap.json')).default
+function trackerMatch(details, firstPartyHost) {
   const urlObj = new URL(details.url);
   const requestDomain = urlObj.hostname;
   const requestDomain2 = tldjs.getDomain(urlObj.hostname);
@@ -70,7 +71,7 @@ async function onPageChanged(oldPageId, trackers) {
   });
 }
 
-async function processWebRequests(pageId, firstPartyHost, webRequests) {
+function processWebRequests(pageId, firstPartyHost, webRequests) {
   if (!trackersByPageId[pageId]) {
     trackersByPageId[pageId] = new Set();
   }
@@ -79,7 +80,7 @@ async function processWebRequests(pageId, firstPartyHost, webRequests) {
     const req = webRequests.pop();
     if (!req) break;
 
-    const match = await trackerMatch(req, firstPartyHost);
+    const match = trackerMatch(req, firstPartyHost);
     if (match) {
       trackersByPageId[pageId].add(match.name);
     }
@@ -94,7 +95,7 @@ async function processWebRequests(pageId, firstPartyHost, webRequests) {
  * @param {Object} m - web worker message object
  * @param {Object} m.data - data passed in by sender
  */
-onmessage = async m => {
+onmessage = function(m) {
   let trackers = [];
 
   switch (m.data.type) {
@@ -103,12 +104,12 @@ onmessage = async m => {
     break;
 
   case 'page_changed':
-    trackers = await processWebRequests(m.data.oldPageId, m.data.firstPartyHost, m.data.webRequests);
+    trackers = processWebRequests(m.data.oldPageId, m.data.firstPartyHost, m.data.webRequests);
     onPageChanged(m.data.oldPageId, trackers);
     break;
 
   case 'push_webrequests': 
-    trackers = await processWebRequests(m.data.pageId, m.data.firstPartyHost, m.data.webRequests);
+    trackers = processWebRequests(m.data.pageId, m.data.firstPartyHost, m.data.webRequests);
     self.postMessage({
       id: m.data.id,
       type: 'trackers',
