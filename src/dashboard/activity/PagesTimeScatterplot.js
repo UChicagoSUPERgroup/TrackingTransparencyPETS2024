@@ -32,7 +32,7 @@ export default class PagesTimeScatterplot extends React.Component {
 
   componentDidMount() {
     import(/* webpackChunkName: "lodash" */'lodash')
-      .then(_ => { this._ = _ })
+      .then(_ => { this.setState({ _:_ }) })
   }
 
 
@@ -43,8 +43,6 @@ export default class PagesTimeScatterplot extends React.Component {
   }
 
   render() {
-    if (!this._) return null
-
     const {times, grouping, index} = this.state;
     const {dateLabel, timeLabelSimple, timeLabelAdjusted,
       dayOfWeekLabel, dayOfWeekLabelAdjusted, stringLabel} = las;
@@ -52,26 +50,29 @@ export default class PagesTimeScatterplot extends React.Component {
     let grouped;
     let data = [];
 
-    grouped = this._.groupBy(times, t => [t.getDay(), t.getHours()]);
-    let day = (new Date(Date.now())).getDay();
-    for (let elem in grouped) {
-      let xy = elem.split(',');
-      if (parseInt(xy[0]) <= day) {
-        data.push({
-          x: parseInt(xy[1]),
-          y: parseInt(xy[0]) + (7 - day),
-          size: grouped[elem].length
-        });
-      } else {
-        data.push({
-          x: parseInt(xy[1]),
-          y: parseInt(xy[0]) - day,
-          size: grouped[elem].length
-        });
+    if (this.state._) {
+      const _ = this.state._
+      grouped = _.groupBy(times, t => [t.getDay(), t.getHours()]);
+      let day = (new Date(Date.now())).getDay();
+      for (let elem in grouped) {
+        let xy = elem.split(',');
+        if (parseInt(xy[0]) <= day) {
+          data.push({
+            x: parseInt(xy[1]),
+            y: parseInt(xy[0]) + (7 - day),
+            size: grouped[elem].length
+          });
+        } else {
+          data.push({
+            x: parseInt(xy[1]),
+            y: parseInt(xy[0]) - day,
+            size: grouped[elem].length
+          });
+        }
       }
+      //console.log(data);
+      data = data.map((d, i) => ({...d, color: i === index[0] ? 1 : 0}));
     }
-    //console.log(data);
-    data = data.map((d, i) => ({...d, color: i === index[0] ? 1 : 0}));
 
     return (
       <div>
