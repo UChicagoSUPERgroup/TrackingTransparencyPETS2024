@@ -110,7 +110,7 @@ onmessage = function(m) {
 
   case 'push_webrequests': 
     trackers = processWebRequests(m.data.pageId, m.data.firstPartyHost, m.data.webRequests);
-    postMessage({
+    self.postMessage({
       id: m.data.id,
       type: 'trackers',
       pageId: m.data.pageId,

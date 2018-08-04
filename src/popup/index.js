@@ -68,7 +68,7 @@ class Popup extends React.Component {
     let tabId = tabs[0].id;
     const dashboardData = {
       active: true,
-      url: '../dashboard/index.html',
+      url: '../dist/dashboard.html',
       openerTabId: parseInt(tabId)
     };
 

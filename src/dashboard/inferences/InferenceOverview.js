@@ -14,8 +14,6 @@ import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 import IconArrowOpenEnd from '@instructure/ui-icons/lib/Solid/IconArrowOpenEnd'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
-import sensitiveCats from '../../data/categories_comfort_list.json'
-
 import InferenceDetails from './InferenceDetails'
 import InferenceSummary from './InferenceSummary'
 import InferencesSunburst from './InferencesSunburst'
@@ -78,6 +76,7 @@ export default class InferencesOverview extends React.Component {
     console.log('key is', key)
 
     const background = await browser.runtime.getBackgroundPage()
+    const sensitiveCats = (await import(/* webpackChunkName: "data/sensitiveCats" */'../../data/categories_comfort_list.json')).default
 
     if (key === 'all-sensitive') {
       console.log('all sensitive')

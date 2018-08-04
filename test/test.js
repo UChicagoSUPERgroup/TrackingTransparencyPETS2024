@@ -1,14 +1,12 @@
 const test = require('tape');
 const puppeteer = require('puppeteer');
 
-const CRX_PATH = '../extension/';
-
+const CRX_PATH = './extension/';
 
 test('tests', runTests);
 // runTests();
 
 async function runTests(t) {
-
   // set up puppeteer
   const browser = await puppeteer.launch({
     headless: false, // extensions only supported in full chrome.
@@ -19,28 +17,29 @@ async function runTests(t) {
       '--enable-md-extensions --false'
     ]
   })
-  
+
   // get browser extension's id
   const id = await getExtensionId(browser);
-  
+
   // visit some pages
   const page = await browser.newPage();
   const pages = [
     'https://super.cs.uchicago.edu',
-    'https://cs.uchicago.edu', 
+    'https://cs.uchicago.edu',
     'https://www.nytimes.com',
     'https://www.google.com/maps/place/Department+of+Computer+Science,+1100+E+58th+St,+Chicago,+IL+60637/@41.7943177,-87.5937424,13z/data=!4m2!3m1!1s0x880e29162042b8f1:0x1e9e400ccfae3c4d',
     'https://js.org/',
     'https://stats.js.org/'
   ];
   for (p of pages) {
-    await page.goto(p);
+    await page.goto(p)
+    await sleep(1000)
   }
   await page.close();
 
   // naviagte to dashboard page
   const dashboard = await browser.newPage();
-  await dashboard.goto('chrome-extension://' + id + '/dashboard/index.html');
+  await dashboard.goto('chrome-extension://' + id + '/dist/dashboard.html');
   dashboard.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
   // allow us to access testing functions from page context
@@ -48,9 +47,10 @@ async function runTests(t) {
   await dashboard.exposeFunction('ok', t.ok);
   await dashboard.exposeFunction('test', t.test);
   await dashboard.exposeFunction('sleep', sleep);
-  
+
   // switch to page context and run tests
   await dashboard.evaluate(async (pages) => {
+    /* eslint-disable no-undef */
 
     const background = await browser.runtime.getBackgroundPage();
 
@@ -73,7 +73,7 @@ async function runTests(t) {
 
     // make sure we have some trackers stored
     query = await background.queryDatabase('getTrackersByDomain', {domain: 'nytimes.com'});
-    await equal(query.length >= 0, true, 'there are trackers on nytimes in database');
+    await ok(query.length > 0, 'there are trackers on nytimes in database');
 
     // make sure we have some inferences made
     query = await background.queryDatabase('getInferencesByDomain', {domain: 'uchicago.edu'});
@@ -83,10 +83,11 @@ async function runTests(t) {
     // LAST TEST
     // try wiping database
     background.resetAllData();
-    await sleep(5000);
+    await sleep(1000);
     query = await background.queryDatabase('getAllData', {});
     await ok(query.pages.length === 0, 'after emptying database no pages exist')
 
+    /* eslint-enable no-undef */
   }, pages);
 
   t.end();

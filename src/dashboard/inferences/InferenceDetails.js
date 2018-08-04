@@ -11,7 +11,6 @@ import MetricsList from '@instructure/ui-elements/lib/components/MetricsList'
 import MetricsListItem from '@instructure/ui-elements/lib/components/MetricsList/MetricsListItem'
 
 import TTPanel from '../components/TTPanel'
-import categories from '../../data/categories_comfort_list.json';
 
 const SiteTable = (data) => {
   return (
@@ -63,8 +62,8 @@ const TrackerTable = (data) => {
   );
 }
 
-const SensitivePanel = (inference) => {
-  let sensitive_categories = categories.slice(0,20);
+const SensitivePanel = ({ inference, sensitiveCats }) => {
+  let sensitive_categories = sensitiveCats.slice(0,20);
   let sensitive = (inference && sensitive_categories.includes(inference)) ? true : false;
   return (
     <TTPanel>
@@ -102,6 +101,10 @@ class InferenceDetails extends React.Component {
 
   componentDidMount() {
     this.updateData();
+    import(/* webpackChunkName: "data/sensitiveCats" */'../../data/categories_comfort_list.json')
+      .then(s => {
+        this.sensitiveCats = s.default
+      })
   }
 
   async updateData() {
@@ -168,7 +171,7 @@ class InferenceDetails extends React.Component {
               <MetricsListItem label="Trackers" value={trackers.length} />
             </MetricsList>
           </TTPanel>
-          {SensitivePanel(inference)}
+          {this.sensitiveCats && <SensitivePanel inference={inference} sensitiveCats={this.sensitiveCats} />}
           <Grid startAt='large'>
             <GridRow>
               <GridCol>

@@ -10,7 +10,6 @@ import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 
 import logging from '../dashboardLogging';
 
-import _ from 'lodash';
 import {
   FlexibleWidthXYPlot,
   XAxis,
@@ -85,6 +84,9 @@ export default class TrackerDetailPage extends React.Component {
   async componentWillUnmount() {}
 
   async componentDidMount() {
+    import(/* webpackChunkName: "lodash" */'lodash')
+      .then(_ => { this._ = _ })
+
     let queryObj = {tracker: this.tracker};
     const background = await browser.runtime.getBackgroundPage();
     const inferences = await background.queryDatabase('getInferencesByTracker', queryObj);
@@ -131,11 +133,11 @@ export default class TrackerDetailPage extends React.Component {
     if (inferences) {
       numInferences = inferences.length;
     }
-    if (timestamps && times[0]) {
+    if (timestamps && times[0] && this._) {
       firstDay = new Date(times[0].getFullYear(), times[0].getMonth(), times[0].getDate());
       firstDay = firstDay.getTime();
       let grouped;
-      grouped = _.groupBy(timestamps, t => Math.floor((parseInt(t.Pages.id) - firstDay) / msInDay));
+      grouped = this._.groupBy(timestamps, t => Math.floor((parseInt(t.Pages.id) - firstDay) / msInDay));
       for (let day in grouped) {
         data.push({
           x: parseInt(day),

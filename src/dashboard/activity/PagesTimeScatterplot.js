@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 
 import {
   FlexibleWidthXYPlot,
@@ -31,6 +30,11 @@ export default class PagesTimeScatterplot extends React.Component {
     this.changeSelection = this.changeSelection.bind(this);
   }
 
+  componentDidMount() {
+    import(/* webpackChunkName: "lodash" */'lodash')
+      .then(_ => { this.setState({ _:_ }) })
+  }
+
 
   changeSelection(val) {
     this.setState({
@@ -46,26 +50,29 @@ export default class PagesTimeScatterplot extends React.Component {
     let grouped;
     let data = [];
 
-    grouped = _.groupBy(times, t => [t.getDay(), t.getHours()]);
-    let day = (new Date(Date.now())).getDay();
-    for (let elem in grouped) {
-      let xy = elem.split(',');
-      if (parseInt(xy[0]) <= day) {
-        data.push({
-          x: parseInt(xy[1]),
-          y: parseInt(xy[0]) + (7 - day),
-          size: grouped[elem].length
-        });
-      } else {
-        data.push({
-          x: parseInt(xy[1]),
-          y: parseInt(xy[0]) - day,
-          size: grouped[elem].length
-        });
+    if (this.state._) {
+      const _ = this.state._
+      grouped = _.groupBy(times, t => [t.getDay(), t.getHours()]);
+      let day = (new Date(Date.now())).getDay();
+      for (let elem in grouped) {
+        let xy = elem.split(',');
+        if (parseInt(xy[0]) <= day) {
+          data.push({
+            x: parseInt(xy[1]),
+            y: parseInt(xy[0]) + (7 - day),
+            size: grouped[elem].length
+          });
+        } else {
+          data.push({
+            x: parseInt(xy[1]),
+            y: parseInt(xy[0]) - day,
+            size: grouped[elem].length
+          });
+        }
       }
+      //console.log(data);
+      data = data.map((d, i) => ({...d, color: i === index[0] ? 1 : 0}));
     }
-    //console.log(data);
-    data = data.map((d, i) => ({...d, color: i === index[0] ? 1 : 0}));
 
     return (
       <div>

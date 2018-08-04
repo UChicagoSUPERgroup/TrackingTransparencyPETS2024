@@ -24,14 +24,11 @@
         "19": "icons/super-19.png",
         "38": "icons/super-38.png"
         },
-        "default_popup": "popup/index.html",
+        "default_popup": "dist/popup.html",
         "default_title": "Tracking Transparency"
     },
     "background": {
-        "scripts": [
-            "lib/browser-polyfill.min.js",
-            "dist/background.js"
-        ],
+        "page": "dist/background.html",
         "persistent": true
     },
     "content_scripts": [
