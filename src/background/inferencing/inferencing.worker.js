@@ -1,9 +1,21 @@
 import buildCategoryTree from './build';
-import infer from './infer';
+import buildLstmModel from './build_lstm';
+
+import infer_tfidf from './infer';
+import infer_lstm from './infer_lstm';
+
+import * as tf from '@tensorflow/tfjs';
+
+
 
 // the keywords file is bundled using webpack as keywordsjson
 // it must NOT have .json as an extension in the bundle because then it goes over a file size limit with mozilla
 import keywordsFile from 'file-loader?name=keywordsjson!../../data/inferencing/keywordsjson';
+import word2idxFile from 'file-loader?name=word2idxjson!../../data/inferencing/word2idxjson';
+import idx2categoryFile from 'file-loader?name=idx2categoryjson!../../data/inferencing/idx2categoryjson';
+
+
+// import lstmModelFile from 'file-loader?name=model.json!../../data/inferencing/lstm_small_model_js/model.json';
 
 let databaseWorkerPort;
 
@@ -14,37 +26,68 @@ onmessage = function(m) {
     break;
     
   case 'content_script_to_inferencing':
-    inferencingMessageListener(m.data.article, m.data.mainFrameReqId, m.data.tabId);
+    inferencingMessageListener(m.data.article, m.data.mainFrameReqId, m.data.tabId, inferencing_alg);
     break;
   }
 };
 
+let inferencing_alg = "tfidf";
 const tree = buildCategoryTree(keywordsFile);
+
+// Comment out to use lstm (current implementation is slow)
+// let inferencing_alg = "lstm";
+// const model = buildLstmModel(word2idxFile, idx2categoryFile);
+
+function stem(text) {
+  var Snowball = require('snowball');
+  var stemmer = new Snowball('English');
+  let tokens = [];
+  for (let i = 0; i < text.length; i++) {
+    stemmer.setCurrent(text[i]);
+    stemmer.stem();
+    tokens.push(stemmer.getCurrent())
+  }
+  return tokens;
+}
 
 
 // TODO: this function needs to be rewritten
-async function inferencingMessageListener(text, mainFrameReqId, tabId) {
-
-  const tr = await tree;
-  // console.log(tr);
-  // const secondLevelCats = tr.children.concat.apply([], tr.children.map(x => x.children));
-  // console.log(secondLevelCats);
-  // let secondLevelTr = Object.assign({}, tr);
-  // secondLevelTr.children = secondLevelCats;
+async function inferencingMessageListener(text, mainFrameReqId, tabId, inferencing_alg) {
   
-  const category = infer(text, tr);
-  console.log('Inference:', category[0].name);
-  // const category2 = infer(article, secondLevelTr);
-  // console.log("Inference:", category2[0].name);
-  // info.inference = category[0].name;
+  // console.time('stem');
+  text = text.toLowerCase();
+  text = stem(text.split(" "));
+  // console.timeEnd('stem');
+
+  let result_category = null;
+  let conf_score = 0;
+  if (inferencing_alg === "tfidf") {
+    const tr = await tree;
+    const category = await infer_tfidf(text, tr);
+    result_category = category[0].name;
+    conf_score = category[1];
+  }
+
+  else if (inferencing_alg === "lstm") {
+    const lstmModel = await model;
+    const category = await infer_lstm(text, lstmModel); 
+    result_category = category[0];
+    conf_score = category[1];
+  }
+  else {
+    console.log("Please choose an inferencing ALG");
+  }
+  
+  console.log('Inference:', result_category);
 
   let inferenceInfo = {
-    inference: category[0].name,
+    inference: result_category,
     inferenceCategory: '',
-    threshold: category[1],
+    threshold: conf_score,
     pageId: mainFrameReqId,
     tabId: tabId
   };
+
   // console.log("sending inference to database");
   databaseWorkerPort.postMessage({
     type: 'store_inference',

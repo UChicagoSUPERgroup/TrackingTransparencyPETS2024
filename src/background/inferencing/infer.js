@@ -89,18 +89,19 @@ function findBestCategory(root, words, rootScore) {
 
 
 export default function (text, tree) {
-  var words, tokenizer, tokens;
+  var tokens;
 
   // tokenize
-  tokenizer = new Tokenizer();
-  tokens = tokenizer.words()(text);
+  // tokenizer = new Tokenizer();
+  // tokens = tokenizer.words()(text);
 
-  words = tokens.map((token) => token.value.toLowerCase());
+  // words = tokens.map((token) => token.value.toLowerCase());
 
   // console.log(words);
   // findBestCategory(tree, words, 0);
-
-  const cat = (findBestCategory(tree, words, 0));
+  
+  tokens = text;
+  const cat = (findBestCategory(tree, tokens, 0));
   // console.log(cat);
   return cat;
 
