@@ -18,7 +18,7 @@ import idx2categoryFile from 'file-loader?name=idx2categoryjson!../../data/infer
 // import lstmModelFile from 'file-loader?name=model.json!../../data/inferencing/lstm_small_model_js/model.json';
 
 let databaseWorkerPort;
-let inferencing_alg = "tfidf";
+let inferencing_alg = "lstm";
 
 onmessage = function(m) {
   switch (m.data.type) {
@@ -32,14 +32,36 @@ onmessage = function(m) {
   }
 };
 
-
 const tree = buildCategoryTree(keywordsFile);
+
 const model = buildLstmModel(word2idxFile, idx2categoryFile);
+
+
+
+function stem(text) {
+  var Snowball = require('snowball');
+  var stemmer = new Snowball('English');
+  let tokens = [];
+  for (let i = 0; i < text.length; i++) {
+
+    stemmer.setCurrent(text[i]);
+    stemmer.stem();
+    tokens.push(stemmer.getCurrent())
+  }
+  return tokens;
+
+}
 
 
 // TODO: this function needs to be rewritten
 async function inferencingMessageListener(text, mainFrameReqId, tabId, inferencing_alg) {
-  let result_category = "foo";
+  
+  // console.time('stem');
+  text = text.toLowerCase();
+  text = stem(text.split(" "));
+  // console.timeEnd('stem');
+
+  let result_category = null;
   let conf_score = 0;
   if (inferencing_alg === "tfidf") {
     const tr = await tree;
@@ -50,10 +72,11 @@ async function inferencingMessageListener(text, mainFrameReqId, tabId, inferenci
 
   else if (inferencing_alg === "lstm") {
     const lstmModel = await model;
-    const category = await infer_lstm(text, tr); 
+    const category = await infer_lstm(text, lstmModel); 
     result_category = category[0];
     conf_score = category[1];
   }
+
   else {
     console.log("Please choose an inferencing ALG");
   }
