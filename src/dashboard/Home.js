@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
 import Panel from 'react-bootstrap/lib/Panel';
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
@@ -81,9 +80,6 @@ export class Home extends React.Component {
     const {numTrackers, numInferences, numPages, recentInferences, recentDomains} = this.state;
     return (
       <div>
-        <Breadcrumb>
-          <Breadcrumb.Item active>Home</Breadcrumb.Item>
-        </Breadcrumb>
         <Heading level='h1'>Tracking Transparency</Heading>
           <Text>
 

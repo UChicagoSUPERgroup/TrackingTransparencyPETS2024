@@ -1,7 +1,5 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
-// import { LinkContainer } from 'react-router-bootstrap';
-import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
 import ReactTable from 'react-table';
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
@@ -9,7 +7,6 @@ import Text from '@instructure/ui-elements/lib/components/Text'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
-
 
 import PagesTimeScatterplot from './PagesTimeScatterplot';
 import logging from '../dashboardLogging';
@@ -145,10 +142,6 @@ export default class ActivityOverview extends React.Component {
 
     return(
       <div>
-        <Breadcrumb>
-          <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
-          <Breadcrumb.Item active>Activity</Breadcrumb.Item>
-        </Breadcrumb>
         <Heading level='h1'>When were you tracked?</Heading>
         <Route exact path={this.props.match.url} render={() => (
           <div>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 
-import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
 import ToggleButton from 'react-bootstrap/lib/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
 
@@ -150,10 +149,6 @@ export default class InferencesOverview extends React.Component {
         <Route path={`${this.props.match.url}/:name`} component={InferenceDetails}/>
         <Route exact path={this.props.match.url} render={() => (
           <div>
-            <Breadcrumb>
-              <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
-              <Breadcrumb.Item active>Inferences</Breadcrumb.Item>
-            </Breadcrumb>
             <Heading level='h1'>What could they have learned?</Heading>
             <Text>
             <p>Trackers collect information about the pages you visit in order to make guesses about things you might be interested in. These guesses, or inferences, are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{this.inferenceCount} topics</strong> that trackers might have inferred you are interested in.</p>

@@ -2,8 +2,6 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 
-import Breadcrumb from 'react-bootstrap/lib/Breadcrumb';
-
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
@@ -156,11 +154,6 @@ export default class TrackerDetailPage extends React.Component {
 
     return (
       <div>
-        <Breadcrumb>
-          <Breadcrumb.Item><Link to={{pathname: '/'}}>Home</Link></Breadcrumb.Item>
-          <Breadcrumb.Item><Link to={{pathname: '/trackers'}}>Trackers</Link></Breadcrumb.Item>
-          <Breadcrumb.Item active>{this.tracker}</Breadcrumb.Item>
-        </Breadcrumb>
         <Heading level='h1'>Trackers</Heading>
         <Heading level='h2' margin='small 0 0 0'>{this.tracker}</Heading>
         <Grid startAt="large">
