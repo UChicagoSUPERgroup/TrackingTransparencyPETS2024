@@ -85,34 +85,38 @@ module.exports = {
       'node_modules'
     ]
   },
-  // optimization: {
-  //   splitChunks: {
-  //     chunks: 'all'
-  //   }
-  // },
+  optimization: {
+    // splitChunks: {
+      // chunks: 'all',
+    // },
+    occurrenceOrder: true
+  },
   plugins: [
     new CleanWebpackPlugin(['extension/dist']),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename: 'css/[name].css',
-      chunkFilename: 'css/[id].css'
+      // chunkFilename: 'css/[id].css'
     }),
     // fix importing some dependencies that assume filesystem etc.
     new webpack.IgnorePlugin(/jsdom$/),
     new HtmlWebpackPlugin({
-      filename: 'dashboard.html',
-      chunks: [
-        'dashboard'
-      ],
+      filename: 'background.html',
+      chunks: ['background'],
       template: 'src/template.html'
     }),
     new HtmlWebpackPlugin({
+      filename: 'dashboard.html',
+      chunks: ['dashboard'],
+      template: 'src/template.html',
+      title: 'Tracking Transparency'
+    }),
+    new HtmlWebpackPlugin({
       filename: 'popup.html',
-      chunks: [
-        'popup'
-      ],
-      template: 'src/template.html'
+      chunks: ['popup'],
+      template: 'src/template.html',
+      title: 'Tracking Transparency'
     })
   ],
 
