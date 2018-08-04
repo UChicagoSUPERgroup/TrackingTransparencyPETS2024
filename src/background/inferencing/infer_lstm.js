@@ -11,8 +11,10 @@ function vectorize(model, words) {
 	let currentInputLength = Math.floor(words.length / inputLength) * inputLength;
 
 	let input_data = [];
+	console.log(model.existingWords);
 
 	for (let i = 0; i < currentInputLength; i++) {
+		// console.log(words[i]);
 		if (model.existingWords.has(words[i])) {
 			input_data.push(model.word2idx[words[i]]);
 		}
@@ -22,6 +24,7 @@ function vectorize(model, words) {
 	}
 	let num_batchs = Math.floor(words.length / inputLength);
 	let batched_input_tensor = tf.tensor(input_data, [num_batchs, inputLength]);
+	// console.log(batched_input_tensor.print());
 	return batched_input_tensor;
 }
 
@@ -30,9 +33,9 @@ function lstmPredict(model, batched_input_tensor) {
 	let prediction = model.model.predictOnBatch(batched_input_tensor);
 
 	let conf_score = prediction.sum(0);
-	console.log("conf_score shape", conf_score.shape);
+	// console.log("conf_score shape", conf_score.shape);
 	let category_idx = tf.argMax(conf_score).get();
-	console.log("category_idx: ", category_idx);
+	// console.log("category_idx: ", category_idx);
 
 	conf_score = tf.max(conf_score).get();
 
@@ -44,22 +47,12 @@ function lstmPredict(model, batched_input_tensor) {
 
 
 export default function (text, model) {
-  var words, tokenizer, tokens;
-  // tokenize
-  tokenizer = new Tokenizer();
-  tokens = tokenizer.words()(text);
-
-  words = tokens.map((token) => token.value.toLowerCase());
-
-   console.time('vectorize');
-
-  let batched_input_tensor = vectorize(model, words);
-  console.timeEnd('vectorize');
-
-
-  console.time('lstmPredict');
+  // console.time('vectorize');
+  let batched_input_tensor = vectorize(model, text);
+  // console.timeEnd('vectorize');
+  // console.time('lstmPredict');
   let category = lstmPredict(model, batched_input_tensor);
-  console.timeEnd('lstmPredict');
+  // console.timeEnd('lstmPredict');
   return category;
 
 }

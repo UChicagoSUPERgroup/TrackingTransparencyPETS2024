@@ -10,7 +10,7 @@ class Model {
     this.model = model;
     this.word2idx = word2idx;
     this.idx2category = idx2category;
-    this.existingWords = new Set(word2idx.keys);
+    this.existingWords = new Set(Object.keys(word2idx));
   }
 }
 
