@@ -3,10 +3,10 @@
 import tldjs from 'tldjs';
 
 import {trackersWorker, databaseWorker, inferencingWorker, queryDatabase} from './worker_manager';
-import userstudy from './userstudy';
 import overlayManager from './overlay_manager';
 import instrumentation from './instrumentation';
-// import tt from '../helpers';
+import { getOption } from '../helpers';
+import setDefaultOptions from '../options/defaults'
 
 let tabData = {};
 
@@ -16,7 +16,7 @@ let trackerMessageId = 0;
 async function onInstall(details) {
   // also runs on update
   if (details.reason === 'install') {
-    userstudy.setDefaultOptions();
+    setDefaultOptions()
     instrumentation.firstInstall();
 
     const welcomePageData = {
@@ -303,7 +303,10 @@ async function onPageLoadFinish(details) {
     // not an iframe
     const tabId = details.tabId;
     const data = await getTabData(tabId)
-    overlayManager.createOrUpdate(tabId, data);
+    const showOverlay = await getOption('showOverlay')
+    if (showOverlay === true) {
+      overlayManager.createOrUpdate(tabId, data)
+    }
   }
 }
 
@@ -364,7 +367,7 @@ function resetAllData() {
     type: 'empty_db'
   })
 
-  userstudy.setDefaultOptions();
+  setDefaultOptions();
 
   // TODO: send message to server to wipe all data
 }
@@ -422,7 +425,7 @@ function onTrackersWorkerMessage(m) {
 }
 
 
-function onInferencingWorkerMessage(m) {
+async function onInferencingWorkerMessage(m) {
   console.log('Message received from inferencing worker', m);
   const tabId = m.data.info.tabId;
   if (m.data.type === 'page_inference') {
@@ -430,7 +433,10 @@ function onInferencingWorkerMessage(m) {
     tabData[tabId].inference = m.data.info.inference;
     console.log(tabData[tabId].inference)
   }
-  overlayManager.createOrUpdate(tabId, tabData[tabId]);
+  const showOverlay = await getOption('showOverlay')
+  if (showOverlay === true) {
+    overlayManager.createOrUpdate(tabId, tabData[tabId])
+  }
 }
 
 /**

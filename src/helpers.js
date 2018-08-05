@@ -45,4 +45,12 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export default {production, enoughData, readTextFile, deserialize, sleep};
+
+export async function getOption (key) {
+  const store = await browser.storage.local.get('options')
+  console.log(store)
+  const val = store['options'][key]
+  return store['options'][key]
+}
+
+export default { production, enoughData, readTextFile, deserialize, sleep, getOption };

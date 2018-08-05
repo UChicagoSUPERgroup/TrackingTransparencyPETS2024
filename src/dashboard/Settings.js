@@ -8,6 +8,7 @@ import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Button from '@instructure/ui-buttons/lib/components/Button'
 
+import TTOptions from '../options/TTOptions'
 import logging from './dashboardLogging'
 
 // function onCanceled(error) {
@@ -24,7 +25,7 @@ import logging from './dashboardLogging'
 
 const resetInfo = (
   <Text>
-    <Heading level='h2'>Reset my data</Heading>
+    <Heading level='h2' margin='medium 0 0 0'>Reset my data</Heading>
       <p>
         If you wish to reset all data currently being stored by Tracking Transparency, click the button below.
       </p>
@@ -55,12 +56,15 @@ export class SettingsPage extends React.Component {
   }
 
   render () {
-    const {numTrackers, numInferences, numPages} = this.state
     return (
-      <Text>
-        {resetInfo}
-        {uninstallInfo}
-      </Text>
+      <div>
+        <Heading level='h1' margin='0 0 medium 0'>Settings</Heading>
+        <TTOptions />
+        <Text>
+          {resetInfo}
+          {uninstallInfo}
+        </Text>
+      </div>
     )
   }
 }
