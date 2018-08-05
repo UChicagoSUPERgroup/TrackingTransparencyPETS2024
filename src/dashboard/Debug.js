@@ -1,26 +1,18 @@
 import React from 'react';
 
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormControl from 'react-bootstrap/lib/FormControl';
-
+import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Alert from '@instructure/ui-alerts/lib/components/Alert'
 import Button from '@instructure/ui-buttons/lib/components/Button'
 import ToggleDetails from '@instructure/ui-toggle-details/lib/components/ToggleDetails'
+import FormFieldGroup from '@instructure/ui-forms/lib/components/FormFieldGroup'
+import Select from '@instructure/ui-forms/lib/components/Select'
+import TextArea from '@instructure/ui-forms/lib/components/TextArea'
+import TextInput from '@instructure/ui-forms/lib/components/TextInput'
+import DateInput from '@instructure/ui-forms/lib/components/DateInput'
+import NumberInput from '@instructure/ui-forms/lib/components/NumberInput'
 
 import {queryNames} from '../background/database/queries';
 import logging from './dashboardLogging';
-
-const FieldGroup = ({ id, label, ...props }) => {
-  return (
-    <FormGroup controlId={id} bsSize="small">
-      <ControlLabel>{label}</ControlLabel>
-      <FormControl
-        {...props}
-      />
-    </FormGroup>
-  );
-}
 
 class DebugPage extends React.Component {
   constructor(props) {
@@ -32,8 +24,8 @@ class DebugPage extends React.Component {
       domainFormField: 'www.nytimes.com',
       inferenceFormField: 'Warehousing',
       afterDateFormField: '2018-01-01',
-      countFormField: false,
-      importFormField: 'paste here',
+      countFormField: '',
+      importFormField: '',
       result: false,
       error: false,
       queryTime: false
@@ -41,17 +33,18 @@ class DebugPage extends React.Component {
     this.recursive = false;
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleTextChange = this.handleTextChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.saveFile = this.saveFile.bind(this);
     this.importData = this.importData.bind(this);
     this.handleClickRecursive = this.handleClickRecursive.bind(this);
-    //this.logLoad = this.logLoad.bind(this);
+    // this.logLoad = this.logLoad.bind(this);
   }
 
-componentDidMount() {
-  let activityType='load dashboard debug page';
-  logging.logLoad(activityType, {});
-}
+  componentDidMount() {
+    let activityType = 'load dashboard debug page';
+    logging.logLoad(activityType, {});
+  }
   async handleClickRecursive() {
     this.recursive = true;
     await this.handleClick();
@@ -85,7 +78,7 @@ componentDidMount() {
         error: false,
         queryTime: t1 - t0
       });
-    } catch(e) {
+    } catch (e) {
       console.log(e);
       this.setState({
         result: false,
@@ -95,7 +88,7 @@ componentDidMount() {
   }
 
   saveFile() {
-    let blob = new Blob([JSON.stringify(this.state.result, null, '\t')], {type : 'application/json'});
+    let blob = new Blob([JSON.stringify(this.state.result, null, '\t')], {type: 'application/json'});
     var objectURL = window.URL.createObjectURL(blob);
     browser.downloads.download({url: objectURL, filename: 'tt_export.json'});
     // FileSaver.saveAs(blob, 'tt_export.json');
@@ -111,10 +104,18 @@ componentDidMount() {
     await background.resetAllData();
   }
 
-  handleChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.id;
+  handleChange(e) {
+    const value = e.target.value;
+    const name = e.target.id;
+    console.log(name, value)
+    this.setState({
+      [name]: value
+    });
+  }
+
+  handleTextChange(e) {
+    const value = e.target.value;
+    const name = e.target.name;
     // console.log(name, value)
     this.setState({
       [name]: value
@@ -125,106 +126,111 @@ componentDidMount() {
     const {result, error, queryTime} = this.state;
     return (
       <div>
-        <h1>Debug</h1>
-        <form>
-          <FormGroup controlId="queryFormField">
-            <ControlLabel>Query</ControlLabel>
-            <FormControl
-              componentClass="select"
-              placeholder="Query"
-              value={this.state.queryFormField}
-              onChange={this.handleChange}>
-              {queryNames.map(q => <option key={q} value={q}>{q}</option>)}
-            </FormControl>
-          </FormGroup>
+        <Heading level='h1' margin='0 0 medium'>Debug</Heading>
+        <Heading level='h2' margin='0 0 medium'>Database query</Heading>
+        <FormFieldGroup
+          name='query'
+          description='Make a database query'
+          layout='columns'
+          vAlign='top'
+          rowSpacing='small'
+        >
+          <Select
+            label='Query'
+            value={this.state.queryFormField}
+            onChange={(e, opt) => { this.setState({ queryFormField: opt.label }) }}
+          >
+            {queryNames.map(q => <option key={q} value={q}>{q}</option>)}
+          </Select>
 
-          <FieldGroup
-            id="trackerFormField"
-            type="text"
-            label="Tracker"
+          <TextInput
+            name='trackerFormField'
+            label='Tracker'
+            placeholder='Google'
             value={this.state.trackerFormField}
-            onChange={this.handleChange}
+            onChange={this.handleTextChange}
           />
-          <FieldGroup
-            id="domainFormField"
-            type="text"
-            label="First party domain"
+          <TextInput
+            name='domainFormField'
+            label='First party domain'
+            placeholder='nytimes.com'
             value={this.state.domainFormField}
-            onChange={this.handleChange}
+            onChange={this.handleTextChange}
           />
-          <FieldGroup
-            id="inferenceFormField"
-            type="text"
-            label="Inference"
+          <TextInput
+            name='inferenceFormField'
+            label='Inference'
+            placeholder='Warehousing'
             value={this.state.inferenceFormField}
-            onChange={this.handleChange}
+            onChange={this.handleTextChange}
           />
-          <FieldGroup
-            id="afterDateFormField"
-            type="date"
-            label="After Date"
-            value={this.state.afterDateFormField}
-            onChange={this.handleChange}
+          <DateInput
+            previousLabel='previous month'
+            nextLabel='next month'
+            placeholder='Start date'
+            label='Start date'
+            dateValue={this.state.afterDateFormField}
+            onDateChange={(e, isoValue, rawValue, rawConversionFailed) => { this.setState({afterDateFormField: isoValue.slice(0, 10)}) }}
+            invalidDateMessage={(value) => { return `'${value}' is not a valid date` }}
           />
-          <FieldGroup
-            id="countFormField"
-            type="number"
-            label="Count"
+          <NumberInput
+            label='Number of results'
+            placeholder='12'
+            min={1}
+            step={1}
             value={this.state.countFormField}
-            onChange={this.handleChange}
+            onChange={(e, num) => this.setState({ countFormField: num })}
           />
-          {/* <FieldGroup
-            id="countFormField"
-            type="checkbox"
-            label="Recursive (on inference categories)"
-            value={this.state.recursive}
-            onChange={this.handleChange}
-          /> */}
-          {/* <FormGroup>
-            <Checkbox
-              value={this.state.recursive}
-              onChange={this.handleChange}>
-              Recursive (on inference categories)
-            </Checkbox>
-          </FormGroup> */}
-          <Button variant="primary" type="submit" onClick={this.handleClick}>
+        </FormFieldGroup>
+        <Button variant='primary' type='submit' onClick={this.handleClick} margin='small small 0 0'>
             Query
-          </Button>
-          <Button type="submit" onClick={this.handleClickRecursive}>
+        </Button>
+        <Button type='submit' onClick={this.handleClickRecursive} margin='small 0 0 0'>
             Query (recursive on inferences)
-          </Button>
-          <Button type="submit" onClick={this.saveFile}>
-            Download
-          </Button>
-        </form>
-        <br/>
+        </Button>
         {error && <Alert
-          variant="error"
-          closeButtonLabel="Close"
-          margin="small"
+          variant='error'
+          closeButtonLabel='Close'
+          margin='small'
         >
           {error}
         </Alert>}
-        {result &&<pre id="result">{JSON.stringify(this.state.result, null, '\t')}</pre>}
+        {result && <div>
+          <pre id='result' style={{ overflow: 'scroll', maxHeight: '20rem', border: '1px solid black' }}>
+            {JSON.stringify(this.state.result, null, '\t')}
+          </pre>
+
+          <Button type='submit' onClick={this.saveFile}>
+              Download
+          </Button>
+        </div>}
         {queryTime && <p>Time: {queryTime / 1000} seconds</p>}
 
-        <FieldGroup
-          id="importFormField"
-          type="text"
-          label="Import"
+        <hr />
+
+        <Heading level='h2' margin='0 0 medium'>Import data</Heading>
+
+        <TextArea
+          name='importFormField'
+          label='JSON to import'
+          placeholder='Paste here'
+          maxHeight='30rem'
           value={this.state.importFormField}
-          onChange={this.handleChange}
+          onChange={this.handleTextChange}
         />
-        <Button type="submit" onClick={this.importData}>
+        <br />
+        <Button type='submit' onClick={this.importData}>
           Import data
         </Button>
-        <br /> <br />
+
+        <hr />
+
         <ToggleDetails
-          summary="Danger zone"
+          summary='Danger zone'
         >
-          <Button  
-            variant="danger"
-            type="submit"
+          <Button
+            variant='danger'
+            type='submit'
             onClick={this.resetAll}>
             Reset all data
           </Button>
