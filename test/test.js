@@ -17,6 +17,7 @@ async function runTests(t) {
       '--enable-md-extensions --false'
     ]
   })
+  await sleep(1000)
 
   // get browser extension's id
   const id = await getExtensionId(browser);

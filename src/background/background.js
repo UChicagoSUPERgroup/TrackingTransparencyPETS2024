@@ -13,11 +13,18 @@ let tabData = {};
 let pendingTrackerMessages = {};
 let trackerMessageId = 0;
 
-function onInstall(details) {
+async function onInstall(details) {
   // also runs on update
   if (details.reason === 'install') {
     userstudy.setDefaultOptions();
     instrumentation.firstInstall();
+
+    const welcomePageData = {
+      active: true,
+      url: '../dist/welcome.html'
+    }
+
+    await browser.tabs.create(welcomePageData)
   }
 }
 browser.runtime.onInstalled.addListener(onInstall)

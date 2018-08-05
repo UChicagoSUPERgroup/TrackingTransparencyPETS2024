@@ -19,6 +19,7 @@ module.exports = {
     // user facing pages
     popup: './src/popup/index.js',
     dashboard: './src/dashboard/App.js',
+    welcome: './src/welcome/index.js',
 
     lightbeam: './src/lightbeam/lightbeam.js'
   },
@@ -117,6 +118,12 @@ module.exports = {
       chunks: ['popup'],
       template: 'src/template.html',
       title: 'Tracking Transparency'
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'welcome.html',
+      chunks: ['welcome'],
+      template: 'src/template.html',
+      title: 'Welcome to Tracking Transparency'
     })
   ],
 
