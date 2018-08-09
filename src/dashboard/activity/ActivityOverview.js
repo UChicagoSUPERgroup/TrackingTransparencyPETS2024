@@ -9,6 +9,7 @@ import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 
 import PagesTimeScatterplot from './PagesTimeScatterplot';
+import PageTable from '../components/PageTable'
 import logging from '../dashboardLogging';
 
 import las from '../../labels';
@@ -16,63 +17,7 @@ const {dateLabel, timeLabelSimple, timeLabelAdjusted, dayOfWeekLabel, stringLabe
 const millisecondsInDay = 86400000;
 const millisecondsInHour = 3600000;
 
-function recentVisitsTitle(summary) {
-  if (summary.size) {
-    return 'Pages visited on ' + dayOfWeekLabel(summary.y) +
-    ' from ' + timeLabelSimple(summary.x) + ' to ' + timeLabelSimple(summary.x+1);
-  } else {
-    return 'Pages visited'
-  }
-}
 
-function RecentVisitsTable(summary, data){
-  return (
-    <ReactTable
-      data={data}
-      columns={[
-        {
-          Header: recentVisitsTitle(summary),
-          columns: [
-            {Header: 'Time',
-              id: 'id',
-              accessor: d => (new Date(d.Pages.id).toLocaleTimeString()),
-              maxWidth: 150
-            },
-            {Header: 'Site',
-              id: 'domain',
-              accessor: d => d.Pages.domain,
-              Cell: row => (
-                <div key={row.value}>
-                  <Link to={{pathname: '/domains/' + row.value}}>
-                    {row.value}
-                  </Link>
-                </div>),
-              width: 200
-            },
-            {Header: 'Page',
-              id: 'title',
-              accessor: d => d.Pages.title},
-            {Header: 'Inference',
-              id: 'infer',
-              accessor: d => d.Inferences.inference,
-              Cell: row => (
-                <div key={row.value}>
-                  <Link to={{pathname: '/inferences/' + row.value}}>
-                    {row.value}
-                  </Link>
-                </div>)}
-          ]
-        }
-      ]}
-      showPageSizeOptions= {false}
-      pageSize= {(data && (data.length >= 1)) ? 20 : 3}
-      noDataText= {(data && !(data.length >= 1)) ?
-        'No inferred interests at this time' :
-        'Click in the scatterplot for more information'}
-      className="-striped -highlight"
-    />
-  );
-}
 
 export default class ActivityOverview extends React.Component {
   constructor(props) {
@@ -85,8 +30,6 @@ export default class ActivityOverview extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     //  this.logLoad = this.logLoad.bind(this);
   }
-
-
 
   async componentDidMount() {
     const background = await browser.runtime.getBackgroundPage();
@@ -122,6 +65,15 @@ export default class ActivityOverview extends React.Component {
     //let waiting = background.queryDatabase('getPagesNoInferences', args);
     //console.log(waiting);
     return background.queryDatabase('getPagesByTime', args);
+  }
+
+  recentVisitsTitle (summary) {
+    if (summary.size) {
+      return 'Pages visited on ' + dayOfWeekLabel(summary.y) +
+      ' from ' + timeLabelSimple(summary.x) + ' to ' + timeLabelSimple(summary.x+1);
+    } else {
+      return 'Pages visited'
+    }
   }
 
   handleClick(i) {
@@ -161,7 +113,13 @@ export default class ActivityOverview extends React.Component {
               }
             </div>
             <div>
-            {recent && RecentVisitsTable(recent, pagesByTime)}
+              {recent &&
+                <PageTable 
+                  title={this.recentVisitsTitle(recent)}
+                  data={pagesByTime}
+                  showSite
+                  showInference />
+              }
             </div>
           </div>
         )} />
