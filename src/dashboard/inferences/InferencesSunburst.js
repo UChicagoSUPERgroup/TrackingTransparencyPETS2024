@@ -2,16 +2,21 @@
 
 import React from 'react'
 import {Sunburst, LabelSeries} from 'react-vis'
+import { darken, lighten } from '@instructure/ui-themeable/lib/utils/color'
 
 import categoryTree from '../../data/categories_tree.json'
 import categoryPaths from '../../data/categories_paths.json'
 
 import logging from '../dashboardLogging'
+import { colors } from '../../colors'
 
 const LABEL_STYLE = {
   fontSize: '14px',
   textAnchor: 'middle'
 }
+
+const topLevelCats = categoryTree.children.map(x => x.name)
+const baseColor = lighten(colors.blue1, 25)
 
 /**
  * Recursively work backwards from highlighted node to find path of valud nodes
@@ -30,11 +35,10 @@ function rand (min, max) {
  * Get a random (bluish) color
  * @returns {String} a hex color
  */
-function getPrettyColor () {
-  var h = rand(180, 250)
-  var s = rand(30, 100)
-  var l = rand(20, 70)
-  return 'hsl(' + h + ',' + s + '%,' + l + '%)'
+function getPrettyColor (name) {
+  const index = topLevelCats.indexOf(name)
+
+  return darken(baseColor, (4.6 * index) % 37.5)
 }
 
 /**
@@ -49,7 +53,7 @@ function updateData (data, keyPath, parentColor) {
 
   if (!data.color) {
     if (!parentColor) {
-      data.color = getPrettyColor()
+      data.color = getPrettyColor(data.name)
     } else {
       data.color = parentColor
     }
@@ -122,7 +126,7 @@ export default class InferencesSunburst extends React.Component {
       res[row] = true
       return res
     }, {})
-    console.log(path, pathAsMap)
+    // console.log(path, pathAsMap)
     const newVal = path[path.length - 1]
     this.setState({
       finalValue: newVal,

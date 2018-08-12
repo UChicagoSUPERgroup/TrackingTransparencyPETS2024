@@ -25,9 +25,9 @@ const ucColors = {
   violet1: '#350E20',
   violet2: '#725663',
   cyan: '#47B5FF',
-  magenta: '#FF3399',
+  magenta: '#FF3399'
 
-  text: '#222'
+  // text: '#222'
 }
 
 const baseColors = {
@@ -48,6 +48,7 @@ const baseColors = {
 }
 
 export const colors = {
+  ...ucColors,
   ...baseColors,
 
   textDarkest: baseColors.licorice,
