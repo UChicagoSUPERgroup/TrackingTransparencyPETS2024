@@ -36,25 +36,7 @@ module.exports = {
         // Babel transpilation
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          'presets': [
-            ['env', {
-              'targets': {
-                'browsers': ['chrome >= 65', 'firefox >= 60']
-              },
-              'modules': false
-            }],
-            'react'
-          ],
-          'plugins': [
-            'transform-eval',
-            // 'transform-runtime',
-            'transform-object-rest-spread',
-            'syntax-dynamic-import',
-            'react-loadable/babel'
-          ]
-        }
+        loader: 'babel-loader'
       },
       {
         test: /\.worker\.js$/,
