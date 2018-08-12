@@ -1,72 +1,123 @@
-export const COLORS = {
-  UC_MAROON: '#800000',
-  UC_DK_GRAY: '#767676',
-  UC_LT_GRAY: '#D6D6CE',
-  UC_YELLOW_1: '#FFA319',
-  UC_YELLOW_2: '#FFB547',
-  UC_YELLOW_3: '#CC8214',
-  UC_ORANGE_1: '#C16622',
-  UC_ORANGE_2: '#D49464',
-  UC_ORANGE_3: '#9A5324',
-  UC_RED_1: '#8F3931',
-  UC_RED_2: '#B1746F',
-  UC_RED_3: '#642822',
-  UC_LT_GREEN_1: '#8A9045',
-  UC_LT_GREEN_2: '#ADB17D',
-  UC_LT_GREEN_3: '#616530',
-  UC_DK_GREEN_1: '#58593F',
-  UC_DK_GREEN_2: '#8A8B79',
-  UC_DK_GREEN_3: '#3E3E23',
-  UC_BLUE_1: '#155F83',
-  UC_BLUE_2: '#5B8FA8',
-  UC_BLUE_3: '#0F425C',
-  UC_VIOLET_1: '#350E20',
-  UC_VIOLET_2: '#725663',
-  CYAN: '#47B5FF',
-  MAGENTA: '#FF3399',
+import { alpha, darken, lighten } from '@instructure/ui-themeable/lib/utils/color'
 
-  TEXT: '#222'
+const ucColors = {
+  maroon: '#800000',
+  dkGray: '#767676',
+  ltGray: '#D6D6CE',
+  yellow1: '#FFA319',
+  yellow2: '#FFB547',
+  yellow3: '#CC8214',
+  orange1: '#C16622',
+  orange2: '#D49464',
+  orange3: '#9A5324',
+  red1: '#8F3931',
+  red2: '#B1746F',
+  red3: '#642822',
+  ltGreen1: '#8A9045',
+  ltGreen2: '#ADB17D',
+  ltGreen3: '#616530',
+  dkGreen1: '#58593F',
+  dkGreen2: '#8A8B79',
+  dkGreen3: '#3E3E23',
+  blue1: '#155F83',
+  blue2: '#5B8FA8',
+  blue3: '#0F425C',
+  violet1: '#350E20',
+  violet2: '#725663',
+  cyan: '#47B5FF',
+  magenta: '#FF3399',
+
+  text: '#222'
 }
 
-export const instuiOverrides = {
+const baseColors = {
+  brand: lighten(ucColors.blue1, 10),
+  electric: lighten(ucColors.blue1, 10),
+  shamrock: lighten(ucColors.ltGreen1, 5),
+  barney: lighten(ucColors.violet1, 10),
+  crimson: lighten(ucColors.red1, 10),
+  fire: lighten(ucColors.orange1, 10),
+  licorice: darken(ucColors.dkGray, 30),
+  oxford: darken(ucColors.dkGray, 20),
+  ash: lighten(ucColors.dkGray, 5),
+  slate: lighten(ucColors.dkGray, 5),
+  tiara: ucColors.ltGray,
+  porcelain: lighten(ucColors.ltGray, 10),
+  white: '#FFFFFF',
+
+}
+
+export const colors = {
+  ...baseColors,
+
+  textDarkest: baseColors.licorice,
+  textDark: baseColors.ash,
+  textLight: baseColors.porcelain,
+  textLightest: baseColors.white,
+
+  textBrand: baseColors.brand,
+  textAlert: baseColors.barney,
+  textInfo: baseColors.brand,
+  textSuccess: baseColors.shamrock,
+  textDanger: baseColors.crimson,
+  textWarning: baseColors.fire,
+
+  backgroundDarkest: baseColors.licorice,
+  backgroundDark: baseColors.ash,
+  backgroundMedium: baseColors.tiara,
+  backgroundLight: baseColors.porcelain,
+  backgroundLightest: baseColors.white,
+
+  backgroundBrand: baseColors.brand,
+  backgroundBrandSecondary: baseColors.oxford,
+  backgroundAlert: baseColors.barney,
+  backgroundInfo: baseColors.brand,
+  backgroundSuccess: baseColors.shamrock,
+  backgroundDanger: baseColors.crimson,
+  backgroundWarning: baseColors.fire,
+
+  borderLightest: baseColors.white,
+  borderLight: baseColors.porcelain,
+  borderMedium: baseColors.tiara,
+  borderDark: baseColors.ash,
+  borderDarkest: baseColors.licorice,
+
+  borderBrand: baseColors.brand,
+  borderAlert: baseColors.barney,
+  borderInfo: baseColors.brand,
+  borderSuccess: baseColors.shamrock,
+  borderDanger: baseColors.crimson,
+  borderWarning: baseColors.fire,
+
+  borderDebug: baseColors.crimson
+}
+
+// from https://github.com/instructure/instructure-ui/blob/master/packages/ui-themes/src/canvas/base/index.js
+const brandVariables = {
+  'ic-brand-primary': colors.textBrand,
+  'ic-brand-font-color-dark': colors.textDarkest,
+
+  'ic-link-color': colors.textBrand,
+  'ic-link-decoration': 'none',
+
+  'ic-brand-button--primary-bgd': colors.backgroundBrand,
+  'ic-brand-button--primary-text': colors.textLightest,
+  'ic-brand-button--secondary-bgd': colors.backgroundDarkest,
+  'ic-brand-button--secondary-text': colors.textLightest,
+
+  'ic-brand-global-nav-bgd': colors.backgroundBrandSecondary,
+  'ic-global-nav-link-hover': colors.backgroundDarkest,
+  'ic-brand-global-nav-ic-icon-svg-fill': colors.textLightest,
+  'ic-brand-global-nav-ic-icon-svg-fill--active': colors.textBrand,
+  'ic-brand-global-nav-menu-item__text-color': colors.textLightest,
+  'ic-brand-global-nav-menu-item__text-color--active': colors.textBrand
+}
+
+export const themeOverrides = {
+  ...brandVariables,
+
   typography: {
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
   },
-  colors: {
-    brand: COLORS.UC_RED_2,
-
-    textBrand: COLORS.UC_RED_2,
-    // textAlert: colors.barney,
-    // textInfo: colors.brand,
-    // textSuccess: colors.shamrock,
-    // textDanger: colors.crimson,
-    // textWarning: colors.fire,
-
-    // backgroundDarkest: colors.licorice,
-    // backgroundDark: colors.ash,
-    // backgroundMedium: colors.tiara,
-    // backgroundLight: colors.porcelain,
-    // backgroundLightest: colors.white,
-
-    backgroundBrand: COLORS.UC_RED_2,
-    backgroundBrandSecondary: COLORS.UC_RED_3
-    // backgroundAlert: colors.barney,
-    // backgroundInfo: colors.brand,
-    // backgroundSuccess: colors.shamrock,
-    // backgroundDanger: colors.crimson,
-    // backgroundWarning: colors.fire,
-
-    // borderLightest: colors.white,
-    // borderLight: colors.porcelain,
-    // borderMedium: colors.tiara,
-    // borderDark: colors.ash,
-    // borderDarkest: colors.licorice,
-
-    // borderBrand: colors.brand,
-    // borderAlert: colors.barney,
-    // borderInfo: colors.brand,
-    // borderSuccess: colors.shamrock,
-    // borderDanger: colors.crimson,
-    // borderWarning: colors.fire,
-  }
+  colors: colors
 }

@@ -6,10 +6,10 @@ import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 
 import logging from '../dashboard/dashboardLogging'
-import { instuiOverrides } from '../colors'
+import { themeOverrides } from '../colors'
 
 theme.use({
-  overrides: instuiOverrides
+  overrides: themeOverrides
 })
 
 const styles = {}

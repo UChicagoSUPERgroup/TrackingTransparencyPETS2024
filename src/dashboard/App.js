@@ -5,11 +5,13 @@ import { HashRouter, Route } from 'react-router-dom';
 import {LinkContainer} from 'react-router-bootstrap';
 
 import './bootstrap/css/bootstrap.css'
-import theme from '@instructure/ui-themes/lib/canvas'
 import '../../node_modules/react-vis/dist/style.css';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
+
+import theme from '@instructure/ui-themes/lib/canvas'
+import ApplyTheme from '@instructure/ui-themeable/lib/components/ApplyTheme'
 import IconSettings from '@instructure/ui-icons/lib/Solid/IconSettings'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
@@ -28,16 +30,15 @@ import LightbeamWrapper from './LightbeamWrapper';
 import logging from './dashboardLogging';
 
 import tt from '../helpers';
-import { instuiOverrides } from '../colors'
+import { themeOverrides } from '../colors'
 
 import '../styles/common.css';
 import '../styles/dashboard.css';
 import '../styles/navbar.css';
 
 theme.use({
-  overrides: instuiOverrides
+  overrides: themeOverrides
 })
-// TODO: add theme overrides
 
 const NavLink = ({to, title}) => (
   <LinkContainer to={to} className = "navbarTolog">
