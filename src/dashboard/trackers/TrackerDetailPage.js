@@ -18,9 +18,6 @@ import {
   LineSeries
 } from 'react-vis';
 
-//import companyData from '../data/trackers/companyData.json';
-// companyData['Criteo'].type -> "Advertising"
-
 const DomainTable = (data) => {
   return (
     <ReactTable
@@ -101,6 +98,14 @@ export default class TrackerDetailPage extends React.Component {
       timestamps: timestamps
     });
 
+    import(/* webpackChunkName: "data/trackerData" */'../../data/trackers/companyData.json').then(data => {
+      const trackerInfo = data.default[this.tracker]
+      this.setState({
+        trackerInfo: trackerInfo
+      })
+    })
+
+    // LOGGING
     let hashedTracker = background.hashit(this.tracker);
     let numDomains = domains.length;
     let hashedInferences = [];
@@ -118,10 +123,9 @@ export default class TrackerDetailPage extends React.Component {
   }
 
   render() {
-    const domains = this.state.domains;
-    const inferences = this.state.inferences;
-    const times = this.state.times;
-    const timestamps = this.state.timestamps;
+    const { domains, inferences, times, timestamps, trackerInfo } = this.state
+    const ready = trackerInfo && domains && inferences
+
     let numDomains = 0;
     let numInferences = 0;
     let firstDay = 0;
@@ -145,7 +149,6 @@ export default class TrackerDetailPage extends React.Component {
         });
       }
     }
-    console.log(data);
 
     var dataLabel = function(v) {
       var tempDay = new Date((v * msInDay) + firstDay);
@@ -156,26 +159,34 @@ export default class TrackerDetailPage extends React.Component {
       <div>
         <Heading level='h1'>Trackers</Heading>
         <Heading level='h2' margin='small 0 0 0'>{this.tracker}</Heading>
-        <Grid startAt="large">
-          <GridRow>
-            <GridCol>
-              <Heading level='h3' margin='small 0 small 0'>When has {this.tracker} tracked you?</Heading>
-              <FlexibleWidthXYPlot
-                height={200}
-                margin={{left: 100, right: 10, top: 10, bottom: 70}}>
-                <HorizontalGridLines />
-                <LineSeries
-                  color="#8F3931"
-                  data={data}/>
-                <XAxis
-                  height={100}
-                  tickFormat={dataLabel}
-                  tickLabelAngle={-20}/>
-                <YAxis />
-              </FlexibleWidthXYPlot>
-            </GridCol>
-          </GridRow>
-        </Grid>
+        {ready && <div>
+        <Text>
+          <p>{this.tracker} is a <strong>{trackerInfo.type}</strong> tracker.</p>
+          {trackerInfo.notes && <div>
+            <strong>We found the following information about this tracker:</strong>
+            <div dangerouslySetInnerHTML={{__html: trackerInfo.description}}></div>
+          </div>}
+          {trackerInfo.notes && <div>
+              <strong>Additional notes:</strong>
+              <div dangerouslySetInnerHTML={{__html: trackerInfo.notes}}></div>
+          </div>}
+        </Text>
+        {/* <Heading level='h3' margin='small 0 small 0'>Where has {this.tracker} tracked you?</Heading> */}
+
+        <Heading level='h3' margin='small 0 small 0'>When has {this.tracker} tracked you?</Heading>
+        <FlexibleWidthXYPlot
+          height={200}
+          margin={{left: 100, right: 10, top: 10, bottom: 70}}>
+          <HorizontalGridLines />
+          <LineSeries
+            color="#8F3931"
+            data={data}/>
+          <XAxis
+            height={100}
+            tickFormat={dataLabel}
+            tickLabelAngle={-20}/>
+          <YAxis />
+        </FlexibleWidthXYPlot>
         <Text>
           <p>You have encountered trackers
             from {this.tracker} on <em>{numDomains}</em> different
@@ -194,6 +205,7 @@ export default class TrackerDetailPage extends React.Component {
             </GridCol>
           </GridRow>
         </Grid>
+      </div>}
       </div>
     );
   }
