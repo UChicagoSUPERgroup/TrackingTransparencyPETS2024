@@ -1,21 +1,15 @@
 import buildCategoryTree from './build';
-import buildLstmModel from './build_lstm';
 
 import infer_tfidf from './infer';
-import infer_lstm from './infer_lstm';
 
-import * as tf from '@tensorflow/tfjs';
 
 
 
 // the keywords file is bundled using webpack as keywordsjson
 // it must NOT have .json as an extension in the bundle because then it goes over a file size limit with mozilla
+
+import word2IndexFile from 'file-loader?name=words2idx_dictjson!../../data/inferencing/words2idx_dictjson';
 import keywordsFile from 'file-loader?name=keywordsjson!../../data/inferencing/keywordsjson';
-import word2idxFile from 'file-loader?name=word2idxjson!../../data/inferencing/word2idxjson';
-import idx2categoryFile from 'file-loader?name=idx2categoryjson!../../data/inferencing/idx2categoryjson';
-
-
-// import lstmModelFile from 'file-loader?name=model.json!../../data/inferencing/lstm_small_model_js/model.json';
 
 let databaseWorkerPort;
 
@@ -26,58 +20,57 @@ onmessage = function(m) {
     break;
     
   case 'content_script_to_inferencing':
-    inferencingMessageListener(m.data.article, m.data.mainFrameReqId, m.data.tabId, inferencing_alg);
+    console.time('infer');
+    inferencingMessageListener(m.data.article, m.data.mainFrameReqId, m.data.tabId);
+    console.timeEnd('infer');
     break;
   }
 };
 
-let inferencing_alg = "tfidf";
-const tree = buildCategoryTree(keywordsFile);
+const tree = buildCategoryTree(keywordsFile, word2IndexFile);
 
 // Comment out to use lstm (current implementation is slow)
 // let inferencing_alg = "lstm";
 // const model = buildLstmModel(word2idxFile, idx2categoryFile);
 
-function stem(text) {
+
+function stem(text, all_words, words2idx_dict) {
   var Snowball = require('snowball');
   var stemmer = new Snowball('English');
+  var cur_word = null;
   let tokens = [];
   for (let i = 0; i < text.length; i++) {
     stemmer.setCurrent(text[i]);
     stemmer.stem();
-    tokens.push(stemmer.getCurrent())
+    cur_word = stemmer.getCurrent();
+    if (all_words.has(cur_word)) {
+      tokens.push(words2idx_dict[cur_word]);
+    }
   }
-  return tokens;
+  return [tokens, text.length];
 }
 
 
 // TODO: this function needs to be rewritten
-async function inferencingMessageListener(text, mainFrameReqId, tabId, inferencing_alg) {
+async function inferencingMessageListener(text, mainFrameReqId, tabId) {
   
-  // console.time('stem');
-  text = text.toLowerCase();
-  text = stem(text.split(" "));
-  // console.timeEnd('stem');
-
   let result_category = null;
   let conf_score = 0;
-  if (inferencing_alg === "tfidf") {
-    const tr = await tree;
-    const category = await infer_tfidf(text, tr);
-    result_category = category[0].name;
-    conf_score = category[1];
-  }
+  const tr_struc = await tree;
+  const tr = tr_struc[0];
+  const word2idx = tr_struc[1];
+  const allExistWords = tr_struc[2];
 
-  else if (inferencing_alg === "lstm") {
-    const lstmModel = await model;
-    const category = await infer_lstm(text, lstmModel); 
-    result_category = category[0];
-    conf_score = category[1];
-  }
-  else {
-    console.log("Please choose an inferencing ALG");
-  }
-  
+  text = text.toLowerCase();
+  let stemmed = stem(text.split(" "), allExistWords, word2idx);
+  text = stemmed[0];
+  let totalLength = stemmed[1];
+
+  const category = await infer_tfidf(text, tr, totalLength);
+  result_category = category[0].name;
+  conf_score = category[1];
+
+
   console.log('Inference:', result_category);
 
   let inferenceInfo = {
@@ -97,8 +90,6 @@ async function inferencingMessageListener(text, mainFrameReqId, tabId, inferenci
   postMessage({
     type: 'page_inference',
     info: inferenceInfo
-  })
+  });
   // storeInference(inferenceInfo);
-
-
 }

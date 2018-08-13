@@ -16,6 +16,7 @@ class Category {
   Find given category in given tree and add a child to the
   found node. Assumes category exists and is unique.
 */
+
 function findAndAddChild(name, child, tree) {
   if (tree === undefined) {
     return;
@@ -28,10 +29,7 @@ function findAndAddChild(name, child, tree) {
   }
 }
 
-export default async function (in_file) {
-  // reading file
-  // var fs = require("fs");
-  // var obj = JSON.parse(fs.readFileSync(in_file, "utf8"));
+export default async function (in_file, word2IndexFile) {
   var file = await tt.readTextFile(in_file);
   var obj = tt.deserialize(file);
 
@@ -55,6 +53,10 @@ export default async function (in_file) {
     findAndAddChild(cat, child, tree);
   }
 
-  return tree;
-}
+  var word2idx_raw = await tt.readTextFile(word2IndexFile);
+  var word2idx = JSON.parse(word2idx_raw);
+  var allExistWords = new Set(Object.keys(word2idx));
 
+
+  return [tree, word2idx, allExistWords];
+}

@@ -16,13 +16,11 @@ function score_help(w, keywords, l, set_keywords) {
   else {
     return 0;
   }
-
 }
 
 
-function scoreCategory(category, words) {
+function scoreCategory(category, words, totalLength) {
     var keywords = category.keywords;
-    var num_words = words.length;
     var keywords_length = keywords.length;
     var match_set = new Set(keywords);
 
@@ -31,7 +29,7 @@ function scoreCategory(category, words) {
       var score = score_help(words[i], keywords, keywords_length, match_set);
       sum += score;
     }
-    return sum / num_words;
+    return sum / totalLength;
 }
 
 
@@ -39,12 +37,12 @@ function scoreCategory(category, words) {
 /* find child category with highest score and return it with its score
  * if it has a higher score than the parent. If not, return null.
  */
-function findBestChild(category, words, parentScore) {
+function findBestChild(category, words, parentScore, totalLength) {
   var highestScore = 0;
   var bestChild, curScore, child;
 
   for (let i = 0; i < category.children.length; i++) {
-    curScore = scoreCategory(category.children[i], words);
+    curScore = scoreCategory(category.children[i], words, totalLength);
     if (curScore > highestScore) {
       highestScore = curScore;
       bestChild = category.children[i];
@@ -63,7 +61,7 @@ function findBestChild(category, words, parentScore) {
 /* recursively find best category given an array of words from given
  * Category tree.
  */
-function findBestCategory(root, words, rootScore) {
+function findBestCategory(root, words, rootScore, totalLength) {
   var result, bestChild, bestChildScore;
 
   if (!root) {
@@ -71,7 +69,7 @@ function findBestCategory(root, words, rootScore) {
   } else if (root.children === []) {
     return [root, rootScore];
   } else { // root exists and has children
-    result = findBestChild(root, words, rootScore);
+    result = findBestChild(root, words, rootScore, totalLength);
 
     // if result is null, then that means parent has better score
     // than children
@@ -83,25 +81,15 @@ function findBestCategory(root, words, rootScore) {
     bestChildScore = result[1];
     // console.log("going with", bestChild.name, "score", bestChildScore);
 
-    return findBestCategory(bestChild, words, bestChildScore);
+    return findBestCategory(bestChild, words, bestChildScore, totalLength);
   }
 }
 
 
-export default function (text, tree) {
+export default function (text, tree, totalLength) {
   var tokens;
-
-  // tokenize
-  // tokenizer = new Tokenizer();
-  // tokens = tokenizer.words()(text);
-
-  // words = tokens.map((token) => token.value.toLowerCase());
-
-  // console.log(words);
-  // findBestCategory(tree, words, 0);
-  
   tokens = text;
-  const cat = (findBestCategory(tree, tokens, 0));
+  const cat = (findBestCategory(tree, tokens, 0, totalLength));
   // console.log(cat);
   return cat;
 
