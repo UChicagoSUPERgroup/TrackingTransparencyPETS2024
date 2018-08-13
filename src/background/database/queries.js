@@ -16,6 +16,10 @@ const Inferences = primarySchemaBuilder.getSchema().table('Inferences');
 const Trackers = primarySchemaBuilder.getSchema().table('Trackers');
 const Pages = primarySchemaBuilder.getSchema().table('Pages');
 
+function makeURL (Page) {
+  return Page.protocol + '//' + Page.hostname + Page.path
+}
+
 
 /* QUERIES */
 /* ======= */
@@ -320,6 +324,43 @@ async function getPagesByTime(args) {
   return combined;
 }
 
+/** get pages by tracker
+ * 
+ * @param  {Object} args - arguments object
+ * @param  {number} args.tracker - tracker
+ * @param  {number} [args.count] - number of entries to return
+ */
+async function getPagesByTracker (args) {
+  if (!args.tracker) {
+    throw new Error('Insufficient args provided for query')
+  }
+
+  let query = ttDb.select(Pages.id, Pages.title, Pages.domain, Pages.hostname, Pages.path, Pages.protocol)
+    .from(Pages, Trackers)
+    .where(lf.op.and(
+      Trackers.pageId.eq(Pages.id),
+      Trackers.tracker.eq(args.tracker)
+    ))
+  query = args.count ? query.limit(args.count) : query;
+  query = query.orderBy(Pages.id, lf.Order.ASC);
+  let pages = await query.exec();
+
+  pages = pages.map(async (p) => {
+    let page = p.Pages
+    page.url = makeURL(page)
+    
+    let inferQ = ttDb.select(Inferences.inference)
+      .from(Inferences)
+      .where(Inferences.pageId.eq(page.id))
+    let infer = (await inferQ.exec())
+    
+    if (infer[0] && infer[0].inference) {
+      page.inference = infer[0].inference
+    }
+    return page
+  })
+  return await Promise.all(pages);
+}
 
 /** gets all timestamps for page visits for a specific inference
  *
@@ -990,6 +1031,8 @@ const QUERIES = {
   getDomainsByInference: getDomainsByInference,
   getDomainsByTracker: getDomainsByTracker,
   getPagesByDomain: getPagesByDomain,
+  getPagesByTime: getPagesByTime, // used in activities
+  getPagesByTracker: getPagesByTracker, // used in dashboard, trackers page
   getPageCountByDomain: getPageCountByDomain,
   getTrackerCountByDomain: getTrackerCountByDomain,
   getInferencesByDomain: getInferencesByDomain, // used in tests
@@ -1006,7 +1049,6 @@ const QUERIES = {
   getTimestampsByInference: getTimestampsByInference,
   getTimestampsByTracker: getTimestampsByTracker,
   getDomainsByTime: getDomainsByTime,
-  getPagesByTime: getPagesByTime, // used in activities
   getInferencesByTime: getInferencesByTime,
   getTrackers: getTrackers, // used in dasboard
   getTrackersByDomain: getTrackersByDomain, // used in dashboard
