@@ -3,6 +3,8 @@
  */
 import Tokenizer from 'tokenize-text';
 import striptags from 'striptags';
+import tt from '../../helpers';
+
 // import {AllHtmlEntities as Entities} from "html-entities"
 
 // import tt from "../helpers";
@@ -76,15 +78,12 @@ function findBestCategory(root, words, rootScore, totalLength) {
     if (!result) {
       return [root, rootScore];
     }
-
     bestChild = result[0];
     bestChildScore = result[1];
     // console.log("going with", bestChild.name, "score", bestChildScore);
-
     return findBestCategory(bestChild, words, bestChildScore, totalLength);
   }
 }
-
 
 export default function (text, tree, totalLength) {
   var tokens;

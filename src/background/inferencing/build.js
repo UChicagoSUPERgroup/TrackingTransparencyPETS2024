@@ -29,7 +29,7 @@ function findAndAddChild(name, child, tree) {
   }
 }
 
-export default async function (in_file, word2IndexFile) {
+export default async function (in_file, word2IndexFile, cutOneFile) {
   var file = await tt.readTextFile(in_file);
   var obj = tt.deserialize(file);
 
@@ -57,6 +57,8 @@ export default async function (in_file, word2IndexFile) {
   var word2idx = JSON.parse(word2idx_raw);
   var allExistWords = new Set(Object.keys(word2idx));
 
+  var cut_one_raw = await tt.readTextFile(cutOneFile);
+  var cut_one_dict = JSON.parse(cut_one_raw);
 
-  return [tree, word2idx, allExistWords];
+  return [tree, word2idx, allExistWords, cut_one_dict];
 }
