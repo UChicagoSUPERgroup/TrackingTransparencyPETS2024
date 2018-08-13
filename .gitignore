@@ -38,3 +38,5 @@ node_modules
 # jsdoc generated
 doc/jsdoc
 docs
+
+*.ipynb_checkpoints

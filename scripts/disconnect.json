@@ -1,5 +1,5 @@
 {
-  "license": "Copyright 2010-2017 Disconnect, Inc. / This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. / This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. / You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.",
+  "license": "Copyright 2010-2018 Disconnect, Inc. / This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. / This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. / You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.",
   "categories": {
     "Advertising": [
       {
@@ -116,7 +116,8 @@
             "atwola.com",
             "leadback.com",
             "tacoda.net",
-            "adtechjp.com"
+            "adtechjp.com",
+            "vidible.tv"
           ]
         }
       },
@@ -552,6 +553,14 @@
         }
       },
       {
+        "AdYield": {
+          "http://www.adyield.com/": [
+            "adyield.com",
+            "adxyield.com"
+          ]
+        }
+      },
+      {
         "Adality": {
           "http://adality.de/": [
             "adality.de",
@@ -694,6 +703,15 @@
         }
       },
       {
+        "Adless": {
+          "https://www.adless.io/": [
+            "adless.io"
+          ],
+          "performance": "true",
+          "cryptominer": "true"
+        }
+      },
+      {
         "Adlibrium": {
           "http://www.adlibrium.com/": [
             "adlibrium.com"
@@ -797,6 +815,13 @@
         }
       },
       {
+        "Adomik": {
+          "http://www.adomik.com/": [
+            "adomik.com"
+          ]
+        }
+      },
+      {
         "Adorika": {
           "http://www.clickotmedia.com/": [
             "clickotmedia.com"
@@ -881,6 +906,14 @@
           "http://www.adtegrity.com/": [
             "adtegrity.com",
             "adtegrity.net"
+          ]
+        }
+      },
+      {
+        "Adthink": {
+          "https://adthink.com/": [
+            "adthink.com",
+            "audienceinsights.net"
           ]
         }
       },
@@ -1210,7 +1243,8 @@
         "Augur": {
           "http://www.augur.io/": [
             "augur.io"
-          ]
+          ],
+          "fingerprinting": "true"
         }
       },
       {
@@ -1384,15 +1418,6 @@
         }
       },
       {
-        "BloomReach": {
-          "http://www.bloomreach.com/": [
-            "bloomreach.com",
-            "brcdn.com",
-            "brsrvr.com"
-          ]
-        }
-      },
-      {
         "Blu Trumpet": {
           "http://www.blutrumpet.com/": [
             "blutrumpet.com"
@@ -1403,7 +1428,8 @@
         "BlueCava": {
           "http://www.bluecava.com/": [
             "bluecava.com"
-          ]
+          ],
+          "fingerprinting": "true"
         }
       },
       {
@@ -1412,6 +1438,21 @@
             "bkrtx.com",
             "bluekai.com",
             "tracksimple.com"
+          ]
+        }
+      },
+      {
+        "Boo-Box": {
+          "http://boo-box.com/": [
+            "boo-box.com"
+          ]
+        }
+      },
+      {
+        "Bouncex": {
+          "https://www.bouncex.com/": [
+            "bouncex.com",
+            "bounceexchange.com"
           ]
         }
       },
@@ -1780,8 +1821,12 @@
         "CoinHive": {
           "https://coinhive.com": [
             "coinhive.com",
-            "coin-hive.com"
-          ]
+            "coin-hive.com",
+            "cnhv.co",
+            "authedmine.com"
+          ],
+          "performance": "true",
+          "cryptominer": "true"
         }
       },
       {
@@ -1927,8 +1972,12 @@
       {
         "CryptoLoot": {
           "https://crypto-loot.com": [
-            "crypto-loot.com"
-          ]
+            "crypto-loot.com",
+            "cryptaloot.pro",
+            "webmine.pro"
+          ],
+          "cryptominer": "true",
+          "performance": "true"
         }
       },
       {
@@ -2155,7 +2204,8 @@
         "DoubleVerify": {
           "http://www.doubleverify.com/": [
             "doubleverify.com"
-          ]
+          ],
+          "fingerprinting": "true"
         }
       },
       {
@@ -2177,7 +2227,8 @@
       {
         "DynamicYield": {
           "https://www.dynamicyield.com/": [
-            "dynamicyield.com"
+            "px.dynamicyield.com",
+            "px-eu.dynamicyield.com"
           ]
         }
       },
@@ -2723,7 +2774,8 @@
           "http://www.guj.de/": [
             "guj.de",
             "ligatus.com"
-          ]
+          ],
+          "fingerprinting": "true"
         }
       },
       {
@@ -3051,6 +3103,15 @@
         }
       },
       {
+        "JSE": {
+          "http://jsecoin.com": [
+            "jsecoin.com"
+          ],
+          "cryptominer": "true",
+          "performance": "true"
+        }
+      },
+      {
         "Jaroop": {
           "http://www.jaroop.com/": [
             "jaroop.com"
@@ -3195,6 +3256,14 @@
         }
       },
       {
+        "LKQD": {
+          "http://lkqd.com": [
+            "lkqd.net",
+            "lkqd.com"
+          ]
+        }
+      },
+      {
         "Lakana": {
           "http://www.lakana.com/": [
             "lakana.com",
@@ -3319,6 +3388,13 @@
         "Local Yokel Media": {
           "http://www.localyokelmedia.com/": [
             "localyokelmedia.com"
+          ]
+        }
+      },
+      {
+        "LockerDome": {
+          "https://lockerdome.com/": [
+            "lockerdome.com"
           ]
         }
       },
@@ -3534,7 +3610,8 @@
             "designbloxlive.com",
             "mathtag.com",
             "mediamath.com"
-          ]
+          ],
+          "fingerprinting": "true"
         }
       },
       {
@@ -3670,6 +3747,15 @@
             "mindset-media.com",
             "mmismm.com"
           ]
+        }
+      },
+      {
+        "Mineralt": {
+          "https://mineralt.io/": [
+            "mineralt.io"
+          ],
+          "performance": "true",
+          "cryptominer": "true"
         }
       },
       {
@@ -4626,7 +4712,8 @@
             "rhythmnewmedia.com",
             "rnmd.net",
             "1rx.io",
-            "rhythmone.com"
+            "rhythmone.com",
+            "rhythmxchange.com"
           ]
         }
       },
@@ -4672,6 +4759,13 @@
           "http://www.sas.com/": [
             "aimatch.com",
             "sas.com"
+          ]
+        }
+      },
+      {
+        "Sabavision": {
+          "http://www.sabavision.com": [
+            "sabavision.com"
           ]
         }
       },
@@ -4872,6 +4966,15 @@
           "http://spacechimpmedia.com/": [
             "spacechimpmedia.com"
           ]
+        }
+      },
+      {
+        "SpareChange": {
+          "http://sparechange.io": [
+            "sparechange.io"
+          ],
+          "performance": "true",
+          "cryptominer": "true"
         }
       },
       {
@@ -5495,6 +5598,13 @@
         }
       },
       {
+        "Venatus Media": {
+          "http://venatusmedia.com": [
+            "venatusmedia.com"
+          ]
+        }
+      },
+      {
         "Vendio": {
           "http://www.vendio.com/": [
             "singlefeed.com",
@@ -5646,6 +5756,14 @@
             "dsmmadvantage.com",
             "webmetro.com"
           ]
+        }
+      },
+      {
+        "Webmine": {
+          "https://webmine.cz/": [
+            "webmine.cz"
+          ],
+          "cryptominer": "true"
         }
       },
       {
@@ -5814,6 +5932,13 @@
         "YieldBuild": {
           "http://yieldbuild.com/": [
             "yieldbuild.com"
+          ]
+        }
+      },
+      {
+        "Yieldify": {
+          "https://www.yieldify.com/": [
+            "yieldify.com"
           ]
         }
       },
@@ -6122,7 +6247,8 @@
           "http://www.eyereturnmarketing.com/": [
             "eyereturn.com",
             "eyereturnmarketing.com"
-          ]
+          ],
+          "fingerprinting": "true"
         }
       },
       {
@@ -7557,6 +7683,14 @@
         }
       },
       {
+        "AIData": {
+          "http://www.aidata.me/": [
+            "advombat.ru",
+            "aidata.me"
+          ]
+        }
+      },
+      {
         "AT Internet": {
           "http://www.atinternet.com/": [
             "atinternet.com",
@@ -7666,6 +7800,13 @@
         }
       },
       {
+        "BloomReach": {
+          "http://www.bloomreach.com/": [
+            "p.brsrvr.com"
+          ]
+        }
+      },
+      {
         "Bluemetrix": {
           "http://www.bluemetrix.com/": [
             "bluemetrix.com",
@@ -7711,6 +7852,13 @@
         }
       },
       {
+        "Cardlytics": {
+          "http://www.cardlytics.com/": [
+            "cardlytics.com"
+          ]
+        }
+      },
+      {
         "Chartbeat": {
           "http://chartbeat.com/": [
             "chartbeat.com",
@@ -7724,7 +7872,8 @@
             "clicktale.com",
             "clicktale.net",
             "pantherssl.com"
-          ]
+          ],
+          "session-replay": "true"
         }
       },
       {
@@ -7910,7 +8059,8 @@
         "Fullstory": {
           "https://www.fullstory.com/": [
             "fullstory.com"
-          ]
+          ],
+          "session-replay": "true"
         }
       },
       {
@@ -8032,6 +8182,13 @@
           "http://www.inboundwriter.com/": [
             "enquisite.com",
             "inboundwriter.com"
+          ]
+        }
+      },
+      {
+        "Infernotions": {
+          "https://infernotions.com/": [
+            "infernotions.com"
           ]
         }
       },
@@ -8269,6 +8426,14 @@
         }
       },
       {
+        "OnAudience": {
+          "http://www.onaudience.com/": [
+            "onaudience.com",
+            "behavioralengine.com"
+          ]
+        }
+      },
+      {
         "OneStat": {
           "http://www.onestat.com/": [
             "onestat.com"
@@ -8365,6 +8530,13 @@
         }
       },
       {
+        "Retail Automata": {
+          "https://retailautomata.com": [
+            "retailautomata.com"
+          ]
+        }
+      },
+      {
         "Revtracks": {
           "http://revtrax.com/": [
             "revtrax.com"
@@ -8431,7 +8603,8 @@
         "SessionCam": {
           "https://sessioncam.com/": [
             "sessioncam.com"
-          ]
+          ],
+          "session-replay": "true"
         }
       },
       {
@@ -8445,14 +8618,16 @@
         "Shortest": {
           "http://shorte.st/": [
             "shorte.st"
-          ]
+          ],
+          "fingerprinting": "true"
         }
       },
       {
         "Smartlook": {
           "https://www.smartlook.com/": [
             "smartlook.com"
-          ]
+          ],
+          "session-replay": "true"
         }
       },
       {
@@ -8789,7 +8964,8 @@
             "connectedads.net",
             "xgraph.com",
             "xgraph.net"
-          ]
+          ],
+          "fingerprinting": "true"
         }
       },
       {
