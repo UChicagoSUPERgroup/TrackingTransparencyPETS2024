@@ -299,10 +299,14 @@ async function getInferencesByTime(args) {
  * @param  {number} [args.count] - number of entries to return
  */
 async function getPagesByTime(args) {
-  if (!args.startTime || !args.endTime) {
-    throw new Error('Insufficient args provided for query');
+  if (!args.startTime) {
+    args.startTime = (new Date('January 1 2018')).getTime()
+  }
+  if (!args.endTime) {
+    args.endTime = Date.now()
   }
   let noInferences = await getPagesNoInferences(args);
+  noInferences = noInferences.map(x => x.Pages)
 
   let query = ttDb.select(Pages.title, Pages.id, Pages.domain, Inferences.inference)
     .from(Pages, Inferences);
@@ -316,11 +320,15 @@ async function getPagesByTime(args) {
   query = args.count ? query.limit(args.count) : query;
   query = query.orderBy(Pages.id, lf.Order.ASC);
   let withInferences = await query.exec();
+  withInferences = withInferences.map(x => ({
+    ...x.Pages,
+    inference: x.Inferences.inference
+  }))
   let combined = noInferences
     .concat(withInferences)
     .sort(function(a,b) {
-      return a["Pages"]["id"] - b["Pages"]["id"]
-    });
+      return a['id'] - b['id']
+    })
   return combined;
 }
 

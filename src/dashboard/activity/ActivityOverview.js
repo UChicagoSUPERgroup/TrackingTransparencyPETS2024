@@ -24,7 +24,8 @@ export default class ActivityOverview extends React.Component {
     super(props);
     this.state = {
       domains: [],
-      recent: []
+      recent: [],
+      pagesByTime: []
     }
     this.getByTime = this.getByTime.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -62,8 +63,6 @@ export default class ActivityOverview extends React.Component {
     let args = {startTime: startDate.getTime(),
       endTime: startDate.getTime() + millisecondsInHour};
     console.log(args);
-    //let waiting = background.queryDatabase('getPagesNoInferences', args);
-    //console.log(waiting);
     return background.queryDatabase('getPagesByTime', args);
   }
 
@@ -117,8 +116,10 @@ export default class ActivityOverview extends React.Component {
                 <PageTable 
                   title={this.recentVisitsTitle(recent)}
                   data={pagesByTime}
+                  noDataText='Click in the scatterplot for more information'
                   showSite
-                  showInference />
+                  showInference
+                />
               }
             </div>
           </div>

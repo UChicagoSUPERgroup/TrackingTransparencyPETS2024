@@ -29,7 +29,7 @@ export default class RecentVisitsTable extends React.Component {
       {
         Header: 'Time',
         id: 'id',
-        accessor: d => (new Date(d.Pages.id).toLocaleTimeString()),
+        accessor: d => (new Date(d.id).toLocaleTimeString()),
         maxWidth: 150
       }
     ]
@@ -38,7 +38,7 @@ export default class RecentVisitsTable extends React.Component {
       columns.push({
         Header: 'Site',
         id: 'domain',
-        accessor: d => d.Pages.domain,
+        accessor: d => d.domain,
         Cell: row => (
           <div key={row.value}>
             <Link href={'#/domains/' + row.value}>
@@ -52,14 +52,14 @@ export default class RecentVisitsTable extends React.Component {
     columns.push({
       Header: 'Page',
       id: 'title',
-      accessor: d => d.Pages.title
+      accessor: d => d.title
     })
 
     if (this.props.showInference) {
       columns.push({
         Header: 'Inference',
         id: 'infer',
-        accessor: d => d.Inferences.inference,
+        accessor: d => d.inference,
         Cell: row => (
           <div key={row.value}>
             <Link href={'#/inferences/' + row.value}>
@@ -68,6 +68,8 @@ export default class RecentVisitsTable extends React.Component {
           </div>)
       })
     }
+
+    const pageSize = Math.min(10, Math.max(data.length, 3))
 
     return (
       <ReactTable
@@ -79,10 +81,8 @@ export default class RecentVisitsTable extends React.Component {
           }
         ]}
         showPageSizeOptions={false}
-        pageSize={(data && (data.length >= 1)) ? 20 : 3}
-        noDataText={(data && !(data.length >= 1))
-          ? 'No inferred interests at this time'
-          : 'Click in the scatterplot for more information'}
+        pageSize={pageSize}
+        noDataText={this.props.noDataText}
         className='-striped -highlight'
       />
     );
