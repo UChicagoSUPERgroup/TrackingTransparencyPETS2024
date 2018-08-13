@@ -7,7 +7,9 @@ import Text from '@instructure/ui-elements/lib/components/Text'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+import ToggleDetails from '@instructure/ui-toggle-details/lib/components/ToggleDetails'
 
+import PageTable from '../components/PageTable'
 import logging from '../dashboardLogging';
 
 import {
@@ -72,7 +74,8 @@ export default class TrackerDetailPage extends React.Component {
     this.tracker = this.props.match.params.name;
     this.state = {
       inferences: [],
-      domains: []
+      domains: [],
+      pages: []
     }
     //this.logLoad = this.logLoad.bind(this);
   }
@@ -91,11 +94,13 @@ export default class TrackerDetailPage extends React.Component {
     const timestamps = await background.queryDatabase('getTimestampsByTracker', queryObj);
     const times2 = timestamps.map(x => (
       (new Date(x.Pages.id))));
+    const pages = await background.queryDatabase('getPagesByTracker', queryObj);
     this.setState({
       inferences: inferences,
       domains: domains,
       times: times2,
-      timestamps: timestamps
+      timestamps: timestamps,
+      pages: pages
     });
 
     import(/* webpackChunkName: "data/trackerData" */'../../data/trackers/companyData.json').then(data => {
@@ -123,7 +128,7 @@ export default class TrackerDetailPage extends React.Component {
   }
 
   render() {
-    const { domains, inferences, times, timestamps, trackerInfo } = this.state
+    const { domains, inferences, times, timestamps, trackerInfo, pages } = this.state
     const ready = trackerInfo && domains && inferences
 
     let numDomains = 0;
@@ -162,16 +167,30 @@ export default class TrackerDetailPage extends React.Component {
         {ready && <div>
         <Text>
           <p>{this.tracker} is a <strong>{trackerInfo.type}</strong> tracker.</p>
-          {trackerInfo.notes && <div>
-            <strong>We found the following information about this tracker:</strong>
+          {trackerInfo.notes && <ToggleDetails
+            summary='We found the following information about this tracker:'
+            defaultExpanded
+          >
             <div dangerouslySetInnerHTML={{__html: trackerInfo.description}}></div>
-          </div>}
-          {trackerInfo.notes && <div>
-              <strong>Additional notes:</strong>
+            {trackerInfo.notes && <ToggleDetails
+              summary='Additional notes'
+            >
               <div dangerouslySetInnerHTML={{__html: trackerInfo.notes}}></div>
-          </div>}
+            </ToggleDetails>}
+          </ToggleDetails>}
         </Text>
-        {/* <Heading level='h3' margin='small 0 small 0'>Where has {this.tracker} tracked you?</Heading> */}
+
+        <hr />
+
+        <Heading level='h3' margin='small 0 small 0'>Where has {this.tracker} tracked you?</Heading>
+        <PageTable 
+          title={'Pages where ' + this.tracker + 'trackers were present'}
+          data={pages}
+          showSite
+          showInference
+        />
+
+        <hr />
 
         <Heading level='h3' margin='small 0 small 0'>When has {this.tracker} tracked you?</Heading>
         <FlexibleWidthXYPlot
