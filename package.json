@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.6",
     "babel-loader": "^7.1.4",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-transform-eval": "^6.22.0",
@@ -33,6 +34,7 @@
     "jsdoc": "^3.5.5",
     "mini-css-extract-plugin": "^0.4.1",
     "puppeteer": "^1.6.1",
+    "standardx": "^2.1.0",
     "style-loader": "^0.21.0",
     "tap-spec": "^5.0.0",
     "tape": "^4.9.0",
@@ -78,8 +80,7 @@
   },
   "standardx": {
     "globals": [
-      "browser",
-      "import"
+      "browser"
     ],
     "ignore": [
       "doc/",
@@ -89,6 +90,10 @@
     ]
   },
   "eslintConfig": {
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "allowImportExportEverywhere": true
+    },
     "rules": {
       "semi": "off",
       "space-before-function-paren": "off",
