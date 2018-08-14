@@ -2,8 +2,9 @@ import React from 'react';
 import ReactTable from 'react-table';
 
 import Link from '@instructure/ui-elements/lib/components/Link'
+import TruncateText from '@instructure/ui-elements/lib/components/TruncateText'
 
-export default class RecentVisitsTable extends React.Component {
+export default class PageTable extends React.Component {
   constructor(props) {
     super(props)
 
@@ -30,7 +31,7 @@ export default class RecentVisitsTable extends React.Component {
         Header: 'Time',
         id: 'id',
         accessor: d => (new Date(d.id).toLocaleTimeString()),
-        maxWidth: 150
+        maxWidth: 120
       }
     ]
 
@@ -39,12 +40,12 @@ export default class RecentVisitsTable extends React.Component {
         Header: 'Site',
         id: 'domain',
         accessor: d => d.domain,
-        Cell: row => (
+        Cell: row => (row.value ?
           <div key={row.value}>
             <Link href={'#/domains/' + row.value}>
               {row.value}
             </Link>
-          </div>),
+          </div> : null),
         width: 200
       })
     }
@@ -52,7 +53,17 @@ export default class RecentVisitsTable extends React.Component {
     columns.push({
       Header: 'Page',
       id: 'title',
-      accessor: d => d.title
+      accessor: d => d,
+      Cell: row => (row.value.url ?
+        (<div key={row.value.title}>
+          <Link href={row.value.url} target='_blank'>
+            <TruncateText>{row.value.title}</TruncateText>
+          </Link>
+        </div>): 
+        (<div key={row.value.title}>
+          <TruncateText>{row.value.title}</TruncateText>
+        </div>)
+      )
     })
 
     if (this.props.showInference) {
@@ -60,12 +71,14 @@ export default class RecentVisitsTable extends React.Component {
         Header: 'Inference',
         id: 'infer',
         accessor: d => d.inference,
-        Cell: row => (
+        Cell: row => (row.value ?
           <div key={row.value}>
             <Link href={'#/inferences/' + row.value}>
               {row.value}
             </Link>
-          </div>)
+          </div> : null
+        ),
+        width: 300
       })
     }
 
