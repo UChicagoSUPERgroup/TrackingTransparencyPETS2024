@@ -165,7 +165,10 @@ async function getInferencesByTracker(args) {
     .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC);
   query = args.count ? query.limit(args.count) : query;
   const res = await query.exec();
-  return res.map(x => x.Inferences);
+  return res.map(x => ({
+    inference: x.Inferences['inference'],
+    count: x.Inferences['COUNT(inference)']
+  }))
 }
 
 /** gets all inferences
