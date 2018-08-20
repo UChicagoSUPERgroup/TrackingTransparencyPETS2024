@@ -209,6 +209,7 @@ function setup() {
   window.setUserParams=setUserParams;
   window.logData=logData;
   window.getUserParams=getUserParams;
+  window.hashit=hashit
 }
 
 export default {firstInstall, setup}
