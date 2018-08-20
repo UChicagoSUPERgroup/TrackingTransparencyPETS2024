@@ -1,17 +1,23 @@
-import React from 'react';
-import { Route, Link, Switch } from 'react-router-dom';
+import React from 'react'
+import { Route } from 'react-router-dom'
 
-import Heading from '@instructure/ui-elements/lib/components/Heading'
-import Text from '@instructure/ui-elements/lib/components/Text'
+import Button from '@instructure/ui-buttons/lib/components/Button'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
-import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
+import Heading from '@instructure/ui-elements/lib/components/Heading'
+import Link from '@instructure/ui-elements/lib/components/Link'
+import IconArrowOpenEnd from '@instructure/ui-icons/lib/Solid/IconArrowOpenEnd'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
+import NumberInput from '@instructure/ui-forms/lib/components/NumberInput'
+import Text from '@instructure/ui-elements/lib/components/Text'
+import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
+
+import TrackerSummary from './TrackerSummary'
+import TTPanel from '../components/TTPanel'
+import logging from '../dashboardLogging'
 
 import ReactTable from 'react-table'
-import '../../../node_modules/react-table/react-table.css';
-import logging from '../dashboardLogging';
 
 import {
   FlexibleWidthXYPlot,
@@ -19,10 +25,11 @@ import {
   YAxis,
   HorizontalGridLines,
   VerticalGridLines,
-  HorizontalBarSeries
-} from 'react-vis';
+  HorizontalBarSeries,
+  Hint
+} from 'react-vis'
 
-import TrackerDetails from './TrackerDetailPage';
+import TrackerDetails from './TrackerDetailPage'
 
 const TrackerTable = (data) => {
   const pagecountTooltipText = (
@@ -68,7 +75,7 @@ const TrackerTable = (data) => {
         accessor: 'name',
         Cell: row => (
           <div key={row.value}>
-            <Link className = "trackerTableLinkTrackersPage" to={{pathname: '/trackers/' + row.value}}>
+            <Link className='trackerTableLinkTrackersPage' to={{pathname: '/trackers/' + row.value}}>
               {row.value}
             </Link>
           </div>)
@@ -89,108 +96,122 @@ const TrackerTable = (data) => {
         accessor: 'percent',
         Cell: row =>
           <div style={{textAlign: 'right'}}>
-            {((Math.round(row.value) / 100).toString() + ' %')}
+            {row.value.toFixed(2) + ' %'}
           </div>}
       ]}
-      //defaultPageSize={20}
-      className="-striped -highlight"
+      // defaultPageSize={20}
+      className='-striped -highlight'
     />
-  );
+  )
 }
 
 export default class TrackerOverview extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
     }
   }
 
-
-  async componentDidMount() {
-    //this.logLoad();
+  async componentDidMount () {
+    // this.logLoad();
   }
 
-  render() {
-    return(
+  render () {
+    return (
       <div>
-        <Route path={`${this.props.match.url}/:name`}  component={TrackerDetails}/>
-        <Route exact path={this.props.match.url} component={TrackersList}/>
+        <Route path={`${this.props.match.url}/:name`} component={TrackerDetails} />
+        <Route exact path={this.props.match.url} component={TrackersList} />
       </div>
-    );
+    )
   }
 }
 
 class TrackersList extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
-      trackers: []
+      trackers: [],
+      graphCount: 20
     }
-    //this.logLoad = this.logLoad.bind(this);
+    // this.logLoad = this.logLoad.bind(this);
   }
 
-  async getTrackers() {
-    const background = await browser.runtime.getBackgroundPage();
-    const numTrackers = await background.queryDatabase('getNumberOfTrackers', {});
-    const numPages = await background.queryDatabase('getNumberOfPages', {});
-    const trackers = await background.queryDatabase('getTrackers', {count: 20});
-    const allTrackers = await background.queryDatabase('getTrackers', {});
+  async getTrackers () {
+    const background = await browser.runtime.getBackgroundPage()
+    const numTrackers = await background.queryDatabase('getNumberOfTrackers', {})
+    const numPages = await background.queryDatabase('getNumberOfPages', {})
+    const trackers = await background.queryDatabase('getTrackers', {})
+
+    let topTracker = ''
+    let topPercent = 0
+    let graphData = []
+    let allData = []
+    let tempPercent = 0
+
+    topTracker = trackers[0]['tracker']
+    topPercent = ((trackers[0]['COUNT(tracker)'] / numPages) / 100).toFixed(2)
+    for (let val in trackers) {
+      const name = trackers[val]['tracker']
+      const pageCount = trackers[val]['COUNT(tracker)']
+      const percent = 100 * pageCount / numPages
+      graphData.unshift({
+        y: name,
+        x: pageCount
+      })
+      allData.push({
+        name: name,
+        count: pageCount,
+        percent: percent
+      })
+    }
 
     this.setState({
       trackers: trackers,
-      allTrackers: allTrackers,
+      graphDataAll: graphData,
+      graphData: graphData.slice(-this.state.graphCount),
+      allData: allData,
       numTrackers: numTrackers,
       numPages: numPages
-    });
-    //console.log(this.state.trackers);
-    //console.log(this.state.allTrackers);
+    })
+    // console.log(this.state.trackers);
+    // console.log(this.state.allTrackers);
   }
 
-  async componentDidMount() {
-    this.getTrackers();
+  async componentDidMount () {
+    this.getTrackers()
 
-    const background = await browser.runtime.getBackgroundPage();
-    const numTrackersShown = await background.queryDatabase('getNumberOfTrackers', {});
-    sendDict = {
-      'numTrackersShown':numTrackersShown
+    const background = await browser.runtime.getBackgroundPage()
+    const numTrackersShown = await background.queryDatabase('getNumberOfTrackers', {})
+    let sendDict = {
+      'numTrackersShown': numTrackersShown
     }
-    logging.logLoad(activityType, sendDict);
+    let activityType = 'load dashboard tracker summary page'
+    logging.logLoad(activityType, sendDict)
   }
 
-  render() {
-    const {trackers, allTrackers, numTrackers, numPages} = this.state;
-    let topTracker = '';
-    let topPercent = 0;
-    let data = [];
-    let allData = [];
-    let tempPercent = 0;
+  updateGraphCount (num) {
+    const { graphDataAll, graphCount } = this.state
+    this.setState({
+      graphCount: num,
+      graphData: graphDataAll.slice(-num)
+    })
+  }
 
-    for (let val in trackers){
-      data.push({
-        y: trackers[val]['tracker'],
-        x: 100 * trackers[val]['COUNT(tracker)'] / numPages,
-      });
-      topTracker = trackers[0]['tracker'];
-      topPercent = Math.round(10000 * trackers[0]['COUNT(tracker)'] / numPages) / 100;
-    }
-    data.reverse();
-    for (let val in allTrackers){
-      tempPercent = 10000 * allTrackers[val]['COUNT(tracker)'] / numPages;
-      allData.push({
-        name: allTrackers[val]['tracker'],
-        count: allTrackers[val]['COUNT(tracker)'],
-        percent: tempPercent
-      });
+  render () {
+    const {graphData, allData, numTrackers, numPages, hovered, graphSize, selectedTracker} = this.state
+
+    if (!allData) {
+      return 'Loading…'
     }
 
-    return(
+    return (
       <div>
         <Heading level='h1'>Who is tracking you?</Heading>
 
         <Text>
           <p><strong>{numTrackers} trackers</strong> have collected information about you based on your browsing history. Your most
-            frequently encountered tracker is <strong>{topTracker}</strong> which was
-            present on <em>{topPercent}%</em> of
+            frequently encountered tracker is <strong>{allData[0].name}</strong> which was
+            present on <em>{allData[0].percent.toFixed(2)}%</em> of
             the pages you visited.
             Here are your 20 most frequently encountered trackers:</p>
         </Text>
@@ -200,23 +221,61 @@ class TrackersList extends React.Component {
               <FlexibleWidthXYPlot
                 yType={'ordinal'}
                 height={800}
-                margin={{left: 100, right: 10, top: 10, bottom: 50}}>
+                margin={{left: 100}}
+                onMouseLeave={() => this.setState({hovered: null})}
+              >
                 <HorizontalGridLines />
                 <VerticalGridLines />
                 <YAxis
                   height={200}
-                  tickLabelAngle={0} />
+                  tickLabelAngle={0}
+                />
                 <XAxis
-                  tickFormat={v => v.toString() + '%'} />
-                <HorizontalBarSeries data={data} color="#8F3931"/>
+                  tickFormat={v => (v / numPages * 100).toFixed(2) + '%'}
+                />
+                {hovered && <Hint
+                  value={hovered}>
+                  <div className='rv-hint__content'>
+                    <div>
+                      <strong>{hovered.y}</strong><br />
+                      Present on {hovered.x} pages<br />
+                      ({(hovered.x / numPages * 100).toFixed(2)}% of all pages)
+                    </div>
+                  </div>
+                </Hint>}
+                <HorizontalBarSeries
+                  data={graphData}
+                  color='#8F3931'
+                  onValueMouseOver={(datapoint) => {
+                    this.setState({hovered: datapoint})
+                  }}
+                  onValueClick={(datapoint) => {
+                    this.setState({selectedTracker: datapoint})
+                  }}
+                />
               </FlexibleWidthXYPlot>
+              <Button size='small' onClick={() => this.updateGraphCount(undefined)}>See all trackers…</Button>
             </GridCol>
             <GridCol width={6}>
-              {TrackerTable(allData)}
+              <TTPanel textAlign='start'>
+                {!selectedTracker && <Text weight='bold'>The graph to the left shows the trackers that we detected on the pages you visited. Click a bar on the graph to learn more about that tracker.</Text>}
+                {selectedTracker && <div>
+                  <TrackerSummary tracker={selectedTracker.y} numPages={selectedTracker.x} />
+                  <Link
+                    className='trackerPageSelected-Tracker'
+                    href={'#/trackers/' + selectedTracker.y}
+                    icon={IconArrowOpenEnd}
+                    iconPlacement='end'
+                  >
+                    Learn more
+                  </Link>
+                </div>}
+              </TTPanel>
+              {/* TrackerTable(allData) */}
             </GridCol>
           </GridRow>
         </Grid>
       </div>
-    );
+    )
   }
 }

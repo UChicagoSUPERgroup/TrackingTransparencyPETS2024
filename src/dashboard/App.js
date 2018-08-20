@@ -6,6 +6,7 @@ import {LinkContainer} from 'react-router-bootstrap';
 
 import './bootstrap/css/bootstrap.css'
 import '../../node_modules/react-vis/dist/style.css';
+import '../../node_modules/react-table/react-table.css'
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';

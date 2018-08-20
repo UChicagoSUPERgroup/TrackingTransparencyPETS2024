@@ -72,10 +72,12 @@ const SmallGraph = ({ data, xTitle }) => {
         height={200}
         tickLabelAngle={0}
       />
-      
+      <VerticalBarSeries
+        data={data}
+        color='#8F3931'
+      />
       <CustomAxisLabel title={'Pages'}/>
       <CustomAxisLabel title={xTitle} xAxis yShift={2}/>
-      <VerticalBarSeries data={data} color="#8F3931"/>
     </FlexibleWidthXYPlot>
   )
 
