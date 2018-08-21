@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Tracking Transparency",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "applications": {
         "gecko": {
             "id": "trackingtransparency@super.cs.uchicago.edu"
