@@ -71,9 +71,8 @@ module.exports = {
   },
   optimization: {
     splitChunks: {
-      chunks: 'all',
+      chunks: 'all'
     },
-    occurrenceOrder: true
   },
   plugins: [
     new CleanWebpackPlugin(['extension/dist']),

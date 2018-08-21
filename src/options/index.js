@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom'
 
 import theme from '@instructure/ui-themes/lib/canvas'
 
-import TTOptions from './TTOptions'
 import { themeOverrides } from '../colors'
+
+import {
+  SettingsPage
+} from '../dashboard/loadable'
 
 theme.use({
   overrides: themeOverrides
 })
 
-ReactDOM.render(<TTOptions />, document.getElementById('root'))
+ReactDOM.render(<SettingsPage />, document.getElementById('root'))

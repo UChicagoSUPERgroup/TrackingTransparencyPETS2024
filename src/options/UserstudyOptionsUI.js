@@ -7,7 +7,7 @@ import RadioInput from '@instructure/ui-forms/lib/components/RadioInput'
 
 import setUserstudyCondition from './userstudy'
 
-export default class TTOptions extends React.Component {
+export default class UserstudyOptionsUI extends React.Component {
   constructor (props) {
     super(props)
     this.state = {

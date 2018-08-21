@@ -19,16 +19,19 @@ import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 import TTBreadcrumbs from './components/TTBreadcrumbs'
 import {Home, WaitingDataHome} from './Home';
 import IntroModal from './IntroModal';
-import InferenceOverview from './inferences/InferenceOverview';
-import TrackerOverview from './trackers/TrackerOverview';
-import FirstPartyOverview from  './sites/FirstPartyOverview';
-import ActivityOverview from './activity/ActivityOverview';
-import TakeActionPage from './TakeAction';
-import InfoPage from './Info';
-import SettingsPage from './Settings'
-import DebugPage from './Debug';
-import LightbeamWrapper from './LightbeamWrapper';
 import logging from './dashboardLogging';
+
+import {
+  Trackers,
+  Inferences,
+  Sites,
+  Activity,
+  DebugPage,
+  InfoPage,
+  SettingsPage,
+  LightbeamWrapper
+  // TakeActionPage
+} from './loadable'
 
 import tt from '../helpers';
 import { themeOverrides } from '../colors'
@@ -154,10 +157,10 @@ The code for logclick logs ALL the click in every single page.
 
             {enoughData && <div>
               <Route exact path="/" component={Home}/>
-              {!hideInferenceContent && <Route path="/inferences" component={InferenceOverview}/>}
-              {!hideTrackerContent && <Route path="/trackers" component={TrackerOverview}/>}
-              <Route path="/domains" component={FirstPartyOverview}/>
-              <Route path="/activity" component={ActivityOverview}/>
+              {!hideInferenceContent && <Route path="/inferences" component={Inferences}/>}
+              {!hideTrackerContent && <Route path="/trackers" component={Trackers}/>}
+              <Route path="/domains" component={Sites}/>
+              <Route path="/activity" component={Activity}/>
               {showLightbeam && <Route path="/lightbeam" component={LightbeamWrapper}/>}
               {/*<Route path="/takeaction" component={TakeActionPage}/>*/}
             </div>}

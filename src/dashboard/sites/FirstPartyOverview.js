@@ -11,10 +11,6 @@ import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
-import FirstPartyDetails from './FirstPartyDetails';
-
-// import { LinkContainer } from 'react-router-bootstrap';
-
 const RecentTable = (data) => {
   let numEntries = data ? data.length: 0
   return (
@@ -180,36 +176,31 @@ export default class FirstPartyOverview extends React.Component {
 
     return(
       <div>
-        <Route path={`${this.props.match.url}/:name`}  component={FirstPartyDetails}/>
-        <Route exact path={this.props.match.url} render={() => (
-          <div>
-            <Heading level='h1'>Where were you tracked?</Heading>
-            <Text>
-              <p>Since installing Tracking Transparency, you have visited {numPages} different pages on {numD} sites.</p>
-              <p>Trackers see which sites you visited through a variety of tracking methods, including third-party cookies, tracking pixels, and browser fingerprinting. When a tracker sees that a single user has visited multiple sites, they can use that activity to link together multiple inferences.</p>
-              <p>Tracker activity was detected on <strong>{percentTrackedSites}% of the sites you have visited. </strong></p>
-            </Text>
-            <Grid startAt='large'>
-              <GridRow>
-                <GridCol width={3}>
-                  <div>
-                    {RecentTable(this.state.recent)}
-                  </div>
-                </GridCol>
-                <GridCol width={6}>
-                  <div>
-                    {ManyTrackersTable(this.state.manyTrackers)}
-                  </div>
-                </GridCol>
-                <GridCol width={3}>
-                  <div>
-                    {NoTrackerTable(this.state.noTrackers)}
-                  </div>
-                </GridCol>
-              </GridRow>
-            </Grid>
-          </div>
-        )}/>
+        <Heading level='h1'>Where were you tracked?</Heading>
+        <Text>
+          <p>Since installing Tracking Transparency, you have visited {numPages} different pages on {numD} sites.</p>
+          <p>Trackers see which sites you visited through a variety of tracking methods, including third-party cookies, tracking pixels, and browser fingerprinting. When a tracker sees that a single user has visited multiple sites, they can use that activity to link together multiple inferences.</p>
+          <p>Tracker activity was detected on <strong>{percentTrackedSites}% of the sites you have visited. </strong></p>
+        </Text>
+        <Grid startAt='large'>
+          <GridRow>
+            <GridCol width={3}>
+              <div>
+                {RecentTable(this.state.recent)}
+              </div>
+            </GridCol>
+            <GridCol width={6}>
+              <div>
+                {ManyTrackersTable(this.state.manyTrackers)}
+              </div>
+            </GridCol>
+            <GridCol width={3}>
+              <div>
+                {NoTrackerTable(this.state.noTrackers)}
+              </div>
+            </GridCol>
+          </GridRow>
+        </Grid>
       </div>
     );
   }

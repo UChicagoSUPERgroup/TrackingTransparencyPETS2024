@@ -8,7 +8,7 @@ import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Button from '@instructure/ui-buttons/lib/components/Button'
 
-import TTOptions from '../options/TTOptions'
+import UserstudyOptionsUI from '../options/UserstudyOptionsUI'
 import logging from './dashboardLogging'
 
 // function onCanceled(error) {
@@ -59,7 +59,7 @@ export class SettingsPage extends React.Component {
     return (
       <div>
         <Heading level='h1' margin='0 0 medium 0'>Settings</Heading>
-        <TTOptions />
+        <UserstudyOptionsUI />
         <Text>
           {resetInfo}
           {uninstallInfo}

@@ -29,8 +29,6 @@ import {
   Hint
 } from 'react-vis'
 
-import TrackerDetails from './TrackerDetailPage'
-
 const TrackerTable = (data) => {
   const pagecountTooltipText = (
     <div style={{width: 160}}>
@@ -106,27 +104,6 @@ const TrackerTable = (data) => {
 }
 
 export default class TrackerOverview extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-    }
-  }
-
-  async componentDidMount () {
-    // this.logLoad();
-  }
-
-  render () {
-    return (
-      <div>
-        <Route path={`${this.props.match.url}/:name`} component={TrackerDetails} />
-        <Route exact path={this.props.match.url} component={TrackersList} />
-      </div>
-    )
-  }
-}
-
-class TrackersList extends React.Component {
   constructor (props) {
     super(props)
     this.state = {

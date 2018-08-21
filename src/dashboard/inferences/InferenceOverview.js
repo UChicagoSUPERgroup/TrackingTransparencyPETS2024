@@ -14,7 +14,6 @@ import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 import IconArrowOpenEnd from '@instructure/ui-icons/lib/Solid/IconArrowOpenEnd'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
-import InferenceDetails from './InferenceDetails'
 import InferenceSummary from './InferenceSummary'
 import InferencesSunburst from './InferencesSunburst'
 import TTPanel from '../components/TTPanel'
@@ -216,48 +215,42 @@ export default class InferencesOverview extends React.Component {
 
     return (
       <div>
-        <Route path={`${this.props.match.url}/:name`} component={InferenceDetails} />
-        <Route exact path={this.props.match.url} render={() => (
-          <div>
-            <Heading level='h1'>What could they have learned?</Heading>
-            <Text>
-              <p>Trackers collect information about the pages you visit in order to make guesses about things you might be interested in. These guesses, or inferences, are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{numInferences} topics</strong> that trackers might have inferred you are interested in.</p>
-              {inferences && inferences.length >= 3 && <p> {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)} were among the most frequent topics that our algorithm determined the pages you visited recently are about.</p>}
-            </Text>
+        <Heading level='h1'>What could they have learned?</Heading>
+        <Text>
+          <p>Trackers collect information about the pages you visit in order to make guesses about things you might be interested in. These guesses, or inferences, are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{numInferences} topics</strong> that trackers might have inferred you are interested in.</p>
+          {inferences && inferences.length >= 3 && <p> {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)} were among the most frequent topics that our algorithm determined the pages you visited recently are about.</p>}
+        </Text>
 
-            <Grid startAt='large'>
-              <GridRow>
-                <GridCol>
-                  <TTPanel textAlign='center'>
-                    <Heading level ='h2'>The Inference Wheel</Heading>
-                    {/* <Text>This diagram shows some of the inferences that may have been made about your browsing and their frequency. Click on a piece of the chart to see more details.</Text> */}
-                    {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference} />}
-                    {filters}
-                  </TTPanel>
-                </GridCol>
-                <GridCol>
-                  <TTPanel textAlign='start'>
-                    {!selectedInference && <Text className='selected-inference' weight='bold'>
-                      The Inference Wheel shows inferences that trackers may have made about you, based on your browsing activity. Click a slice of the wheel to see more details. </Text>}
-                    {selectedInference && <div>
-                      <InferenceSummary inference={selectedInference} />
-                      <Link
-                        className='inferencePageSelected-Inference'
-                        href={'#/inferences/' + selectedInference}
-                        icon={IconArrowOpenEnd}
-                        iconPlacement='end'
-                      >
-                        Learn more
-                      </Link>
-                    </div>}
-                  </TTPanel>
-                </GridCol>
-              </GridRow>
-            </Grid>
-          </div>
-        )} />
-
-      </div>
+        <Grid startAt='large'>
+          <GridRow>
+            <GridCol>
+              <TTPanel textAlign='center'>
+                <Heading level ='h2'>The Inference Wheel</Heading>
+                {/* <Text>This diagram shows some of the inferences that may have been made about your browsing and their frequency. Click on a piece of the chart to see more details.</Text> */}
+                {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference} />}
+                {filters}
+              </TTPanel>
+            </GridCol>
+            <GridCol>
+              <TTPanel textAlign='start'>
+                {!selectedInference && <Text className='selected-inference' weight='bold'>
+                  The Inference Wheel shows inferences that trackers may have made about you, based on your browsing activity. Click a slice of the wheel to see more details. </Text>}
+                {selectedInference && <div>
+                  <InferenceSummary inference={selectedInference} />
+                  <Link
+                    className='inferencePageSelected-Inference'
+                    href={'#/inferences/' + selectedInference}
+                    icon={IconArrowOpenEnd}
+                    iconPlacement='end'
+                  >
+                    Learn more
+                  </Link>
+                </div>}
+              </TTPanel>
+            </GridCol>
+          </GridRow>
+        </Grid>
+    </div>
     )
   }
 }
