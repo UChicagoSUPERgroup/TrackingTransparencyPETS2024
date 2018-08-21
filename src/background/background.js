@@ -112,12 +112,10 @@ async function updateMainFrameInfo(details) {
    * store in object to identify with tab */
   try {
     const tab = await browser.tabs.get(details.tabId);
-    //console.log(tab)
     if (tab.hasOwnProperty('favIconUrl')){
       recordNewPage(details.tabId, details.url, tab.title, tab.favIconUrl);
     }
     else{
-      //console.log("no favicon")
       recordNewPage(details.tabId, details.url, tab.title, '');
     }
   } catch (err) {
@@ -132,15 +130,12 @@ fetch the favicon data and store it in base 64 format and return that data
 */
 
 async function fetchSetGetFavicon(url, faviconurl){
-  //console.log(url)
-  //console.log(faviconurl)
   let x = 'favicon_'+url
   let checkFav = await browser.storage.local.get({[x]: 'no favicon'});
   if(checkFav[x]!='no favicon'){
     //already stored favicon
     //and the favicon is same as before
     if(checkFav[x]['faviconurl']==faviconurl){
-      //console.log(checkFav[x]["favicondata"]);
       return checkFav[x]['favicondata'];
     }
   }
@@ -162,8 +157,6 @@ async function fetchSetGetFavicon(url, faviconurl){
     var fileReader = new FileReader();
     fileReader.onloadend = async function() {
       // fileReader.result is a data-URL (string) in base 64 format
-      //console.log(faviconurl)
-      //console.log(fileReader.result);
       x = 'favicon_'+url
       await browser.storage.local.set(
         {
@@ -179,7 +172,6 @@ async function fetchSetGetFavicon(url, faviconurl){
   };
   favicon.send();
   checkFav = await browser.storage.local.get({[x]: 'no favicon'});
-  //console.log(checkFav[x]["favicondata"]);
   return checkFav[x]['favicondata'];
 }
 window.fetchSetGetFavicon=fetchSetGetFavicon;
@@ -195,9 +187,7 @@ Always check if the returned base64 url is empty.
 async function getFavicon(url) {
   let x = 'favicon_'+url
   let checkFav = await browser.storage.local.get({[x]: 'no favicon'});
-  //console.log(checkFav)
   if(checkFav[x]!='no favicon'){
-    //console.log(checkFav[x]["favicondata"])
     return checkFav[x]['favicondata'];
   }
   return ''
@@ -251,7 +241,6 @@ function recordNewPage(tabId, url, title, faviconUrl) {
  */
 function clearTabData(tabId) {
   if (!tabData[tabId]) {
-    // console.log("we tried to clear tab data for a tab we didn't have any data about");
     return;
   }
 
@@ -380,8 +369,6 @@ window.resetAllData = resetAllData;
  * @param  {Object} m.data - Content of the message
  */
 function onDatabaseWorkerMessage(m) {
-  // console.log('Message received from database worker', m);
-
   if (m.data.type === 'database_query_response') {
 
     let p;
@@ -400,8 +387,7 @@ function onDatabaseWorkerMessage(m) {
     }
 
     if (!p) {
-      console.log(m);
-      throw new Error('unable to resolve promise for database query response');
+      throw new Error('Unable to resolve promise for database query response. Message was', m);
     }
     p.resolve(m.data);
 
@@ -418,7 +404,6 @@ function onDatabaseWorkerMessage(m) {
  * @param  {Object} m.data.trackers - Array of trackers, given by sender
  */
 function onTrackersWorkerMessage(m) {
-  // console.log('Message received from trackers worker', m);
   if (m.data.type === 'trackers') {
     pendingTrackerMessages[m.data.id](m.data.trackers);
   }
@@ -426,12 +411,9 @@ function onTrackersWorkerMessage(m) {
 
 
 async function onInferencingWorkerMessage(m) {
-  console.log('Message received from inferencing worker', m);
   const tabId = m.data.info.tabId;
   if (m.data.type === 'page_inference') {
-    console.log(m.data.info.inference)
     tabData[tabId].inference = m.data.info.inference;
-    console.log(tabData[tabId].inference)
   }
   const showOverlay = await getOption('showOverlay')
   if (showOverlay === true) {

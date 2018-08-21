@@ -72,13 +72,11 @@ export default class InferencesOverview extends React.Component {
   async handleSensitivitySelection (event) {
     let cats
     const key = event.target.value
-    console.log('key is', key)
 
     const background = await browser.runtime.getBackgroundPage()
     const sensitiveCats = (await import(/* webpackChunkName: "data/sensitiveCats" */'../../data/categories_comfort_list.json')).default
 
     if (key === 'all-sensitive') {
-      console.log('all sensitive')
       // reset to default
       this.setState({
         inferences: this.topInferences,
@@ -105,7 +103,6 @@ export default class InferencesOverview extends React.Component {
         'COUNT(inference)': counts[i]
       }
     })
-    console.log(data)
 
     this.setState({
       inferences: data,
@@ -132,7 +129,6 @@ export default class InferencesOverview extends React.Component {
     //   afterDate = Date.now() - 86400000 * 7 * 30
     }
 
-    console.log(key)
     const data = await background.queryDatabase('getInferences', {count: this.inferenceCount, afterDate: afterDate})
 
     this.setState({

@@ -67,7 +67,6 @@ export class Home extends React.Component {
     const numInferences = background.queryDatabase('getNumberOfInferences', {})
     const recentInferences = background.queryDatabase('getInferencesByTime', args)
     const recentDomains = background.queryDatabase('getDomains', args)
-    console.log(recentDomains)
 
     // we use promises here instead of async/await because queries are not dependent on each other
     numPages.then(n => this.setState({numPages: n}))

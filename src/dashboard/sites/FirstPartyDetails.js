@@ -162,7 +162,6 @@ export default class FirstPartyDetails extends React.Component {
   }
 
   async logPopstate(){
-    //console.log('In the log leave page')
     const background = await browser.runtime.getBackgroundPage();
     let userParams = await browser.storage.local.get({
       usageStatCondition: 'no monster',
@@ -226,7 +225,6 @@ export default class FirstPartyDetails extends React.Component {
       tracker_count: tracker_count ? tracker_count[0]['Trackers']['COUNT(tracker)'] : 0,
       sensitive_inferred: {'inferred': sensitive_inferred}
     })
-    console.log(this.state.tracker_count)
 
     if (this.refs.content) {
       let contentRect = this.refs.content.getBoundingClientRect();
@@ -253,7 +251,6 @@ export default class FirstPartyDetails extends React.Component {
       max = (inferences_q[property] > max) ? inferences_q[property] : max
       inferences.push({'text': property, 'value': inferences_q[property]})
     }
-    console.log(inferences)
 
     let size = this.state.divsize
     let height = size ? size.height : 0

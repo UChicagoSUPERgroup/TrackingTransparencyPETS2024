@@ -52,8 +52,7 @@ function onDatabaseWorkerMessage(m) {
     }
 
     if (!p) {
-      console.log(m);
-      throw new Error('unable to resolve promise for database query response');
+      throw new Error('Unable to resolve promise for database query response. Message was', m);
     }
     p.resolve(m.data);
 

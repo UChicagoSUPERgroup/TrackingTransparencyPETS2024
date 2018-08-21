@@ -126,7 +126,6 @@ export default class InferencesSunburst extends React.Component {
       res[row] = true
       return res
     }, {})
-    // console.log(path, pathAsMap)
     const newVal = path[path.length - 1]
     this.setState({
       finalValue: newVal,

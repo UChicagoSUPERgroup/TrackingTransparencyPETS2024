@@ -31,14 +31,12 @@ export default class UserstudyOptionsUI extends React.Component {
   fieldChangeHandler (e) {
     let name = e.target.name
     let state = e.target.value
-    console.log(name, state)
     this.setOption(name, state)
   }
 
   checkboxChangeHandler (e) {
     let name = e.target.value
     let state = e.target.checked
-    console.log(name, state)
     this.setOption(name, state)
   }
 
@@ -56,7 +54,6 @@ export default class UserstudyOptionsUI extends React.Component {
   async loadOptions () {
     const store = await browser.storage.local.get('options')
     const options = store.options
-    console.log(options)
     this.setState(options)
   }
 

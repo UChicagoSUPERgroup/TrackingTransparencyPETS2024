@@ -150,8 +150,6 @@ export default class TrackerOverview extends React.Component {
       numTrackers: numTrackers,
       numPages: numPages
     })
-    // console.log(this.state.trackers);
-    // console.log(this.state.allTrackers);
   }
 
   async componentDidMount () {

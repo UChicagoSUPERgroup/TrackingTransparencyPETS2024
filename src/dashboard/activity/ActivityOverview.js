@@ -42,7 +42,6 @@ export default class ActivityOverview extends React.Component {
     let activityType='load dashboard recent activity page';
     logging.logLoad(activityType, {});
     weektimestamps.then(ts => {
-      console.log(ts)
       const times = ts.map(x => (
         (new Date(x.id))
       ));
@@ -62,7 +61,6 @@ export default class ActivityOverview extends React.Component {
       tempDate.getMonth(), tempDate.getDate(), hourStart);
     let args = {startTime: startDate.getTime(),
       endTime: startDate.getTime() + millisecondsInHour};
-    console.log(args);
     return background.queryDatabase('getPagesByTime', args);
   }
 
@@ -79,7 +77,6 @@ export default class ActivityOverview extends React.Component {
     let today = (new Date(Date.now())).getDay();
     i.y = (i.y + today) % 7;
     let pagesByTime = this.getByTime(i.y, i.x);
-    console.log(pagesByTime)
     pagesByTime.then(ps => {
       this.setState({
         recent: i,
