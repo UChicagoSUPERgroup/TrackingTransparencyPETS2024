@@ -17,8 +17,10 @@ const RecentTable = (data) => {
     <ReactTable
       data={data}
       columns={[
-        {Header: 'Most Recently Visited Sites',
-          accessor: 'DISTINCT(domain)',
+        {
+          id: 'most-recently-visited',
+          Header: 'Most recently visited sites',
+          accessor: x => x,
           Cell: row => (
             <div key={row.value}>
               <Link className='domainTableLinkTrackersPage' to={{pathname: '/domains/' + row.value}}>
@@ -41,7 +43,7 @@ const NoTrackerTable = (data) => {
     <ReactTable
       data={data}
       columns={[
-        {Header: 'Sites Without Trackers (' + numEntries + ')',
+        {Header: 'Sites without trackers (' + numEntries + ')',
           accessor: d => d,
           id: 'domain',
           Cell: row => (
@@ -53,7 +55,6 @@ const NoTrackerTable = (data) => {
         }
       ]}
       defaultPageSize={10}
-      // showPagination={false}
       showPageJump={false}
       showPageSizeOptions={false}
       className="-striped -highlight"
@@ -84,7 +85,7 @@ const ManyTrackersTable = (data) => {
     <ReactTable
       data={data}
       columns={[
-        {Header: 'Sites With the Most Trackers',
+        {Header: 'Sites with the most trackers',
           accessor: d => d.Pages.domain,
           id: 'domain',
           Cell: row => (
@@ -96,7 +97,7 @@ const ManyTrackersTable = (data) => {
         },
         {Header: h => (
           <div style={{textAlign: 'center'}}>
-            Unique Trackers {uniquetrackerTooltip}
+            Unique trackers {uniquetrackerTooltip}
           </div>),
           accessor: d => d.Trackers['COUNT(DISTINCT(tracker))'],
           id: 'trackers',
@@ -132,19 +133,18 @@ export default class FirstPartyOverview extends React.Component {
     let now = new Date(Date.now()).getTime()
     let args = {count: 100, endTime: now}
 
-    const recent = background.queryDatabase('getDomainsByTime', args);
+    const numPages = background.queryDatabase('getNumberOfPages', {});
+    const numDomains = background.queryDatabase('getNumberOfDomains', {});
+    numPages.then(n => this.setState({numPages: n}));
+    numDomains.then(n => this.setState({numDomains: n}));
+
+    const recent = background.queryDatabase('getDomains', args);
     const manyTrackers = background.queryDatabase('getDomainsByTrackerCount', args)
     const noTrackers = background.queryDatabase('getDomainsNoTrackers', {})
-    const numPages = background.queryDatabase('getNumberOfPages', {});
-    const numDomainsNoTrackers = background.queryDatabase('getDomainsNoTrackers', {});
-    const numDomains = background.queryDatabase('getDomains', {});
 
     recent.then(n => this.setState({recent: n}));
     manyTrackers.then(n => this.setState({manyTrackers: n}));
     noTrackers.then(n => this.setState({noTrackers: n}));
-    numPages.then(n => this.setState({numPages: n}));
-    numDomainsNoTrackers.then(n => this.setState({numDomainsNoTrackers: n}));
-    numDomains.then(n => this.setState({numDomains: n}));
 
   }
 
@@ -167,18 +167,17 @@ export default class FirstPartyOverview extends React.Component {
   }
 
   render() {
-    const {numPages, numDomainsNoTrackers, numDomains} = this.state;
+    const {numPages, noTrackers, numDomains} = this.state;
 
-    let numDNT = numDomainsNoTrackers ? numDomainsNoTrackers.length : 0;
-    let numD = numDomains ? numDomains.length : 0;
+    let numDNT = noTrackers ? noTrackers.length : NaN;
 
-    let percentTrackedSites =(((numD - numDNT) / numD) * 100).toFixed(1);
+    let percentTrackedSites =(((numDomains - numDNT) / numDomains) * 100).toFixed(1);
 
     return(
       <div>
         <Heading level='h1'>Where were you tracked?</Heading>
         <Text>
-          <p>Since installing Tracking Transparency, you have visited {numPages} different pages on {numD} sites.</p>
+          <p>Since installing Tracking Transparency, you have visited {numPages} different pages on {numDomains} sites.</p>
           <p>Trackers see which sites you visited through a variety of tracking methods, including third-party cookies, tracking pixels, and browser fingerprinting. When a tracker sees that a single user has visited multiple sites, they can use that activity to link together multiple inferences.</p>
           <p>Tracker activity was detected on <strong>{percentTrackedSites}% of the sites you have visited. </strong></p>
         </Text>

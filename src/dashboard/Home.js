@@ -38,11 +38,10 @@ const domainList = (data) => {
     <List
       size='small'
     >
-      {data.map(function (dataValue) {
-        let key = dataValue['DISTINCT(domain)']
-        return (<ListItem key={key}>
-          <Link href={'#/domains/' + key}>
-            {key}
+      {data.map(val => {
+        return (<ListItem key={val}>
+          <Link href={'#/domains/' + val}>
+            {val}
           </Link>
         </ListItem>)
       })}
@@ -67,7 +66,7 @@ export class Home extends React.Component {
     const numTrackers = background.queryDatabase('getNumberOfTrackers', {})
     const numInferences = background.queryDatabase('getNumberOfInferences', {})
     const recentInferences = background.queryDatabase('getInferencesByTime', args)
-    const recentDomains = background.queryDatabase('getDomainsByTime', args)
+    const recentDomains = background.queryDatabase('getDomains', args)
     console.log(recentDomains)
 
     // we use promises here instead of async/await because queries are not dependent on each other

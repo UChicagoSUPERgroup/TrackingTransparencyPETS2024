@@ -27,54 +27,14 @@ function makeURL (Page) {
 /* used in dashboard */
 
 async function getAllData() {
-  let pages = await getAllPages();
-  let trackers = await getAllTrackers();
-  let inferences = await getAllInferences();
-  return {'pages': pages, 'trackers': trackers, 'inferences': inferences};
-}
-
-async function getAllPages() {
-  let query = ttDb.select()
-    .from(Pages)
-  return await query.exec();
-}
-
-async function getAllTrackers() {
-  let query = ttDb.select()
-    .from(Trackers)
-  return await query.exec();
-}
-
-async function getAllInferences() {
-  let query = ttDb.select()
-    .from(Inferences)
-  return await query.exec();
-}
-
-/** get domains by tracker count
- *
- * @param  {Object} args - arguments object
- * @param  {number} [args.count] - number of entries to return
- * @param  {number} [args.afterDate] - only include page visits after this date,
- *                                     given as an integer for number of milliseconds since 1/1/1970
- * @returns {Object} query result
- */
-async function getDomains(args) {
-  let sel = ttDb.select(Pages.domain, lf.fn.count(lf.fn.distinct(Trackers.tracker)))
-    .from(Trackers, Pages);
-  let where;
-  if (args.afterDate) {
-    where = sel.where(lf.op.and(
-      Pages.id.gte(args.afterDate),
-      Trackers.pageId.eq(Pages.id)
-    ))
-  } else {
-    where = sel.where(Trackers.pageId.eq(Pages.id))
+  let pages = ttDb.select().from(Pages).exec()
+  let trackers = ttDb.select().from(Trackers).exec()
+  let inferences = ttDb.select().from(Inferences).exec()
+  return {
+    pages: await pages, 
+    trackers: await trackers, 
+    inferences: await inferences
   }
-  let query = where.groupBy(Pages.domain)
-    .orderBy(lf.fn.count(lf.fn.distinct(Trackers.tracker)), lf.Order.DESC);
-  query = args.count ? query.limit(args.count) : query;
-  return await query.exec();
 }
 
 /** get trackers present on a given domain
@@ -127,22 +87,6 @@ async function getTrackers(args) {
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
 }
-
-/** gets all trackers in reverse order
- *
- * @param  {Object} args - arguments object
- * @param  {number} [args.count] - number of entries to return
- * @returns {Object} query result
- */
-async function getTrackersReverse(args) {
-  let query = ttDb.select(Trackers.tracker, lf.fn.count(Trackers.tracker))
-    .from(Trackers)
-    .groupBy(Trackers.tracker)
-    .orderBy(lf.fn.count(Trackers.tracker), lf.Order.ASC);
-  query = args.count ? query.limit(args.count) : query;
-  return await query.exec();
-}
-
 
 /** get inferences made by a specifc tracker
  *
@@ -263,20 +207,33 @@ async function getTimestamps(args) {
 }
 
 
-/** get domains by time window-
+/** get domains by time window
  *
  * @param  {Object} args - arguments object
+ * @param  {number} [args.startTime] - time start window
  * @param  {number} [args.endTime] - time end window
  * @param  {number} [args.count] - number of entries to return
  */
-async function getDomainsByTime(args) {
+async function getDomains(args) {
 
   let query = ttDb.select(lf.fn.distinct(Pages.domain))
     .from(Pages);
-  query = (args.endTime) ? query.where(Pages.id.lte(args.endTime)) : query;
+  if (args.startTime && args.endTime) {
+    query = query.where(
+      lf.op.and(
+        Pages.id.gte(args.startTime),
+        Pages.id.lte(args.endTime)
+      )
+    )
+  } else if (args.startTime) {
+    query = query.where(Pages.id.gte(args.startTime))
+  } else if (args.endTime) {
+    query = query.where(Pages.id.lte(args.endTime))
+  }
   query = query.orderBy(Pages.id, lf.Order.DESC);
   query = args.count ? query.limit(args.count) : query;
-  return await query.exec();
+  const res = await query.exec();
+  return res.map(x => x['DISTINCT(domain)']);
 }
 
 /** get inferences by time window-
@@ -452,6 +409,17 @@ async function getNumberOfInferences() {
   return (query[0])['COUNT(DISTINCT(inference))'];
 }
 
+/**
+ * get the total number of domains
+ *
+ * @returns {Integer} number of domains
+ */
+async function getNumberOfDomains() {
+  let query = await ttDb.select(lf.fn.count(lf.fn.distinct(Pages.domain)))
+    .from(Pages)
+    .exec();
+  return (query[0])['COUNT(DISTINCT(domain))'];
+}
 
 /**
  * Domain visits by tracker (i.e. TRACKERNAME knows you have been to the following sites)
@@ -524,8 +492,6 @@ async function getInferencesByDomain(args) {
  * @returns {Object} object in desired lighbeam format
  */
 async function lightbeam(args) {
-  // this is very inefficient code but is easier to hack together this way
-
   /* WE WANT TO RETURN
     {
       "www.firstpartydomain.com": {
@@ -550,7 +516,7 @@ async function lightbeam(args) {
     */
   let websites = {};
 
-  const domains = (await getDomains({afterDate: args.afterDate})).map(x => x['Pages']['domain']);
+  const domains = (await getDomains({startTime: args.afterDate}));
 
   await Promise.all(domains.map(async (domain) => {
     const trackers = (await getTrackersByDomain({domain: domain, afterDate: args.afterDate}))
@@ -624,21 +590,6 @@ async function getDomainsByTrackerCount(args) {
     .where(Trackers.pageId.eq(Pages.id))
     .groupBy(Pages.domain)
     .orderBy(lf.fn.count(lf.fn.distinct(Trackers.tracker)), lf.Order.DESC);
-  query = args.count ? query.limit(args.count) : query;
-  return await query.exec();
-}
-
-/**
- * gets visited pages
- *
- * @param {any} args
- * @returns {Object[]} pages visited
- */
-async function getPages(args) {
-  let query = ttDb.select()
-    .from(Pages, Trackers)
-    .where(Trackers.pageId.eq(Pages.id))
-    .orderBy(Pages.id, lf.Order.ASC);
   query = args.count ? query.limit(args.count) : query;
   return await query.exec();
 }
@@ -842,12 +793,8 @@ async function getInferenceCount(args) {
 const QUERIES = {
 
   getAllData: getAllData,
-  getAllInferences: getAllInferences,
-  getAllPages: getAllPages,
-  getAllTrackers: getAllTrackers,
   getDomains: getDomains, // used in dashboard
   getDomainsByInference: getDomainsByInference,
-  getDomainsByTime: getDomainsByTime,
   getDomainsByTracker: getDomainsByTracker,
   getDomainsNoTrackers: getDomainsNoTrackers,
   getPagesByDomain: getPagesByDomain,
@@ -860,6 +807,7 @@ const QUERIES = {
   getInferenceCount: getInferenceCount, // used in dashboard
   getInferences: getInferences, // used in dashboard inferences page
   getInferencesByTracker: getInferencesByTracker, // used in dashboard
+  getNumberOfDomains: getNumberOfDomains, // used in dashboard
   getNumberOfInferences: getNumberOfInferences, // used in popup, dashboard
   getNumberOfPages: getNumberOfPages, // used in popup, lighbeam, dashboard
   getNumberOfTrackers: getNumberOfTrackers, // used in popup, lightbeam, dashboard
