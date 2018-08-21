@@ -210,6 +210,7 @@ function setup() {
   window.logData=logData;
   window.getUserParams=getUserParams;
   window.hashit=hashit
+  window.hashit_salt=hashit_salt
 }
 
 export default {firstInstall, setup}

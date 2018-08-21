@@ -363,38 +363,6 @@ function resetAllData() {
 window.resetAllData = resetAllData;
 
 /**
- * Run on message recieved from database worker.
- *
- * @param  {Object} m
- * @param  {Object} m.data - Content of the message
- */
-function onDatabaseWorkerMessage(m) {
-  if (m.data.type === 'database_query_response') {
-
-    let p;
-    if (m.data.id) {
-      p = pendingDatabaseQueries[m.data.id];
-    }
-    if (m.data.error) {
-      // database gave us an error
-      // so we reject query promise
-      if (p) {
-        p.reject(m.data.error);
-      } else {
-        throw new Error(m.data.error);
-      }
-      return;
-    }
-
-    if (!p) {
-      throw new Error('Unable to resolve promise for database query response. Message was', m);
-    }
-    p.resolve(m.data);
-
-  }
-}
-
-/**
  * Run on message recieved from trackers worker.
  *
  * @param  {Object} m
