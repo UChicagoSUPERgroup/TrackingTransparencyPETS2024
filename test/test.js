@@ -16,6 +16,8 @@ async function run () {
       '--enable-md-extensions --false'
     ]
   })
+  await sleep(1000)
+
   // get browser extension's id
   const id = await getExtensionId(browser)
 
@@ -27,7 +29,7 @@ async function run () {
     await t.ok(initialUrls.includes(welcomeUrl), 'extension welcome page opens')
     t.end()
   })
-  
+
   await asyncTest('backend integration', async t => {
     // visit some pages
     const page = await browser.newPage()
@@ -116,7 +118,7 @@ async function getExtensionId (browser) {
   // a hack to get id of current extension by loading options page and finding where it is displayed in text
   const page = await browser.newPage()
   await page.goto('chrome://system')
-  const moreToggle = await page.click('#extensions-value-btn')
+  await page.click('#extensions-value-btn')
   const idHandle = await page.$('#extensions-value')
   let extensions = await page.evaluate(body => body.textContent, idHandle)
   await page.close()

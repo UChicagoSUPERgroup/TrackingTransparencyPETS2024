@@ -81,7 +81,8 @@
   },
   "standardx": {
     "globals": [
-      "browser"
+      "browser",
+      "chrome"
     ],
     "ignore": [
       "doc/",

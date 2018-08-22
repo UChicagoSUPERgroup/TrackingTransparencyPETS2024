@@ -29,7 +29,6 @@ const inner = `
     padding: 10px;
   }
 
-  /* credit: https://jsfiddle.net/elin/67sw12rL/ */
   #tt_closebutton {
     position: absolute;
     top: 0px;
@@ -43,37 +42,4 @@ const inner = `
   }
 `
 
-// old css for css-based x
-// if using unicode character doesn't work
-/*
-  #tt_closebutton:before {
-    content: "";
-    display: block;
-    margin: auto;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 10px;
-    height: 0;
-    border-top: 1px solid rgba(0,0,0,0.5);
-    transform: rotate(45deg);
-    transform-origin: center;
-  }
-  #tt_closebutton:after {
-    content: "";
-    display: block;
-    margin: auto;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 10px;
-    height: 0;
-    border-top: 1px solid rgba(0,0,0,0.5);
-    transform: rotate(-45deg);
-    transform-origin: center;
-  }
-*/
-
-export default {outer, inner}
+export default { outer, inner }
