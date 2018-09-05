@@ -1,6 +1,6 @@
 {
   "name": "trackingtransparency",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Provides information about online tracking",
   "scripts": {
     "test": "tape test/test.js | tap-spec",
