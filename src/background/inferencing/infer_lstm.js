@@ -1,8 +1,6 @@
 /*
  * Infer ad interest category given the webpage a user visits.
  */
-import Tokenizer from 'tokenize-text';
-import striptags from 'striptags';
 import * as tf from '@tensorflow/tfjs';
 let inputLength = 100;
 

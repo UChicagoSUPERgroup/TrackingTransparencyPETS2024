@@ -1,13 +1,7 @@
 /*
  * Infer ad interest category given the webpage a user visits.
  */
-import Tokenizer from 'tokenize-text';
-import striptags from 'striptags';
 import tt from '../../helpers';
-
-// import {AllHtmlEntities as Entities} from "html-entities"
-
-// import tt from "../helpers";
 
 function score_help(w, keywords, l, set_keywords) {
   if (set_keywords.has(w)) {

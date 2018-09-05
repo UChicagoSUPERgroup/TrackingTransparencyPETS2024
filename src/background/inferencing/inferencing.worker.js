@@ -1,8 +1,8 @@
+import Snowball from 'snowball'
+
 import buildCategoryTree from './build';
 import infer_tfidf from './infer';
 import tt from '../../helpers';
-
-
 
 // the keywords file is bundled using webpack as keywordsjson
 // it must NOT have .json as an extension in the bundle because then it goes over a file size limit with mozilla
@@ -29,7 +29,6 @@ const tree = buildCategoryTree(keywordsFile, word2IndexFile, cutOneFile);
 
 
 function stem(text, all_words, words2idx_dict) {
-  var Snowball = require('snowball');
   var stemmer = new Snowball('English');
   var cur_word = null;
   let tokens = [];
@@ -45,7 +44,6 @@ function stem(text, all_words, words2idx_dict) {
 }
 
 
-// TODO: this function needs to be rewritten
 async function inferencingMessageListener(text, mainFrameReqId, tabId) {
   
   let result_category = null;
