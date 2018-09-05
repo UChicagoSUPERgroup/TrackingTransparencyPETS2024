@@ -1,6 +1,6 @@
 {
   "name": "trackingtransparency",
-  "version": "1.0.0",
+  "version": "0.0.6",
   "description": "Provides information about online tracking",
   "scripts": {
     "test": "tape test/test.js | tap-spec",
@@ -11,6 +11,7 @@
     "start": "wp -w --progress --config webpack.dev.js",
     "watch": "wp -w --progress --config webpack.dev.js",
     "build": "wp --progress --config webpack.dev.js",
+    "version": "file-version-bump",
     "firefox": "web-ext run -s extension/ -u 'about:debugging'",
     "chromium": "node test/chromium.js",
     "jsdoc": "jsdoc -c jsdoc.conf.json ."
@@ -28,6 +29,7 @@
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^1.0.0",
     "file-loader": "^1.1.11",
+    "file-version-bump": "0.0.2",
     "foodoc": "^0.0.9",
     "gzip-loader": "^0.0.1",
     "html-webpack-plugin": "^4.0.0-alpha",
@@ -104,5 +106,8 @@
         "single"
       ]
     }
-  }
+  },
+  "file-version-bump": [
+    "extension/manifest.json"
+  ]
 }
