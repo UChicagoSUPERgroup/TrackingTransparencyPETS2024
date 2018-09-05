@@ -1,10 +1,11 @@
 {
     "manifest_version": 2,
     "name": "Tracking Transparency",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "applications": {
         "gecko": {
-            "id": "trackingtransparency@super.cs.uchicago.edu"
+            "id": "trackingtransparency@super.cs.uchicago.edu",
+            "update_url": "https://super.cs.uchicago.edu/trackingtransparency/firefox/updates.json"
         }
     },
     "description": "Provides information about online tracking",
