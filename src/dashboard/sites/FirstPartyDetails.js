@@ -249,7 +249,7 @@ export default class FirstPartyDetails extends React.Component {
     for (var property in inferences_q) {
       min = (inferences_q[property] < min) ? inferences_q[property] : min
       max = (inferences_q[property] > max) ? inferences_q[property] : max
-      inferences.push({'text': property, 'value': inferences_q[property]})
+      inferences.push({'text': <a href={'#/inferences/' + property}>{property}</a>, 'value': inferences_q[property]})
     }
 
     let size = this.state.divsize

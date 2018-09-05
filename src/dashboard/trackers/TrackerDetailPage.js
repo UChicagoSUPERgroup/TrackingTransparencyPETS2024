@@ -125,7 +125,7 @@ export default class TrackerDetailPage extends React.Component {
           <p>TODO: few sentence summary</p>
 
           {trackerInfo.notes && <ToggleDetails
-            summary='Additional notes'
+            summary={'Who is ' + this.tracker + '?'}
           >
             <div dangerouslySetInnerHTML={{__html: trackerInfo.notes}} />
           </ToggleDetails>}
@@ -156,7 +156,7 @@ export default class TrackerDetailPage extends React.Component {
 
     return (
       <div>
-        <Heading level='h1' margin='0 0 large 0'>Trackers: {this.tracker}</Heading>
+        <Heading level='h1' as='span' margin='0 0 large 0'>Trackers: {this.tracker}</Heading>
         {ready && <div>
           {this.renderMetrics()}
           {this.renderDescription()}
