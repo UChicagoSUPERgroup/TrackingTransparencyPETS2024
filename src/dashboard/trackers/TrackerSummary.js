@@ -1,16 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
-import Grid from '@instructure/ui-layout/lib/components/Grid'
-import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
-import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import MetricsList from '@instructure/ui-elements/lib/components/MetricsList'
 import MetricsListItem from '@instructure/ui-elements/lib/components/MetricsList/MetricsListItem'
-
-import TTPanel from '../components/TTPanel'
-import categories from '../../data/categories_comfort_list.json'
 
 export default class TrackerSummary extends React.Component {
   constructor (props) {

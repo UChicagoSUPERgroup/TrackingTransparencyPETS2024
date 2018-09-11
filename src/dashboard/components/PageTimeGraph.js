@@ -21,14 +21,14 @@ export default function PageTimeGraph ({ timestamps }) {
   let data = []
 
   const firstDay = times[0].startOf('day')
-  let grouped;
-  grouped = _.groupBy(times, t => t.diff(firstDay, 'days'));
+  let grouped
+  grouped = _.groupBy(times, t => t.diff(firstDay, 'days'))
   console.log(grouped, Object.keys(grouped))
   for (let day in grouped) {
     data.push({
       x: parseInt(day),
       y: grouped[day].length
-    });
+    })
   }
 
   const dataLabel = (v) => {
@@ -51,7 +51,7 @@ export default function PageTimeGraph ({ timestamps }) {
           tickLabelAngle={-20}
         />
         <YAxis />
-        <CustomAxisLabel title='Pages'/>
+        <CustomAxisLabel title='Pages' />
         <CustomAxisLabel title='Day' xAxis yShift={1.6} />
       </FlexibleWidthXYPlot>
     </div>

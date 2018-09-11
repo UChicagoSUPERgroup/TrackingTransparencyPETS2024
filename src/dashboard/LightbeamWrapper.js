@@ -1,9 +1,10 @@
-import React from 'react';
+import React from 'react'
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 
-import logging from './dashboardLogging';
+import logging from './dashboardLogging'
+import TTPanel from './components/TTPanel'
 
 class IFrame extends React.Component {
   // https://stackoverflow.com/a/33915153
@@ -30,33 +31,36 @@ class IFrame extends React.Component {
 }
 
 export default class LightbeamWrapper extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
     }
-    //this.logLoad = this.logLoad.bind(this);
+    // this.logLoad = this.logLoad.bind(this);
   }
 
-
-  async componentDidMount() {
-    let activityType='load lightbeam page';
-    logging.logLoad(activityType, {});
+  async componentDidMount () {
+    let activityType = 'load lightbeam page'
+    logging.logLoad(activityType, {})
   }
 
-  render() {
+  render () {
     return (
       <div>
         <Heading level='h1'>Tracker Network</Heading>
-        <Text>
-          <p>This page is a visualization of the connections between the first and third party sites you have interacted with on the Web.</p>
-          <p>The web below is interactive: click and drag on icons to try to untangle the web!</p>
-          <p>A circle icon represents a site that you have visted, and a triangle icon represents a third party that has seen you online. </p>
-          <ul>
-            <li>A circle icon with many connections is a site you have visited that has lots of third party sites active on it.</li>
-            <li>A triangle icon with many connections is a third party site that has seen you on many different sites online.</li>
-          </ul>
-        </Text>
-        <IFrame src={browser.runtime.getURL('lightbeam/index.html')} />
+        <TTPanel margin='medium 0 medium 0'>
+          <Text>
+            <p>This page is a visualization of the connections between the first and third party sites you have interacted with on the Web.</p>
+            <p>The web below is interactive: click and drag on icons to try to untangle the web!</p>
+            <p>A circle icon represents a site that you have visted, and a triangle icon represents a third party that has seen you online. </p>
+            <ul>
+              <li>A circle icon with many connections is a site you have visited that has lots of third party sites active on it.</li>
+              <li>A triangle icon with many connections is a third party site that has seen you on many different sites online.</li>
+            </ul>
+          </Text>
+        </TTPanel>
+        <TTPanel margin='medium 0 medium 0' padding='0 0 0 0'>
+          <IFrame src={browser.runtime.getURL('lightbeam/index.html')} />
+        </TTPanel>
       </div>
     )
   }

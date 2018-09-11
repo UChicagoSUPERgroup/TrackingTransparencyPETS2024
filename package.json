@@ -92,14 +92,6 @@
     "parser": "babel-eslint",
     "parserOptions": {
       "allowImportExportEverywhere": true
-    },
-    "rules": {
-      "semi": "off",
-      "space-before-function-paren": "off",
-      "quotes": [
-        "off",
-        "single"
-      ]
     }
   },
   "file-version-bump": [

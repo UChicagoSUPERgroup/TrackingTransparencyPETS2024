@@ -1,5 +1,4 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
 
 import Button from '@instructure/ui-buttons/lib/components/Button'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
@@ -9,7 +8,6 @@ import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Link from '@instructure/ui-elements/lib/components/Link'
 import IconArrowOpenEnd from '@instructure/ui-icons/lib/Solid/IconArrowOpenEnd'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
-import NumberInput from '@instructure/ui-forms/lib/components/NumberInput'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 
@@ -119,14 +117,8 @@ export default class TrackerOverview extends React.Component {
     const numPages = await background.queryDatabase('getNumberOfPages', {})
     const trackers = await background.queryDatabase('getTrackers', {})
 
-    let topTracker = ''
-    let topPercent = 0
     let graphData = []
     let allData = []
-    let tempPercent = 0
-
-    topTracker = trackers[0]['tracker']
-    topPercent = ((trackers[0]['COUNT(tracker)'] / numPages) / 100).toFixed(2)
     for (let val in trackers) {
       const name = trackers[val]['tracker']
       const pageCount = trackers[val]['COUNT(tracker)']
@@ -165,92 +157,121 @@ export default class TrackerOverview extends React.Component {
   }
 
   updateGraphCount (num) {
-    const { graphDataAll, graphCount } = this.state
+    const { graphDataAll } = this.state
     this.setState({
       graphCount: num,
       graphData: graphDataAll.slice(-num)
     })
   }
 
+  renderIntroText () {
+    const { allData, numTrackers } = this.state
+    return (
+      <TTPanel>
+        <Text>
+          <p><strong>{numTrackers} trackers</strong> have collected information about you based on your browsing history. Your most
+              frequently encountered tracker is <strong>{allData[0].name}</strong> which was
+              present on <em>{allData[0].percent.toFixed(2)}%</em> of
+              the pages you visited.
+              Here are your 20 most frequently encountered trackers:</p>
+        </Text>
+      </TTPanel>
+    )
+  }
+
+  renderChart () {
+    const { graphData, numPages, hovered } = this.state
+    return (
+      <TTPanel>
+        <FlexibleWidthXYPlot
+          yType={'ordinal'}
+          height={800}
+          margin={{left: 100}}
+          onMouseLeave={() => this.setState({hovered: null})}
+        >
+          <HorizontalGridLines />
+          <VerticalGridLines />
+          <YAxis
+            height={200}
+            tickLabelAngle={0}
+          />
+          <XAxis
+            tickFormat={v => (v / numPages * 100).toFixed(2) + '%'}
+          />
+          {hovered && <Hint
+            value={hovered}>
+            <div className='rv-hint__content'>
+              <div>
+                <strong>{hovered.y}</strong><br />
+                      Present on {hovered.x} pages<br />
+                      ({(hovered.x / numPages * 100).toFixed(2)}% of all pages)
+              </div>
+            </div>
+          </Hint>}
+          <HorizontalBarSeries
+            data={graphData}
+            color='#8F3931'
+            onValueMouseOver={(datapoint) => {
+              this.setState({hovered: datapoint})
+            }}
+            onValueClick={(datapoint) => {
+              this.setState({selectedTracker: datapoint})
+            }}
+          />
+        </FlexibleWidthXYPlot>
+        <Button size='small' onClick={() => this.updateGraphCount(undefined)}>See all trackers…</Button>
+      </TTPanel>
+    )
+  }
+
+  renderInfoPane () {
+    const { selectedTracker } = this.state
+    return (
+      <TTPanel textAlign='start'>
+        {!selectedTracker && <Text weight='bold'>The graph to the left shows the trackers that we detected on the pages you visited. Click a bar on the graph to learn more about that tracker.</Text>}
+        {selectedTracker && <div>
+          <TrackerSummary tracker={selectedTracker.y} numPages={selectedTracker.x} />
+          <Link
+            className='trackerPageSelected-Tracker'
+            href={'#/trackers/' + selectedTracker.y}
+            icon={IconArrowOpenEnd}
+            iconPlacement='end'
+          >
+            Learn more
+          </Link>
+        </div>}
+      </TTPanel>
+    )
+  }
+
   render () {
-    const {graphData, allData, numTrackers, numPages, hovered, graphSize, selectedTracker} = this.state
+    const { allData } = this.state
 
     if (!allData) {
       return 'Loading…'
     }
 
     return (
-      <div>
-        <Heading level='h1'>Who is tracking you?</Heading>
-
-        <Text>
-          <p><strong>{numTrackers} trackers</strong> have collected information about you based on your browsing history. Your most
-            frequently encountered tracker is <strong>{allData[0].name}</strong> which was
-            present on <em>{allData[0].percent.toFixed(2)}%</em> of
-            the pages you visited.
-            Here are your 20 most frequently encountered trackers:</p>
-        </Text>
-        <Grid startAt='large'>
-          <GridRow>
-            <GridCol width={6}>
-              <FlexibleWidthXYPlot
-                yType={'ordinal'}
-                height={800}
-                margin={{left: 100}}
-                onMouseLeave={() => this.setState({hovered: null})}
-              >
-                <HorizontalGridLines />
-                <VerticalGridLines />
-                <YAxis
-                  height={200}
-                  tickLabelAngle={0}
-                />
-                <XAxis
-                  tickFormat={v => (v / numPages * 100).toFixed(2) + '%'}
-                />
-                {hovered && <Hint
-                  value={hovered}>
-                  <div className='rv-hint__content'>
-                    <div>
-                      <strong>{hovered.y}</strong><br />
-                      Present on {hovered.x} pages<br />
-                      ({(hovered.x / numPages * 100).toFixed(2)}% of all pages)
-                    </div>
-                  </div>
-                </Hint>}
-                <HorizontalBarSeries
-                  data={graphData}
-                  color='#8F3931'
-                  onValueMouseOver={(datapoint) => {
-                    this.setState({hovered: datapoint})
-                  }}
-                  onValueClick={(datapoint) => {
-                    this.setState({selectedTracker: datapoint})
-                  }}
-                />
-              </FlexibleWidthXYPlot>
-              <Button size='small' onClick={() => this.updateGraphCount(undefined)}>See all trackers…</Button>
-            </GridCol>
-            <GridCol width={6}>
-              <TTPanel textAlign='start'>
-                {!selectedTracker && <Text weight='bold'>The graph to the left shows the trackers that we detected on the pages you visited. Click a bar on the graph to learn more about that tracker.</Text>}
-                {selectedTracker && <div>
-                  <TrackerSummary tracker={selectedTracker.y} numPages={selectedTracker.x} />
-                  <Link
-                    className='trackerPageSelected-Tracker'
-                    href={'#/trackers/' + selectedTracker.y}
-                    icon={IconArrowOpenEnd}
-                    iconPlacement='end'
-                  >
-                    Learn more
-                  </Link>
-                </div>}
-              </TTPanel>
-              {/* TrackerTable(allData) */}
-            </GridCol>
-          </GridRow>
-        </Grid>
-      </div>
+      <Grid>
+        <GridRow>
+          <GridCol>
+            <Heading level='h1'>Who is tracking you?</Heading>
+          </GridCol>
+        </GridRow>
+        <GridRow>
+          <GridCol>
+            {this.renderIntroText()}
+          </GridCol>
+        </GridRow>
+        <GridRow>
+          <GridCol width={6}>
+            {this.renderChart()}
+          </GridCol>
+          <GridCol width={6}>
+            {this.renderInfoPane()}
+          </GridCol>
+        </GridRow>
+      </Grid>
     )
   }
 }

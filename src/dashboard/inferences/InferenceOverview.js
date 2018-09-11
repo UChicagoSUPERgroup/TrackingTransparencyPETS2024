@@ -1,5 +1,4 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
@@ -210,43 +209,50 @@ export default class InferencesOverview extends React.Component {
     </TTPanel>)
 
     return (
-      <div>
-        <Heading level='h1'>What could they have learned?</Heading>
-        <Text>
-          <p>Trackers collect information about the pages you visit in order to make guesses about things you might be interested in. These guesses, or inferences, are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{numInferences} topics</strong> that trackers might have inferred you are interested in.</p>
-          {inferences && inferences.length >= 3 && <p> {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)} were among the most frequent topics that our algorithm determined the pages you visited recently are about.</p>}
-        </Text>
+      <Grid startAt='large'>
+        <GridRow>
+          <GridCol>
+            <Heading level='h1'>What could they have learned?</Heading>
+          </GridCol>
+        </GridRow>
+        <GridRow>
+          <GridCol>
+            <TTPanel>
+              <Text>
+                <p>Trackers collect information about the pages you visit in order to make guesses about things you might be interested in. These guesses, or inferences, are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{numInferences} topics</strong> that trackers might have inferred you are interested in.</p>
+                {inferences && inferences.length >= 3 && <p> {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)} were among the most frequent topics that our algorithm determined the pages you visited recently are about.</p>}
+              </Text>
 
-        <Grid startAt='large'>
-          <GridRow>
-            <GridCol>
-              <TTPanel textAlign='center'>
-                <Heading level ='h2'>The Inference Wheel</Heading>
-                {/* <Text>This diagram shows some of the inferences that may have been made about your browsing and their frequency. Click on a piece of the chart to see more details.</Text> */}
-                {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference} />}
-                {filters}
-              </TTPanel>
-            </GridCol>
-            <GridCol>
-              <TTPanel textAlign='start'>
-                {!selectedInference && <Text className='selected-inference' weight='bold'>
+            </TTPanel>
+          </GridCol>
+        </GridRow>
+        <GridRow>
+          <GridCol>
+            <TTPanel textAlign='center'>
+              {/* <Text>This diagram shows some of the inferences that may have been made about your browsing and their frequency. Click on a piece of the chart to see more details.</Text> */}
+              {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference} />}
+            </TTPanel>
+            {filters}
+          </GridCol>
+          <GridCol>
+            <TTPanel textAlign='start'>
+              {!selectedInference && <Text className='selected-inference' weight='bold'>
                   The Inference Wheel shows inferences that trackers may have made about you, based on your browsing activity. Click a slice of the wheel to see more details. </Text>}
-                {selectedInference && <div>
-                  <InferenceSummary inference={selectedInference} />
-                  <Link
-                    className='inferencePageSelected-Inference'
-                    href={'#/inferences/' + selectedInference}
-                    icon={IconArrowOpenEnd}
-                    iconPlacement='end'
-                  >
+              {selectedInference && <div>
+                <InferenceSummary inference={selectedInference} />
+                <Link
+                  className='inferencePageSelected-Inference'
+                  href={'#/inferences/' + selectedInference}
+                  icon={IconArrowOpenEnd}
+                  iconPlacement='end'
+                >
                     Learn more
-                  </Link>
-                </div>}
-              </TTPanel>
-            </GridCol>
-          </GridRow>
-        </Grid>
-    </div>
+                </Link>
+              </div>}
+            </TTPanel>
+          </GridCol>
+        </GridRow>
+      </Grid>
     )
   }
 }

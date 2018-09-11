@@ -27,10 +27,6 @@ function getKeyPath (node) {
   return categoryPaths[(node.data && node.data.name) || node.name] || []
 }
 
-function rand (min, max) {
-  return parseInt(Math.random() * (max - min + 1), 10) + min
-}
-
 /**
  * Get a random (bluish) color
  * @returns {String} a hex color

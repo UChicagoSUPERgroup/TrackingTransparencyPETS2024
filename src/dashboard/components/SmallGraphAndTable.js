@@ -4,8 +4,8 @@ import ReactTable from 'react-table'
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Link from '@instructure/ui-elements/lib/components/Link'
 import Text from '@instructure/ui-elements/lib/components/Text'
-import View from '@instructure/ui-layout/lib/components/View'
 import ToggleGroup from '@instructure/ui-toggle-details/lib/components/ToggleGroup'
+import View from '@instructure/ui-layout/lib/components/View'
 
 import {
   FlexibleWidthXYPlot,
@@ -13,86 +13,83 @@ import {
   YAxis,
   HorizontalGridLines,
   VerticalGridLines,
-  VerticalBarSeries
+  HorizontalBarSeries
 } from 'react-vis'
 
 import CustomAxisLabel from './CustomAxisLabel'
+import TTPanel from './TTPanel'
 
-export default function SmallGraphAndTable ({ name, data, c1Header, c1Accessor, urlStem, description }) {
+export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, description }) {
   const lower = name.toLowerCase()
-  const graphData = data.slice(0,10).map(d => ({
-    x: d[c1Accessor],
-    y: d['count']
+  const graphData = data.slice(0, 10).map(d => ({
+    y: d['name'],
+    x: d['count']
   }))
 
   return (
-    <div>
-      <Heading level='h2' margin='0 0 medium 0'>{name}</Heading>
-      <Text>{description}</Text>
+    <TTPanel>
+      <Heading level='h2'>{name}</Heading>
       <View as='div' margin='medium 0 small 0'>
         <SmallGraph
           data={graphData}
-          xTitle={c1Header}
+          yTitle={c1Header}
         />
       </View>
       <ToggleGroup
         summary={'See all ' + lower}
         toggleLabel={'Toggle to see table for ' + lower}
-        variant='filled'
         margin='medium 0 0 0'
+        border={false}
       >
         <SmallTable
           data={data}
           name={name}
           c1Header={c1Header}
-          c1Accessor={c1Accessor}
+          c1Accessor='name'
           c2Header='Pages'
           c2Accessor='count'
           urlStem={urlStem}
         />
       </ToggleGroup>
-    </div>
+    </TTPanel>
   )
 }
 
-const SmallGraph = ({ data, xTitle }) => {
+const SmallGraph = ({ data, yTitle }) => {
   return (
     <FlexibleWidthXYPlot
-      xType={'ordinal'}
-      height={200}
-      margin={{left: 50, bottom: 100}}
+      yType={'ordinal'}
+      height={400}
+      margin={{left: 150, bottom: 80}}
     >
       <HorizontalGridLines />
       <VerticalGridLines />
+      <YAxis />
       <XAxis
-        tickLabelAngle={-20}
-      />
-      <YAxis
         position='middle'
         height={200}
         tickLabelAngle={0}
       />
-      <VerticalBarSeries
+      <HorizontalBarSeries
         data={data}
         color='#8F3931'
       />
-      <CustomAxisLabel title={'Pages'}/>
-      <CustomAxisLabel title={xTitle} xAxis yShift={2}/>
+      <CustomAxisLabel xAxis title='Pages' />
+      <CustomAxisLabel yAxis title={yTitle} />
     </FlexibleWidthXYPlot>
   )
-
 }
 
-const SmallTable = ({ data, c1Header, c1Accessor, c2Header, c2Accessor, urlStem }) => {
+const SmallTable = ({ data, c1Header, c2Header, c2Accessor, urlStem }) => {
   return (
     <ReactTable
       data={data}
       columns={[
         {Header: c1Header,
-          accessor: c1Accessor,
+          accessor: 'name',
           Cell: row => (
             <div key={row.value}>
-              <Link className={c1Accessor + 'TableLinkTrackersPage'} href={urlStem + row.value}>
+              <Link className={c1Header + 'TableLinkTrackersPage'} href={urlStem + row.value}>
                 {row.value}
               </Link>
             </div>)
@@ -104,7 +101,5 @@ const SmallTable = ({ data, c1Header, c1Accessor, c2Header, c2Accessor, urlStem 
       showPageSizeOptions={false}
       className='-striped -highlight'
     />
-  );
+  )
 }
-
-

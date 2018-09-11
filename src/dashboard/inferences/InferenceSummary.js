@@ -1,36 +1,29 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
-import Grid from '@instructure/ui-layout/lib/components/Grid'
-import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
-import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import MetricsList from '@instructure/ui-elements/lib/components/MetricsList'
 import MetricsListItem from '@instructure/ui-elements/lib/components/MetricsList/MetricsListItem'
 
-import TTPanel from '../components/TTPanel'
-import categories from '../../data/categories_comfort_list.json'
+// import categories from '../../data/categories_comfort_list.json'
 
-
-const SensitivePanel = (inference) => {
-  let sensitiveCategories = categories.slice(0, 20)
-  let sensitive = !!((inference && sensitiveCategories.includes(inference)))
-  return (
-      <Text><em>{inference}</em>
-        {sensitive
-          ? ' may be considered a sensitive topic.'
-          : ' is likely not a sensitive topic.'
-        }</Text>
-  )
-}
+// const SensitivePanel = (inference) => {
+//   let sensitiveCategories = categories.slice(0, 20)
+//   let sensitive = !!((inference && sensitiveCategories.includes(inference)))
+//   return (
+//     <Text><em>{inference}</em>
+//       {sensitive
+//         ? ' may be considered a sensitive topic.'
+//         : ' is likely not a sensitive topic.'
+//       }</Text>
+//   )
+// }
 
 export default class InferenceSummary extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       trackers: false,
-      timestamps: false,
       topSites: false
     }
 
@@ -66,7 +59,7 @@ export default class InferenceSummary extends React.Component {
 
   render () {
     const { inference } = this.props
-    const { trackers, timestamps, topSites } = this.state
+    const { trackers, topSites } = this.state
 
     let content
 

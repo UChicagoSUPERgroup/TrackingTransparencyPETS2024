@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
@@ -13,8 +13,6 @@ import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import View from '@instructure/ui-layout/lib/components/View'
 
 import TTPanel from './components/TTPanel'
-
-const millisecondsInDay = 86400000
 
 const inferenceList = (data) => {
   return (
@@ -84,55 +82,66 @@ export class Home extends React.Component {
   render () {
     const {numTrackers, numInferences, numPages, recentInferences, recentDomains} = this.state
     return (
-      <div>
-        <Heading level='h1'>Tracking Transparency</Heading>
-        <Text>
+      <Grid startAt='large'>
+        <GridRow>
+          <GridCol>
+            <Heading level='h1'>Home</Heading>
+          </GridCol>
+        </GridRow>
 
-          <p>The Tracking Transparency extension lets you learn about what companies could have inferrred about your browsing through trackers and advertisments on the web pages you visit.</p>
+        <GridRow>
+          <GridCol>
+            <TTPanel>
+              <Text>
 
-          <p>In total, <strong>{numTrackers || 'Loading…'} trackers</strong> have seen you visit <strong>{numPages || 'Loading…'} pages</strong>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <strong>{numInferences || 'Loading…'} topics</strong>.</p>
-        </Text>
+                <p>Our browser extension lets you learn about what companies could have inferrred about your browsing through trackers and advertisments on the web pages you visit.</p>
 
-        <TTPanel textAlign='start'>
-          <Grid startAt='large' vAlign='middle'>
-            <GridRow>
-              <GridCol width={6}>
-                <MetricsList theme={{lineHeight: 2}}>
-                  <MetricsListItem label='Trackers Seen' value={numTrackers || 'Loading…'} />
-                  <MetricsListItem label='Pages Visited' value={numPages || 'Loading'} />
-                  <MetricsListItem label='Inferred Interests' value={numInferences || 'Loading'} />
-                </MetricsList>
-              </GridCol>
-              <GridCol width={6}>
+                <p>In total, <strong>{numTrackers || 'Loading…'} trackers</strong> have seen you visit <strong>{numPages || 'Loading…'} pages</strong>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <strong>{numInferences || 'Loading…'} topics</strong>.</p>
+              </Text>
+            </TTPanel>
+
+          </GridCol>
+        </GridRow>
+        <GridRow>
+          <GridCol width={6}>
+            <TTPanel>
+              <MetricsList theme={{lineHeight: 2}}>
+                <MetricsListItem label='Trackers Seen' value={numTrackers || 'Loading…'} />
+                <MetricsListItem label='Pages Visited' value={numPages || 'Loading'} />
+                <MetricsListItem label='Inferred Interests' value={numInferences || 'Loading'} />
+              </MetricsList>
+            </TTPanel>
+          </GridCol>
+          <GridCol width={6}>
+            <TTPanel>
+              <View
+                display='inline-block'
+                margin='small medium small large'
+              >
                 <View
-                  display='inline-block'
-                  margin='small medium small large'
+                  as='header'
+                  margin='0 0 small small'
                 >
-                  <View
-                    as='header'
-                    margin='0 0 small small'
-                  >
-                    <Text weight='bold'>Recent Inferences</Text>
-                  </View>
-                  {recentInferences ? inferenceList(recentInferences) : 'Loading…'}
+                  <Text weight='bold'>Recent Inferences</Text>
                 </View>
+                {recentInferences ? inferenceList(recentInferences) : 'Loading…'}
+              </View>
+              <View
+                display='inline-block'
+                margin='small small small medium'
+              >
                 <View
-                  display='inline-block'
-                  margin='small small small medium'
+                  as='header'
+                  margin='0 0 small small'
                 >
-                  <View
-                    as='header'
-                    margin='0 0 small small'
-                  >
-                    <Text weight='bold'>Recent Domains</Text>
-                  </View>
-                  {recentDomains ? domainList(recentDomains) : 'Loading…'}
+                  <Text weight='bold'>Recent Domains</Text>
                 </View>
-              </GridCol>
-            </GridRow>
-          </Grid>
-        </TTPanel>
-      </div>
+                {recentDomains ? domainList(recentDomains) : 'Loading…'}
+              </View>
+            </TTPanel>
+          </GridCol>
+        </GridRow>
+      </Grid>
     )
   }
 }
@@ -140,9 +149,11 @@ export class Home extends React.Component {
 export const WaitingDataHome = () => (
   <div>
     <Heading level='h1'>Tracking Transparency</Heading>
-    <Text>
-      <p>The Tracking Tranparency extension is currently running in the background to collect information about the trackers in your browsing.</p>
-      <p>Continue using the internet and come back here in a few days to see what they might know about your browsing!</p>
-    </Text>
+    <TTPanel>
+      <Text>
+        <p>The Tracking Tranparency extension is currently running in the background to collect information about the trackers in your browsing.</p>
+        <p>Continue using the internet and come back here in a few days to see what they might know about your browsing!</p>
+      </Text>
+    </TTPanel>
   </div>
 )

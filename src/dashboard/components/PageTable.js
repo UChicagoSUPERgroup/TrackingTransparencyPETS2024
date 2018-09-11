@@ -1,11 +1,11 @@
-import React from 'react';
-import ReactTable from 'react-table';
+import React from 'react'
+import ReactTable from 'react-table'
 
 import Link from '@instructure/ui-elements/lib/components/Link'
 import TruncateText from '@instructure/ui-elements/lib/components/TruncateText'
 
 export default class PageTable extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -23,7 +23,7 @@ export default class PageTable extends React.Component {
     }
   }
 
-  render() {
+  render () {
     let { data, title } = this.state
 
     const columns = [
@@ -40,8 +40,8 @@ export default class PageTable extends React.Component {
         Header: 'Site',
         id: 'domain',
         accessor: d => d.domain,
-        Cell: row => (row.value ?
-          <div key={row.value}>
+        Cell: row => (row.value
+          ? <div key={row.value}>
             <Link href={'#/domains/' + row.value}>
               {row.value}
             </Link>
@@ -54,13 +54,13 @@ export default class PageTable extends React.Component {
       Header: 'Page',
       id: 'title',
       accessor: d => d,
-      Cell: row => (row.value.url ?
-        (<div key={row.value.title}>
+      Cell: row => (row.value.url
+        ? (<div key={row.value.title}>
           <Link href={row.value.url} target='_blank'>
             <TruncateText>{row.value.title}</TruncateText>
           </Link>
-        </div>): 
-        (<div key={row.value.title}>
+        </div>)
+        : (<div key={row.value.title}>
           <TruncateText>{row.value.title}</TruncateText>
         </div>)
       )
@@ -71,8 +71,8 @@ export default class PageTable extends React.Component {
         Header: 'Inference',
         id: 'infer',
         accessor: d => d.inference,
-        Cell: row => (row.value ?
-          <div key={row.value}>
+        Cell: row => (row.value
+          ? <div key={row.value}>
             <Link href={'#/inferences/' + row.value}>
               {row.value}
             </Link>
@@ -98,6 +98,6 @@ export default class PageTable extends React.Component {
         noDataText={this.props.noDataText}
         className='-striped -highlight'
       />
-    );
+    )
   }
 }

@@ -82,7 +82,7 @@ export default class IntroModal extends React.Component {
   }
 
   render () {
-    const {numTrackers, numInferences, numPages, recentInferences, topTrackers} = this.state
+    const {numTrackers, numPages, recentInferences, topTrackers} = this.state
     return (
       <Modal
         open={this.props.show}
