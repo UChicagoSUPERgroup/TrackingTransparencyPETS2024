@@ -110,7 +110,7 @@ async function getInferencesByTracker(args) {
   query = args.count ? query.limit(args.count) : query;
   const res = await query.exec();
   return res.map(x => ({
-    inference: x.Inferences['inference'],
+    name: x.Inferences['inference'],
     count: x.Inferences['COUNT(inference)']
   }))
 }
