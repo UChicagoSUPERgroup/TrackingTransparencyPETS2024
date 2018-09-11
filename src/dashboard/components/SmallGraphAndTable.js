@@ -17,7 +17,6 @@ import {
 } from 'react-vis'
 
 import CustomAxisLabel from './CustomAxisLabel'
-import TTPanel from './TTPanel'
 
 export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, description }) {
   const lower = name.toLowerCase()
@@ -27,7 +26,7 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
   }))
 
   return (
-    <TTPanel>
+    <View>
       <Heading level='h2'>{name}</Heading>
       <View as='div' margin='medium 0 small 0'>
         <SmallGraph
@@ -51,7 +50,7 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
           urlStem={urlStem}
         />
       </ToggleGroup>
-    </TTPanel>
+    </View>
   )
 }
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import { SizeMe } from 'react-sizeme'
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
@@ -18,7 +19,7 @@ import WordCloud from '../components/WordCloud'
 export default class TrackerDetailPage extends React.Component {
   constructor (props) {
     super(props)
-
+    this.wcRef = React.createRef()
     this.tracker = this.props.match.params.name
     this.state = {
       inferences: [],
@@ -154,7 +155,7 @@ export default class TrackerDetailPage extends React.Component {
 
     return (
       <div>
-        <Grid vAlign='middle'>
+        <Grid>
           <GridRow>
             <GridCol>
               <Heading level='h1'>{this.tracker}</Heading>
@@ -172,14 +173,19 @@ export default class TrackerDetailPage extends React.Component {
             <GridCol width={6}>
               <TTPanel>
                 <Heading level='h2'>Inferences</Heading>
-                <WordCloud 
-                  data={inferences}
-                  width='400px'
-                  height='400px'
-                />
+                <SizeMe>
+                  {({ size }) => (
+                    <WordCloud 
+                      data={inferences}
+                      height={496}
+                      width={size.width}
+                    />
+                  )}
+                </SizeMe>
               </TTPanel>
             </GridCol>
             <GridCol width={6}>
+              <TTPanel>
               <SmallGraphAndTable
                 name='Domains'
                 description='TODO: description'
@@ -187,6 +193,7 @@ export default class TrackerDetailPage extends React.Component {
                 c1Header='Site'
                 urlStem='#/domains/'
               />
+              </TTPanel>
             </GridCol>
           </GridRow>
           <GridRow>

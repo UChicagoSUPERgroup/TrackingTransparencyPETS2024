@@ -4,6 +4,7 @@ import View from '@instructure/ui-layout/lib/components/View'
 
 const TTPanel = (props) => (
   <View
+    {...props}
     as='div'
     margin={props.margin || 'none'}
     padding={props.padding || 'medium'}
@@ -11,7 +12,6 @@ const TTPanel = (props) => (
     background='default'
     borderWidth='small'
     shadow='resting'
-    height={props.height}
   >
     {props.children}
   </View>

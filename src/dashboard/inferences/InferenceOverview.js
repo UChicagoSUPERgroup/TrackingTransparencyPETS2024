@@ -227,7 +227,7 @@ export default class InferencesOverview extends React.Component {
           </GridCol>
         </GridRow>
         <GridRow>
-          <GridCol>
+          <GridCol width='auto'>
             <TTPanel textAlign='center'>
               {/* <Text>This diagram shows some of the inferences that may have been made about your browsing and their frequency. Click on a piece of the chart to see more details.</Text> */}
               {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference} />}
