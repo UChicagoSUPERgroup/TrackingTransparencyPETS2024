@@ -479,7 +479,14 @@ async function getInferencesByDomain(args) {
     return result;
   }, {});
 
-  return merged;
+  let res = []
+  Object.keys(merged).forEach(key => {
+    res.push({
+      name: key,
+      count: merged[key]
+    })
+  })
+  return res;
 }
 
 
@@ -702,7 +709,7 @@ async function getDomainsByTracker(args) {
     return result;
   }, {});
   let mergedRes = [];
-  mergedRes = Object.keys(merged).map(key => ({domain: key, count: merged[key]}));
+  mergedRes = Object.keys(merged).map(key => ({name: key, count: merged[key]}));
   mergedRes.sort((a, b) => (b.count - a.count));
   return mergedRes;
 }
@@ -802,11 +809,11 @@ const QUERIES = {
   getPagesByTracker: getPagesByTracker, // used in dashboard, trackers page
   getPageCountByDomain: getPageCountByDomain,
   getTrackerCountByDomain: getTrackerCountByDomain,
-  getInferencesByDomain: getInferencesByDomain, // used in tests
+  getInferencesByDomain, // used in tests
   getInferencesDomainsToSend: getInferencesDomainsToSend, // this is to send data to server contaiing pageIds and inferences and domain names
   getInferenceCount: getInferenceCount, // used in dashboard
   getInferences: getInferences, // used in dashboard inferences page
-  getInferencesByTracker: getInferencesByTracker, // used in dashboard
+  getInferencesByTracker, // used in dashboard
   getNumberOfDomains: getNumberOfDomains, // used in dashboard
   getNumberOfInferences: getNumberOfInferences, // used in popup, dashboard
   getNumberOfPages: getNumberOfPages, // used in popup, lighbeam, dashboard
