@@ -13,14 +13,12 @@ module.exports = merge(common, {
         cache: true,
         parallel: true,
         uglifyOptions: {
-          ecma: 8,
           mangle: false,
           keep_classnames: true,
           keep_fnames: true,
           output: {
             beautify: true,
-            comments: true,
-            ecma: 8
+            comments: true
           }
         }
       })
