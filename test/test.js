@@ -68,6 +68,7 @@ async function run () {
 
       query = await background.queryDatabase('getAllData', {})
       await ok(query.pages.length >= pages.length, 'pages were stored in database')
+      await ok(query.inferences.length >= pages.length, 'inferences were stored in database')
 
       // check to make domains are stored properly
       const domains = query.pages.map(x => x.domain)
@@ -81,11 +82,6 @@ async function run () {
       // make sure we have some trackers stored
       query = await background.queryDatabase('getTrackersByDomain', {domain: 'nytimes.com'})
       await equal(query.length >= 0, true, 'there are trackers on nytimes in database')
-
-      // make sure we have some inferences made
-      query = await background.queryDatabase('getInferencesByDomain', {domain: 'uchicago.edu'})
-      // await equal(Object.keys(query)[0], 'Online Journals & Personal Sites', 'inference for cs.uchicago is correct');
-      await ok(Object.keys(query)[0], 'inference for uchicago exists')
 
       // LAST TEST
       // try wiping database
