@@ -13,7 +13,7 @@ let tabData = {};
 let pendingTrackerMessages = {};
 let trackerMessageId = 0;
 
-async function onInstall(details) {
+async function onInstall (details) {
   // also runs on update
   if (details.reason === 'install') {
     setDefaultOptions()
@@ -39,7 +39,7 @@ instrumentation.setup()
  * ping function, used as sanity check for automated tests
  * @returns {string} 'ping'
  */
-function ping() {
+function ping () {
   return 'ping'
 }
 window.ping = ping;
@@ -61,7 +61,6 @@ browser.tabs.onRemoved.addListener(clearTabData);
 browser.webNavigation.onCompleted.addListener(onPageLoadFinish);
 browser.webNavigation.onHistoryStateUpdated.addListener(onPageLoadFinish);
 
-
 /** Sends a message with information about each outgoing
  * web request to trackers worker.
  *
@@ -69,8 +68,7 @@ browser.webNavigation.onHistoryStateUpdated.addListener(onPageLoadFinish);
  * @param  {string} details.type - type of request (i.e. "main_frame")
  * @param  {string} details.tabId - tab request originated from
  */
-async function logRequest(details) {
-
+async function logRequest (details) {
   if (details.type === 'main_frame') {
     // for main frame page loads, ignore
     return;
@@ -91,10 +89,9 @@ async function logRequest(details) {
  * @param {string} details.url - url
  * @param {number} details.timeStamp - timestamp
  */
-async function updateMainFrameInfo(details) {
-
+async function updateMainFrameInfo (details) {
   if (details.frameId !== 0 ||
-      details.tabId === -1  ||
+      details.tabId === -1 ||
       details.tabId === browser.tabs.TAB_ID_NONE ||
       !details.url.startsWith('http') ||
       details.url.includes('_/chrome/newtab')) {
@@ -106,17 +103,15 @@ async function updateMainFrameInfo(details) {
    * worker and clear out tabData here */
   if (tabData[details.tabId]) {
     clearTabData(details.tabId);
-
   }
 
   /* take time stamp and use as ID for main frame page load
    * store in object to identify with tab */
   try {
     const tab = await browser.tabs.get(details.tabId);
-    if (tab.hasOwnProperty('favIconUrl')){
+    if (tab.hasOwnProperty('favIconUrl')) {
       recordNewPage(details.tabId, details.url, tab.title, tab.favIconUrl);
-    }
-    else{
+    } else {
       recordNewPage(details.tabId, details.url, tab.title, '');
     }
   } catch (err) {
@@ -207,12 +202,12 @@ window.getFavicon=getFavicon;
  * @param  {string} title
  * @param  {string} faviconUrl
  */
-function recordNewPage(tabId, url, title, faviconUrl) {
+function recordNewPage (tabId, url, title, faviconUrl) {
   const pageId = Date.now();
   let urlObj = new URL(url);
 
   let domain = tldjs.getDomain(urlObj.hostname);
-  domain = domain ? domain : urlObj.hostname; // in case above line returns null
+  domain = domain || urlObj.hostname; // in case above line returns null
 
   // store info about the tab in memory
   tabData[tabId] = {
@@ -231,7 +226,7 @@ function recordNewPage(tabId, url, title, faviconUrl) {
     type: 'store_page',
     info: tabData[tabId]
   });
-  //now fetch and store the favicon database
+  // now fetch and store the favicon database
   // fetchSetGetFavicon(url, faviconUrl)
 }
 
@@ -243,7 +238,7 @@ function recordNewPage(tabId, url, title, faviconUrl) {
  *
  * @param  {number} tabId - tab's id
  */
-function clearTabData(tabId) {
+function clearTabData (tabId) {
   if (!tabData[tabId]) {
     return;
   }
@@ -268,7 +263,7 @@ function clearTabData(tabId) {
  *
  * @param  {number} tabId - tab's id
  */
-async function updateTrackers(tabId) {
+async function updateTrackers (tabId) {
   if (typeof tabData[tabId] === 'undefined') {
     return;
   }
@@ -291,7 +286,7 @@ async function updateTrackers(tabId) {
   tabData[tabId].trackers = trackers;
 }
 
-async function onPageLoadFinish(details) {
+async function onPageLoadFinish (details) {
   if (details.frameId === 0) {
     // not an iframe
     const tabId = details.tabId
@@ -306,7 +301,6 @@ async function onPageLoadFinish(details) {
     }
   }
 }
-
 
 /* INTRA-EXTENSION MESSAGE LISTENERS */
 /* ================================= */
@@ -324,12 +318,10 @@ inferencingWorker.onmessage = onInferencingWorkerMessage;
  * @param  {number} tabId
  * @return {Object} tabData object
  */
-async function getTabData(tabId) {
-  if (typeof tabData[tabId] == 'undefined') {
+async function getTabData (tabId) {
+  if (typeof tabData[tabId] === 'undefined') {
     return null;
-
   } else {
-
     let data = tabData[tabId];
 
     await updateTrackers(tabId);
@@ -339,15 +331,13 @@ async function getTabData(tabId) {
 }
 window.getTabData = getTabData; // exposes function to other extension components
 
-
-
 /**
  * facilitates bulk import of data
  * takes in JSON of data to import, passes to database
  *
  * @param  {Object} dataString - JSON with data to import
  */
-async function importData(dataString) {
+async function importData (dataString) {
   databaseWorker.postMessage({
     type: 'import_data',
     data: dataString
@@ -359,7 +349,7 @@ window.importData = importData;
  * resets all data
  * sends message to database worker to empty database
  */
-function resetAllData() {
+function resetAllData () {
   databaseWorker.postMessage({
     type: 'empty_db'
   })
@@ -379,14 +369,13 @@ window.resetAllData = resetAllData;
  * @param  {Object} m.data.id - Message id, set by sender
  * @param  {Object} m.data.trackers - Array of trackers, given by sender
  */
-function onTrackersWorkerMessage(m) {
+function onTrackersWorkerMessage (m) {
   if (m.data.type === 'trackers') {
     pendingTrackerMessages[m.data.id](m.data.trackers);
   }
 }
 
-
-async function onInferencingWorkerMessage(m) {
+async function onInferencingWorkerMessage (m) {
   const tabId = m.data.info.tabId;
   if (m.data.type === 'page_inference') {
     tabData[tabId].inference = m.data.info.inference;
@@ -407,36 +396,36 @@ async function onInferencingWorkerMessage(m) {
  * @returns {boolean} true
  *
  */
-function runtimeOnMessage(message, sender, sendResponse) {
+function runtimeOnMessage (message, sender, sendResponse) {
   let pageId;
   let query, tabDataRes;
   // sendResponse('swhooo');
   switch (message.type) {
-  case 'parsed_page':
+    case 'parsed_page':
 
-    if (!sender.tab || !sender.url || sender.frameId !== 0) {
+      if (!sender.tab || !sender.url || sender.frameId !== 0) {
       // message didn't come from a tab, so we ignore
+        break;
+      }
+      if (!tabData[sender.tab.id]) break;
+      pageId = tabData[sender.tab.id].pageId;
+
+      inferencingWorker.postMessage({
+        type: 'content_script_to_inferencing',
+        article: message.article,
+        mainFrameReqId: pageId,
+        tabId: sender.tab.id
+      });
       break;
-    }
-    if (!tabData[sender.tab.id]) break;
-    pageId = tabData[sender.tab.id].pageId;
 
-    inferencingWorker.postMessage({
-      type: 'content_script_to_inferencing',
-      article: message.article,
-      mainFrameReqId: pageId,
-      tabId: sender.tab.id
-    });
-    break;
+    case 'queryDatabase':
+      query = queryDatabase(message.query, message.args);
+      query.then(res => sendResponse(res));
+      return true; // must do since calling sendResponse asynchronously
 
-  case 'queryDatabase':
-    query = queryDatabase(message.query, message.args);
-    query.then(res => sendResponse(res));
-    return true; // must do since calling sendResponse asynchronously
-
-  case 'getTabData':
-    tabDataRes = getTabData(sender.tab.id);
-    tabDataRes.then(res => sendResponse(res));
-    return true; // must do since calling sendResponse asynchronously
+    case 'getTabData':
+      tabDataRes = getTabData(sender.tab.id);
+      tabDataRes.then(res => sendResponse(res));
+      return true; // must do since calling sendResponse asynchronously
   }
 }
