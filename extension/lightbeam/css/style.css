@@ -13,11 +13,6 @@
 
 /* ----------- UI - General ----------- */
 
-@font-face {
-  font-family: "Open Sans";
-  src: url("../fonts/OpenSans-Regular.ttf");
-}
-
 [hidden] {
   display: none !important;
 }
@@ -42,7 +37,7 @@ body {
   height: 100vh;
   width: 100%;
   margin: 0;
-  font-family: "Open Sans", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-weight: normal;
 }
 
