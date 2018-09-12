@@ -1,12 +1,9 @@
 import React from 'react'
 
-import Text from '@instructure/ui-elements/lib/components/Text'
-import ToggleDetails from '@instructure/ui-toggle-details/lib/components/ToggleDetails'
-
 import colors from '../../colors'
 import DetailPage from '../components/DetailPage'
 
-export default class TrackerDetailPage extends React.Component {
+export default class InferenceDetailPage extends React.Component {
   constructor (props) {
     super(props)
     this.wcRef = React.createRef()

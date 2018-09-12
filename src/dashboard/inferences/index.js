@@ -9,8 +9,8 @@ const InferenceOverview = Loadable({
   loading: Loading
 })
 
-const InferenceDetails = Loadable({
-  loader: () => import(/* webpackChunkName: "dashboard/InferenceDetails" */'./InferenceDetails'),
+const InferenceDetailPage = Loadable({
+  loader: () => import(/* webpackChunkName: "dashboard/InferenceDetailPage" */'./InferenceDetailPage'),
   loading: Loading
 })
 
@@ -18,7 +18,7 @@ export default class Trackers extends React.Component {
   render () {
     return (
       <div>
-        <Route path={`${this.props.match.url}/:name`} component={InferenceDetails} />
+        <Route path={`${this.props.match.url}/:name`} component={InferenceDetailPage} />
         <Route exact path={this.props.match.url} component={InferenceOverview} />
       </div>
     )

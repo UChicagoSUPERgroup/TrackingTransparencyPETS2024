@@ -4,13 +4,13 @@ import Loadable from 'react-loadable'
 
 import Loading from '../loadable'
 
-const FirstPartyOverview = Loadable({
-  loader: () => import(/* webpackChunkName: "dashboard/FirstPartyOverview" */'./FirstPartyOverview'),
+const SiteOverview = Loadable({
+  loader: () => import(/* webpackChunkName: "dashboard/SiteOverview" */'./SiteOverview'),
   loading: Loading
 })
 
-const FirstPartyDetails = Loadable({
-  loader: () => import(/* webpackChunkName: "dashboard/FirstPartyDetails" */'./FirstPartyDetails'),
+const SiteDetailPage = Loadable({
+  loader: () => import(/* webpackChunkName: "dashboard/SiteDetailPage" */'./SiteDetailPage'),
   loading: Loading
 })
 
@@ -18,8 +18,8 @@ export default class Sites extends React.Component {
   render () {
     return (
       <div>
-        <Route path={`${this.props.match.url}/:name`} component={FirstPartyDetails} />
-        <Route exact path={this.props.match.url} component={FirstPartyOverview} />
+        <Route path={`${this.props.match.url}/:name`} component={SiteDetailPage} />
+        <Route exact path={this.props.match.url} component={SiteOverview} />
       </div>
     )
   }

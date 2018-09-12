@@ -3,7 +3,7 @@ import React from 'react'
 import colors from '../../colors'
 import DetailPage from '../components/DetailPage'
 
-export default class FirstPartyDetailPage extends React.Component {
+export default class SiteDetailPage extends React.Component {
   constructor (props) {
     super(props)
     this.wcRef = React.createRef()

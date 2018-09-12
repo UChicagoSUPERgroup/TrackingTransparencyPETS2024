@@ -56,7 +56,6 @@ export default class InferenceSummary extends React.Component {
   render () {
     const { inference } = this.props
     const { trackers, topSites } = this.state
-    console.log(trackers, topSites)
     if (!Array.isArray(trackers) || !Array.isArray(topSites)) {
       return null
     }

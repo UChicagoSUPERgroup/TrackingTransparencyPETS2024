@@ -114,7 +114,7 @@ const ManyTrackersTable = (data) => {
   )
 }
 
-export default class FirstPartyOverview extends React.Component {
+export default class SiteOverview extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
