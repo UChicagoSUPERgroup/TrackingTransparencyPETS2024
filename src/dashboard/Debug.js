@@ -11,7 +11,6 @@ import TextInput from '@instructure/ui-forms/lib/components/TextInput'
 import DateInput from '@instructure/ui-forms/lib/components/DateInput'
 import NumberInput from '@instructure/ui-forms/lib/components/NumberInput'
 
-import {queryNames} from '../background/database/queries'
 import logging from './dashboardLogging'
 import TTPanel from './components/TTPanel'
 
@@ -20,11 +19,11 @@ class DebugPage extends React.Component {
     super(props)
 
     this.state = {
-      queryFormField: queryNames[0],
+      queryFormField: '',
       trackerFormField: 'Google',
-      domainFormField: 'www.nytimes.com',
-      inferenceFormField: 'Warehousing',
-      afterDateFormField: '2018-01-01',
+      domainFormField: 'yahoo.com',
+      inferenceFormField: 'Computers & Electronics',
+      afterDateFormField: '',
       countFormField: '',
       importFormField: '',
       result: false,
@@ -137,14 +136,13 @@ class DebugPage extends React.Component {
             vAlign='top'
             rowSpacing='small'
           >
-            <Select
+            <TextInput
+              name='queryFormField'
               label='Query'
+              placeholder='getAllData'
               value={this.state.queryFormField}
-              onChange={(e, opt) => { this.setState({ queryFormField: opt.label }) }}
-            >
-              {queryNames.map(q => <option key={q} value={q}>{q}</option>)}
-            </Select>
-
+              onChange={this.handleTextChange}
+            />
             <TextInput
               name='trackerFormField'
               label='Tracker'
@@ -155,7 +153,7 @@ class DebugPage extends React.Component {
             <TextInput
               name='domainFormField'
               label='First party domain'
-              placeholder='nytimes.com'
+              placeholder='yahoo.com'
               value={this.state.domainFormField}
               onChange={this.handleTextChange}
             />

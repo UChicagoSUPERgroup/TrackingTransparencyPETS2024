@@ -20,13 +20,10 @@ export default class TrackerDetailPage extends React.Component {
 
     const trackersP = background.queryDatabase('getTrackersByInference', queryObj)
     const domainsP = background.queryDatabase('getDomainsByInference', queryObj)
-    const timestampsP = background.queryDatabase('getTimestampsByInference', queryObj)
     const pagesP = background.queryDatabase('getPagesByInference', queryObj)
 
-    const [trackers, domains, timestampsQ, pages] =
-      await Promise.all([trackersP, domainsP, timestampsP, pagesP])
-
-    const timestamps = timestampsQ.map(x => parseInt(x.Pages.id))
+    const [trackers, domains, pages] =
+      await Promise.all([trackersP, domainsP, pagesP])
 
     const metrics = [
       {
@@ -40,19 +37,18 @@ export default class TrackerDetailPage extends React.Component {
         value: trackers.length
       }
     ]
-    console.log(trackers, domains, timestamps, pages)
+    console.log(trackers, domains, pages)
 
     this.setState({
       trackers,
       domains,
       pages,
-      timestamps,
       metrics
     })
   }
 
   render () {
-    const { metrics, trackers, domains, pages, timestamps } = this.state
+    const { metrics, trackers, domains, pages } = this.state
     const ready = !!pages
 
     if (!ready) return null
@@ -68,7 +64,6 @@ export default class TrackerDetailPage extends React.Component {
         pages={pages}
         pageTableTitle={'What pages have you visited about ' + this.inference + '?'}
         pageTableSubtitle={'Pages that are likely about ' + this.inference}
-        timestamps={timestamps}
         timeChartTitle={'When have you visited pages about ' + this.inference + '?'}
         timeChartSubtitle={'This graph shows the number of pages you visited over time that are likely about ' + this.inference + '.'}
       />

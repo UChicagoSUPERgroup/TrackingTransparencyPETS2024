@@ -20,15 +20,13 @@ export default class TrackerDetailPage extends React.Component {
 
     const inferencesP = background.queryDatabase('getInferencesByTracker', queryObj)
     const domainsP = background.queryDatabase('getDomainsByTracker', queryObj)
-    const timestampsP = background.queryDatabase('getTimestampsByTracker', queryObj)
     const pagesP = background.queryDatabase('getPagesByTracker', queryObj)
     const trackerDataP = import(/* webpackChunkName: "data/trackerData" */'../../data/trackers/companyData.json')
 
-    const [inferences, domains, timestampsQ, pages, trackerData] =
-      await Promise.all([inferencesP, domainsP, timestampsP, pagesP, trackerDataP])
+    const [inferences, domains, pages, trackerData] =
+      await Promise.all([inferencesP, domainsP, pagesP, trackerDataP])
 
     const trackerInfo = trackerData.default[this.tracker]
-    const timestamps = timestampsQ.map(x => parseInt(x.Pages.id))
 
     const metrics = [
       {
@@ -51,13 +49,12 @@ export default class TrackerDetailPage extends React.Component {
       inferences,
       domains,
       pages,
-      timestamps,
       metrics
     })
   }
 
   render () {
-    const { trackerInfo, metrics, inferences, domains, pages, timestamps } = this.state
+    const { trackerInfo, metrics, inferences, domains, pages } = this.state
     const ready = !!pages
 
     if (!ready) return null
@@ -88,7 +85,6 @@ export default class TrackerDetailPage extends React.Component {
         pages={pages}
         pageTableTitle={'Where has ' + this.tracker + ' tracked you?'}
         pageTableSubtitle={'Pages that had trackers from ' + this.tracker}
-        timestamps={timestamps}
         timeChartTitle={'When has ' + this.tracker + ' tracked you?'}
         timeChartSubtitle={'This graph shows the number of pages over time where ' + this.tracker + ' has tracked you.'}
       />

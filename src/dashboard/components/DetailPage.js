@@ -19,7 +19,8 @@ import WordCloud from '../components/WordCloud'
 export default class DetailPage extends React.Component {
   constructor (props) {
     super(props)
-    const { metrics, inferences, domains, trackers, pages, timestamps } = props
+    const { metrics, inferences, domains, trackers, pages } = props
+    const timestamps = pages.map(x => x.id)
     this.state = {
       metrics,
       inferences,
@@ -180,7 +181,6 @@ DetailPage.propTypes = {
   domains: PropTypes.array,
   trackers: PropTypes.array,
   pages: PropTypes.array,
-  timestamps: PropTypes.array,
 
   pageTableTitle: PropTypes.string,
   pageTableSubtitle: PropTypes.string,
