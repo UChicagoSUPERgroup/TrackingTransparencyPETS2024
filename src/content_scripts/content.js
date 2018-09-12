@@ -1,11 +1,11 @@
 import makeInference from './inferencing'
 import overlay from './overlay'
 
-makeInference()
-
 async function runtimeOnMessage (m) {
   console.log('got msg from background', m)
   switch (m.type) {
+    case 'make_inference':
+      makeInference()
     case 'create_or_update_overlay':
       overlay.createOrUpdate(m.innerHTML)
       break

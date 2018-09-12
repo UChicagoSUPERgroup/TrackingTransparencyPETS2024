@@ -57,8 +57,9 @@ browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
 /* listener for tab close */
 browser.tabs.onRemoved.addListener(clearTabData);
 
-/* listener for overlay injection */
+/* listeners to signal content scripts */
 browser.webNavigation.onCompleted.addListener(onPageLoadFinish);
+browser.webNavigation.onHistoryStateUpdated.addListener(onPageLoadFinish);
 
 
 /** Sends a message with information about each outgoing
@@ -290,7 +291,11 @@ async function updateTrackers(tabId) {
 async function onPageLoadFinish(details) {
   if (details.frameId === 0) {
     // not an iframe
-    const tabId = details.tabId;
+    const tabId = details.tabId
+    chrome.tabs.sendMessage(tabId, {
+      type: 'make_inference'
+    })
+
     const data = await getTabData(tabId)
     const showOverlay = await getOption('showOverlay')
     if (showOverlay === true) {

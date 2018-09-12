@@ -1,22 +1,22 @@
 import overlayStyles from './overlay_styles'
 
-let iframe, overlayContent
-
 function createOrUpdate (innerHTML) {
-  if (overlayContent) {
-    overlayContent.innerHTML = innerHTML
+  const existing = document.getElementById('trackingtransparency_overlay')
+  if (existing) {
+    existing.contentDocument.getElementById('tt_overlay_content').innerHTML = innerHTML
   } else {
     injectOverlay(innerHTML)
   }
 }
 
 function remove () {
+  const iframe = document.getElementById('trackingtransparency_overlay')
   iframe.parentElement.removeChild(iframe)
 }
 
 function injectOverlay (innerHTML) {
   // create div
-  iframe = document.createElement('iframe')
+  let iframe = document.createElement('iframe')
   iframe.id = 'trackingtransparency_overlay'
   iframe.srcdoc = '<div id="tt_closebutton">&#10005;</div><div id="tt_overlay_content"></div>'
   iframe.style = overlayStyles.outer

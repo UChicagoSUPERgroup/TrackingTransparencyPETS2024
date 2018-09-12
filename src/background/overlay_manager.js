@@ -25,11 +25,7 @@ function generateInnerHTML(tabData) {
 }
 
 function createOrUpdate(tabId, tabData) {
-
-  console.log('tabdata is', tabData)
-  
-  let innerHTML = generateInnerHTML(tabData);
-  console.log('innerhtml is', innerHTML)
+  let innerHTML = generateInnerHTML(tabData)
 
   if (innerHTML) {
     chrome.tabs.sendMessage(tabId, {
