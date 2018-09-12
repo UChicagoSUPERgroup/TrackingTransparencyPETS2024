@@ -8,10 +8,12 @@ import {
   VerticalBarSeries
 } from 'react-vis'
 
-import * as moment from 'moment'
+import moment from 'moment'
 import _ from 'lodash'
 
 import CustomAxisLabel from './CustomAxisLabel'
+
+moment().format()
 
 export default function PageTimeGraph ({ timestamps, color }) {
   const times = timestamps.map(t => moment(t))

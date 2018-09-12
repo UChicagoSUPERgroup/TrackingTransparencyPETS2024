@@ -1,13 +1,7 @@
 import React from 'react'
-import Loadable from 'react-loadable'
 
 import colors from '../../colors'
-import Loading from '../loadable'
-
-const DetailPage = Loadable({
-  loader: () => import(/* webpackChunkName: "dashboard/DetailPage" */'../components/DetailPage'),
-  loading: Loading
-})
+import DetailPage from '../components/DetailPage'
 
 export default class FirstPartyDetailPage extends React.Component {
   constructor (props) {

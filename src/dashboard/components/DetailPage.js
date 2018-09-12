@@ -95,7 +95,7 @@ export default class DetailPage extends React.Component {
     const { title, description, accentColor } = this.props
     const { domains, inferences, trackers, metrics } = this.state
     const ready = !!metrics
-    if (!ready) return <Text>'Loading…'</Text>
+    if (!ready) return 'Loading…'
 
     return (
       <div>
