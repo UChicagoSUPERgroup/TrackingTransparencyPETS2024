@@ -129,7 +129,7 @@ if the cache is recent (same favicon url or not)
 if the data is not cahched or the cached data is stale
 fetch the favicon data and store it in base 64 format and return that data
 */
-
+/*
 async function fetchSetGetFavicon(url, faviconurl){
   let x = 'favicon_'+url
   let checkFav = await browser.storage.local.get({[x]: 'no favicon'});
@@ -176,6 +176,7 @@ async function fetchSetGetFavicon(url, faviconurl){
   return checkFav[x]['favicondata'];
 }
 window.fetchSetGetFavicon=fetchSetGetFavicon;
+*/
 
 /*
 getFavicon: A simple function to retrieve favicon data from local storage
@@ -185,6 +186,7 @@ Usage: <img src="THE BASE64 STRING GIVEN BY THIS FUNCTION." />
 Always check if the returned base64 url is empty.
 
 */
+/*
 async function getFavicon(url) {
   let x = 'favicon_'+url
   let checkFav = await browser.storage.local.get({[x]: 'no favicon'});
@@ -194,6 +196,7 @@ async function getFavicon(url) {
   return ''
 }
 window.getFavicon=getFavicon;
+*/
 
 /**
  * creates a new record for the tab in database and tabData object
@@ -229,7 +232,7 @@ function recordNewPage(tabId, url, title, faviconUrl) {
     info: tabData[tabId]
   });
   //now fetch and store the favicon database
-  fetchSetGetFavicon(url, faviconUrl)
+  // fetchSetGetFavicon(url, faviconUrl)
 }
 
 /**
