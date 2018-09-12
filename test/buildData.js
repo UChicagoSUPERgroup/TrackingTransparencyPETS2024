@@ -12,11 +12,13 @@ const fs = require('fs')
 
 const CRX_PATH = './extension/'
 
-fs.readFile('./test/data/tt_export.json', 'utf8', (err, jsondata) => {
-  startChromium(jsondata)
+fs.readFile('./test/data/majestic_1000.json', (err, data) => {
+  const pages = JSON.parse(data)
+  startChromium(pages)
 })
+const badSites = ['bp.blogspot.com', 'wixsite.com', 'ibm.com', 'free.fr']
 
-async function startChromium (data) {
+async function startChromium (pages) {
   // set up puppeteer
   const browser = await puppeteer.launch({
     headless: false, // extensions only supported in full chrome.
@@ -29,17 +31,27 @@ async function startChromium (data) {
   })
   await sleep(1000)
 
+  // get browser extension's id
   const id = await getExtensionId(browser)
+
+  // visit some pages
+  const page = await browser.newPage()
+  for (let p of pages) {
+    if (badSites.indexOf(p) !== -1) {
+      continue
+    }
+    try {
+      await page.goto('http://' + p)
+    } catch (err) {
+      console.log(err)
+    }
+    await sleep(500)
+  }
+  await page.close()
 
   // naviagte to dashboard page
   const dashboard = await browser.newPage()
   await dashboard.goto('chrome-extension://' + id + '/dist/dashboard.html#/debug')
-  await dashboard.evaluate(async (data) => {
-    const background = await browser.runtime.getBackgroundPage()
-    background.importData(data)
-  }, data)
-  await sleep(1000)
-  await dashboard.close()
 }
 
 function sleep (ms) {
