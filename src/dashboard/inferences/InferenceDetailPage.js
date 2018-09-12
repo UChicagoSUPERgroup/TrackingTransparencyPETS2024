@@ -1,10 +1,13 @@
 import React from 'react'
-
-import Text from '@instructure/ui-elements/lib/components/Text'
-import ToggleDetails from '@instructure/ui-toggle-details/lib/components/ToggleDetails'
+import Loadable from 'react-loadable'
 
 import colors from '../../colors'
-import DetailPage from '../components/DetailPage'
+import Loading from '../loadable'
+
+const DetailPage = Loadable({
+  loader: () => import(/* webpackChunkName: "dashboard/DetailPage" */'../components/DetailPage'),
+  loading: Loading
+})
 
 export default class TrackerDetailPage extends React.Component {
   constructor (props) {
