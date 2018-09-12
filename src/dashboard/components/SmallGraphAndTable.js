@@ -20,7 +20,7 @@ import CustomAxisLabel from './CustomAxisLabel'
 
 export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, description, color }) {
   const lower = name.toLowerCase()
-  const graphData = data.slice(0, 10).map(d => ({
+  const graphData = data.slice(-10).reverse().map(d => ({
     y: d['name'],
     x: d['count']
   }))

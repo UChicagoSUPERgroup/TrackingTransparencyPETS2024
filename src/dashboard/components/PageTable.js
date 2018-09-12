@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactTable from 'react-table'
+import moment from 'moment'
 
 import Link from '@instructure/ui-elements/lib/components/Link'
 import TruncateText from '@instructure/ui-elements/lib/components/TruncateText'
@@ -23,6 +24,11 @@ export default class PageTable extends React.Component {
     }
   }
 
+  unixTimeToString (d) {
+    const m = moment(d.id)
+    return m.calendar()
+  }
+
   render () {
     let { data, title } = this.state
 
@@ -30,8 +36,8 @@ export default class PageTable extends React.Component {
       {
         Header: 'Time',
         id: 'id',
-        accessor: d => (new Date(d.id).toLocaleTimeString()),
-        maxWidth: 120
+        accessor: this.unixTimeToString,
+        maxWidth: 180
       }
     ]
 

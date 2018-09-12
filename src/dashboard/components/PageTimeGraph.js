@@ -5,7 +5,7 @@ import {
   XAxis,
   YAxis,
   HorizontalGridLines,
-  LineSeries
+  VerticalBarSeries
 } from 'react-vis'
 
 import moment from 'moment'
@@ -15,7 +15,7 @@ import CustomAxisLabel from './CustomAxisLabel'
 
 moment().format()
 
-export default function PageTimeGraph ({ timestamps }) {
+export default function PageTimeGraph ({ timestamps, color }) {
   const times = timestamps.map(t => moment(t))
 
   let data = []
@@ -23,12 +23,16 @@ export default function PageTimeGraph ({ timestamps }) {
   const firstDay = times[0].startOf('day')
   let grouped
   grouped = _.groupBy(times, t => t.diff(firstDay, 'days'))
-  console.log(grouped, Object.keys(grouped))
   for (let day in grouped) {
     data.push({
       x: parseInt(day),
       y: grouped[day].length
     })
+  }
+  const maxDay = data[data.length - 1].x
+  let tickValues = []
+  for (let i = 0; i <= maxDay; i++) {
+    tickValues.push(i)
   }
 
   const dataLabel = (v) => {
@@ -41,12 +45,13 @@ export default function PageTimeGraph ({ timestamps }) {
         height={200}
         margin={{left: 100, right: 10, top: 10, bottom: 70}}>
         <HorizontalGridLines />
-        <LineSeries
-          color='#8F3931'
-          data={data} />
+        <VerticalBarSeries
+          color={color}
+          data={data}
+        />
         <XAxis
           height={100}
-          tickValues={Object.keys(data)}
+          tickValues={tickValues}
           tickFormat={dataLabel}
           tickLabelAngle={-20}
         />

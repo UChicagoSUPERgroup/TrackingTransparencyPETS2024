@@ -383,7 +383,7 @@ async function getPagesByDomain (args) {
     .where(Pages.domain.eq(args.domain))
 
   query = args.count ? query.limit(args.count) : query
-  query = query.orderBy(Pages.id, lf.Order.ASC)
+  query = query.orderBy(Pages.id, lf.Order.DESC)
   let pages = await query.exec()
 
   pages = pages.map(async (page) => {
@@ -420,7 +420,7 @@ async function getPagesByInference (args) {
       Inferences.inference.eq(args.inference)
     ))
   query = args.count ? query.limit(args.count) : query
-  query = query.orderBy(Pages.id, lf.Order.ASC)
+  query = query.orderBy(Pages.id, lf.Order.DESC)
   let pages = await query.exec()
 
   pages = pages.map(async (p) => {
@@ -491,7 +491,7 @@ async function getPagesByTracker (args) {
       Trackers.tracker.eq(args.tracker)
     ))
   query = args.count ? query.limit(args.count) : query
-  query = query.orderBy(Pages.id, lf.Order.ASC)
+  query = query.orderBy(Pages.id, lf.Order.DESC)
   let pages = await query.exec()
 
   pages = pages.map(async (p) => {

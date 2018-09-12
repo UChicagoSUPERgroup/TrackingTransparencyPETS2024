@@ -20,7 +20,7 @@ export default class DetailPage extends React.Component {
   constructor (props) {
     super(props)
     const { metrics, inferences, domains, trackers, pages } = props
-    const timestamps = pages.map(x => x.id)
+    const timestamps = pages.map(x => x.id).reverse()
     this.state = {
       metrics,
       inferences,
@@ -77,7 +77,7 @@ export default class DetailPage extends React.Component {
   }
 
   renderPageTimeGraph () {
-    const { title, timeChartTitle, timeChartSubtitle } = this.props
+    const { title, timeChartTitle, timeChartSubtitle, accentColor } = this.props
     const { timestamps } = this.state
     return (
       <TTPanel>
@@ -85,6 +85,7 @@ export default class DetailPage extends React.Component {
         <Text>{timeChartSubtitle}</Text>
         {timestamps.length > 0 && <PageTimeGraph
           timestamps={timestamps}
+          color={accentColor}
         />}
       </TTPanel>
     )
