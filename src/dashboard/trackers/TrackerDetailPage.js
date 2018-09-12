@@ -87,7 +87,7 @@ export default class TrackerDetailPage extends React.Component {
         domains={domains}
         pages={pages}
         pageTableTitle={'Where has ' + this.tracker + ' tracked you?'}
-        pageTableSubitle={'Pages that had trackers from ' + this.tracker}
+        pageTableSubtitle={'Pages that had trackers from ' + this.tracker}
         timestamps={timestamps}
         timeChartTitle={'When has ' + this.tracker + ' tracked you?'}
         timeChartSubtitle={'This graph shows the number of pages over time where ' + this.tracker + ' has tracked you.'}
