@@ -7,9 +7,9 @@ import tt from '../../helpers';
 // the keywords file is bundled using webpack as keywordsjson
 // it must NOT have .json as an extension in the bundle because then it goes over a file size limit with mozilla
 
-import word2IndexFile from 'file-loader?name=words2idx_dictjson!../../data/inferencing/words2idx_dictjson';
-import keywordsFile from 'file-loader?name=keywordsjson!../../data/inferencing/keywordsjson';
-import cutOneFile from 'file-loader?name=cut_one_dictjson!../../data/inferencing/cut_one_dictjson';
+import word2IndexFile from 'file-loader?name=data/words2idx_dictjson!../../data/inferencing/words2idx_dictjson';
+import keywordsFile from 'file-loader?name=data/keywordsjson!../../data/inferencing/keywordsjson';
+import cutOneFile from 'file-loader?name=data/cut_one_dictjson!../../data/inferencing/cut_one_dictjson';
 
 let databaseWorkerPort;
 

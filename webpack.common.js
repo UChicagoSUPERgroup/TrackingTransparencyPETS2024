@@ -71,8 +71,11 @@ module.exports = {
   },
   optimization: {
     splitChunks: {
-      chunks: 'all'
-    },
+      chunks: 'all',
+      cacheGroups: {
+        default: false
+      }
+    }
   },
   plugins: [
     new CleanWebpackPlugin(['extension/dist']),
@@ -101,12 +104,12 @@ module.exports = {
       template: 'src/template.html',
       title: 'Tracking Transparency'
     }),
-    new HtmlWebpackPlugin({
-      filename: 'options.html',
-      chunks: ['options'],
-      template: 'src/template.html',
-      title: 'Options'
-    }),
+    // new HtmlWebpackPlugin({
+    //   filename: 'options.html',
+    //   chunks: ['options'],
+    //   template: 'src/template.html',
+    //   title: 'Options'
+    // }),
     new HtmlWebpackPlugin({
       filename: 'welcome.html',
       chunks: ['welcome'],
