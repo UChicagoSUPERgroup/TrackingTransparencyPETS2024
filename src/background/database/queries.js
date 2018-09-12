@@ -379,7 +379,7 @@ async function getPagesByDomain (args) {
   }
 
   let query = ttDb.select(Pages.id, Pages.title, Pages.domain, Pages.hostname, Pages.path, Pages.protocol)
-    .from(Pages, Trackers)
+    .from(Pages)
     .where(Pages.domain.eq(args.domain))
 
   query = args.count ? query.limit(args.count) : query
