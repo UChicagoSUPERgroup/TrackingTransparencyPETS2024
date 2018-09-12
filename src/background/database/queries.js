@@ -187,7 +187,11 @@ async function getTrackersByInference(args) {
     .groupBy(Trackers.tracker)
     .orderBy(lf.fn.count(Trackers.tracker), lf.Order.DESC);
   query = args.count ? query.limit(args.count) : query;
-  return await query.exec();
+  const res = await query.exec()
+  return res.map(x => ({
+    name: x.Trackers['tracker'],
+    count: x.Trackers['COUNT(tracker)']
+  }))
 }
 
 /** get timestamps of all page visits
@@ -290,6 +294,36 @@ async function getPagesByTime(args) {
       return a['id'] - b['id']
     })
   return combined;
+}
+
+/** get pages by inference
+ * 
+ * @param  {Object} args - arguments object
+ * @param  {number} args.inference - inference
+ * @param  {number} [args.count] - number of entries to return
+ */
+async function getPagesByInference (args) {
+  if (!args.inference) {
+    throw new Error('Insufficient args provided for query')
+  }
+
+  let query = ttDb.select(Pages.id, Pages.title, Pages.domain, Pages.hostname, Pages.path, Pages.protocol)
+    .from(Pages, Inferences)
+    .where(lf.op.and(
+      Inferences.pageId.eq(Pages.id),
+      Inferences.inference.eq(args.inference)
+    ))
+  query = args.count ? query.limit(args.count) : query
+  query = query.orderBy(Pages.id, lf.Order.ASC)
+  let pages = await query.exec()
+
+  pages = pages.map(async (p) => {
+    let page = p.Pages
+    page.url = makeURL(page)
+    
+    return page
+  })
+  return Promise.all(pages)
 }
 
 /** get pages by tracker
@@ -444,10 +478,11 @@ async function getDomainsByInference(args) {
       result[domain] = 1;
     }
     return result;
-  }, {});
+  }, {})
 
-  return merged;
-  // return res.map(x => x.Pages.domain);
+  let res = Object.keys(merged).map(key => ({name: key, count: merged[key]}));
+  res.sort((a, b) => (b.count - a.count));
+  return res
 }
 
 /**
@@ -479,13 +514,8 @@ async function getInferencesByDomain(args) {
     return result;
   }, {});
 
-  let res = []
-  Object.keys(merged).forEach(key => {
-    res.push({
-      name: key,
-      count: merged[key]
-    })
-  })
+  let res = Object.keys(merged).map(key => ({name: key, count: merged[key]}));
+  res.sort((a, b) => (b.count - a.count));
   return res;
 }
 
@@ -754,32 +784,6 @@ async function getTrackerCountByDomain(args) {
 
 }
 
-// /*
-//  * gets a lot of info about a tracker
-//  * used for infopage
-//  */
-// async function getInfoAboutTracker(args) {
-
-//   let inferenceCount = args.count;
-//   let pageCount = args.count;
-//   let inferences = await getInferencesByTracker({
-//     tracker: args.tracker,
-//     count: inferenceCount
-//   });
-//   let inferenceInfo = [];
-//   for (let inference of inferences) {
-//     inferenceInfo.push({
-//       inference: inference,
-//       pages: await getPagesByTrackerAndInference({
-//         tracker:args.tracker,
-//         inference: inference.inference,
-//         count: pageCount
-//       })
-//     });
-//   }
-//   return inferenceInfo;
-// }
-
 async function getInferenceCount(args) {
   let query = await ttDb.select(lf.fn.count(Inferences.inference))
     .from(Inferences)
@@ -801,15 +805,16 @@ const QUERIES = {
 
   getAllData: getAllData,
   getDomains: getDomains, // used in dashboard
-  getDomainsByInference: getDomainsByInference,
-  getDomainsByTracker: getDomainsByTracker,
+  getDomainsByInference,
+  getDomainsByTracker,
   getDomainsNoTrackers: getDomainsNoTrackers,
   getPagesByDomain: getPagesByDomain,
   getPagesByTime: getPagesByTime, // used in activities
-  getPagesByTracker: getPagesByTracker, // used in dashboard, trackers page
+  getPagesByInference,
+  getPagesByTracker,
   getPageCountByDomain: getPageCountByDomain,
   getTrackerCountByDomain: getTrackerCountByDomain,
-  getInferencesByDomain, // used in tests
+  getInferencesByDomain,
   getInferencesDomainsToSend: getInferencesDomainsToSend, // this is to send data to server contaiing pageIds and inferences and domain names
   getInferenceCount: getInferenceCount, // used in dashboard
   getInferences: getInferences, // used in dashboard inferences page
@@ -825,8 +830,8 @@ const QUERIES = {
   getTimestampsByTracker: getTimestampsByTracker,
   getInferencesByTime: getInferencesByTime,
   getTrackers: getTrackers, // used in dasboard
-  getTrackersByDomain: getTrackersByDomain, // used in dashboard
-  getTrackersByInference: getTrackersByInference, // used in dashboard
+  getTrackersByDomain,
+  getTrackersByInference,
   lightbeam: lightbeam // used by lightbeam
 };
 

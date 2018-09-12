@@ -22,10 +22,7 @@ import MetricsListItem from '@instructure/ui-elements/lib/components/MetricsList
 export default class InferenceSummary extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {
-      trackers: false,
-      topSites: false
-    }
+    this.state = {}
 
     this.updateData = this.updateData.bind(this)
   }
@@ -38,14 +35,13 @@ export default class InferenceSummary extends React.Component {
     const background = await browser.runtime.getBackgroundPage()
     const { inference } = this.props
 
-    const trackers = background.queryDatabaseRecursive('getTrackersByInference', {inference: inference})
-    trackers.then(tr => this.setState({
-      trackers: tr
-    }))
-    const topSites = background.queryDatabaseRecursive('getDomainsByInference', {inference: inference})
-    topSites.then(ts => this.setState({
-      topSites: ts
-    }))
+    const trackersP = background.queryDatabaseRecursive('getTrackersByInference', {inference: inference})
+    const topSitesP = background.queryDatabaseRecursive('getDomainsByInference', {inference: inference})
+    const [trackers, topSites] = await Promise.all([trackersP, topSitesP])
+    this.setState({
+      trackers,
+      topSites
+    })
   }
 
   componentWillReceiveProps (nextProps) {
@@ -60,6 +56,10 @@ export default class InferenceSummary extends React.Component {
   render () {
     const { inference } = this.props
     const { trackers, topSites } = this.state
+    console.log(trackers, topSites)
+    if (!Array.isArray(trackers) || !Array.isArray(topSites)) {
+      return null
+    }
 
     let content
 

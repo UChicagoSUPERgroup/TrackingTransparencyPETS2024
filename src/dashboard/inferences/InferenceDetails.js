@@ -1,202 +1,78 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import ReactTable from 'react-table'
 
-import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
-import Grid from '@instructure/ui-layout/lib/components/Grid'
-import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
-import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
-import MetricsList from '@instructure/ui-elements/lib/components/MetricsList'
-import MetricsListItem from '@instructure/ui-elements/lib/components/MetricsList/MetricsListItem'
+import ToggleDetails from '@instructure/ui-toggle-details/lib/components/ToggleDetails'
 
-import TTPanel from '../components/TTPanel'
+import colors from '../../colors'
+import DetailPage from '../components/DetailPage'
 
-const SiteTable = (data) => {
-  return (
-    <ReactTable
-      data={data}
-      columns={[
-        {Header: 'Site',
-          accessor: 'domain',
-          Cell: row => (
-            <div key={row.value}>
-              <Link className='domainTableLinkInferencesPage' to={{pathname: '/domains/' + row.value}}>
-                {row.value}
-              </Link>
-            </div>)
-        },
-        {Header: 'Page Visits',
-          accessor: 'count'}
-      ]}
-      defaultPageSize={10}
-      showPageJump={false}
-      showPageSizeOptions={false}
-      className='-striped -highlight'
-    />
-  )
-}
-
-const TrackerTable = (data) => {
-  return (
-    <ReactTable
-      data={data}
-      columns={[
-        {Header: 'Trackers',
-          accessor: 'tracker',
-          Cell: row => (
-            <div key={row.value}>
-              <Link className='trackerTableLinkInferencesPage' to={{pathname: '/trackers/' + row.value}}>
-                {row.value}
-              </Link>
-            </div>)
-        },
-        {Header: 'Page Visits',
-          accessor: 'count'}
-      ]}
-      defaultPageSize={10}
-      showPageJump={false}
-      showPageSizeOptions={false}
-      className='-striped -highlight'
-    />
-  )
-}
-
-const SensitivePanel = ({ inference, sensitiveCats }) => {
-  let sensitiveCatsShort = sensitiveCats.slice(0, 20)
-  let sensitive = !!((inference && sensitiveCatsShort.includes(inference)))
-  return (
-    <TTPanel>
-      <Text><em>{inference}</em>
-        {sensitive
-          ? ' may be considered a sensitive topic.'
-          : ' is likely not a sensitive topic.'
-        }</Text>
-    </TTPanel>
-  )
-}
-
-class InferenceDetails extends React.Component {
+export default class TrackerDetailPage extends React.Component {
   constructor (props) {
     super(props)
-    let inference
-    if (this.props.match && this.props.match.params.name) {
-      // loaded via URL
-      inference = this.props.match.params.name
-    } else if (this.props.inference) {
-      // loaded as in page component
-      inference = this.props.inference
-    }
-    this.state = {
-      inference: inference,
-      trackers: false,
-      timestamps: false,
-      topSites: false
-    }
-
-    this.updateData = this.updateData.bind(this)
+    this.wcRef = React.createRef()
+    this.inference = this.props.match.params.name
+    this.state = { }
   }
 
-  componentDidMount () {
-    this.updateData()
-    import(/* webpackChunkName: "data/sensitiveCats" */'../../data/categories_comfort_list.json')
-      .then(s => {
-        this.sensitiveCats = s.default
-      })
-  }
-
-  async updateData () {
+  async componentDidMount () {
+    const queryObj = {inference: this.inference}
     const background = await browser.runtime.getBackgroundPage()
-    const {inference} = this.state
 
-    const trackers = background.queryDatabaseRecursive('getTrackersByInference', {inference: inference})
-    trackers.then(tr => this.setState({
-      trackers: tr
-    }))
-    const timestamps = background.queryDatabaseRecursive('getTimestampsByInference', {inference: inference})
-    timestamps.then(ts => {
-      const times = ts.map(x => (
-        (new Date(x.Pages.id))
-      ))
-      this.setState({
-        timestamps: times
-      })
+    const trackersP = background.queryDatabase('getTrackersByInference', queryObj)
+    const domainsP = background.queryDatabase('getDomainsByInference', queryObj)
+    const timestampsP = background.queryDatabase('getTimestampsByInference', queryObj)
+    const pagesP = background.queryDatabase('getPagesByInference', queryObj)
+
+    const [trackers, domains, timestampsQ, pages] =
+      await Promise.all([trackersP, domainsP, timestampsP, pagesP])
+
+    const timestamps = timestampsQ.map(x => parseInt(x.Pages.id))
+
+    const metrics = [
+      {
+        name: 'Sites',
+        value: domains.length
+      }, {
+        name: 'Pages',
+        value: pages.length
+      }, {
+        name: 'Trackers',
+        value: trackers.length
+      }
+    ]
+    console.log(trackers, domains, timestamps, pages)
+
+    this.setState({
+      trackers,
+      domains,
+      pages,
+      timestamps,
+      metrics
     })
-
-    const topSites = background.queryDatabaseRecursive('getDomainsByInference', {inference: inference})
-    topSites.then(ts => this.setState({
-      topSites: ts
-    }))
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.inference) {
-      this.setState({
-        inference: nextProps.inference
-      })
-    }
-    this.updateData()
   }
 
   render () {
-    const {inference, trackers, timestamps, topSites} = this.state
+    const { metrics, trackers, domains, pages, timestamps } = this.state
+    const ready = !!pages
 
-    let content
-
-    /* inadequate data/error conditions */
-
-    if (!inference) {
-      content = (
-        <p>This category does not exist.</p>
-      )
-    } else if (!timestamps) {
-      content = (
-        <p>Loading data…</p>
-      )
-    } else if (timestamps.length === 0) {
-      content = (
-        <p>There are no recorded page visits for this category.</p>
-      )
-
-    /* main condition */
-    } else {
-      content = (
-        <div>
-          <TTPanel>
-            <MetricsList>
-              <MetricsListItem label='Sites' value={topSites.length} />
-              <MetricsListItem label='Trackers' value={trackers.length} />
-            </MetricsList>
-          </TTPanel>
-          {this.sensitiveCats && <SensitivePanel inference={inference} sensitiveCats={this.sensitiveCats} />}
-          <Grid startAt='large'>
-            <GridRow>
-              <GridCol>
-                {topSites && <div>
-                  <Heading level='h3' margin='0 0 small 0'>Top Sites</Heading>
-                  {SiteTable(topSites)}
-                </div>}
-              </GridCol>
-              <GridCol>
-                {trackers && trackers.length > 0 && <div>
-                  <Heading level='h3' margin='0 0 small 0'>Trackers</Heading>
-                  {TrackerTable(trackers)}
-                </div>}
-              </GridCol>
-            </GridRow>
-          </Grid>
-        </div>
-      )
-    }
+    if (!ready) return null
 
     return (
-      <div>
-        <Heading level='h1'>What could they have learned?</Heading>
-        <Heading level='h2' margin='small 0 small 0'>{inference}</Heading>
-        {content}
-      </div>
+      <DetailPage
+        pageType='inference'
+        title={this.inference}
+        metrics={metrics}
+        accentColor={colors.blue1}
+        trackers={trackers}
+        domains={domains}
+        pages={pages}
+        pageTableTitle={'What pages have you visited about ' + this.inference + '?'}
+        pageTableSubitle={'Pages that are likely about ' + this.inference}
+        timestamps={timestamps}
+        timeChartTitle={'When have you visited pages about ' + this.inference + '?'}
+        timeChartSubtitle={'This graph shows the number of pages you visited over time that are likely about ' + this.inference + '.'}
+      />
     )
   }
 }
 
-export default InferenceDetails

@@ -14,7 +14,7 @@ async function logLoad(activityType, sendDict) {
     userId: 'no monster',
     startTS: 0
   });
-  if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
+  if (true){//get data when the user load the page.
     //let activityType='load dashboard about page';
     let timestamp=Date.now();
     let userId=userParams.userId;
@@ -40,7 +40,7 @@ async function logSunburstSelect(select, value){
     userId: 'no monster',
     startTS: 0
   });
-  if (!JSON.parse(userParams.usageStatCondition))return true;
+  // if (!JSON.parse(userParams.usageStatCondition)) return true;
 
   let activityType = ''
   let extraData = {}
@@ -164,7 +164,7 @@ async function logStartDashboardPage() {
   //this.setState({tabId: tabId});
   //this.setState({parentTabId: parentTabId});
 
-  if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
+  if (true){//get data when the user load the page.
     let activityType='load dashboard home page';
     let timestamp=Date.now();
     let userId=userParams.userId;
@@ -190,7 +190,7 @@ async function logDashboardClick(e){
     userId: 'no monster',
     startTS: 0
   });
-  if (!JSON.parse(userParams.usageStatCondition))return true;
+  // if (!JSON.parse(userParams.usageStatCondition))return true;
 
   let activityType = ''
   let extraData = {}

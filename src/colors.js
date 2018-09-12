@@ -122,3 +122,5 @@ export const themeOverrides = {
   },
   colors: colors
 }
+
+export default colors

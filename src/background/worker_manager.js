@@ -133,8 +133,8 @@ export async function queryDatabaseRecursive(query, args) {
     tempObj = {};
     for (let res of results) {
       for (let tracker of res) {
-        let tn = tracker.Trackers['tracker'];
-        let tc = tracker.Trackers['COUNT(tracker)'];
+        const tn = tracker.name
+        const tc = tracker.count
         if (tempObj[tn]) {
           tempObj[tn] += tc
         } else {
@@ -142,21 +142,23 @@ export async function queryDatabaseRecursive(query, args) {
         }
       }
     }
-    mergedRes = Object.keys(tempObj).map(key => ({tracker: key, count: tempObj[key]}));
+    mergedRes = Object.keys(tempObj).map(key => ({name: key, count: tempObj[key]}));
     mergedRes.sort((a, b) => (b.count - a.count));
     break;
   case 'getDomainsByInference':
     tempObj = {};
     for (let res of results) {
-      Object.keys(res).forEach(domain => {
-        if (tempObj[domain]) {
-          tempObj[domain] += res[domain]
+      for (let domain of res) {
+        const tn = domain.name
+        const tc = domain.count
+        if (tempObj[tn]) {
+          tempObj[tn] += tc
         } else {
-          tempObj[domain] = res[domain];
+          tempObj[tn] = tc
         }
-      })
+      }
     }
-    mergedRes = Object.keys(tempObj).map(key => ({domain: key, count: tempObj[key]}));
+    mergedRes = Object.keys(tempObj).map(key => ({name: key, count: tempObj[key]}));
     mergedRes.sort((a, b) => (b.count - a.count));
     break;
   case 'getTimestampsByInference':

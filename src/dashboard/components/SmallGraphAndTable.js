@@ -18,13 +18,12 @@ import {
 
 import CustomAxisLabel from './CustomAxisLabel'
 
-export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, description }) {
+export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, description, color }) {
   const lower = name.toLowerCase()
   const graphData = data.slice(0, 10).map(d => ({
     y: d['name'],
     x: d['count']
   }))
-
   return (
     <View>
       <Heading level='h2'>{name}</Heading>
@@ -32,6 +31,7 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
         <SmallGraph
           data={graphData}
           yTitle={c1Header}
+          color={color}
         />
       </View>
       <ToggleGroup
@@ -54,7 +54,7 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
   )
 }
 
-const SmallGraph = ({ data, yTitle }) => {
+const SmallGraph = ({ data, yTitle, color }) => {
   return (
     <FlexibleWidthXYPlot
       yType={'ordinal'}
@@ -71,7 +71,7 @@ const SmallGraph = ({ data, yTitle }) => {
       />
       <HorizontalBarSeries
         data={data}
-        color='#8F3931'
+        color={color}
       />
       <CustomAxisLabel xAxis title='Pages' />
       <CustomAxisLabel yAxis title={yTitle} />

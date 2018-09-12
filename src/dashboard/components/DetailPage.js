@@ -19,52 +19,26 @@ import WordCloud from '../components/WordCloud'
 export default class DetailPage extends React.Component {
   constructor (props) {
     super(props)
-    this.wcRef = React.createRef()
+    const { metrics, inferences, domains, trackers, pages, timestamps } = props
     this.state = {
-      inferences: [],
-      domains: [],
-      pages: [],
-      timestamps: [],
-      metrics: props.metrics
+      metrics,
+      inferences,
+      domains,
+      trackers,
+      pages,
+      timestamps,
+      showDomains: !!domains,
+      showInferences: !!inferences,
+      showTrackers: !!trackers
     }
-    // this.logLoad = this.logLoad.bind(this);
     this.renderPageTable = this.renderPageTable.bind(this)
+    this.renderPageTimeGraph = this.renderPageTimeGraph.bind(this)
   }
 
   async componentWillUnmount () {}
 
   async componentDidMount () {
-    const { showInferences, showDomains, showTrackers } = this.props
-    const { queryObj, inferencesQuery, domainsQuery, trackersQuery, timestampsQuery, pagesQuery } = this.props
     const background = await browser.runtime.getBackgroundPage()
-
-    let inferences, domains, trackers
-    let metrics = this.state.metrics
-    if (showInferences) {
-      inferences = await background.queryDatabase(inferencesQuery, queryObj)
-      metrics = metrics.concat([{ name: 'Inferences', value: inferences.length }])
-    }
-    if (showDomains) {
-      domains = await background.queryDatabase(domainsQuery, queryObj)
-      metrics = metrics.concat([{ name: 'Sites', value: domains.length }])
-    }
-    const pages = await background.queryDatabase(pagesQuery, queryObj)
-    metrics = metrics.concat([{ name: 'Pages', value: pages.length }])
-    if (showTrackers) {
-      domains = await background.queryDatabase(trackersQuery, queryObj)
-      metrics = metrics.concat([{ name: 'Trackers', value: trackers.length }])
-    }
-
-    const timestamps = await background.queryDatabase(timestampsQuery, queryObj)
-    const timestamps2 = timestamps.map(x => parseInt(x.Pages.id))
-
-    this.setState({
-      inferences: inferences,
-      domains: domains,
-      timestamps: timestamps2,
-      pages: pages,
-      metrics: metrics
-    })
 
     // LOGGING
     let pageType = this.props.pageType
@@ -86,13 +60,13 @@ export default class DetailPage extends React.Component {
   }
 
   renderPageTable () {
-    const { title, showDomains, showInferences } = this.props
-    const { pages } = this.state
+    const { title, pageTableTitle, pageTableSubtitle } = this.props
+    const { pages, showDomains, showInferences } = this.state
     return (
       <TTPanel>
-        <Heading level='h2' margin='0 0 medium 0'>Where has {title} tracked you?</Heading>
+        <Heading level='h2' margin='0 0 medium 0'>{pageTableTitle}</Heading>
         <PageTable
-          title={'Pages where ' + title + ' trackers were present'}
+          title={pageTableSubtitle}
           data={pages}
           showSite={showDomains}
           showInference={showInferences}
@@ -102,12 +76,12 @@ export default class DetailPage extends React.Component {
   }
 
   renderPageTimeGraph () {
-    const { title } = this.props
+    const { title, timeChartTitle, timeChartSubtitle } = this.props
     const { timestamps } = this.state
     return (
       <TTPanel>
-        <Heading level='h2' margin='0 0 medium 0'>When has {title} tracked you?</Heading>
-        <Text>The following graph shows the number of pages over time where {title} has tracked you.</Text>
+        <Heading level='h2' margin='0 0 medium 0'>{timeChartTitle}</Heading>
+        <Text>{timeChartSubtitle}</Text>
         {timestamps.length > 0 && <PageTimeGraph
           timestamps={timestamps}
         />}
@@ -116,10 +90,9 @@ export default class DetailPage extends React.Component {
   }
 
   render () {
-    const { title, description } = this.props
-    const { showInferences, showDomains, showTrackers } = this.props
+    const { title, description, accentColor } = this.props
     const { domains, inferences, trackers, metrics } = this.state
-    const ready = domains && inferences
+    const ready = !!metrics
     if (!ready) return 'Loading…'
 
     return (
@@ -141,7 +114,7 @@ export default class DetailPage extends React.Component {
             </GridCol>}
           </GridRow>
           <GridRow>
-            {showInferences && <GridCol>
+            {inferences && <GridCol>
               <TTPanel>
                 <Heading level='h2'>Inferences</Heading>
                 <SizeMe>
@@ -155,7 +128,7 @@ export default class DetailPage extends React.Component {
                 </SizeMe>
               </TTPanel>
             </GridCol>}
-            {showDomains && <GridCol>
+            {domains && <GridCol>
               <TTPanel>
                 <SmallGraphAndTable
                   name='Sites'
@@ -163,10 +136,11 @@ export default class DetailPage extends React.Component {
                   data={domains}
                   c1Header='Site'
                   urlStem='#/domains/'
+                  color={accentColor}
                 />
               </TTPanel>
             </GridCol>}
-            {showTrackers && <GridCol>
+            {trackers && <GridCol>
               <TTPanel>
                 <SmallGraphAndTable
                   name='Trackers'
@@ -174,6 +148,7 @@ export default class DetailPage extends React.Component {
                   data={trackers}
                   c1Header='Site'
                   urlStem='#/trackers/'
+                  color={accentColor}
                 />
               </TTPanel>
             </GridCol>}
@@ -198,16 +173,17 @@ DetailPage.propTypes = {
   title: PropTypes.string.isRequired,
   pageType: PropTypes.string.isRequired,
   description: PropTypes.element,
+  accentColor: PropTypes.string,
+  metrics: PropTypes.array.isRequired,
 
-  showInferences: PropTypes.bool,
-  showDomains: PropTypes.bool,
-  showTrackers: PropTypes.bool,
+  inferences: PropTypes.array,
+  domains: PropTypes.array,
+  trackers: PropTypes.array,
+  pages: PropTypes.array,
+  timestamps: PropTypes.array,
 
-  inferencesQuery: PropTypes.string,
-  domainsQuery: PropTypes.string,
-  trackersQuery: PropTypes.string,
-  timestampsQuery: PropTypes.string,
-  pagesQuery: PropTypes.string,
-
-  metrics: PropTypes.array
+  pageTableTitle: PropTypes.string,
+  pageTableSubtitle: PropTypes.string,
+  timeChartTitle: PropTypes.string,
+  timeChartSubtitle: PropTypes.string
 }
