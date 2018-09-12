@@ -160,13 +160,13 @@ export default class InferencesOverview extends React.Component {
         variant='inverse'
         placement='end'
       >
-        Inference sensitivity <IconInfo />
+        Sensitivity <IconInfo />
       </Tooltip>
     )
 
     const recencyTooltipText = (
       <div style={{width: 160}}>
-        Toggle between these filters to show inferences made about you since you've installed Tracking Transparency, only in the last day, or only in the last week.
+        Toggle between these filters to show inferences made only in the last day, or only in the last week.
       </div>
     )
 
@@ -176,7 +176,7 @@ export default class InferencesOverview extends React.Component {
         variant='inverse'
         placement='end'
       >
-        Recency of Inferences <IconInfo />
+        Recency <IconInfo />
       </Tooltip>
     )
 
@@ -188,10 +188,12 @@ export default class InferencesOverview extends React.Component {
           onChange={this.handleSensitivitySelection}
           description={sensitivityTooltip}
           variant='toggle'
-          size='small'>
-          <RadioInput label='All inferences' value='all-sensitive' context='off' />
-          <RadioInput label='Less sensitive' value='less-sensitive' context='off' />
-          <RadioInput label='More sensitive' value='more-sensitive' context='off' />
+          layout='inline'
+          size='small'
+        >
+          <RadioInput label='All' value='all-sensitive' context='off' />
+          <RadioInput label='Less' value='less-sensitive' context='off' />
+          <RadioInput label='More' value='more-sensitive' context='off' />
         </RadioInputGroup>
         <RadioInputGroup
           name='date-filter'
@@ -199,10 +201,12 @@ export default class InferencesOverview extends React.Component {
           onChange={this.handleDateSelection}
           description={recencyTooltip}
           variant='toggle'
-          size='small'>
-          <RadioInput label='Since install' value='all-dates' context='off' />
-          <RadioInput label='Last day' value='past-24' context='off' />
-          <RadioInput label='Last week' value='past-week' context='off' />
+          layout='inline'
+          size='small'
+        >
+          <RadioInput label='All' value='all-dates' context='off' />
+          <RadioInput label='24 hrs' value='past-24' context='off' />
+          <RadioInput label='7 days' value='past-week' context='off' />
           {/* <RadioInput label='Last month' value='past-month' context='off' /> */}
         </RadioInputGroup>
       </FormFieldGroup>
