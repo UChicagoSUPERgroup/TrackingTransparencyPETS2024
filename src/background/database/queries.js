@@ -378,7 +378,7 @@ async function getPagesByDomain (args) {
     throw new Error('Insufficient args provided for query')
   }
 
-  let query = ttDb.select(Pages.id, Pages.title, Pages.domain, Pages.hostname, Pages.path, Pages.protocol)
+  let query = ttDb.select()
     .from(Pages)
     .where(Pages.domain.eq(args.domain))
 
@@ -386,8 +386,7 @@ async function getPagesByDomain (args) {
   query = query.orderBy(Pages.id, lf.Order.ASC)
   let pages = await query.exec()
 
-  pages = pages.map(async (p) => {
-    let page = p.Pages
+  pages = pages.map(async (page) => {
     page.url = makeURL(page)
 
     let inferQ = ttDb.select(Inferences.inference)
