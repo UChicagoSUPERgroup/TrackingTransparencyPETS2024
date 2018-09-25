@@ -5,7 +5,7 @@ import {Sunburst, LabelSeries} from 'react-vis'
 import { darken, lighten } from '@instructure/ui-themeable/lib/utils/color'
 
 import categoryTree from '../../data/categories_tree.json'
-import categoryPaths from '../../data/categories_paths.json'
+import interests from '../../data/interests/interests.json'
 
 import logging from '../dashboardLogging'
 import { colors } from '../../colors'
@@ -24,7 +24,7 @@ const baseColor = lighten(colors.blue1, 25)
  * @returns {Array} an array of strings describing the key route to the current node
  */
 function getKeyPath (node) {
-  return categoryPaths[(node.data && node.data.name) || node.name] || []
+  return interests[(node.data && node.data.name) || node.name].path || []
 }
 
 /**
@@ -152,7 +152,7 @@ export default class InferencesSunburst extends React.Component {
       }
     } else {
       if (nextProps.selectedInference !== this.props.selectedInference) {
-        const path = categoryPaths[nextProps.selectedInference]
+        const path = interests[nextProps.selectedInference].path
         this.updateSelectionFromPath(path)
         this.setState({
           clicked: true
