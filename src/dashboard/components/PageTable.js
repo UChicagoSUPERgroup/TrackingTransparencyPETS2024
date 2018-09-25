@@ -48,7 +48,7 @@ export default class PageTable extends React.Component {
         accessor: d => d.domain,
         Cell: row => (row.value
           ? <div key={row.value}>
-            <Link href={'#/domains/' + row.value}>
+            <Link href={'#/sites/' + row.value}>
               {row.value}
             </Link>
           </div> : null),
@@ -79,7 +79,7 @@ export default class PageTable extends React.Component {
         accessor: d => d.inference,
         Cell: row => (row.value
           ? <div key={row.value}>
-            <Link href={'#/inferences/' + row.value}>
+            <Link href={'#/interests/' + row.value}>
               {row.value}
             </Link>
           </div> : null

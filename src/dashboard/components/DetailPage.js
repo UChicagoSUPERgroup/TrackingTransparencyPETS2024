@@ -137,7 +137,7 @@ export default class DetailPage extends React.Component {
                   description='TODO: description'
                   data={domains}
                   c1Header='Site'
-                  urlStem='#/domains/'
+                  urlStem='#/sites/'
                   color={accentColor}
                 />
               </TTPanel>

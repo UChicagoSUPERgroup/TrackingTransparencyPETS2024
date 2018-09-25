@@ -246,7 +246,7 @@ export default class InferencesOverview extends React.Component {
                 <InferenceSummary inference={selectedInference} />
                 <Link
                   className='inferencePageSelected-Inference'
-                  href={'#/inferences/' + selectedInference}
+                  href={'#/interests/' + selectedInference}
                   icon={IconArrowOpenEnd}
                   iconPlacement='end'
                 >
