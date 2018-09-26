@@ -1,16 +1,15 @@
 import React from 'react'
-import { Route, Link } from 'react-router-dom'
 import logging from '../dashboardLogging'
 import ReactTable from 'react-table'
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
+import Link from '@instructure/ui-elements/lib/components/Link'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
-
 import TTPanel from '../components/TTPanel'
 
 const RecentTable = (data) => {
@@ -25,7 +24,7 @@ const RecentTable = (data) => {
           accessor: x => x,
           Cell: row => (
             <div key={row.value}>
-              <Link className='domainTableLinkTrackersPage' to={{pathname: '/domains/' + row.value}}>
+              <Link className='domainTableLinkTrackersPage' href={'#/sites/' + row.value}>
                 {row.value}
               </Link>
             </div>)
@@ -50,7 +49,7 @@ const NoTrackerTable = (data) => {
           id: 'domain',
           Cell: row => (
             <div key={row.value}>
-              <Link className='domainTableLinkTrackersPage' to={{pathname: '/domains/' + row.value}}>
+              <Link className='domainTableLinkTrackersPage' href={'#/sites/' + row.value}>
                 {row.value}
               </Link>
             </div>)
@@ -91,7 +90,7 @@ const ManyTrackersTable = (data) => {
           id: 'domain',
           Cell: row => (
             <div key={row.value}>
-              <Link className='domainTableLinkTrackersPage' to={{pathname: '/domains/' + row.value}}>
+              <Link className='domainTableLinkTrackersPage' href={'#/sites/' + row.value}>
                 {row.value}
               </Link>
             </div>)

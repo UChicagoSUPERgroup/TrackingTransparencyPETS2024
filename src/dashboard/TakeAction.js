@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import Heading from '@instructure/ui-elements/lib/components/Heading';
 import Text from '@instructure/ui-elements/lib/components/Text';

@@ -1,7 +1,7 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
+import Link from '@instructure/ui-elements/lib/components/Link'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
@@ -56,9 +56,9 @@ const InfoPage = () => (
               </ul>
         Using this information, we show you:
               <ul>
-                <li>Which <Link to='/trackers' target='_blank'>trackers</Link> have tracked you </li>
-                <li>Which <Link to='/inferences' target='_blank'>inferences</Link> have been made about you based on the tracking</li>
-                <li>When inferences have been made about you during your <Link to='/activity' target='_blank'>recent activity</Link></li>
+                <li>Which <Link href='#/trackers'>trackers</Link> have tracked you </li>
+                <li>Which <Link href='#/inferences'>inferences</Link> have been made about you based on the tracking</li>
+                <li>When inferences have been made about you during your <Link href='#/activity'>recent activity</Link></li>
               </ul>
             </p>
           </Text>
@@ -87,9 +87,9 @@ const InfoPage = () => (
         <TTPanel>
           <Heading level='h2'>Who we are</Heading>
           <Text>
-            <p>The Tracking Transparency extension was built by a research team at the <a href='https://super.cs.uchicago.edu' target='_blank' rel='noopener noreferrer'>University of Chicago SUPERgroup</a>. The project is advised by Blase Ur at the University of Chicago, Michelle L. Mazurek at the University of Maryland, and Lorrie Faith Cranor at Carnegie Mellon University.</p>
-            <p>Should you have any questions about the plugin or our associated research, you may email the research team at <a href='mailto:trackingtransparency@super.cs.uchicago.edu'>trackingtransparency@super.cs.uchicago.edu</a>.</p>
-            <p>Our extension is open source, and the code is available under a free license at <a href='https://github.com/UChicagoSUPERgroup/trackingtransparency' target='_blank' rel='noopener noreferrer'>GitHub</a>.</p>
+            <p>The Tracking Transparency extension was built by a research team at the <Link href='https://super.cs.uchicago.edu' target='_blank' rel='noopener noreferrer'>University of Chicago SUPERgroup</Link>. The project is advised by Blase Ur at the University of Chicago, Michelle L. Mazurek at the University of Maryland, and Lorrie Faith Cranor at Carnegie Mellon University.</p>
+            <p>Should you have any questions about the plugin or our associated research, you may email the research team at <Link href='mailto:trackingtransparency@super.cs.uchicago.edu'>trackingtransparency@super.cs.uchicago.edu</Link>.</p>
+            <p>Our extension is open source, and the code is available under Link free license at <Link href='https://github.com/UChicagoSUPERgroup/trackingtransparency' target='_blank' rel='noopener noreferrer'>GitHub</Link>.</p>
           </Text>
         </TTPanel>
       </GridCol>
