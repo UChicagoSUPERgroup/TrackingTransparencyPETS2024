@@ -12,11 +12,7 @@ import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import View from '@instructure/ui-layout/lib/components/View'
 
-import IconEye from '@instructure/ui-icons/lib/Solid/IconEye'
-import IconLike from '@instructure/ui-icons/lib/Solid/IconLike'
-import IconWarning from '@instructure/ui-icons/lib/Solid/IconWarning'
-
-import SVGIcon from '@instructure/ui-svg-images/lib/components/SVGIcon'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import TTPanel from './components/TTPanel'
 
@@ -84,6 +80,44 @@ const domainList = (data) => {
   )
 }
 
+const arrowPanel = () => {
+  return (
+    <TTPanel>
+      <Grid vAlign="middle" hAlign="space-between" colSpacing="none" rowSpacing="none">
+        <GridRow>
+          <GridCol textAlign="center" width={3}>
+            <FontAwesomeIcon icon="eye" size="8x" />
+          </GridCol>
+          <GridCol textAlign="center" >
+            <FontAwesomeIcon icon="arrow-right" size="3x" />
+          </GridCol>
+          <GridCol textAlign="center" width={3}>
+            <FontAwesomeIcon icon="thumbs-up" size="7x" />
+          </GridCol>
+          <GridCol textAlign="center" >
+            <FontAwesomeIcon icon="arrow-right" size="3x" />
+          </GridCol>
+          <GridCol textAlign="center" width={3}>
+            <FontAwesomeIcon icon="ad" size="8x" />
+          </GridCol>
+        </GridRow>
+        <GridRow>
+          <GridCol width={3}  textAlign="center">
+            <p>When you browse online, your online activity is tracked by the website you're visiting, as well as by analytics and ad companies. </p>
+          </GridCol>
+          <GridCol width={3} textAlign="center">
+            <p>These companies track your browsing to make guesses about what topics you might be interested in. We call these topics <em>interests</em>.</p>
+          </GridCol>
+          <GridCol width={3} textAlign="center">
+            <p>Your interests are then used to tailor your web experience, which changes the ads, search results, and social feeds that you see.</p>
+          </GridCol>
+        </GridRow>
+
+      </Grid>
+    </TTPanel>
+  )
+}
+
 export class Home extends React.Component {
   constructor (props) {
     super(props)
@@ -121,9 +155,6 @@ export class Home extends React.Component {
   render () {
     const {numTrackers, numInferences, numPages, recentInferences, recentDomains, topTrackers} = this.state
 
-    const eye = (<IconEye />)
-    const like = (<IconLike />)
-    const warning = (<IconWarning />)
     return (
       <Grid startAt='large'>
         <GridRow>
@@ -134,49 +165,20 @@ export class Home extends React.Component {
 
         <GridRow>
           <GridCol>
-            <div>
-              <SVGIcon src={eye} size="small" title="Eye" />
-            </div>
-            <TTPanel>
-
+            {arrowPanel()}
+            <TTPanel margin='medium 0 0 0'>
               <Text>
-                {eye}
-                <p>When you browse online, your online activity is tracked by the website you are visiting, as well as by third-party advertising and analytics companies. </p>
-
-                {like}
-                <p>Third-party companies track your browsing in order to make guesses about what topics you might be interested in. We call these topics interests.</p>
-
-                {warning}
-                <p>Trackers can use your interests to tailor your internet experience, which changes the search results, ads, and social feeds that you see.</p>
-
                 <p>For example, if you visit a blog about traveling with dogs, a third-party tracker on that site could guess that you are interested in dogs. Later, you might see an ad that was targeted specifically to dog-lovers. The same could happen with topics related to shopping, health, finance, sports, and more.</p>
 
                 <p>Using the Tracking Transparency browser extension, you can see the information that tracking companies collect about you.</p>
 
                 <p>In total, <strong>{numTrackers || 'Loading…'} trackers</strong> have seen you visit <strong>{numPages || 'Loading…'} pages</strong>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <strong>{numInferences || 'Loading…'} topics</strong>.</p>
               </Text>
-              <Text>
-                <p> When you browse the Internet, third-party companies can track your browsing activity and use this information to target ads and for other purposes. We hope this extension will help you understand who is tracking you and what they could have learned.</p>
-                <p> In the last week, you visited <strong>{numPages} pages</strong> and encountered <strong>{numTrackers} trackers</strong>.</p>
-                <hr />
-                {topTrackers && topTrackers.length > 0 && <div>
-                  <p><strong>Your top 5 trackers:</strong></p>
-                  <div>{trackerList(topTrackers)}</div>
-                  <hr />
-                </div>}
-                {recentInferences && recentInferences.length > 0 && <div>
-                  <p><strong>Your top 5 inferred interests:</strong></p>
-                  <div>{inferenceListDisplay(recentInferences)}</div>
-                  <hr />
-                </div>}
-              </Text>
-
-            </TTPanel>
-
-          </GridCol>
-        </GridRow>
-        <GridRow>
-          <GridCol width={6}>
+          </TTPanel>
+        </GridCol>
+      </GridRow>
+      <GridRow>
+        <GridCol width={6}>
             <TTPanel>
               <MetricsList theme={{lineHeight: 2}}>
                 <MetricsListItem label='Trackers Seen' value={numTrackers || 'Loading…'} />
@@ -184,6 +186,18 @@ export class Home extends React.Component {
                 <MetricsListItem label='Inferred Interests' value={numInferences || 'Loading'} />
               </MetricsList>
             </TTPanel>
+
+
+            <TTPanel margin='medium 0 0 0'>
+                <Text>
+                  {topTrackers && topTrackers.length > 0 && <div>
+                    <p><strong>Your top 5 trackers:</strong></p>
+                    <div>{trackerList(topTrackers)}</div></div>}
+                  {recentInferences && recentInferences.length > 0 && <div>
+                    <p><strong>Your top 5 inferred interests:</strong></p>
+                    <div>{inferenceListDisplay(recentInferences)}</div> </div>}
+                </Text>
+              </TTPanel>
           </GridCol>
           <GridCol width={6}>
             <TTPanel>

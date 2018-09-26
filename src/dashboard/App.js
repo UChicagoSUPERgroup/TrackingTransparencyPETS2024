@@ -37,6 +37,11 @@ import '../styles/common.css'
 import '../styles/dashboard.css'
 import '../styles/navbar.css'
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faEye, faThumbsUp, faAd, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faEye, faThumbsUp, faAd, faArrowRight)
+
 theme.use({
   overrides: themeOverrides
 })

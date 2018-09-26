@@ -17,25 +17,7 @@ const InfoPage = () => (
         <Heading level='h1'>About</Heading>
       </GridCol>
     </GridRow>
-
-    <GridRow>
-      <GridCol>
-        <TTPanel>
-          <Text>
-            <p>
-          Tracking Transparency shows how you interact with trackers when you browse online.
-            </p>
-            <p>
-          When you browse online, your online activity is tracked by the website you are visiting, as well as by third-party advertising and analytics companies. These third-party companies use these logs of browsing behavior to infer your interests, preferences, and demographics. They can then tailor your internet experience in part based on those inferences, impacting the search results, ads, and social feeds that you see.
-            </p>
-            <p>
-          For example, if you visit a blog about traveling with dogs, a third-party tracker on that site could infer that you are interested in dogs. Later, you might encounter an ad that was targeted specifically to dog-lovers.
-            </p>
-          </Text>
-        </TTPanel>
-      </GridCol>
-    </GridRow>
-
+    
     <GridRow>
       <GridCol>
         <TTPanel>
