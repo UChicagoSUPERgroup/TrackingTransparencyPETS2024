@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import TTPanel from './components/TTPanel'
 
-const inferenceList = (data) => {
+const inferenceRecentList = (data) => {
   return (
     <List
       size='small'
@@ -33,7 +33,7 @@ const inferenceList = (data) => {
   )
 }
 
-const inferenceListDisplay = (data) => {
+const inferenceTopList = (data) => {
   return (
     <p>
       {data.map((p, i, arr) => {
