@@ -16,7 +16,6 @@ import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
 import TTBreadcrumbs from './components/TTBreadcrumbs'
 import {Home, WaitingDataHome} from './Home'
-import IntroModal from './IntroModal'
 import logging from './dashboardLogging'
 
 import {
@@ -52,23 +51,12 @@ class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      showModal: false,
       okToLoad: false
     }
 
-    this.handleModalClose = this.handleModalClose.bind(this)
-    this.handleModalShow = this.handleModalShow.bind(this)
     // this.logLoad = this.logLoad.bind(this);
     // this.logLeave = this.logLeave.bind(this);
     // this.logClick = this.logClick.bind(this);
-  }
-
-  handleModalClose () {
-    this.setState({ showModal: false })
-  }
-
-  handleModalShow () {
-    this.setState({ showModal: true })
   }
 
   /** ************ BEGIN Instrumentation code *******************
@@ -131,7 +119,6 @@ The code for logclick logs ALL the click in every single page.
               {/* <NavLink to="/takeaction"  title="Take Action"/> */}
             </Nav>}
             <Nav pullRight>
-              <NavItem onClick={this.handleModalShow}>Show Intro</NavItem>
               {!tt.production && <NavLink to='/debug' title='Debug' />}
               <NavLink to='/info' title={info} />
               <NavLink to='/settings' title={settings} />
@@ -145,8 +132,6 @@ The code for logclick logs ALL the click in every single page.
       <HashRouter>
         <div>
           <TTNavbar />
-
-          <IntroModal show={this.state.showModal} onHide={this.handleModalClose} />
 
           {okToLoad && <div className='container containerInner'>
             <Route path='/*' render={({ match }) => <TTBreadcrumbs url={match.url} />} />

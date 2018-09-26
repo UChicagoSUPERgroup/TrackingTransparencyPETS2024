@@ -12,6 +12,12 @@ import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import View from '@instructure/ui-layout/lib/components/View'
 
+import IconEye from '@instructure/ui-icons/lib/Solid/IconEye'
+import IconLike from '@instructure/ui-icons/lib/Solid/IconLike'
+import IconWarning from '@instructure/ui-icons/lib/Solid/IconWarning'
+
+import SVGIcon from '@instructure/ui-svg-images/lib/components/SVGIcon'
+
 import TTPanel from './components/TTPanel'
 
 const inferenceList = (data) => {
@@ -28,6 +34,37 @@ const inferenceList = (data) => {
         </ListItem>)
       })}
     </List>
+  )
+}
+
+const inferenceListDisplay = (data) => {
+  return (
+    <p>
+      {data.map((p, i, arr) => {
+        const last = (i === (arr.length - 1))
+        const inference = p['DISTINCT(inference)']
+        return (
+          <span key={inference}>
+            {inference}{!last ? ', ' : ''}
+          </span>
+        )
+      })}
+    </p>
+  )
+}
+
+const trackerList = (data) => {
+  return (
+    <p>
+      {data.map((p, i, arr) => {
+        const last = (i === (arr.length - 1))
+        return (
+          <span key={p.tracker}>
+            {p.tracker}{!last ? ', ' : ''}
+          </span>
+        )
+      })}
+    </p>
   )
 }
 
@@ -65,6 +102,7 @@ export class Home extends React.Component {
     const numInferences = background.queryDatabase('getNumberOfInferences', {})
     const recentInferences = background.queryDatabase('getInferencesByTime', args)
     const recentDomains = background.queryDatabase('getDomains', args)
+    const topTrackers = background.queryDatabase('getTrackers', args)
 
     // we use promises here instead of async/await because queries are not dependent on each other
     numPages.then(n => this.setState({numPages: n}))
@@ -72,6 +110,7 @@ export class Home extends React.Component {
     numInferences.then(n => this.setState({numInferences: n}))
     recentInferences.then(n => this.setState({recentInferences: n}))
     recentDomains.then(n => this.setState({recentDomains: n}))
+    topTrackers.then(n => this.setState({topTrackers: n}))
   }
 
   async componentDidMount () {
@@ -80,7 +119,11 @@ export class Home extends React.Component {
   }
 
   render () {
-    const {numTrackers, numInferences, numPages, recentInferences, recentDomains} = this.state
+    const {numTrackers, numInferences, numPages, recentInferences, recentDomains, topTrackers} = this.state
+
+    const eye = (<IconEye />)
+    const like = (<IconLike />)
+    const warning = (<IconWarning />)
     return (
       <Grid startAt='large'>
         <GridRow>
@@ -91,13 +134,43 @@ export class Home extends React.Component {
 
         <GridRow>
           <GridCol>
+            <div>
+              <SVGIcon src={eye} size="small" title="Eye" />
+            </div>
             <TTPanel>
-              <Text>
 
-                <p>Our browser extension lets you learn about what companies could have inferrred about your browsing through trackers and advertisments on the web pages you visit.</p>
+              <Text>
+                {eye}
+                <p>When you browse online, your online activity is tracked by the website you are visiting, as well as by third-party advertising and analytics companies. </p>
+
+                {like}
+                <p>Third-party companies track your browsing in order to make guesses about what topics you might be interested in. We call these topics interests.</p>
+
+                {warning}
+                <p>Trackers can use your interests to tailor your internet experience, which changes the search results, ads, and social feeds that you see.</p>
+
+                <p>For example, if you visit a blog about traveling with dogs, a third-party tracker on that site could guess that you are interested in dogs. Later, you might see an ad that was targeted specifically to dog-lovers. The same could happen with topics related to shopping, health, finance, sports, and more.</p>
+
+                <p>Using the Tracking Transparency browser extension, you can see the information that tracking companies collect about you.</p>
 
                 <p>In total, <strong>{numTrackers || 'Loading…'} trackers</strong> have seen you visit <strong>{numPages || 'Loading…'} pages</strong>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <strong>{numInferences || 'Loading…'} topics</strong>.</p>
               </Text>
+              <Text>
+                <p> When you browse the Internet, third-party companies can track your browsing activity and use this information to target ads and for other purposes. We hope this extension will help you understand who is tracking you and what they could have learned.</p>
+                <p> In the last week, you visited <strong>{numPages} pages</strong> and encountered <strong>{numTrackers} trackers</strong>.</p>
+                <hr />
+                {topTrackers && topTrackers.length > 0 && <div>
+                  <p><strong>Your top 5 trackers:</strong></p>
+                  <div>{trackerList(topTrackers)}</div>
+                  <hr />
+                </div>}
+                {recentInferences && recentInferences.length > 0 && <div>
+                  <p><strong>Your top 5 inferred interests:</strong></p>
+                  <div>{inferenceListDisplay(recentInferences)}</div>
+                  <hr />
+                </div>}
+              </Text>
+
             </TTPanel>
 
           </GridCol>
