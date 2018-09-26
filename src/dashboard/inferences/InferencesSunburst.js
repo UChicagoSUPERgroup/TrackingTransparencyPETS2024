@@ -177,7 +177,7 @@ export default class InferencesSunburst extends React.Component {
             if (clicked) {
               return
             }
-            const path = getKeyPath(node).reverse()
+            const path = getKeyPath(node)
             this.updateSelectionFromPath(path)
           }}
           onValueMouseOut={() => {
