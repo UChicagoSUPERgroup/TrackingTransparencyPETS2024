@@ -18,6 +18,8 @@ const LABEL_STYLE = {
 const topLevelCats = categoryTree.children.map(x => x.name)
 const baseColor = lighten(colors.blue1, 25)
 
+const helpText = 'Hover to select an item'
+
 /**
  * Recursively work backwards from highlighted node to find path of valud nodes
  * @param {Object} node - the current node being considered
@@ -74,7 +76,7 @@ export default class InferencesSunburst extends React.Component {
     this.state = {
       pathValue: false,
       data: data,
-      finalValue: ' ',
+      finalValue: helpText,
       clicked: false
     }
 
@@ -140,7 +142,7 @@ export default class InferencesSunburst extends React.Component {
     if (!nextProps.selectedInference) {
       await logging.logSunburstSelect(false, value) // deselect all
       this.setState({
-        finalValue: false,
+        finalValue: helpText,
         clicked: false
       })
 
@@ -186,7 +188,7 @@ export default class InferencesSunburst extends React.Component {
             if (!clicked) {
               this.setState({
                 pathValue: false,
-                finalValue: false,
+                finalValue: helpText,
                 data: updateData(data, false, false)
               })
             }
