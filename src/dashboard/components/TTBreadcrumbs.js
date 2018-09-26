@@ -4,8 +4,8 @@ import BreadcrumbLink from '@instructure/ui-breadcrumb/lib/components/Breadcrumb
 
 const urlComponentMapping = {
   '': 'Home',
-  inferences: 'Inferences',
-  domains: 'Sites',
+  interests: 'Interests',
+  sites: 'Sites',
   trackers: 'Trackers',
   activity: 'Activity',
   lightbeam: 'Network',

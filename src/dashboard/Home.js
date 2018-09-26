@@ -22,7 +22,7 @@ const inferenceList = (data) => {
       {data.map(function (dataValue) {
         let key = dataValue['DISTINCT(inference)']
         return (<ListItem key={key}>
-          <Link href={'#/inferences/' + key}>
+          <Link href={'#/interests/' + key}>
             {key}
           </Link>
         </ListItem>)
@@ -38,7 +38,7 @@ const domainList = (data) => {
     >
       {data.map(val => {
         return (<ListItem key={val}>
-          <Link href={'#/domains/' + val}>
+          <Link href={'#/sites/' + val}>
             {val}
           </Link>
         </ListItem>)

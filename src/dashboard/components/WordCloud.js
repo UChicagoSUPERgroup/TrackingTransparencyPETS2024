@@ -26,7 +26,7 @@ const TTWordCloud = (props) => {
     min = (item.count < min) ? item.count : min
     max = (item.count > max) ? item.count : max
     return {
-      text: <a href={'#/inferences/' + item.name}>{item.name}</a>,
+      text: <a href={'#/interests/' + item.name}>{item.name}</a>,
       value: item.count
     }
   })

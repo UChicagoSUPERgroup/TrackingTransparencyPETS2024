@@ -5,7 +5,7 @@ import {Sunburst, LabelSeries} from 'react-vis'
 import { darken, lighten } from '@instructure/ui-themeable/lib/utils/color'
 
 import categoryTree from '../../data/categories_tree.json'
-import categoryPaths from '../../data/categories_paths.json'
+import interests from '../../data/interests/interests.json'
 
 import logging from '../dashboardLogging'
 import { colors } from '../../colors'
@@ -18,13 +18,15 @@ const LABEL_STYLE = {
 const topLevelCats = categoryTree.children.map(x => x.name)
 const baseColor = lighten(colors.blue1, 25)
 
+const helpText = 'Hover to select an item'
+
 /**
  * Recursively work backwards from highlighted node to find path of valud nodes
  * @param {Object} node - the current node being considered
  * @returns {Array} an array of strings describing the key route to the current node
  */
 function getKeyPath (node) {
-  return categoryPaths[(node.data && node.data.name) || node.name] || []
+  return interests[(node.data && node.data.name) || node.name].path || []
 }
 
 /**
@@ -74,7 +76,7 @@ export default class InferencesSunburst extends React.Component {
     this.state = {
       pathValue: false,
       data: data,
-      finalValue: ' ',
+      finalValue: helpText,
       clicked: false
     }
 
@@ -140,7 +142,7 @@ export default class InferencesSunburst extends React.Component {
     if (!nextProps.selectedInference) {
       await logging.logSunburstSelect(false, value) // deselect all
       this.setState({
-        finalValue: false,
+        finalValue: helpText,
         clicked: false
       })
 
@@ -152,7 +154,7 @@ export default class InferencesSunburst extends React.Component {
       }
     } else {
       if (nextProps.selectedInference !== this.props.selectedInference) {
-        const path = categoryPaths[nextProps.selectedInference]
+        const path = interests[nextProps.selectedInference].path
         this.updateSelectionFromPath(path)
         this.setState({
           clicked: true
@@ -164,6 +166,8 @@ export default class InferencesSunburst extends React.Component {
 
   render () {
     const { clicked, data, finalValue } = this.state
+    const height = this.props.height || 400
+    const width = this.props.width || 400
     if (!data) return null
     if (!data.name) return null
     return (
@@ -177,14 +181,14 @@ export default class InferencesSunburst extends React.Component {
             if (clicked) {
               return
             }
-            const path = getKeyPath(node).reverse()
+            const path = getKeyPath(node)
             this.updateSelectionFromPath(path)
           }}
           onValueMouseOut={() => {
             if (!clicked) {
               this.setState({
                 pathValue: false,
-                finalValue: false,
+                finalValue: helpText,
                 data: updateData(data, false, false)
               })
             }
@@ -205,8 +209,9 @@ export default class InferencesSunburst extends React.Component {
           }}
           colorType='literal'
           data={data}
-          height={500}
-          width={500}>
+          height={height}
+          width={width}
+        >
           {finalValue && <LabelSeries data={[
             {x: 0, y: 0, label: finalValue, style: LABEL_STYLE}
           ]} />}

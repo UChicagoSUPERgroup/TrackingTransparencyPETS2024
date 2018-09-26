@@ -11,6 +11,7 @@ import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 
+import colors from '../../colors'
 import TrackerSummary from './TrackerSummary'
 import TTPanel from '../components/TTPanel'
 import logging from '../dashboardLogging'
@@ -180,7 +181,11 @@ export default class TrackerOverview extends React.Component {
   }
 
   renderChart () {
-    const { graphData, numPages, hovered } = this.state
+    let { graphData, numPages, hovered } = this.state
+    graphData = graphData.map(d => ({
+      ...d,
+      color: (hovered && d.y === hovered.y) ? 1 : 0
+    }))
     return (
       <TTPanel>
         <FlexibleWidthXYPlot
@@ -188,6 +193,8 @@ export default class TrackerOverview extends React.Component {
           height={800}
           margin={{left: 100}}
           onMouseLeave={() => this.setState({hovered: null})}
+          colorDomain={[0, 1]}
+          colorRange={[colors.red1, colors.red2]}
         >
           <HorizontalGridLines />
           <VerticalGridLines />
@@ -210,7 +217,6 @@ export default class TrackerOverview extends React.Component {
           </Hint>}
           <HorizontalBarSeries
             data={graphData}
-            color='#8F3931'
             onValueMouseOver={(datapoint) => {
               this.setState({hovered: datapoint})
             }}
@@ -264,10 +270,10 @@ export default class TrackerOverview extends React.Component {
           </GridCol>
         </GridRow>
         <GridRow>
-          <GridCol width={6}>
+          <GridCol width={7}>
             {this.renderChart()}
           </GridCol>
-          <GridCol width={6}>
+          <GridCol width={5}>
             {this.renderInfoPane()}
           </GridCol>
         </GridRow>

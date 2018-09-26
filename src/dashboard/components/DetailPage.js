@@ -20,7 +20,7 @@ export default class DetailPage extends React.Component {
   constructor (props) {
     super(props)
     const { metrics, inferences, domains, trackers, pages } = props
-    const timestamps = pages.map(x => x.id).reverse()
+    const timestamps = pages.map(x => x.id).sort((a, b) => a - b)
     this.state = {
       metrics,
       inferences,
@@ -137,7 +137,7 @@ export default class DetailPage extends React.Component {
                   description='TODO: description'
                   data={domains}
                   c1Header='Site'
-                  urlStem='#/domains/'
+                  urlStem='#/sites/'
                   color={accentColor}
                 />
               </TTPanel>

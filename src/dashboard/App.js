@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { HashRouter, Route } from 'react-router-dom'
-import {LinkContainer} from 'react-router-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 
 import './bootstrap/css/bootstrap.css'
 import '../../node_modules/react-vis/dist/style.css'
@@ -123,8 +123,8 @@ The code for logclick logs ALL the click in every single page.
           </Navbar.Header>
           <Navbar.Collapse>
             {enoughData && <Nav>
-              {!hideInferenceContent && <NavLink to='/inferences' title='Inferences' />}
-              {!hideHistoryContent && <NavLink to='/domains' title='Sites' />}
+              {!hideInferenceContent && <NavLink to='/interests' title='Interests' />}
+              {!hideHistoryContent && <NavLink to='/sites' title='Sites' />}
               {!hideHistoryContent && <NavLink to='/activity' title='Activity' />}
               {!hideTrackerContent && <NavLink to='/trackers' title='Trackers' />}
               {showLightbeam && <NavLink to='/lightbeam' title='Network' />}
@@ -153,9 +153,9 @@ The code for logclick logs ALL the click in every single page.
 
             {enoughData && <div>
               <Route exact path='/' component={Home} />
-              {!hideInferenceContent && <Route path='/inferences' component={Inferences} />}
+              {!hideInferenceContent && <Route path='/interests' component={Inferences} />}
               {!hideTrackerContent && <Route path='/trackers' component={Trackers} />}
-              <Route path='/domains' component={Sites} />
+              <Route path='/sites' component={Sites} />
               <Route path='/activity' component={Activity} />
               {showLightbeam && <Route path='/lightbeam' component={LightbeamWrapper} />}
               {/* <Route path="/takeaction" component={TakeActionPage}/> */}

@@ -9,19 +9,30 @@ export default class PageTable extends React.Component {
   constructor (props) {
     super(props)
 
+
     this.state = {
       title: props.title,
-      data: props.data
+      data: this.sortData(props.data, props.sortAscending)
     }
   }
 
   componentDidUpdate (prevProps) {
     if (this.props.data !== prevProps.data) {
-      this.setState({ data: this.props.data })
+      this.setState({ data: this.sortData(this.props.data, this.props.sortAscending) })
     }
     if (this.props.title !== prevProps.title) {
       this.setState({ title: this.props.title })
     }
+  }
+
+  sortData (unsorted) {
+    let data = []
+    if (this.props.sortAscending) {
+      data = unsorted.sort((a, b) => a.id - b.id)
+    } else {
+      data = unsorted.sort((a, b) => b.id - a.id)
+    }
+    return data
   }
 
   unixTimeToString (d) {
@@ -48,7 +59,7 @@ export default class PageTable extends React.Component {
         accessor: d => d.domain,
         Cell: row => (row.value
           ? <div key={row.value}>
-            <Link href={'#/domains/' + row.value}>
+            <Link href={'#/sites/' + row.value}>
               {row.value}
             </Link>
           </div> : null),
@@ -79,7 +90,7 @@ export default class PageTable extends React.Component {
         accessor: d => d.inference,
         Cell: row => (row.value
           ? <div key={row.value}>
-            <Link href={'#/inferences/' + row.value}>
+            <Link href={'#/interests/' + row.value}>
               {row.value}
             </Link>
           </div> : null

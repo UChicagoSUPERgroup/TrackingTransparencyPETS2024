@@ -18,9 +18,9 @@ export default class TrackerDetailPage extends React.Component {
     const queryObj = {inference: this.inference}
     const background = await browser.runtime.getBackgroundPage()
 
-    const trackersP = background.queryDatabase('getTrackersByInference', queryObj)
-    const domainsP = background.queryDatabase('getDomainsByInference', queryObj)
-    const pagesP = background.queryDatabase('getPagesByInference', queryObj)
+    const trackersP = background.queryDatabaseRecursive('getTrackersByInference', queryObj)
+    const domainsP = background.queryDatabaseRecursive('getDomainsByInference', queryObj)
+    const pagesP = background.queryDatabaseRecursive('getPagesByInference', queryObj)
 
     const [trackers, domains, pages] =
       await Promise.all([trackersP, domainsP, pagesP])
@@ -37,7 +37,6 @@ export default class TrackerDetailPage extends React.Component {
         value: trackers.length
       }
     ]
-    console.log(trackers, domains, pages)
 
     this.setState({
       trackers,

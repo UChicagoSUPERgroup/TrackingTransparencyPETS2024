@@ -6,6 +6,7 @@ import Link from '@instructure/ui-elements/lib/components/Link'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import ToggleGroup from '@instructure/ui-toggle-details/lib/components/ToggleGroup'
 import View from '@instructure/ui-layout/lib/components/View'
+import { lighten } from '@instructure/ui-themeable/lib/utils/color'
 
 import {
   FlexibleWidthXYPlot,
@@ -13,7 +14,8 @@ import {
   YAxis,
   HorizontalGridLines,
   VerticalGridLines,
-  HorizontalBarSeries
+  HorizontalBarSeries,
+  Hint
 } from 'react-vis'
 
 import CustomAxisLabel from './CustomAxisLabel'
@@ -54,29 +56,60 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
   )
 }
 
-const SmallGraph = ({ data, yTitle, color }) => {
-  return (
-    <FlexibleWidthXYPlot
-      yType={'ordinal'}
-      height={400}
-      margin={{left: 150, bottom: 80}}
-    >
-      <HorizontalGridLines />
-      <VerticalGridLines />
-      <YAxis />
-      <XAxis
-        position='middle'
-        height={200}
-        tickLabelAngle={0}
-      />
-      <HorizontalBarSeries
-        data={data}
-        color={color}
-      />
-      <CustomAxisLabel xAxis title='Pages' />
-      <CustomAxisLabel yAxis title={yTitle} />
-    </FlexibleWidthXYPlot>
-  )
+class SmallGraph extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      data: props.data
+    }
+    this.color = props.color
+    this.secondaryColor = lighten(props.color, 10)
+  }
+
+  render () {
+    let { data, hovered } = this.state
+    const { yTitle, color } = this.props
+    data = data.map(d => ({
+      ...d,
+      color: (hovered && d.y === hovered.y) ? 1 : 0
+    }))
+    return (
+      <FlexibleWidthXYPlot
+        yType={'ordinal'}
+        height={400}
+        margin={{left: 150, bottom: 80}}
+        colorDomain={[0, 1]}
+        colorRange={[this.color, this.secondaryColor]}
+        onMouseLeave={() => this.setState({hovered: null})}
+      >
+        <HorizontalGridLines />
+        <VerticalGridLines />
+        <YAxis />
+        <XAxis
+          position='middle'
+          height={200}
+          tickLabelAngle={0}
+        />
+        {hovered && <Hint
+          value={hovered}>
+          <div className='rv-hint__content'>
+            <strong>{hovered.y}</strong><br />{hovered.x} {hovered.x === 1 ? 'page' : 'pages'}
+          </div>
+        </Hint>}
+        <HorizontalBarSeries
+          data={data}
+          onValueMouseOver={(datapoint) => {
+            this.setState({hovered: datapoint})
+          }}
+          onValueClick={(datapoint) => {
+            this.setState({selectedTracker: datapoint})
+          }}
+        />
+        <CustomAxisLabel xAxis title='Pages' />
+        <CustomAxisLabel yAxis title={yTitle} />
+      </FlexibleWidthXYPlot>
+    )
+  }
 }
 
 const SmallTable = ({ data, c1Header, c2Header, c2Accessor, urlStem }) => {

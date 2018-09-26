@@ -161,7 +161,7 @@ export async function queryDatabaseRecursive(query, args) {
     mergedRes = Object.keys(tempObj).map(key => ({name: key, count: tempObj[key]}));
     mergedRes.sort((a, b) => (b.count - a.count));
     break;
-  case 'getTimestampsByInference':
+  case 'getPagesByInference':
     mergedRes = Array.prototype.concat.apply([], results);
     break;
   default:
