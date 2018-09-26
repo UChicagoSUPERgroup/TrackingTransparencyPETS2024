@@ -110,6 +110,7 @@ export default class ActivityOverview extends React.Component {
             noDataText='Click in the scatterplot for more information'
             showSite
             showInference
+            sortAscending
           />
           }
         </TTPanel>
