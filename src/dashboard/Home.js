@@ -83,32 +83,32 @@ const domainList = (data) => {
 const arrowPanel = () => {
   return (
     <TTPanel>
-      <Grid vAlign="middle" hAlign="space-between" colSpacing="none" rowSpacing="none">
+      <Grid vAlign='middle' hAlign='space-between' colSpacing='none' rowSpacing='none'>
         <GridRow>
-          <GridCol textAlign="center" width={3}>
-            <FontAwesomeIcon icon="eye" size="8x" />
+          <GridCol textAlign='center' width={3}>
+            <FontAwesomeIcon icon='eye' size='8x' />
           </GridCol>
-          <GridCol textAlign="center" >
-            <FontAwesomeIcon icon="arrow-right" size="3x" />
+          <GridCol textAlign='center' >
+            <FontAwesomeIcon icon='arrow-right' size='3x' />
           </GridCol>
-          <GridCol textAlign="center" width={3}>
-            <FontAwesomeIcon icon="thumbs-up" size="7x" />
+          <GridCol textAlign='center' width={3}>
+            <FontAwesomeIcon icon='thumbs-up' size='7x' />
           </GridCol>
-          <GridCol textAlign="center" >
-            <FontAwesomeIcon icon="arrow-right" size="3x" />
+          <GridCol textAlign='center' >
+            <FontAwesomeIcon icon='arrow-right' size='3x' />
           </GridCol>
-          <GridCol textAlign="center" width={3}>
-            <FontAwesomeIcon icon="ad" size="8x" />
+          <GridCol textAlign='center' width={3}>
+            <FontAwesomeIcon icon='ad' size='8x' />
           </GridCol>
         </GridRow>
         <GridRow>
-          <GridCol width={3}  textAlign="center">
+          <GridCol width={3} textAlign='center'>
             <p>When you browse online, your online activity is tracked by the website you're visiting, as well as by analytics and ad companies. </p>
           </GridCol>
-          <GridCol width={3} textAlign="center">
+          <GridCol width={3} textAlign='center'>
             <p>These companies track your browsing to make guesses about what topics you might be interested in. We call these topics <em>interests</em>.</p>
           </GridCol>
-          <GridCol width={3} textAlign="center">
+          <GridCol width={3} textAlign='center'>
             <p>Your interests are then used to tailor your web experience, which changes the ads, search results, and social feeds that you see.</p>
           </GridCol>
         </GridRow>
@@ -174,11 +174,11 @@ export class Home extends React.Component {
 
                 <p>In total, <strong>{numTrackers || 'Loading…'} trackers</strong> have seen you visit <strong>{numPages || 'Loading…'} pages</strong>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <strong>{numInferences || 'Loading…'} topics</strong>.</p>
               </Text>
-          </TTPanel>
-        </GridCol>
-      </GridRow>
-      <GridRow>
-        <GridCol width={6}>
+            </TTPanel>
+          </GridCol>
+        </GridRow>
+        <GridRow>
+          <GridCol width={6}>
             <TTPanel>
               <MetricsList theme={{lineHeight: 2}}>
                 <MetricsListItem label='Trackers Seen' value={numTrackers || 'Loading…'} />
@@ -187,17 +187,16 @@ export class Home extends React.Component {
               </MetricsList>
             </TTPanel>
 
-
             <TTPanel margin='medium 0 0 0'>
-                <Text>
-                  {topTrackers && topTrackers.length > 0 && <div>
-                    <p><strong>Your top 5 trackers:</strong></p>
-                    <div>{trackerList(topTrackers)}</div></div>}
-                  {recentInferences && recentInferences.length > 0 && <div>
-                    <p><strong>Your top 5 inferred interests:</strong></p>
-                    <div>{inferenceListDisplay(recentInferences)}</div> </div>}
-                </Text>
-              </TTPanel>
+              <Text>
+                {topTrackers && topTrackers.length > 0 && <div>
+                  <p><strong>Your top 5 trackers:</strong></p>
+                  <div>{trackerList(topTrackers)}</div></div>}
+                {recentInferences && recentInferences.length > 0 && <div>
+                  <p><strong>Your top 5 inferred interests:</strong></p>
+                  <div>{inferenceTopList(recentInferences)}</div> </div>}
+              </Text>
+            </TTPanel>
           </GridCol>
           <GridCol width={6}>
             <TTPanel>
@@ -211,7 +210,7 @@ export class Home extends React.Component {
                 >
                   <Text weight='bold'>Recent Inferences</Text>
                 </View>
-                {recentInferences ? inferenceList(recentInferences) : 'Loading…'}
+                {recentInferences ? inferenceRecentList(recentInferences) : 'Loading…'}
               </View>
               <View
                 display='inline-block'
