@@ -164,6 +164,8 @@ export default class InferencesSunburst extends React.Component {
 
   render () {
     const { clicked, data, finalValue } = this.state
+    const height = this.props.height || 400
+    const width = this.props.width || 400
     if (!data) return null
     if (!data.name) return null
     return (
@@ -205,8 +207,9 @@ export default class InferencesSunburst extends React.Component {
           }}
           colorType='literal'
           data={data}
-          height={500}
-          width={500}>
+          height={height}
+          width={width}
+        >
           {finalValue && <LabelSeries data={[
             {x: 0, y: 0, label: finalValue, style: LABEL_STYLE}
           ]} />}

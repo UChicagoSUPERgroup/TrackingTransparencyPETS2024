@@ -1,4 +1,5 @@
 import React from 'react'
+import { SizeMe } from 'react-sizeme'
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
@@ -213,7 +214,7 @@ export default class InferencesOverview extends React.Component {
     </TTPanel>)
 
     return (
-      <Grid startAt='large'>
+      <Grid startAt='medium'>
         <GridRow>
           <GridCol>
             <Heading level='h1'>What could they have learned?</Heading>
@@ -231,14 +232,26 @@ export default class InferencesOverview extends React.Component {
           </GridCol>
         </GridRow>
         <GridRow>
-          <GridCol width='auto'>
-            <TTPanel textAlign='center'>
+          <GridCol width={7}>
+            <TTPanel padding='0 0 0 0'>
               {/* <Text>This diagram shows some of the inferences that may have been made about your browsing and their frequency. Click on a piece of the chart to see more details.</Text> */}
-              {inferences && <InferencesSunburst inferenceCounts={inferences} onSelectionChange={this.handleSunburstSelection} selectedInference={selectedInference} />}
+              {inferences && 
+                <SizeMe>
+                  {({ size }) => (
+                    <InferencesSunburst 
+                      inferenceCounts={inferences} 
+                      onSelectionChange={this.handleSunburstSelection} 
+                      selectedInference={selectedInference}
+                      height={size.width}
+                      width={size.width}
+                    />
+                  )}
+                </SizeMe>
+              }
             </TTPanel>
             {filters}
           </GridCol>
-          <GridCol>
+          <GridCol width={5}>
             <TTPanel textAlign='start'>
               {!selectedInference && <Text className='selected-inference' weight='bold'>
                   The Inference Wheel shows inferences that trackers may have made about you, based on your browsing activity. Click a slice of the wheel to see more details. </Text>}
