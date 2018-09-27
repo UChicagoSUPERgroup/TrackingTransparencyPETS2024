@@ -246,7 +246,7 @@ export class Home extends React.Component {
             <TTPanel margin='medium 0 0 0'>
               <View
                 display='inline-block'
-                margin='small medium small large'
+                margin='small small small small'
               >
                 <View
                   as='header'
@@ -258,7 +258,7 @@ export class Home extends React.Component {
               </View>
               <View
                 display='inline-block'
-                margin='small small small medium'
+                margin='small small small small'
               >
                 <View
                   as='header'
