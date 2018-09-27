@@ -22,38 +22,40 @@ import CustomAxisLabel from './CustomAxisLabel'
 
 export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, description, color }) {
   const lower = name.toLowerCase()
-  const graphData = data.slice(-10).reverse().map(d => ({
+  const graphData = data.reverse().slice(-10).map(d => ({
     y: d['name'],
     x: d['count']
   }))
-  return (
-    <View>
-      <Heading level='h2'>{name}</Heading>
-      <View as='div' margin='medium 0 small 0'>
-        <SmallGraph
-          data={graphData}
-          yTitle={c1Header}
-          color={color}
-        />
+  if (data.length > 5) {
+    return (
+      <View>
+        <Heading level='h2'>{name}</Heading>
+        <View as='div' margin='medium 0 small 0'>
+          <SmallGraph
+            data={graphData}
+            yTitle={c1Header}
+            color={color}
+          />
+        </View>
+        <ToggleGroup
+          summary={'See all ' + lower}
+          toggleLabel={'Toggle to see table for ' + lower}
+          margin='medium 0 0 0'
+          border={false}
+        >
+          <SmallTable
+            data={data}
+            name={name}
+            c1Header={c1Header}
+            c1Accessor='name'
+            c2Header='Pages'
+            c2Accessor='count'
+            urlStem={urlStem}
+          />
+        </ToggleGroup>
       </View>
-      <ToggleGroup
-        summary={'See all ' + lower}
-        toggleLabel={'Toggle to see table for ' + lower}
-        margin='medium 0 0 0'
-        border={false}
-      >
-        <SmallTable
-          data={data}
-          name={name}
-          c1Header={c1Header}
-          c1Accessor='name'
-          c2Header='Pages'
-          c2Accessor='count'
-          urlStem={urlStem}
-        />
-      </ToggleGroup>
-    </View>
-  )
+    )
+  }
 }
 
 class SmallGraph extends React.Component {
