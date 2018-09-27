@@ -272,6 +272,7 @@ async function getInferenceCount (args) {
     .from(Inferences)
     .where(Inferences.inference.eq(args.inference))
     .groupBy(Inferences.inference)
+    .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC)
     .exec()
   let res
   if (typeof query !== 'undefined' && query != null && query.length > 0) {
