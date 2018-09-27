@@ -8,6 +8,8 @@ import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Link from '@instructure/ui-elements/lib/components/Link'
 import IconArrowOpenEnd from '@instructure/ui-icons/lib/Solid/IconArrowOpenEnd'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
+import RadioInput from '@instructure/ui-forms/lib/components/RadioInput'
+import RadioInputGroup from '@instructure/ui-forms/lib/components/RadioInputGroup'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 
@@ -107,9 +109,10 @@ export default class TrackerOverview extends React.Component {
     super(props)
     this.state = {
       trackers: [],
-      graphCount: 20
+      graphCount: 25
     }
     // this.logLoad = this.logLoad.bind(this);
+    this.updateGraphCount = this.updateGraphCount.bind(this)
   }
 
   async getTrackers () {
@@ -157,7 +160,9 @@ export default class TrackerOverview extends React.Component {
     logging.logLoad(activityType, sendDict)
   }
 
-  updateGraphCount (num) {
+  updateGraphCount (event) {
+    const num = parseInt(event.target.value)
+    console.log(num)
     const { graphDataAll } = this.state
     this.setState({
       graphCount: num,
@@ -225,7 +230,20 @@ export default class TrackerOverview extends React.Component {
             }}
           />
         </FlexibleWidthXYPlot>
-        <Button size='small' onClick={() => this.updateGraphCount(undefined)}>See all trackers…</Button>
+        <RadioInputGroup
+          name='graph-count'
+          value={this.state.graphCount}
+          onChange={this.updateGraphCount}
+          description='Trackers'
+          variant='toggle'
+          layout='inline'
+          size='small'
+        >
+          <RadioInput label='25' value={25} context='off' />
+          <RadioInput label='50' value={50} context='off' />
+          <RadioInput label='75' value={75} context='off' />
+        </RadioInputGroup>
+
       </TTPanel>
     )
   }
