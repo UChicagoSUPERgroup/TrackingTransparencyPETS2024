@@ -59,7 +59,7 @@ export default class TrackerDetailPage extends React.Component {
     // these cutoffs are a bit haphazard
     let popularity
     if (interestInfo.impressions >= 10000000000) {
-      popularity = 'extremely popular'
+      popularity = 'very popular'
     } else if (interestInfo.impressions >= 1000000000) {
       popularity = 'popular'
     } else if (interestInfo.impressions >= 100000000) {
