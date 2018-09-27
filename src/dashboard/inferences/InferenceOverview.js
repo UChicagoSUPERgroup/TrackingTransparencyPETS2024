@@ -10,6 +10,7 @@ import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import FormFieldGroup from '@instructure/ui-forms/lib/components/FormFieldGroup'
 import RadioInput from '@instructure/ui-forms/lib/components/RadioInput'
 import RadioInputGroup from '@instructure/ui-forms/lib/components/RadioInputGroup'
+import Spinner from '@instructure/ui-elements/lib/components/Spinner'
 import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 import IconArrowOpenEnd from '@instructure/ui-icons/lib/Solid/IconArrowOpenEnd'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
@@ -28,12 +29,14 @@ export default class InferencesOverview extends React.Component {
       selectedInference: false,
       inferences: null,
       sensitivitySelection: 'all-sensitive',
+      popularitySelection: 'all-popular',
       dateSelection: 'all-dates',
       numInferences: null
     }
 
     this.handleSunburstSelection = this.handleSunburstSelection.bind(this)
     this.handleSensitivitySelection = this.handleSensitivitySelection.bind(this)
+    this.handlePopularitySelection = this.handlePopularitySelection.bind(this)
     this.handleDateSelection = this.handleDateSelection.bind(this)
     this.handleInferenceLinkClick = this.handleInferenceLinkClick.bind(this)
   }
@@ -73,6 +76,10 @@ export default class InferencesOverview extends React.Component {
     let cats
     const key = event.target.value
 
+    this.setState({
+      inferences: null
+    })
+
     const background = await browser.runtime.getBackgroundPage()
     const sensitiveCats = (await import(/* webpackChunkName: "data/sensitiveCats" */'../../data/categories_comfort_list.json')).default
 
@@ -82,6 +89,7 @@ export default class InferencesOverview extends React.Component {
         inferences: this.topInferences,
         selectedInference: false,
         sensitivitySelection: key,
+        popularitySelection: 'all-popular',
         dateSelection: 'all-dates'
       })
       return
@@ -97,10 +105,13 @@ export default class InferencesOverview extends React.Component {
 
     const counts = await Promise.all(queryPromises) // lets all queries happen async
 
-    const data = cats.map((cat, i) => {
-      return {
-        'inference': cat,
-        'COUNT(inference)': counts[i]
+    let data = []
+    cats.forEach((cat, i) => {
+      if (counts[i] > 0) {
+        data.push({
+          'inference': cat,
+          'COUNT(inference)': counts[i]
+        })
       }
     })
 
@@ -108,13 +119,69 @@ export default class InferencesOverview extends React.Component {
       inferences: data,
       selectedInference: false,
       sensitivitySelection: key,
+      popularitySelection: 'all-popular',
       dateSelection: 'all-dates'
     })
   }
+  async handlePopularitySelection (event) {
+    let cats
+    const key = event.target.value
+
+    this.setState({
+      inferences: null
+    })
+
+    const background = await browser.runtime.getBackgroundPage()
+    const popularCats = (await import(/* webpackChunkName: "data/sensitiveCats" */'../../data/interests/by_impressions.json')).default
+
+    if (key === 'all-popular') {
+      // reset to default
+      this.setState({
+        inferences: this.topInferences,
+        selectedInference: false,
+        sensitivitySelection: 'all-sensitive',
+        popularitySelection: key,
+        dateSelection: 'all-dates'
+      })
+      return
+    } else if (key === 'less-popular') {
+      cats = popularCats.slice(-1500).reverse()
+    } else if (key === 'more-popular') {
+      cats = popularCats.slice(0, 500)
+    }
+
+    const queryPromises = cats.map(cat => {
+      return background.queryDatabase('getInferenceCount', {inference: cat})
+    })
+
+    const counts = await Promise.all(queryPromises) // lets all queries happen async
+
+    let data = []
+    cats.forEach((cat, i) => {
+      if (counts[i] > 0) {
+        data.push({
+          'inference': cat,
+          'COUNT(inference)': counts[i]
+        })
+      }
+    })
+
+    this.setState({
+      inferences: data,
+      selectedInference: false,
+      sensitivitySelection: 'all-sensitive',
+      popularitySelection: key,
+      dateSelection: 'all-dates'
+    })
+  }  
 
   async handleDateSelection (event) {
     let afterDate
     const key = event.target.value
+
+    this.setState({
+      inferences: null
+    })
 
     const background = await browser.runtime.getBackgroundPage()
 
@@ -135,6 +202,7 @@ export default class InferencesOverview extends React.Component {
       inferences: data,
       selectedInference: false,
       sensitivitySelection: 'all-sensitive',
+      popularitySelection: 'all-popular',
       dateSelection: key
     })
   }
@@ -147,6 +215,23 @@ export default class InferencesOverview extends React.Component {
 
   render () {
     let { inferences, selectedInference, numInferences } = this.state
+
+    const popularityTooltipText = (
+      <div style={{width: 160}}>
+        Toggle between these filters to show only inferences that are more or less popular.
+      </div>
+    )
+
+    const popularityTooltip = (
+      <Tooltip
+        tip={popularityTooltipText}
+        variant='inverse'
+        placement='end'
+      >
+        Popularity <IconInfo />
+      </Tooltip>
+    )
+
 
     const sensitivityTooltipText = (
       <div style={{width: 160}}>
@@ -183,19 +268,7 @@ export default class InferencesOverview extends React.Component {
 
     const filters = (<TTPanel textAlign='start' className={'inferences-sunburst-filters'}>
       <FormFieldGroup description='Filters'>
-        <RadioInputGroup
-          name='sensitivity-filter'
-          value={this.state.sensitivitySelection}
-          onChange={this.handleSensitivitySelection}
-          description={sensitivityTooltip}
-          variant='toggle'
-          layout='inline'
-          size='small'
-        >
-          <RadioInput label='All' value='all-sensitive' context='off' />
-          <RadioInput label='Less' value='less-sensitive' context='off' />
-          <RadioInput label='More' value='more-sensitive' context='off' />
-        </RadioInputGroup>
+
         <RadioInputGroup
           name='date-filter'
           value={this.state.dateSelection}
@@ -209,6 +282,32 @@ export default class InferencesOverview extends React.Component {
           <RadioInput label='24 hrs' value='past-24' context='off' />
           <RadioInput label='7 days' value='past-week' context='off' />
           {/* <RadioInput label='Last month' value='past-month' context='off' /> */}
+        </RadioInputGroup>
+        <RadioInputGroup
+          name='popularity-filter'
+          value={this.state.popularitySelection}
+          onChange={this.handlePopularitySelection}
+          description={popularityTooltip}
+          variant='toggle'
+          layout='inline'
+          size='small'
+        >
+          <RadioInput label='All' value='all-popular' context='off' />
+          <RadioInput label='Less' value='less-popular' context='off' />
+          <RadioInput label='More' value='more-popular' context='off' />
+        </RadioInputGroup>
+        <RadioInputGroup
+          name='sensitivity-filter'
+          value={this.state.sensitivitySelection}
+          onChange={this.handleSensitivitySelection}
+          description={sensitivityTooltip}
+          variant='toggle'
+          layout='inline'
+          size='small'
+        >
+          <RadioInput label='All' value='all-sensitive' context='off' />
+          <RadioInput label='Less' value='less-sensitive' context='off' />
+          <RadioInput label='More' value='more-sensitive' context='off' />
         </RadioInputGroup>
       </FormFieldGroup>
     </TTPanel>)
@@ -233,23 +332,39 @@ export default class InferencesOverview extends React.Component {
         </GridRow>
         <GridRow>
           <GridCol width={7}>
+            {filters}
             <TTPanel padding='0 0 0 0'>
               {/* <Text>This diagram shows some of the inferences that may have been made about your browsing and their frequency. Click on a piece of the chart to see more details.</Text> */}
-              {inferences && 
-                <SizeMe>
-                  {({ size }) => (
-                    <InferencesSunburst 
-                      inferenceCounts={inferences} 
-                      onSelectionChange={this.handleSunburstSelection} 
-                      selectedInference={selectedInference}
-                      height={size.width}
-                      width={size.width}
-                    />
-                  )}
-                </SizeMe>
-              }
+              <SizeMe>
+                {({ size }) => {
+                  if (inferences) {
+                    return (
+                      <InferencesSunburst 
+                        inferenceCounts={inferences} 
+                        onSelectionChange={this.handleSunburstSelection} 
+                        selectedInference={selectedInference}
+                        height={size.width}
+                        width={size.width}
+                      />
+                    )
+                  } else {
+                    return (
+                      <div
+                        style={{
+                          height: size.width,
+                          width: size.width,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <Spinner size='large' />
+                      </div>
+                    )
+                  }
+                }}
+              </SizeMe>
             </TTPanel>
-            {filters}
           </GridCol>
           <GridCol width={5}>
             <TTPanel textAlign='start'>
