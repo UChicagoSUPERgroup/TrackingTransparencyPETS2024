@@ -11,6 +11,7 @@ import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import View from '@instructure/ui-layout/lib/components/View'
+import Tag from '@instructure/ui-elements/lib/components/Tag'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -34,35 +35,47 @@ const inferenceRecentList = (data) => {
 }
 
 const inferenceTopList = (data) => {
-  // console.log()
-
   return (
-    <p>
-      {data.map((p, i, arr) => {
-        const last = (i === (arr.length - 1))
-        const inference = p['inference']
-        return (
-          <span key={inference}>
-            {inference}{!last ? ', ' : ''}
-          </span>
-        )
-      })}
-    </p>
+    <div>
+      <Heading level="h3">Your Top Inferences</Heading>
+      <span>
+        {data.map((p, i, arr) => {
+          const last = (i === (arr.length - 1))
+          const inference = p['inference']
+          return (
+            <div>
+              <span>{i+1}</span>
+              <span key={inference}>
+                <Tag text={inference} size="large" margin="small small small small" />
+                <br/>
+              </span>
+            </div>
+          )
+        })}
+      </span>
+    </div>
   )
 }
 
 const trackerList = (data) => {
   return (
-    <p>
-      {data.map((p, i, arr) => {
-        const last = (i === (arr.length - 1))
-        return (
-          <span key={p.tracker}>
-            {p.tracker}{!last ? ', ' : ''}
-          </span>
-        )
-      })}
-    </p>
+    <div>
+      <Heading level="h3">Your Top Trackers</Heading>
+      <span>
+        {data.map((p, i, arr) => {
+          const last = (i === (arr.length - 1))
+          return (
+            <div>
+              <span>{i+1}</span>
+              <span key={p.tracker}>
+                <Tag text={p.tracker} size="large" margin="small small small small" />
+                <br/>
+              </span>
+            </div>
+          )
+        })}
+      </span>
+    </div>
   )
 }
 
@@ -173,13 +186,22 @@ export class Home extends React.Component {
             <TTPanel margin='medium 0 0 0'>
               <Text>
                 <p>For example, if you visit a blog about traveling with dogs, a third-party tracker on that site could guess that you are interested in dogs. Later, you might see an ad that was targeted specifically to dog-lovers. The same could happen with topics related to shopping, health, finance, sports, and more.</p>
-
-                <p>Using the Tracking Transparency browser extension, you can see the information that tracking companies collect about you.</p>
               </Text>
             </TTPanel>
           </GridCol>
         </GridRow>
         <GridRow>
+          <GridCol width={3}>
+            <TTPanel>
+              {trackerList(topTrackers || [])}
+            </TTPanel>
+          </GridCol>
+          <GridCol width={3}>
+            <TTPanel>
+              {inferenceTopList(topInferences || [])}
+            </TTPanel>
+
+          </GridCol>
           <GridCol width={6}>
             <TTPanel>
               <MetricsList theme={{lineHeight: 2}}>
@@ -190,18 +212,6 @@ export class Home extends React.Component {
             </TTPanel>
 
             <TTPanel margin='medium 0 0 0'>
-              <Text>
-                {topTrackers && topTrackers.length > 0 && <div>
-                  <p><strong>Your top 5 trackers:</strong></p>
-                  <div>{trackerList(topTrackers || [])}</div></div>}
-                {recentInferences && recentInferences.length > 0 && <div>
-                  <p><strong>Your top 5 inferred interests:</strong></p>
-                  <div>{inferenceTopList(topInferences || [])}</div> </div>}
-              </Text>
-            </TTPanel>
-          </GridCol>
-          <GridCol width={6}>
-            <TTPanel>
               <View
                 display='inline-block'
                 margin='small medium small large'
