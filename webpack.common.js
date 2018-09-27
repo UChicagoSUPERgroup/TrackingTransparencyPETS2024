@@ -71,7 +71,7 @@ module.exports = {
   },
   optimization: {
     splitChunks: {
-      chunks: 'all',
+      chunks: 'initial',
       cacheGroups: {
         default: false
       }
