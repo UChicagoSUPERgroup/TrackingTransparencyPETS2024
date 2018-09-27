@@ -7,7 +7,6 @@ import Link from '@instructure/ui-elements/lib/components/Link'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
-import FormFieldGroup from '@instructure/ui-forms/lib/components/FormFieldGroup'
 import RadioInput from '@instructure/ui-forms/lib/components/RadioInput'
 import RadioInputGroup from '@instructure/ui-forms/lib/components/RadioInputGroup'
 import Spinner from '@instructure/ui-elements/lib/components/Spinner'
@@ -173,7 +172,7 @@ export default class InferencesOverview extends React.Component {
       popularitySelection: key,
       dateSelection: 'all-dates'
     })
-  }  
+  }
 
   async handleDateSelection (event) {
     let afterDate
@@ -228,10 +227,9 @@ export default class InferencesOverview extends React.Component {
         variant='inverse'
         placement='end'
       >
-        Popularity <IconInfo />
+        Popularity&nbsp;<IconInfo />
       </Tooltip>
     )
-
 
     const sensitivityTooltipText = (
       <div style={{width: 160}}>
@@ -246,7 +244,7 @@ export default class InferencesOverview extends React.Component {
         variant='inverse'
         placement='end'
       >
-        Sensitivity <IconInfo />
+        Sensitivity&nbsp;<IconInfo />
       </Tooltip>
     )
 
@@ -262,55 +260,61 @@ export default class InferencesOverview extends React.Component {
         variant='inverse'
         placement='end'
       >
-        Recency <IconInfo />
+        Recency&nbsp;<IconInfo />
       </Tooltip>
     )
 
-    const filters = (<TTPanel textAlign='start' className={'inferences-sunburst-filters'}>
-      <FormFieldGroup description='Filters'>
-
-        <RadioInputGroup
-          name='date-filter'
-          value={this.state.dateSelection}
-          onChange={this.handleDateSelection}
-          description={recencyTooltip}
-          variant='toggle'
-          layout='inline'
-          size='small'
-        >
-          <RadioInput label='All' value='all-dates' context='off' />
-          <RadioInput label='24 hrs' value='past-24' context='off' />
-          <RadioInput label='7 days' value='past-week' context='off' />
-          {/* <RadioInput label='Last month' value='past-month' context='off' /> */}
-        </RadioInputGroup>
-        <RadioInputGroup
-          name='popularity-filter'
-          value={this.state.popularitySelection}
-          onChange={this.handlePopularitySelection}
-          description={popularityTooltip}
-          variant='toggle'
-          layout='inline'
-          size='small'
-        >
-          <RadioInput label='All' value='all-popular' context='off' />
-          <RadioInput label='Less' value='less-popular' context='off' />
-          <RadioInput label='More' value='more-popular' context='off' />
-        </RadioInputGroup>
-        <RadioInputGroup
-          name='sensitivity-filter'
-          value={this.state.sensitivitySelection}
-          onChange={this.handleSensitivitySelection}
-          description={sensitivityTooltip}
-          variant='toggle'
-          layout='inline'
-          size='small'
-        >
-          <RadioInput label='All' value='all-sensitive' context='off' />
-          <RadioInput label='Less' value='less-sensitive' context='off' />
-          <RadioInput label='More' value='more-sensitive' context='off' />
-        </RadioInputGroup>
-      </FormFieldGroup>
-    </TTPanel>)
+    const filters = (
+      <TTPanel
+        textAlign='start'
+        className={'inferences-sunburst-filters'}
+        margin='medium 0 0 0'
+      >
+        <Heading level='h3' margin='0 0 small 0'>Filters</Heading>
+        <div style={{marginRight: -200}}>
+          <RadioInputGroup
+            name='date-filter'
+            value={this.state.dateSelection}
+            onChange={this.handleDateSelection}
+            description={recencyTooltip}
+            variant='toggle'
+            layout='inline'
+            size='small'
+          >
+            <RadioInput label='All' value='all-dates' context='off' />
+            <RadioInput label='24 hrs' value='past-24' context='off' />
+            <RadioInput label='7 days' value='past-week' context='off' />
+            {/* <RadioInput label='Last month' value='past-month' context='off' /> */}
+          </RadioInputGroup>
+          <RadioInputGroup
+            name='popularity-filter'
+            value={this.state.popularitySelection}
+            onChange={this.handlePopularitySelection}
+            description={popularityTooltip}
+            variant='toggle'
+            layout='inline'
+            size='small'
+          >
+            <RadioInput label='All' value='all-popular' context='off' />
+            <RadioInput label='Less' value='less-popular' context='off' />
+            <RadioInput label='More' value='more-popular' context='off' />
+          </RadioInputGroup>
+          <RadioInputGroup
+            name='sensitivity-filter'
+            value={this.state.sensitivitySelection}
+            onChange={this.handleSensitivitySelection}
+            description={sensitivityTooltip}
+            variant='toggle'
+            layout='inline'
+            size='small'
+          >
+            <RadioInput label='All' value='all-sensitive' context='off' />
+            <RadioInput label='Less' value='less-sensitive' context='off' />
+            <RadioInput label='More' value='more-sensitive' context='off' />
+          </RadioInputGroup>
+        </div>
+      </TTPanel>
+    )
 
     return (
       <Grid startAt='medium'>
@@ -332,16 +336,15 @@ export default class InferencesOverview extends React.Component {
         </GridRow>
         <GridRow>
           <GridCol width={7}>
-            {filters}
             <TTPanel padding='0 0 0 0'>
               {/* <Text>This diagram shows some of the inferences that may have been made about your browsing and their frequency. Click on a piece of the chart to see more details.</Text> */}
               <SizeMe>
                 {({ size }) => {
                   if (inferences) {
                     return (
-                      <InferencesSunburst 
-                        inferenceCounts={inferences} 
-                        onSelectionChange={this.handleSunburstSelection} 
+                      <InferencesSunburst
+                        inferenceCounts={inferences}
+                        onSelectionChange={this.handleSunburstSelection}
                         selectedInference={selectedInference}
                         height={size.width}
                         width={size.width}
@@ -358,7 +361,7 @@ export default class InferencesOverview extends React.Component {
                           justifyContent: 'center'
                         }}
                       >
-                        <Spinner size='large' />
+                        <Spinner title='Sunburst loading…' size='large' />
                       </div>
                     )
                   }
@@ -382,6 +385,7 @@ export default class InferencesOverview extends React.Component {
                 </Link>
               </div>}
             </TTPanel>
+            {filters}
           </GridCol>
         </GridRow>
       </Grid>
