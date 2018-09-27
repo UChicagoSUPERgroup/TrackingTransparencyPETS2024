@@ -372,7 +372,7 @@ export default class InferencesOverview extends React.Component {
           <GridCol width={5}>
             <TTPanel textAlign='start'>
               {!selectedInference && <Text className='selected-inference' weight='bold'>
-                 This chart shows some interests that trackers could have made about you based on your browsing activity. Click a slice of the wheel to see more details. </Text>}
+                 This chart shows some interests that trackers could have made about you based on your browsing activity. Click a slice of the chart to see more details. </Text>}
               {selectedInference && <div>
                 <InferenceSummary inference={selectedInference} />
                 <Link
