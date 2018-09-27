@@ -231,9 +231,9 @@ export class Home extends React.Component {
           <GridCol width={6}>
             <TTPanel>
               <MetricsList theme={{lineHeight: 2}}>
-                <MetricsListItem label='Trackers Seen' value={numTrackers || 'Loading…'} />
-                <MetricsListItem label='Pages Visited' value={numPages || 'Loading'} />
-                <MetricsListItem label='Inferred Interests' value={numInferences || 'Loading'} />
+                <MetricsListItem value={numTrackers || 'Loading…'} label={<span><FontAwesomeIcon icon='eye' /> Trackers you've seen</span>}/>
+                <MetricsListItem value={numPages || 'Loading'} label={<span><FontAwesomeIcon icon='window-maximize' /> Sites you've visited</span>}/>
+                <MetricsListItem value={numInferences || 'Loading'} label={<span><FontAwesomeIcon icon='thumbs-up' /> Your interests</span>} />
               </MetricsList>
             </TTPanel>
 
