@@ -37,16 +37,16 @@ const inferenceRecentList = (data) => {
 const inferenceTopList = (data) => {
   return (
     <div>
-      <Heading level="h3">Your Top Inferences</Heading>
+      <Heading level="h3">Your Top Interests</Heading>
       <span>
         {data.map((p, i, arr) => {
           const last = (i === (arr.length - 1))
           const inference = p['inference']
           return (
             <div>
-              <span>{i+1}</span>
+              <span><strong>{i+1}</strong></span>
               <span key={inference}>
-                <Tag text={inference} size="large" margin="small small small small" />
+                <Tag text={inference} size="large" margin="x-small x-small x-small x-small" />
                 <br/>
               </span>
             </div>
@@ -66,9 +66,9 @@ const trackerList = (data) => {
           const last = (i === (arr.length - 1))
           return (
             <div>
-              <span>{i+1}</span>
+              <span><strong>{i+1}</strong></span>
               <span key={p.tracker}>
-                <Tag text={p.tracker} size="large" margin="small small small small" />
+                <Tag text={p.tracker} size="large" margin="x-small x-small x-small x-small" />
                 <br/>
               </span>
             </div>
@@ -133,6 +133,25 @@ const arrowPanel = () => {
   )
 }
 
+const stackedIconWord = (icon, word) => {
+  return (
+    <div style={{width: "auto", display:"inline-block"}}>
+      <Grid rowSpacing="none" startAt="small">
+        <GridRow>
+            <GridCol textAlign="center">
+                <div>{icon}</div>
+            </GridCol>
+        </GridRow>
+        <GridRow>
+          <GridCol textAlign="center">
+            <div>{word}</div>
+          </GridCol>
+        </GridRow>
+      </Grid>
+    </div>
+  )
+}
+
 export class Home extends React.Component {
   constructor (props) {
     super(props)
@@ -184,9 +203,22 @@ export class Home extends React.Component {
           <GridCol>
             {arrowPanel()}
             <TTPanel margin='medium 0 0 0'>
-              <Text>
-                <p>For example, if you visit a blog about traveling with dogs, a third-party tracker on that site could guess that you are interested in dogs. Later, you might see an ad that was targeted specifically to dog-lovers. The same could happen with topics related to shopping, health, finance, sports, and more.</p>
-              </Text>
+              <Heading level="h3">What does this mean for you?</Heading>
+                <Grid>
+                  <GridRow>
+                    <GridCol>
+                      <Text>
+                        <p>If {stackedIconWord(<FontAwesomeIcon icon='user' />, "you")} go online and visit a {stackedIconWord(<FontAwesomeIcon icon='window-maximize' />, "site")} about traveling with {stackedIconWord(<FontAwesomeIcon icon='paw' />, "dogs")}, a third-party {stackedIconWord(<FontAwesomeIcon icon='eye' />, "tracker")} on that {stackedIconWord(<FontAwesomeIcon icon='window-maximize' />, "site")} could {stackedIconWord(<FontAwesomeIcon icon='cogs' />, "guess")} that you have an {stackedIconWord(<FontAwesomeIcon icon='thumbs-up' />, "interest")} in {stackedIconWord(<FontAwesomeIcon icon='paw' />, "dogs")}. Later, you might see an {stackedIconWord(<FontAwesomeIcon icon='ad' />, "ad")} that was specifically {stackedIconWord(<FontAwesomeIcon icon='bullseye' />, "targeted")} to {stackedIconWord(<FontAwesomeIcon icon='user' />, "people")} who like {stackedIconWord(<FontAwesomeIcon icon='paw' />, "dogs")}.</p>
+                      </Text>
+                    </GridCol>
+                    <GridCol>
+                      <Text>
+                        <p>When advertisers do targeted advertising, they can use your interests in unexpected ways. For example, an advertiser could choose to show ads about sports to people who like dogs.</p>
+                        <p>A third-party tracker could also guess incorrectly about what you are interested in. If you often look up a topic for work, trackers will infer that interest about you, even if you only look it up for work.</p>
+                      </Text>
+                    </GridCol>
+                  </GridRow>
+                </Grid>
             </TTPanel>
           </GridCol>
         </GridRow>
@@ -220,7 +252,7 @@ export class Home extends React.Component {
                   as='header'
                   margin='0 0 small small'
                 >
-                  <Text weight='bold'>Recent Inferences</Text>
+                  <Text weight='bold'>Recent Interests</Text>
                 </View>
                 {recentInferences ? inferenceRecentList(recentInferences) : 'Loading…'}
               </View>
@@ -232,7 +264,7 @@ export class Home extends React.Component {
                   as='header'
                   margin='0 0 small small'
                 >
-                  <Text weight='bold'>Recent Domains</Text>
+                  <Text weight='bold'>Recent Sites</Text>
                 </View>
                 {recentDomains ? domainList(recentDomains) : 'Loading…'}
               </View>
