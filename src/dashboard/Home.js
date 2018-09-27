@@ -195,12 +195,6 @@ export class Home extends React.Component {
       <Grid startAt='large'>
         <GridRow>
           <GridCol>
-            <Heading level='h1'>Home</Heading>
-          </GridCol>
-        </GridRow>
-
-        <GridRow>
-          <GridCol>
             {arrowPanel()}
             <TTPanel margin='medium 0 0 0'>
               <Heading level="h3">What does this mean for you?</Heading>
