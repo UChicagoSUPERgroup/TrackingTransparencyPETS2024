@@ -207,8 +207,8 @@ export class Home extends React.Component {
                     </GridCol>
                     <GridCol>
                       <Text>
-                        <p>When advertisers do targeted advertising, they can use your interests in unexpected ways. For example, an advertiser could choose to show ads about sports to people who like dogs.</p>
-                        <p>A third-party tracker could also guess incorrectly about what you are interested in. If you often look up a topic for work, trackers will infer that interest about you, even if you only look it up for work.</p>
+                        <p>When advertisers do targeted advertising, they can use your interests in unexpected ways. For example, an advertiser could show you sports ads because they think people who like dogs will also like sports.</p>
+                        <p>A third-party tracker could also guess incorrectly about your interests. If you often visit sites about a topic, trackers might guess you are interested in that topic, even if actually aren't.</p>
                       </Text>
                     </GridCol>
                   </GridRow>
