@@ -232,7 +232,7 @@ export class Home extends React.Component {
             <TTPanel>
               <MetricsList theme={{lineHeight: 2}}>
                 <MetricsListItem value={numTrackers || 'Loading…'} label={<span><FontAwesomeIcon icon='eye' /> Trackers you've seen</span>}/>
-                <MetricsListItem value={numPages || 'Loading'} label={<span><FontAwesomeIcon icon='window-maximize' /> Sites you've visited</span>}/>
+                <MetricsListItem value={numPages || 'Loading'} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages you've visited</span>}/>
                 <MetricsListItem value={numInferences || 'Loading'} label={<span><FontAwesomeIcon icon='thumbs-up' /> Your interests</span>} />
               </MetricsList>
             </TTPanel>
