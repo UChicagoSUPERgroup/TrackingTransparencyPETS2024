@@ -1,18 +1,8 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import Loadable from 'react-loadable'
 
-import Loading from '../loadable'
-
-const SiteOverview = Loadable({
-  loader: () => import(/* webpackChunkName: "dashboard/SiteOverview" */'./SiteOverview'),
-  loading: Loading
-})
-
-const SiteDetailPage = Loadable({
-  loader: () => import(/* webpackChunkName: "dashboard/SiteDetailPage" */'./SiteDetailPage'),
-  loading: Loading
-})
+import SiteOverview from './SiteOverview'
+import SiteDetailPage from './SiteDetailPage'
 
 export default class Sites extends React.Component {
   render () {
