@@ -9,7 +9,7 @@ const urlComponentMapping = {
   trackers: 'Trackers',
   activity: 'Activity',
   lightbeam: 'Network',
-  info: 'Info',
+  info: 'About',
   settings: 'Settings',
   takeaction: 'Take Action',
   debug: 'Debug'
