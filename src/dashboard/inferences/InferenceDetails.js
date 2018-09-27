@@ -21,9 +21,12 @@ export default class TrackerDetailPage extends React.Component {
     const trackersP = background.queryDatabaseRecursive('getTrackersByInference', queryObj)
     const domainsP = background.queryDatabaseRecursive('getDomainsByInference', queryObj)
     const pagesP = background.queryDatabaseRecursive('getPagesByInference', queryObj)
+    const interestDataP = import(/* webpackChunkName: "data/trackerData" */'../../data/interests/interests.json')
 
-    const [trackers, domains, pages] =
-      await Promise.all([trackersP, domainsP, pagesP])
+    const [trackers, domains, pages, interestData] =
+      await Promise.all([trackersP, domainsP, pagesP, interestDataP])
+
+    const interestInfo = interestData.default[this.inference]
 
     const metrics = [
       {
@@ -42,20 +45,35 @@ export default class TrackerDetailPage extends React.Component {
       trackers,
       domains,
       pages,
-      metrics
+      metrics,
+      interestInfo
     })
   }
 
   render () {
-    const { metrics, trackers, domains, pages } = this.state
+    const { metrics, trackers, domains, pages, interestInfo } = this.state
     const ready = !!pages
 
     if (!ready) return null
+
+    // these cutoffs are a bit haphazard
+    let popularity
+    if (interestInfo.impressions >= 10000000000) {
+      popularity = 'extremely popular'
+    } else if (interestInfo.impressions >= 1000000000) {
+      popularity = 'popular'
+    } else if (interestInfo.impressions >= 100000000) {
+      popularity = 'somewhat popular'
+    } else if (interestInfo.impressions >= 100000000) {
+      popularity = 'not very popular'
+    }
+    const introText = <Text>We have found that <strong>{this.inference}</strong> is a <strong>{popularity}</strong> interest that companies could infer.</Text>
 
     return (
       <DetailPage
         pageType='inference'
         title={this.inference}
+        description={introText}
         metrics={metrics}
         accentColor={colors.blue1}
         trackers={trackers}
