@@ -11,6 +11,7 @@ import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import View from '@instructure/ui-layout/lib/components/View'
+import Tag from '@instructure/ui-elements/lib/components/Tag'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -35,32 +36,46 @@ const inferenceRecentList = (data) => {
 
 const inferenceTopList = (data) => {
   return (
-    <p>
-      {data.map((p, i, arr) => {
-        const last = (i === (arr.length - 1))
-        const inference = p['DISTINCT(inference)']
-        return (
-          <span key={inference}>
-            {inference}{!last ? ', ' : ''}
-          </span>
-        )
-      })}
-    </p>
+    <div>
+      <Heading level="h3">Your Top Interests</Heading>
+      <span>
+        {data.map((p, i, arr) => {
+          const last = (i === (arr.length - 1))
+          const inference = p['inference']
+          return (
+            <div>
+              <span><strong>{i+1}</strong></span>
+              <span key={inference}>
+                <Tag text={inference} size="large" margin="x-small x-small x-small x-small" />
+                <br/>
+              </span>
+            </div>
+          )
+        })}
+      </span>
+    </div>
   )
 }
 
 const trackerList = (data) => {
   return (
-    <p>
-      {data.map((p, i, arr) => {
-        const last = (i === (arr.length - 1))
-        return (
-          <span key={p.tracker}>
-            {p.tracker}{!last ? ', ' : ''}
-          </span>
-        )
-      })}
-    </p>
+    <div>
+      <Heading level="h3">Your Top Trackers</Heading>
+      <span>
+        {data.map((p, i, arr) => {
+          const last = (i === (arr.length - 1))
+          return (
+            <div>
+              <span><strong>{i+1}</strong></span>
+              <span key={p.tracker}>
+                <Tag text={p.tracker} size="large" margin="x-small x-small x-small x-small" />
+                <br/>
+              </span>
+            </div>
+          )
+        })}
+      </span>
+    </div>
   )
 }
 
@@ -118,6 +133,25 @@ const arrowPanel = () => {
   )
 }
 
+const stackedIconWord = (icon, word) => {
+  return (
+    <div style={{width: "auto", display:"inline-block"}}>
+      <Grid rowSpacing="none" startAt="small">
+        <GridRow>
+            <GridCol textAlign="center">
+                <div>{icon}</div>
+            </GridCol>
+        </GridRow>
+        <GridRow>
+          <GridCol textAlign="center">
+            <div>{word}</div>
+          </GridCol>
+        </GridRow>
+      </Grid>
+    </div>
+  )
+}
+
 export class Home extends React.Component {
   constructor (props) {
     super(props)
@@ -135,6 +169,7 @@ export class Home extends React.Component {
     const numTrackers = background.queryDatabase('getNumberOfTrackers', {})
     const numInferences = background.queryDatabase('getNumberOfInferences', {})
     const recentInferences = background.queryDatabase('getInferencesByTime', args)
+    const topInferences = background.queryDatabase('getInferences', args)
     const recentDomains = background.queryDatabase('getDomains', args)
     const topTrackers = background.queryDatabase('getTrackers', args)
 
@@ -143,6 +178,7 @@ export class Home extends React.Component {
     numTrackers.then(n => this.setState({numTrackers: n}))
     numInferences.then(n => this.setState({numInferences: n}))
     recentInferences.then(n => this.setState({recentInferences: n}))
+    topInferences.then(n => this.setState({topInferences: n}))
     recentDomains.then(n => this.setState({recentDomains: n}))
     topTrackers.then(n => this.setState({topTrackers: n}))
   }
@@ -153,74 +189,76 @@ export class Home extends React.Component {
   }
 
   render () {
-    const {numTrackers, numInferences, numPages, recentInferences, recentDomains, topTrackers} = this.state
+    const {numTrackers, numInferences, numPages, recentInferences, recentDomains, topTrackers, topInferences} = this.state
 
     return (
       <Grid startAt='large'>
         <GridRow>
           <GridCol>
-            <Heading level='h1'>Home</Heading>
-          </GridCol>
-        </GridRow>
-
-        <GridRow>
-          <GridCol>
             {arrowPanel()}
             <TTPanel margin='medium 0 0 0'>
-              <Text>
-                <p>For example, if you visit a blog about traveling with dogs, a third-party tracker on that site could guess that you are interested in dogs. Later, you might see an ad that was targeted specifically to dog-lovers. The same could happen with topics related to shopping, health, finance, sports, and more.</p>
-
-                <p>Using the Tracking Transparency browser extension, you can see the information that tracking companies collect about you.</p>
-
-                <p>In total, <strong>{numTrackers || 'Loading…'} trackers</strong> have seen you visit <strong>{numPages || 'Loading…'} pages</strong>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <strong>{numInferences || 'Loading…'} topics</strong>.</p>
-              </Text>
+              <Heading level="h3">What does this mean for you?</Heading>
+                <Grid>
+                  <GridRow>
+                    <GridCol>
+                      <Text>
+                        <p>If {stackedIconWord(<FontAwesomeIcon icon='user' />, "you")} go online and visit a {stackedIconWord(<FontAwesomeIcon icon='window-maximize' />, "site")} about traveling with {stackedIconWord(<FontAwesomeIcon icon='paw' />, "dogs")}, a third-party {stackedIconWord(<FontAwesomeIcon icon='eye' />, "tracker")} on that {stackedIconWord(<FontAwesomeIcon icon='window-maximize' />, "site")} could {stackedIconWord(<FontAwesomeIcon icon='cogs' />, "guess")} that you have an {stackedIconWord(<FontAwesomeIcon icon='thumbs-up' />, "interest")} in {stackedIconWord(<FontAwesomeIcon icon='paw' />, "dogs")}. Later, you might see an {stackedIconWord(<FontAwesomeIcon icon='ad' />, "ad")} that was specifically {stackedIconWord(<FontAwesomeIcon icon='bullseye' />, "targeted")} to {stackedIconWord(<FontAwesomeIcon icon='user' />, "people")} who like {stackedIconWord(<FontAwesomeIcon icon='paw' />, "dogs")}.</p>
+                      </Text>
+                    </GridCol>
+                    <GridCol>
+                      <Text>
+                        <p>When advertisers do targeted advertising, they can use your interests in unexpected ways. For example, an advertiser could show you sports ads because they think people who like dogs will also like sports.</p>
+                        <p>A third-party tracker could also guess incorrectly about your interests. If you often visit sites about a topic, trackers might guess you are interested in that topic, even if actually aren't.</p>
+                      </Text>
+                    </GridCol>
+                  </GridRow>
+                </Grid>
             </TTPanel>
           </GridCol>
         </GridRow>
         <GridRow>
+          <GridCol width={3}>
+            <TTPanel>
+              {trackerList(topTrackers || [])}
+            </TTPanel>
+          </GridCol>
+          <GridCol width={3}>
+            <TTPanel>
+              {inferenceTopList(topInferences || [])}
+            </TTPanel>
+
+          </GridCol>
           <GridCol width={6}>
             <TTPanel>
               <MetricsList theme={{lineHeight: 2}}>
-                <MetricsListItem label='Trackers Seen' value={numTrackers || 'Loading…'} />
-                <MetricsListItem label='Pages Visited' value={numPages || 'Loading'} />
-                <MetricsListItem label='Inferred Interests' value={numInferences || 'Loading'} />
+                <MetricsListItem value={numTrackers || 'Loading…'} label={<span><FontAwesomeIcon icon='eye' /> Trackers you've seen</span>}/>
+                <MetricsListItem value={numPages || 'Loading'} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages you've visited</span>}/>
+                <MetricsListItem value={numInferences || 'Loading'} label={<span><FontAwesomeIcon icon='thumbs-up' /> Your interests</span>} />
               </MetricsList>
             </TTPanel>
 
             <TTPanel margin='medium 0 0 0'>
-              <Text>
-                {topTrackers && topTrackers.length > 0 && <div>
-                  <p><strong>Your top 5 trackers:</strong></p>
-                  <div>{trackerList(topTrackers)}</div></div>}
-                {recentInferences && recentInferences.length > 0 && <div>
-                  <p><strong>Your top 5 inferred interests:</strong></p>
-                  <div>{inferenceTopList(recentInferences)}</div> </div>}
-              </Text>
-            </TTPanel>
-          </GridCol>
-          <GridCol width={6}>
-            <TTPanel>
               <View
                 display='inline-block'
-                margin='small medium small large'
+                margin='small small small small'
               >
                 <View
                   as='header'
                   margin='0 0 small small'
                 >
-                  <Text weight='bold'>Recent Inferences</Text>
+                  <Text weight='bold'>Recent Interests</Text>
                 </View>
                 {recentInferences ? inferenceRecentList(recentInferences) : 'Loading…'}
               </View>
               <View
                 display='inline-block'
-                margin='small small small medium'
+                margin='small small small small'
               >
                 <View
                   as='header'
                   margin='0 0 small small'
                 >
-                  <Text weight='bold'>Recent Domains</Text>
+                  <Text weight='bold'>Recent Sites</Text>
                 </View>
                 {recentDomains ? domainList(recentDomains) : 'Loading…'}
               </View>

@@ -39,8 +39,10 @@ import '../styles/navbar.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faEye, faThumbsUp, faAd, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { faPaw, faCogs, faUser, faBullseye, faWindowMaximize } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faEye, faThumbsUp, faAd, faArrowRight)
+library.add(faPaw, faCogs, faUser, faBullseye, faWindowMaximize)
 
 theme.use({
   overrides: themeOverrides
