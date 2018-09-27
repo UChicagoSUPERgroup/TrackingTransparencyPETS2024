@@ -217,7 +217,7 @@ export default class InferencesOverview extends React.Component {
 
     const popularityTooltipText = (
       <div style={{width: 160}}>
-        Toggle between these filters to show only inferences that are more or less popular.
+        Toggle between these filters to show only interests that are more or less popular.
       </div>
     )
 
@@ -233,8 +233,8 @@ export default class InferencesOverview extends React.Component {
 
     const sensitivityTooltipText = (
       <div style={{width: 160}}>
-        Our previous research has found that there are certain inferences that users are more comfortable with, and others that are more sensitive.
-        Toggle between these filters to show only inferences that are more or less sensitive.
+        Our research has found that there are certain interests that users are more comfortable with, and others that are more sensitive.
+        Toggle between these filters to show only interests that are more or less sensitive.
       </div>
     )
 
@@ -250,7 +250,7 @@ export default class InferencesOverview extends React.Component {
 
     const recencyTooltipText = (
       <div style={{width: 160}}>
-        Toggle between these filters to show inferences made only in the last day, or only in the last week.
+        Toggle between these filters to show interests made only in the last day, or only in the last week.
       </div>
     )
 
@@ -327,7 +327,7 @@ export default class InferencesOverview extends React.Component {
           <GridCol>
             <TTPanel>
               <Text>
-                <p>Trackers collect information about the pages you visit in order to make guesses about things you might be interested in. These guesses, or inferences, are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{numInferences} topics</strong> that trackers might have inferred you are interested in.</p>
+                <p>Trackers collect information about the pages you visit in order to make guesses about topics you might be interested in. We call these topics <em>interests</em> .These interests are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{numInferences} topics</strong> that trackers might have inferred you are interested in.</p>
                 {inferences && inferences.length >= 3 && <p> {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)} were among the most frequent topics that our algorithm determined the pages you visited recently are about.</p>}
               </Text>
 
@@ -372,7 +372,7 @@ export default class InferencesOverview extends React.Component {
           <GridCol width={5}>
             <TTPanel textAlign='start'>
               {!selectedInference && <Text className='selected-inference' weight='bold'>
-                  The Inference Wheel shows inferences that trackers may have made about you, based on your browsing activity. Click a slice of the wheel to see more details. </Text>}
+                 This chart shows some interests that trackers could have made about you based on your browsing activity. Click a slice of the wheel to see more details. </Text>}
               {selectedInference && <div>
                 <InferenceSummary inference={selectedInference} />
                 <Link
