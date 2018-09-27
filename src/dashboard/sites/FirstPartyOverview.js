@@ -179,8 +179,8 @@ export default class FirstPartyOverview extends React.Component {
           <GridCol>
             <TTPanel>
               <Text>
-                <p>Since installing this browser extension, you have visited {numPages} different pages on {numDomains} sites.</p>
-                <p>Trackers see which sites you visited through a variety of tracking methods, including third-party cookies, tracking pixels, and browser fingerprinting. When a tracker sees that a single user has visited multiple sites, they can use that activity to link together multiple inferences.</p>
+                <p>Since installing this browser extension, you have visited <strong>{numPages} different pages</strong> on <strong>{numDomains} sites</strong>.</p>
+                <p>Trackers see which sites you visited through a variety of tracking methods, including third-party cookies, tracking pixels, and browser fingerprinting. When a tracker sees that someone has visited multiple sites, they can use that activity to link together multiple interests.</p>
                 <p>Tracker activity was detected on <strong>{percentTrackedSites}% of the sites you have visited. </strong></p>
               </Text>
             </TTPanel>

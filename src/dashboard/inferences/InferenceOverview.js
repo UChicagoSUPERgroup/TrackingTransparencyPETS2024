@@ -327,8 +327,8 @@ export default class InferencesOverview extends React.Component {
           <GridCol>
             <TTPanel>
               <Text>
-                <p>Trackers collect information about the pages you visit in order to make guesses about topics you might be interested in. We call these topics <em>interests</em> .These interests are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{numInferences} topics</strong> that trackers might have inferred you are interested in.</p>
-                {inferences && inferences.length >= 3 && <p> {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)} were among the most frequent topics that our algorithm determined the pages you visited recently are about.</p>}
+                <p>Trackers collect information about the pages you visit, and use this information in order to make guesses about topics you might like. We call these topics <em>interests</em>. These interests are then used to show you targeted ads, to do web analytics, and more. Our algorithms have identified <strong>{numInferences} topics</strong> that trackers might have guessed you are interested in.</p>
+                {/* {inferences && inferences.length >= 3 && <p> According to our algorithms, trackers may think you are most interested in  {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)}.</p>} */}
               </Text>
 
             </TTPanel>
@@ -372,7 +372,7 @@ export default class InferencesOverview extends React.Component {
           <GridCol width={5}>
             <TTPanel textAlign='start'>
               {!selectedInference && <Text className='selected-inference' weight='bold'>
-                 This chart shows some interests that trackers could have made about you based on your browsing activity. Click a slice of the chart to see more details. </Text>}
+                 This chart shows some topics that trackers think you might be interested in, based on your browsing activity. Click a slice of the chart to see more details. </Text>}
               {selectedInference && <div>
                 <InferenceSummary inference={selectedInference} />
                 <Link
