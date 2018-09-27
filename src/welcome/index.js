@@ -6,6 +6,7 @@ import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import TextInput from '@instructure/ui-forms/lib/components/TextInput'
 import Button from '@instructure/ui-buttons/lib/components/Button'
+import Link from '@instructure/ui-elements/lib/components/Link'
 
 import logging from '../dashboard/dashboardLogging'
 import { themeOverrides } from '../colors'
@@ -64,7 +65,8 @@ class WelcomePage extends React.Component {
           <Text>
             <p>By clicking continue, you indicate that you accept the consent form and will be taken to the extension homepage.</p>
           </Text>
-          <Button variant="primary" margin="0 x-small 0 0">
+
+          <Button variant="primary" type="submit" href='/dist/dashboard.html'>
               Continue
             </Button>
         </div>
