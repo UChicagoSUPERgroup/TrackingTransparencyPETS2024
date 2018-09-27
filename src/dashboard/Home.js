@@ -34,11 +34,13 @@ const inferenceRecentList = (data) => {
 }
 
 const inferenceTopList = (data) => {
+  // console.log()
+
   return (
     <p>
       {data.map((p, i, arr) => {
         const last = (i === (arr.length - 1))
-        const inference = p['DISTINCT(inference)']
+        const inference = p['inference']
         return (
           <span key={inference}>
             {inference}{!last ? ', ' : ''}
@@ -135,7 +137,7 @@ export class Home extends React.Component {
     const numTrackers = background.queryDatabase('getNumberOfTrackers', {})
     const numInferences = background.queryDatabase('getNumberOfInferences', {})
     const recentInferences = background.queryDatabase('getInferencesByTime', args)
-    const topInferences = background.queryDatabase('getInferenceCount', args)
+    const topInferences = background.queryDatabase('getInferences', args)
     const recentDomains = background.queryDatabase('getDomains', args)
     const topTrackers = background.queryDatabase('getTrackers', args)
 
@@ -191,10 +193,10 @@ export class Home extends React.Component {
               <Text>
                 {topTrackers && topTrackers.length > 0 && <div>
                   <p><strong>Your top 5 trackers:</strong></p>
-                  <div>{trackerList(topTrackers)}</div></div>}
+                  <div>{trackerList(topTrackers || [])}</div></div>}
                 {recentInferences && recentInferences.length > 0 && <div>
                   <p><strong>Your top 5 inferred interests:</strong></p>
-                  <div>{inferenceTopList(topInferences)}</div> </div>}
+                  <div>{inferenceTopList(topInferences || [])}</div> </div>}
               </Text>
             </TTPanel>
           </GridCol>
