@@ -135,6 +135,7 @@ export class Home extends React.Component {
     const numTrackers = background.queryDatabase('getNumberOfTrackers', {})
     const numInferences = background.queryDatabase('getNumberOfInferences', {})
     const recentInferences = background.queryDatabase('getInferencesByTime', args)
+    const topInferences = background.queryDatabase('getInferenceCount', args)
     const recentDomains = background.queryDatabase('getDomains', args)
     const topTrackers = background.queryDatabase('getTrackers', args)
 
@@ -143,6 +144,7 @@ export class Home extends React.Component {
     numTrackers.then(n => this.setState({numTrackers: n}))
     numInferences.then(n => this.setState({numInferences: n}))
     recentInferences.then(n => this.setState({recentInferences: n}))
+    topInferences.then(n => this.setState({topInferences: n}))
     recentDomains.then(n => this.setState({recentDomains: n}))
     topTrackers.then(n => this.setState({topTrackers: n}))
   }
@@ -153,7 +155,7 @@ export class Home extends React.Component {
   }
 
   render () {
-    const {numTrackers, numInferences, numPages, recentInferences, recentDomains, topTrackers} = this.state
+    const {numTrackers, numInferences, numPages, recentInferences, recentDomains, topTrackers, topInferences} = this.state
 
     return (
       <Grid startAt='large'>
@@ -171,8 +173,6 @@ export class Home extends React.Component {
                 <p>For example, if you visit a blog about traveling with dogs, a third-party tracker on that site could guess that you are interested in dogs. Later, you might see an ad that was targeted specifically to dog-lovers. The same could happen with topics related to shopping, health, finance, sports, and more.</p>
 
                 <p>Using the Tracking Transparency browser extension, you can see the information that tracking companies collect about you.</p>
-
-                <p>In total, <strong>{numTrackers || 'Loading…'} trackers</strong> have seen you visit <strong>{numPages || 'Loading…'} pages</strong>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <strong>{numInferences || 'Loading…'} topics</strong>.</p>
               </Text>
             </TTPanel>
           </GridCol>
@@ -194,7 +194,7 @@ export class Home extends React.Component {
                   <div>{trackerList(topTrackers)}</div></div>}
                 {recentInferences && recentInferences.length > 0 && <div>
                   <p><strong>Your top 5 inferred interests:</strong></p>
-                  <div>{inferenceTopList(recentInferences)}</div> </div>}
+                  <div>{inferenceTopList(topInferences)}</div> </div>}
               </Text>
             </TTPanel>
           </GridCol>
