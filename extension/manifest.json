@@ -44,13 +44,6 @@
             "all_frames": false
         }
     ],
-    "options_ui": {
-        "page": "dist/options.html",
-        "browser_style": true,
-        "chrome_style": true
-    },
-    "web_accessible_resources": [
-    ],
     "icons": {
         "128": "icons/super-128.png",
         "16": "icons/super-16.png",

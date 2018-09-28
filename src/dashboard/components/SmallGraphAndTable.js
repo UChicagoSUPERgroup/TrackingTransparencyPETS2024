@@ -26,36 +26,34 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
     y: d['name'],
     x: d['count']
   }))
-  if (data.length > 5) {
-    return (
-      <View>
-        <Heading level='h2'>{name}</Heading>
-        <View as='div' margin='medium 0 small 0'>
-          <SmallGraph
-            data={graphData}
-            yTitle={c1Header}
-            color={color}
-          />
-        </View>
-        <ToggleGroup
-          summary={'See all ' + lower}
-          toggleLabel={'Toggle to see table for ' + lower}
-          margin='medium 0 0 0'
-          border={false}
-        >
-          <SmallTable
-            data={data}
-            name={name}
-            c1Header={c1Header}
-            c1Accessor='name'
-            c2Header='Pages'
-            c2Accessor='count'
-            urlStem={urlStem}
-          />
-        </ToggleGroup>
+  return (
+    <View>
+      <Heading level='h2'>{name}</Heading>
+      <View as='div' margin='medium 0 small 0'>
+        <SmallGraph
+          data={graphData}
+          yTitle={c1Header}
+          color={color}
+        />
       </View>
-    )
-  }
+      <ToggleGroup
+        summary={'See all ' + data.length + ' ' + lower}
+        toggleLabel={'Toggle to see table for ' + lower}
+        margin='medium 0 0 0'
+        border={false}
+      >
+        <SmallTable
+          data={data}
+          name={name}
+          c1Header={c1Header}
+          c1Accessor='name'
+          c2Header='Pages'
+          c2Accessor='count'
+          urlStem={urlStem}
+        />
+      </ToggleGroup>
+    </View>
+  )
 }
 
 class SmallGraph extends React.Component {
