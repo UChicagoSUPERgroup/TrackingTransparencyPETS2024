@@ -1,4 +1,5 @@
 import React from 'react'
+import Text from '@instructure/ui-elements/lib/components/Text'
 
 import colors from '../../colors'
 
@@ -11,12 +12,14 @@ export default class SiteDetailPage extends React.Component {
   }
 
   async componentDidMount () {
+    const { hideInferenceContent, hideTrackerContent } = this.props
+
     const queryObj = {domain: this.site}
     const background = await browser.runtime.getBackgroundPage()
     this.DetailPage =  (await import(/* webpackChunkName: "dashboard/DetailPage" */'../components/DetailPage')).default
 
-    const inferencesP = background.queryDatabase('getInferencesByDomain', queryObj)
-    const trackersP = background.queryDatabase('getTrackersByDomain', queryObj)
+    const inferencesP = !hideInferenceContent ? background.queryDatabase('getInferencesByDomain', queryObj) : null
+    const trackersP = !hideTrackerContent ? background.queryDatabase('getTrackersByDomain', queryObj) : null
     const pagesP = background.queryDatabase('getPagesByDomain', queryObj)
 
     const [inferences, trackers, pages] =
@@ -26,14 +29,20 @@ export default class SiteDetailPage extends React.Component {
       {
         name: 'Pages',
         value: pages.length
-      }, {
-        name: 'Inferences',
-        value: inferences.length
-      }, {
-        name: 'Trackers',
-        value: trackers.length
       }
     ]
+    if (inferences) {
+      metrics.push({
+        name: 'Inferences',
+        value: inferences.length
+      })
+    }
+    if (trackers) {
+      metrics.push({
+        name: 'Trackers',
+        value: trackers.length
+      })
+    }
 
     this.setState({
       inferences,

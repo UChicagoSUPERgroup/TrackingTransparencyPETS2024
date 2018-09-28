@@ -162,7 +162,8 @@ export default class SiteOverview extends React.Component {
   }
 
   render () {
-    const {numPages, noTrackers, numDomains} = this.state
+    const { numPages, noTrackers, numDomains } = this.state
+    const { hideInferenceContent, hideTrackerContent } = this.props
 
     let numDNT = noTrackers ? noTrackers.length : NaN
 
@@ -192,16 +193,20 @@ export default class SiteOverview extends React.Component {
               {RecentTable(this.state.recent)}
             </TTPanel>
           </GridCol>
-          <GridCol width={6}>
-            <TTPanel padding='small'>
-              {ManyTrackersTable(this.state.manyTrackers)}
-            </TTPanel>
-          </GridCol>
-          <GridCol width={3}>
-            <TTPanel padding='small'>
-              {NoTrackerTable(this.state.noTrackers)}
-            </TTPanel>
-          </GridCol>
+          {!hideTrackerContent &&
+            <GridCol width={6}>
+              <TTPanel padding='small'>
+                {ManyTrackersTable(this.state.manyTrackers)}
+              </TTPanel>
+            </GridCol>
+          }
+          {!hideTrackerContent &&
+            <GridCol width={3}>
+              <TTPanel padding='small'>
+                {NoTrackerTable(this.state.noTrackers)}
+              </TTPanel>
+            </GridCol>
+          }
         </GridRow>
       </Grid>
     )
