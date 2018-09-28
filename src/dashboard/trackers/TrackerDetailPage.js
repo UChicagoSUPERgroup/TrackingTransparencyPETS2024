@@ -39,7 +39,7 @@ export default class TrackerDetailPage extends React.Component {
         name: 'Pages',
         value: pages.length
       }, {
-        name: 'Inferences',
+        name: 'Interests',
         value: inferences.length
       }
     ]
@@ -91,4 +91,3 @@ export default class TrackerDetailPage extends React.Component {
     )
   }
 }
-

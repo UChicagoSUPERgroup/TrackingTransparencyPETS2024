@@ -68,11 +68,10 @@ export default class TrackerSummary extends React.Component {
           <MetricsList>
             <MetricsListItem label='Pages' value={numPages} />
             <MetricsListItem label='Sites' value={topSites.length} />
-            <MetricsListItem label='Inferences' value={inferences.length} />
+            <MetricsListItem label='Interests' value={inferences.length} />
           </MetricsList>
           <Text>
-            <p>Summary of what data we have about this tracker…</p>
-            {/* <p>This topic </p> */}
+            <p>Our algorithms have determined that <strong>{tracker}</strong> was present on <strong>{numPages} pages</strong> across <strong>{topSites.length} sites</strong> that you visited. From those tracking encounters, they may have guessed that you are interested in <strong>{inferences.length} topics</strong>.</p>
           </Text>
         </div>
       )
