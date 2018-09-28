@@ -27,7 +27,7 @@ export default class FirstPartyDetailPage extends React.Component {
         name: 'Pages',
         value: pages.length
       }, {
-        name: 'Inferences',
+        name: 'Interests',
         value: inferences.length
       }, {
         name: 'Trackers',

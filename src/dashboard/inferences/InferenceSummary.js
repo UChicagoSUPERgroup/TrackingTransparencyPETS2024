@@ -80,7 +80,6 @@ export default class InferenceSummary extends React.Component {
           </MetricsList>
           <Text>
             <p>Our algorithms have determined that <strong>{topSites.length} of the sites</strong> you visited were about {inference}. These sites contained <strong>{trackers.length} unique trackers</strong>.</p>
-            {/* <p>This topic </p> */}
           </Text>
         </div>
       )
