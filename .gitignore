@@ -40,3 +40,4 @@ doc/jsdoc
 docs
 
 *.ipynb_checkpoints
+extension/source
