@@ -88,7 +88,7 @@ export default class ActivityOverview extends React.Component {
         <TTPanel margin='medium 0 medium 0'>
           <Text>
             <p>
-                Trackers are able to track your browsing activity across many different sites and could create a profile of your interests, based on when you browsed online. Our algorithms have determined that you were most tracked this week on <strong>[day of the week] between [hours]</strong>.
+                Trackers are able to track your browsing activity across many different sites and could create a profile of your interests, based on when you browsed online.
             </p>
             <p>
                 The scatterplot shows how many pages you visited for each hour of the last week. The bigger the point, the more likely you were tracked. Click on a point to learn more about the tracking that took place.
