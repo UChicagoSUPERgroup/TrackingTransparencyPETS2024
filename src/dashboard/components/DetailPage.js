@@ -14,6 +14,7 @@ import PageTable from '../components/PageTable'
 import PageTimeGraph from '../components/PageTimeGraph'
 import SmallGraphAndTable from '../components/SmallGraphAndTable'
 import TTPanel from '../components/TTPanel'
+import TTPanel2 from '../components/TTPanel2'
 import WordCloud from '../components/WordCloud'
 
 export default class DetailPage extends React.Component {
@@ -102,7 +103,8 @@ export default class DetailPage extends React.Component {
         <Grid>
           <GridRow>
             <GridCol>
-              <Heading level='h1'>{title}</Heading>
+              <TTPanel2><Heading level='h1'>Your <em><strong> {title}</strong></em> Profile</Heading></TTPanel2>
+              {/* <Heading level='h1'>{title}</Heading> */}
             </GridCol>
             <GridCol margin='auto'>
               <Metrics metrics={metrics} />
@@ -118,7 +120,7 @@ export default class DetailPage extends React.Component {
           <GridRow>
             {inferences && <GridCol>
               <TTPanel>
-                <Heading level='h2'>Inferences</Heading>
+                <Heading level='h2'>What does {title} think you are interested in?</Heading>
                 <SizeMe>
                   {({ size }) => (
                     <WordCloud
@@ -136,7 +138,7 @@ export default class DetailPage extends React.Component {
                   name='Sites'
                   description='TODO: description'
                   data={domains}
-                  c1Header='Site'
+                  c1Header='On which sites were you tracked?'
                   urlStem='#/sites/'
                   color={accentColor}
                 />
@@ -148,7 +150,7 @@ export default class DetailPage extends React.Component {
                   name='Trackers'
                   description='TODO: description'
                   data={trackers}
-                  c1Header='Site'
+                  c1Header='Which trackers could have guessed you have this interest?'
                   urlStem='#/trackers/'
                   color={accentColor}
                 />

@@ -29,11 +29,13 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
   if (data.length > 5) {
     return (
       <View>
-        <Heading level='h2'>{name}</Heading>
+        {/* <Heading level='h2'>{name}</Heading> */}
+        <Heading level='h2'>{c1Header}</Heading>
         <View as='div' margin='medium 0 small 0'>
           <SmallGraph
             data={graphData}
-            yTitle={c1Header}
+            // yTitle={c1Header}
+            yTitle={name}
             color={color}
           />
         </View>
@@ -46,7 +48,7 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
           <SmallTable
             data={data}
             name={name}
-            c1Header={c1Header}
+            c1Header={name}
             c1Accessor='name'
             c2Header='Pages'
             c2Accessor='count'
