@@ -84,7 +84,7 @@ export default class ActivityOverview extends React.Component {
 
     return (
       <div>
-        <Heading level='h1'>When were you tracked?</Heading>
+        <Heading level='h1'><strong>When were you tracked?</strong></Heading>
         <TTPanel margin='medium 0 medium 0'>
           <Text>
             <p>

@@ -275,7 +275,7 @@ export default class TrackerOverview extends React.Component {
       <Grid>
         <GridRow>
           <GridCol>
-            <Heading level='h1'>Who is tracking you?</Heading>
+            <Heading level='h1'><strong>Who is tracking you?</strong></Heading>
           </GridCol>
         </GridRow>
         <GridRow>

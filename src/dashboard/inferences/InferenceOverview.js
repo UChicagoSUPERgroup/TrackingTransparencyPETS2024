@@ -340,7 +340,7 @@ export default class InferencesOverview extends React.Component {
       <Grid startAt='medium'>
         <GridRow>
           <GridCol>
-            <Heading level='h1'>What could they have learned?</Heading>
+            <Heading level='h1'><strong>What could they have learned?</strong></Heading>
           </GridCol>
         </GridRow>
         <GridRow>

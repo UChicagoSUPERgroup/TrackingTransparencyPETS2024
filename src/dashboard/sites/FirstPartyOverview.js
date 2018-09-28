@@ -172,7 +172,7 @@ export default class FirstPartyOverview extends React.Component {
       <Grid startAt='large'>
         <GridRow>
           <GridCol>
-            <Heading level='h1'>Where were you tracked?</Heading>
+            <Heading level='h1'><strong>Where were you tracked?</strong></Heading>
           </GridCol>
         </GridRow>
         <GridRow>
