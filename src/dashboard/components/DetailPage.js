@@ -120,7 +120,7 @@ export default class DetailPage extends React.Component {
           <GridRow>
             {inferences && <GridCol>
               <TTPanel>
-                <Heading level='h2'>What does {title} think you are interested in?</Heading>
+                <Heading level='h2'>What does {title} think your interests are?</Heading>
                 <SizeMe>
                   {({ size }) => (
                     <WordCloud
