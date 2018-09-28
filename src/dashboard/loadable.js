@@ -1,13 +1,12 @@
 import React from 'react'
 import Loadable from 'react-loadable'
+import Text from '@instructure/ui-elements/lib/components/Text'
 
 const Loading = props => {
   if (props.error) {
-    return <div>Error! <button onClick={props.retry}>Retry</button></div>
-  } else if (props.pastDelay) {
-    return <div>Loading...</div>
+    return <Text>Error! <button onClick={props.retry}>Retry</button></Text>
   } else {
-    return null
+    return <Text>Loading…</Text>
   }
 }
 export default Loading

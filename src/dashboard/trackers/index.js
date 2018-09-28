@@ -6,10 +6,19 @@ import TrackerDetailPage from './TrackerDetailPage'
 
 export default class Trackers extends React.Component {
   render () {
+    const { hideInferenceContent } = this.props
     return (
       <div>
-        <Route path={`${this.props.match.url}/:name`} component={TrackerDetailPage} />
-        <Route exact path={this.props.match.url} component={TrackerOverview} />
+        <Route path={`${this.props.match.url}/:name`} render={props => (
+          <TrackerDetailPage {...props}
+            hideInferenceContent={hideInferenceContent}
+          />
+        )} />
+        <Route exact path={this.props.match.url} render={props => (
+          <TrackerOverview {...props}
+            hideInferenceContent={hideInferenceContent}
+          />
+        )} />
       </div>
     )
   }

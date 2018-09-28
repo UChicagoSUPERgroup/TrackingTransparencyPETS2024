@@ -14,11 +14,13 @@ export default class TrackerDetailPage extends React.Component {
   }
 
   async componentDidMount () {
+    const { hideInferenceContent } = this.props
+
     const queryObj = {tracker: this.tracker}
     const background = await browser.runtime.getBackgroundPage()
     this.DetailPage =  (await import(/* webpackChunkName: "dashboard/DetailPage" */'../components/DetailPage')).default
 
-    const inferencesP = background.queryDatabase('getInferencesByTracker', queryObj)
+    const inferencesP = !hideInferenceContent ? background.queryDatabase('getInferencesByTracker', queryObj) : null
     const domainsP = background.queryDatabase('getDomainsByTracker', queryObj)
     const pagesP = background.queryDatabase('getPagesByTracker', queryObj)
     const trackerDataP = import(/* webpackChunkName: "data/trackerData" */'../../data/trackers/companyData.json')
@@ -38,11 +40,14 @@ export default class TrackerDetailPage extends React.Component {
       }, {
         name: 'Pages',
         value: pages.length
-      }, {
-        name: 'Inferences',
-        value: inferences.length
       }
     ]
+    if (inferences) {
+      metrics.push({
+        name: 'Inferences',
+        value: inferences.length
+      })
+    }
 
     this.setState({
       trackerInfo,
