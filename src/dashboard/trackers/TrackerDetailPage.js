@@ -2,6 +2,7 @@ import React from 'react'
 
 import Text from '@instructure/ui-elements/lib/components/Text'
 import ToggleDetails from '@instructure/ui-toggle-details/lib/components/ToggleDetails'
+import Heading from '@instructure/ui-elements/lib/components/Heading'
 
 import colors from '../../colors'
 import DetailPage from '../components/DetailPage'
@@ -61,12 +62,14 @@ export default class TrackerDetailPage extends React.Component {
 
     const introText = trackerInfo.description
       ? <Text>
+        <Heading level='h2'>What does {this.tracker} do?</Heading>
+
         {trackerInfo.description && <div>
           <div dangerouslySetInnerHTML={{__html: trackerInfo.description}} />
         </div>}
 
         {trackerInfo.notes && <ToggleDetails
-          summary={'Who is ' + this.tracker + '?'}
+          summary={'Read more'}
         >
           <div dangerouslySetInnerHTML={{__html: trackerInfo.notes}} />
         </ToggleDetails>}
