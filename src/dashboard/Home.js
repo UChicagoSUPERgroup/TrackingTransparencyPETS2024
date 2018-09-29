@@ -189,7 +189,8 @@ export class Home extends React.Component {
   }
 
   render () {
-    const {numTrackers, numInferences, numPages, recentInferences, recentDomains, topTrackers, topInferences} = this.state
+    const { numTrackers, numInferences, numPages, recentInferences, recentDomains, topTrackers, topInferences } = this.state
+    const { hideHistoryContent, hideInferenceContent, hideTrackerContent } = this.props
 
     return (
       <Grid startAt='large'>
@@ -217,39 +218,40 @@ export class Home extends React.Component {
           </GridCol>
         </GridRow>
         <GridRow>
-          <GridCol width={3}>
+          {!hideTrackerContent && <GridCol width={3}>
             <TTPanel>
               {trackerList(topTrackers || [])}
             </TTPanel>
-          </GridCol>
-          <GridCol width={3}>
+          </GridCol>}
+          {!hideInferenceContent && <GridCol width={3}>
             <TTPanel>
               {inferenceTopList(topInferences || [])}
             </TTPanel>
-
-          </GridCol>
-          <GridCol width={6}>
+          </GridCol>}
+          {!hideHistoryContent && <GridCol width={6}>
             <TTPanel>
               <MetricsList theme={{lineHeight: 2}}>
-                <MetricsListItem value={numTrackers || 'Loading…'} label={<span><FontAwesomeIcon icon='eye' /> Trackers you've seen</span>}/>
+                {!hideTrackerContent && <MetricsListItem value={numTrackers || 'Loading…'} label={<span><FontAwesomeIcon icon='eye' /> Trackers you've seen</span>}/>}
                 <MetricsListItem value={numPages || 'Loading'} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages you've visited</span>}/>
-                <MetricsListItem value={numInferences || 'Loading'} label={<span><FontAwesomeIcon icon='thumbs-up' /> Your interests</span>} />
+                {!hideInferenceContent && <MetricsListItem value={numInferences || 'Loading'} label={<span><FontAwesomeIcon icon='thumbs-up' /> Your interests</span>} />}
               </MetricsList>
             </TTPanel>
 
             <TTPanel margin='medium 0 0 0'>
-              <View
-                display='inline-block'
-                margin='small small small small'
-              >
+              {!hideInferenceContent &&
                 <View
-                  as='header'
-                  margin='0 0 small small'
+                  display='inline-block'
+                  margin='small small small small'
                 >
-                  <Text weight='bold'>Recent Interests</Text>
+                  <View
+                    as='header'
+                    margin='0 0 small small'
+                  >
+                    <Text weight='bold'>Recent Interests</Text>
+                  </View>
+                  {recentInferences ? inferenceRecentList(recentInferences) : 'Loading…'}
                 </View>
-                {recentInferences ? inferenceRecentList(recentInferences) : 'Loading…'}
-              </View>
+              }
               <View
                 display='inline-block'
                 margin='small small small small'
@@ -263,7 +265,7 @@ export class Home extends React.Component {
                 {recentDomains ? domainList(recentDomains) : 'Loading…'}
               </View>
             </TTPanel>
-          </GridCol>
+          </GridCol>}
         </GridRow>
       </Grid>
     )

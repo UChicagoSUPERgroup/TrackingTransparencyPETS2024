@@ -96,7 +96,7 @@ export default class DetailPage extends React.Component {
     const { title, description, accentColor } = this.props
     const { domains, inferences, trackers, metrics } = this.state
     const ready = !!metrics
-    if (!ready) return <Text>'Loading…'</Text>
+    if (!ready) return <Text>Loading…</Text>
 
     return (
       <div>
@@ -118,7 +118,7 @@ export default class DetailPage extends React.Component {
             </GridCol>}
           </GridRow>
           <GridRow>
-            {inferences && <GridCol>
+            {inferences && <GridCol width={6}>
               <TTPanel>
                 <Heading level='h2'>What does {title} think your interests are?</Heading>
                 <SizeMe>
@@ -132,7 +132,7 @@ export default class DetailPage extends React.Component {
                 </SizeMe>
               </TTPanel>
             </GridCol>}
-            {domains && <GridCol>
+            {domains && <GridCol width={6}>
               <TTPanel>
                 <SmallGraphAndTable
                   name='Sites'
@@ -144,7 +144,7 @@ export default class DetailPage extends React.Component {
                 />
               </TTPanel>
             </GridCol>}
-            {trackers && <GridCol>
+            {trackers && <GridCol width={6}>
               <TTPanel>
                 <SmallGraphAndTable
                   name='Trackers'

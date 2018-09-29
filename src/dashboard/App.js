@@ -144,11 +144,44 @@ The code for logclick logs ALL the click in every single page.
             <Route path='/*' render={({ match }) => <TTBreadcrumbs url={match.url} />} />
 
             {enoughData && <div>
-              <Route exact path='/' component={Home} />
-              {!hideInferenceContent && <Route path='/interests' component={Inferences} />}
-              {!hideTrackerContent && <Route path='/trackers' component={Trackers} />}
-              <Route path='/sites' component={Sites} />
-              <Route path='/activity' component={Activity} />
+              <Route exact path='/' render={props => (
+                <Home {...props}
+                  hideHistoryContent={hideHistoryContent}
+                  hideInferenceContent={hideInferenceContent}
+                  hideTrackerContent={hideTrackerContent}
+                />
+              )} />
+
+              {!hideInferenceContent &&
+                <Route path='/interests' render={props => (
+                  /* this page is only shown in full study condition
+                      so we do no special handling */
+                  <Inferences {...props} />
+                )} />
+              }
+
+              {!hideTrackerContent &&
+                <Route path='/trackers' render={props => (
+                  <Trackers {...props}
+                    hideInferenceContent={hideInferenceContent}
+                  />
+                )} />
+              }
+
+              <Route path='/sites' render={props => (
+                <Sites {...props}
+                  hideInferenceContent={hideInferenceContent}
+                  hideTrackerContent={hideTrackerContent}
+                />
+              )} />
+
+              <Route path='/activity' render={props => (
+                <Activity {...props}
+                  hideInferenceContent={hideInferenceContent}
+                  hideTrackerContent={hideTrackerContent}
+                />
+              )} />
+
               {showLightbeam && <Route path='/lightbeam' component={LightbeamWrapper} />}
               {/* <Route path="/takeaction" component={TakeActionPage}/> */}
             </div>}

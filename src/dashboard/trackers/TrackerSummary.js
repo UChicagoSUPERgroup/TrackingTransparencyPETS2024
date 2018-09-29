@@ -22,12 +22,14 @@ export default class TrackerSummary extends React.Component {
 
   async updateData () {
     const background = await browser.runtime.getBackgroundPage()
-    const { tracker } = this.props
+    const { tracker, hideInferenceContent } = this.props
 
-    const inferences = background.queryDatabaseRecursive('getInferencesByTracker', {tracker: tracker})
-    inferences.then(is => this.setState({
-      inferences: is
-    }))
+    if (!hideInferenceContent) {
+      const inferences = background.queryDatabaseRecursive('getInferencesByTracker', {tracker: tracker})
+      inferences.then(is => this.setState({
+        inferences: is
+      }))
+    }
     const topSites = background.queryDatabaseRecursive('getDomainsByTracker', {tracker: tracker})
     topSites.then(ts => this.setState({
       topSites: ts
@@ -49,7 +51,7 @@ export default class TrackerSummary extends React.Component {
   }
 
   render () {
-    const { tracker, numPages } = this.props
+    const { tracker, numPages, hideInferenceContent } = this.props
     const { inferences, topSites } = this.state
 
     let content
@@ -68,7 +70,7 @@ export default class TrackerSummary extends React.Component {
           <MetricsList>
             <MetricsListItem label='Pages' value={numPages} />
             <MetricsListItem label='Sites' value={topSites.length} />
-            <MetricsListItem label='Interests' value={inferences.length} />
+            {!hideInferenceContent && <MetricsListItem label='Interests' value={inferences.length} />}
           </MetricsList>
           <Text>
             <p>Our algorithms have determined that <strong>{tracker}</strong> was present on <strong>{numPages} pages</strong> across <strong>{topSites.length} sites</strong> that you visited. From those tracking encounters, they may have guessed that you are interested in <strong>{inferences.length} topics</strong>.</p>

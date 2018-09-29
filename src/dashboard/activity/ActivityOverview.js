@@ -80,7 +80,8 @@ export default class ActivityOverview extends React.Component {
   }
 
   render () {
-    const {weektimestamps, recent, pagesByTime} = this.state
+    const { weektimestamps, recent, pagesByTime } = this.state
+    const { hideInferenceContent, hideTrackerContent } = this.props
 
     return (
       <div>
@@ -109,7 +110,8 @@ export default class ActivityOverview extends React.Component {
             data={pagesByTime}
             noDataText='Click in the scatterplot for more information'
             showSite
-            showInference
+            showInference={!hideInferenceContent}
+            showTrackers={!hideTrackerContent}
             sortAscending
           />
           }

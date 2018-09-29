@@ -246,11 +246,16 @@ export default class TrackerOverview extends React.Component {
 
   renderInfoPane () {
     const { selectedTracker } = this.state
+    const { hideInferenceContent } = this.props
     return (
       <TTPanel textAlign='start'>
         {!selectedTracker && <Text weight='bold'>The graph to the left shows the trackers that we detected on the pages you visited. Click a bar on the graph to learn more about that tracker.</Text>}
         {selectedTracker && <div>
-          <TrackerSummary tracker={selectedTracker.y} numPages={selectedTracker.x} />
+          <TrackerSummary 
+            tracker={selectedTracker.y}
+            numPages={selectedTracker.x}
+            hideInferenceContent={hideInferenceContent}
+          />
           <Link
             className='trackerPageSelected-Tracker'
             href={'#/trackers/' + selectedTracker.y}
