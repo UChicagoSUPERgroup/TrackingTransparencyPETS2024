@@ -119,7 +119,7 @@ class SmallGraph extends React.Component {
 const SmallTable = ({ data, c1Header, c2Header, c2Accessor, urlStem }) => {
   return (
     <ReactTable
-      data={data}
+      data={data.reverse()}
       columns={[
         {Header: c1Header,
           accessor: 'name',
