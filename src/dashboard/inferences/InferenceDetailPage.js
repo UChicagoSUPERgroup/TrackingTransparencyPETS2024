@@ -4,9 +4,8 @@ import Text from '@instructure/ui-elements/lib/components/Text'
 import ToggleDetails from '@instructure/ui-toggle-details/lib/components/ToggleDetails'
 
 import colors from '../../colors'
-import DetailPage from '../components/DetailPage'
 
-export default class TrackerDetailPage extends React.Component {
+export default class InferenceDetailPage extends React.Component {
   constructor (props) {
     super(props)
     this.wcRef = React.createRef()
@@ -17,6 +16,7 @@ export default class TrackerDetailPage extends React.Component {
   async componentDidMount () {
     const queryObj = {inference: this.inference}
     const background = await browser.runtime.getBackgroundPage()
+    this.DetailPage =  (await import(/* webpackChunkName: "dashboard/DetailPage" */'../components/DetailPage')).default
 
     const trackersP = background.queryDatabaseRecursive('getTrackersByInference', queryObj)
     const domainsP = background.queryDatabaseRecursive('getDomainsByInference', queryObj)
@@ -54,7 +54,7 @@ export default class TrackerDetailPage extends React.Component {
     const { metrics, trackers, domains, pages, interestInfo } = this.state
     const ready = !!pages
 
-    if (!ready) return null
+    if (!this.DetailPage || !ready) return 'Loading…'
 
     // these cutoffs are a bit haphazard
     let popularity
@@ -70,7 +70,7 @@ export default class TrackerDetailPage extends React.Component {
     const introText = <Text>We have found that <strong>{this.inference}</strong> is a <strong>{popularity}</strong> interest that companies could infer.</Text>
 
     return (
-      <DetailPage
+      <this.DetailPage
         pageType='inference'
         title={this.inference}
         description={introText}

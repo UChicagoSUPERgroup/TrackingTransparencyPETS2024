@@ -30,7 +30,7 @@ export default class PagesTimeScatterplot extends React.Component {
   }
 
   componentDidMount () {
-    import(/* webpackChunkName: "lodash" */'lodash')
+    import(/* webpackChunkName: "vendors/lodash" */'lodash')
       .then(_ => { this.setState({ _: _ }) })
   }
 

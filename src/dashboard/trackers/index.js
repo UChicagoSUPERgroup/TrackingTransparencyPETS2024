@@ -1,18 +1,8 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import Loadable from 'react-loadable'
 
-import Loading from '../loadable'
-
-const TrackerOverview = Loadable({
-  loader: () => import(/* webpackChunkName: "dashboard/TrackerOverview" */'./TrackerOverview'),
-  loading: Loading
-})
-
-const TrackerDetailPage = Loadable({
-  loader: () => import(/* webpackChunkName: "dashboard/TrackerDetailPage" */'./TrackerDetailPage'),
-  loading: Loading
-})
+import TrackerOverview from './TrackerOverview'
+import TrackerDetailPage from './TrackerDetailPage'
 
 export default class Trackers extends React.Component {
   render () {

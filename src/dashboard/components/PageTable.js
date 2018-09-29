@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactTable from 'react-table'
-import moment from 'moment'
+import * as moment from 'moment'
 
 import Link from '@instructure/ui-elements/lib/components/Link'
 import TruncateText from '@instructure/ui-elements/lib/components/TruncateText'

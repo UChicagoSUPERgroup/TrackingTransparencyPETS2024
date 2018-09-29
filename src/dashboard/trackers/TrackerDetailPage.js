@@ -5,7 +5,6 @@ import ToggleDetails from '@instructure/ui-toggle-details/lib/components/ToggleD
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 
 import colors from '../../colors'
-import DetailPage from '../components/DetailPage'
 
 export default class TrackerDetailPage extends React.Component {
   constructor (props) {
@@ -18,6 +17,7 @@ export default class TrackerDetailPage extends React.Component {
   async componentDidMount () {
     const queryObj = {tracker: this.tracker}
     const background = await browser.runtime.getBackgroundPage()
+    this.DetailPage =  (await import(/* webpackChunkName: "dashboard/DetailPage" */'../components/DetailPage')).default
 
     const inferencesP = background.queryDatabase('getInferencesByTracker', queryObj)
     const domainsP = background.queryDatabase('getDomainsByTracker', queryObj)
@@ -58,7 +58,7 @@ export default class TrackerDetailPage extends React.Component {
     const { trackerInfo, metrics, inferences, domains, pages } = this.state
     const ready = !!pages
 
-    if (!ready) return null
+    if (!this.DetailPage || !ready) return 'Loading…'
 
     const introText = trackerInfo.description
       ? <Text>
@@ -77,7 +77,7 @@ export default class TrackerDetailPage extends React.Component {
       : null
 
     return (
-      <DetailPage
+      <this.DetailPage
         pageType='tracker'
         title={this.tracker}
         description={introText}
