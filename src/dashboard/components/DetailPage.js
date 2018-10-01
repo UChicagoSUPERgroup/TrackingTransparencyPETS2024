@@ -135,10 +135,11 @@ export default class DetailPage extends React.Component {
             {domains && <GridCol width={6}>
               <TTPanel>
                 <SmallGraphAndTable
-                  name='Sites'
+                  // name='Sites'
+                  name='On which sites were you tracked?'
                   description='TODO: description'
                   data={domains}
-                  c1Header='On which sites were you tracked?'
+                  c1Header='Sites'
                   urlStem='#/sites/'
                   color={accentColor}
                 />
@@ -147,10 +148,11 @@ export default class DetailPage extends React.Component {
             {trackers && <GridCol width={6}>
               <TTPanel>
                 <SmallGraphAndTable
-                  name='Trackers'
+                  // name='Trackers'
+                  name='Which trackers could have tracked you?'
                   description='TODO: description'
                   data={trackers}
-                  c1Header='Which trackers could have guessed you have this interest?'
+                  c1Header='Trackers'
                   urlStem='#/trackers/'
                   color={accentColor}
                 />

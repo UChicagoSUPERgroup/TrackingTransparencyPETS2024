@@ -78,7 +78,7 @@ export default class InferenceSummary extends React.Component {
             <MetricsListItem label='Trackers' value={trackers.length} />
           </MetricsList>
           <Text>
-            <p>Our algorithms have determined that <strong>{topSites.length} of the sites</strong> you visited were about {inference}. These sites contained <strong>{trackers.length} unique trackers</strong>.</p>
+            <p>Our algorithms have determined that <strong>{topSites.length} of the sites</strong> you visited were about {inference}. These sites contained a total of <strong>{trackers.length} trackers</strong>.</p>
           </Text>
         </div>
       )

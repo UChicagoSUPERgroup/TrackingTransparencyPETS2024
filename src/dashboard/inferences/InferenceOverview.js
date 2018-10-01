@@ -61,14 +61,11 @@ export default class InferencesOverview extends React.Component {
   async getExample() {
     let args = {count: 1}
     const background = await browser.runtime.getBackgroundPage()
-    // const exampleInf = background.queryDatabase('getInferences', args)
-    // console.log(exampleInf)
-
     const example = await background.queryDatabase('getInferencesDomainsToSend', args)
 
     this.setState({
       exampleSite: example[0].Pages.domain,
-      exampleInference: example[0].Inferences.inference,
+      exampleInference: this.InferenceLink(example[0].Inferences.inference),
       exampleTracker: example[0].Trackers.tracker
     })
   }
@@ -348,7 +345,7 @@ export default class InferencesOverview extends React.Component {
             <TTPanel>
               <Text>
                 <p>Trackers collect information about the pages you visit, and use this information in order to make guesses about topics you might like. We call these topics <em>interests</em>. These interests are then used to show you targeted ads, to do web analytics, and more. Our algorithms have identified <strong>{numInferences} topics</strong> that trackers might have guessed you are interested in.</p>
-                <p>You recently visited <Link href={'#/sites/'+exampleSite}>{exampleSite}</Link>, which our algorithms think is about {this.InferenceLink(exampleInference)}. The tracker, <Link href={'#/trackers/'+exampleTracker}>{exampleTracker}</Link>, was tracking your browsing activity and may have guessed that you are interested in {this.InferenceLink(exampleInference)}.</p>
+                <p>You recently visited <Link href={'#/sites/'+exampleSite}>{exampleSite}</Link>, which our algorithms think is about {exampleInference}. The tracker, <Link href={'#/trackers/'+exampleTracker}>{exampleTracker}</Link>, was tracking your browsing activity and may have guessed that you are interested in {exampleInference}.</p>
               </Text>
             </TTPanel>
           </GridCol>

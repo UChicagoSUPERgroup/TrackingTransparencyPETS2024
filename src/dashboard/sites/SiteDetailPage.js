@@ -29,6 +29,8 @@ export default class SiteDetailPage extends React.Component {
       {
         name: 'Pages',
         value: pages.length
+      }
+    ]
     if (inferences) {
       metrics.push({
         name: 'Interests',
