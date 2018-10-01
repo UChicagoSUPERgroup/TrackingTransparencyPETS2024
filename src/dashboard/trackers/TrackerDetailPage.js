@@ -33,9 +33,9 @@ export default class TrackerDetailPage extends React.Component {
 
     const metrics = [
       {
-        name: 'Type',
-        value: trackerInfo.type
-      }, {
+        // name: 'Type',
+        // value: trackerInfo.type
+      // }, {
         name: 'Sites',
         value: domains.length
       }, {
