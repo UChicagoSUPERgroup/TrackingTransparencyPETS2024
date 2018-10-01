@@ -63,7 +63,7 @@ export default class TTBreadcrumbs extends React.Component {
         style={{
           background: darken(colors.ltGray, 5),
           padding: '8px 10px 8px 10px',
-          margin: '10px 0 20px 0',
+          margin: '10px 0 25px 0',
           borderRadius: 5
         }}
       >

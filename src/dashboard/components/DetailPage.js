@@ -103,11 +103,7 @@ export default class DetailPage extends React.Component {
         <Grid>
           <GridRow>
             <GridCol>
-              <TTPanel2><Heading level='h1'>Your <em><strong> {title}</strong></em> Profile</Heading></TTPanel2>
-              {/* <Heading level='h1'>{title}</Heading> */}
-            </GridCol>
-            <GridCol margin='auto'>
-              <Metrics metrics={metrics} />
+              <Heading level='h1'><strong>Your <em>{title}</em> profile</strong></Heading>
             </GridCol>
           </GridRow>
           <GridRow>
