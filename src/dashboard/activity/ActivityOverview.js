@@ -3,6 +3,8 @@ import React from 'react'
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import PagesTimeScatterplot from './PagesTimeScatterplot'
 import PageTable from '../components/PageTable'
 import logging from '../dashboardLogging'
@@ -85,7 +87,7 @@ export default class ActivityOverview extends React.Component {
 
     return (
       <div>
-        <Heading level='h1'><strong>When were you tracked?</strong></Heading>
+        <Heading level='h1'><FontAwesomeIcon icon='clock'/><strong>&nbsp; When were you tracked?</strong></Heading>
         <TTPanel margin='medium 0 medium 0'>
           <Text>
             <p>

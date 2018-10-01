@@ -13,6 +13,8 @@ import RadioInputGroup from '@instructure/ui-forms/lib/components/RadioInputGrou
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import colors from '../../colors'
 import TrackerSummary from './TrackerSummary'
 import TTPanel from '../components/TTPanel'
@@ -280,7 +282,7 @@ export default class TrackerOverview extends React.Component {
       <Grid>
         <GridRow>
           <GridCol>
-            <Heading level='h1'><strong>Who is tracking you?</strong></Heading>
+            <Heading level='h1'><FontAwesomeIcon icon='eye'/><strong>&nbsp;  Who is tracking you?</strong></Heading>
           </GridCol>
         </GridRow>
         <GridRow>

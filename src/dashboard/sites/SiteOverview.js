@@ -12,6 +12,8 @@ import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 import TTPanel from '../components/TTPanel'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 const RecentTable = (data) => {
   let numEntries = data ? data.length : 0
   return (
@@ -173,7 +175,7 @@ export default class SiteOverview extends React.Component {
       <Grid startAt='large'>
         <GridRow>
           <GridCol>
-            <Heading level='h1'><strong>Where were you tracked?</strong></Heading>
+            <Heading level='h1'><FontAwesomeIcon icon='window-maximize' /><strong>&nbsp; Where were you tracked?</strong></Heading>
           </GridCol>
         </GridRow>
         <GridRow>
