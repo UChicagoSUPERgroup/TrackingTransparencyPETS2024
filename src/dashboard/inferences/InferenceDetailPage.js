@@ -73,6 +73,7 @@ export default class InferenceDetailPage extends React.Component {
       <this.DetailPage
         pageType='inference'
         title={this.inference}
+        icon='thumbs-up'
         description={introText}
         metrics={metrics}
         accentColor={colors.blue1}

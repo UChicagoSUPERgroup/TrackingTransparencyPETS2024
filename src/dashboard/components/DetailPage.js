@@ -7,6 +7,7 @@ import Text from '@instructure/ui-elements/lib/components/Text'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import logging from '../dashboardLogging'
 import Metrics from '../components/Metrics'
@@ -93,7 +94,7 @@ export default class DetailPage extends React.Component {
   }
 
   render () {
-    const { title, description, accentColor } = this.props
+    const { title, description, accentColor, icon } = this.props
     const { domains, inferences, trackers, metrics } = this.state
     const ready = !!metrics
     if (!ready) return <Text>Loading…</Text>
@@ -103,7 +104,7 @@ export default class DetailPage extends React.Component {
         <Grid>
           <GridRow>
             <GridCol>
-              <Heading level='h1'><strong>Your <em>{title}</em> profile</strong></Heading>
+              <Heading level='h1'><FontAwesomeIcon icon={icon} /><strong>&nbsp;  Your <em>{title}</em> profile</strong></Heading>
             </GridCol>
           </GridRow>
           <GridRow>
