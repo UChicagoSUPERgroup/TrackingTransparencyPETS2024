@@ -1,5 +1,6 @@
 import React from 'react'
 import WordCloud from 'react-d3-cloud'
+import Text from '@instructure/ui-elements/lib/components/Text'
 
 function fontSizeMapper (min, max, numEntries, height) {
   let Px = [0.02, 0.01]
