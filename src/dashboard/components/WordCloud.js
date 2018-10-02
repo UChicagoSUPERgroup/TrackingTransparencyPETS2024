@@ -1,5 +1,6 @@
 import React from 'react'
 import WordCloud from 'react-d3-cloud'
+import Text from '@instructure/ui-elements/lib/components/Text'
 
 function fontSizeMapper (min, max, numEntries, height) {
   let Px = [0.02, 0.01]
@@ -32,13 +33,16 @@ const TTWordCloud = (props) => {
   })
 
   return (
-    <WordCloud
-      data={wcData}
-      height={height}
-      width={width}
-      fontSizeMapper={fontSizeMapper(min, max, data.length, height)}
-      font='-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
-    />
+    <div>
+      <WordCloud
+        data={wcData}
+        height={height}
+        width={width}
+        fontSizeMapper={fontSizeMapper(min, max, data.length, height)}
+        font='-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
+      />
+      <Text><p><em>Click on a link in the wordcloud to learn more about that interest.</em></p></Text>
+      </div>
   )
 }
 

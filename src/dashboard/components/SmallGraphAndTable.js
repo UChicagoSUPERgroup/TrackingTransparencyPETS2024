@@ -22,10 +22,12 @@ import CustomAxisLabel from './CustomAxisLabel'
 
 export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, description, color }) {
   const lower = c1Header.toLowerCase()
+  const singular = lower.slice(0, -1)
   const graphData = data.reverse().slice(-10).map(d => ({
     y: d['name'],
     x: d['count']
   }))
+
   return (
     <View>
       <Heading level='h2'>{name}</Heading>
@@ -36,6 +38,7 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
           color={color}
         />
       </View>
+      <Text><p><em>Click on a bar in the chart to learn more about that {singular}.</em></p></Text>
       <ToggleGroup
         summary={'See all ' + data.length + ' ' + lower}
         toggleLabel={'Toggle to see table for ' + lower}
@@ -73,6 +76,7 @@ class SmallGraph extends React.Component {
       ...d,
       color: (hovered && d.y === hovered.y) ? 1 : 0
     }))
+    const lower = yTitle.toLowerCase()
     return (
       <FlexibleWidthXYPlot
         yType={'ordinal'}
@@ -102,7 +106,8 @@ class SmallGraph extends React.Component {
             this.setState({hovered: datapoint})
           }}
           onValueClick={(datapoint) => {
-            this.setState({selectedTracker: datapoint})
+            // this.setState({selectedTracker: datapoint})
+            window.location.href = '#/'+lower+'/'+hovered.y
           }}
         />
         <CustomAxisLabel xAxis title='Pages' />
