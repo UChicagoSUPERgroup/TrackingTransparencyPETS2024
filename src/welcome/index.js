@@ -30,13 +30,23 @@ class WelcomePage extends React.Component {
     this.state = {
 
     }
+    this.onMTurkCodeInput = this.onMTurkCodeInput.bind(this)
+    this.onSave = this.onSave.bind(this)
   }
 
   async componentDidMount () {
   }
 
   onMTurkCodeInput (event) {
-    browser.storage.local.set({ mturkcode: event.target.value})
+    this.setState({
+      mturkcode: event.target.value
+    })
+  }
+
+  async onSave () {
+    await browser.storage.local.set({ mturkcode: this.state.mturkcode })
+    // TODO do more stuff here
+    window.location.href = '/dist/dashboard.html'
   }
 
   render () {
@@ -61,14 +71,12 @@ class WelcomePage extends React.Component {
           <Text>
             <p>To activate our browser extension, please enter the activation code that is displayed at the end of the survey:</p>
           </Text>
-          <TextInput label= "" placeholder="activation code from MTurk" onChange={this.onMTurkCodeInput}/>
+          <TextInput label="" placeholder="activation code from MTurk" onChange={this.onMTurkCodeInput} />
           <Text>
             <p>By clicking continue, you indicate that you accept the consent form and will be taken to the extension homepage.</p>
           </Text>
 
-          <Button variant="primary" type="submit" href='/dist/dashboard.html'>
-              Continue
-            </Button>
+          <Button variant="primary" onClick={this.onSave}>Continue</Button>
         </div>
 
       </div>
