@@ -33,7 +33,7 @@ export default class SiteDetailPage extends React.Component {
     ]
     if (inferences) {
       metrics.push({
-        name: 'Inferences',
+        name: 'Interests',
         value: inferences.length
       })
     }

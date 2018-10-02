@@ -3,6 +3,8 @@ import React from 'react'
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import PagesTimeScatterplot from './PagesTimeScatterplot'
 import PageTable from '../components/PageTable'
 import logging from '../dashboardLogging'
@@ -85,11 +87,11 @@ export default class ActivityOverview extends React.Component {
 
     return (
       <div>
-        <Heading level='h1'>When were you tracked?</Heading>
+        <Heading level='h1'><FontAwesomeIcon icon='clock'/><strong>&nbsp; When were you tracked?</strong></Heading>
         <TTPanel margin='medium 0 medium 0'>
           <Text>
             <p>
-                Trackers are able to track your browsing activity across many different sites, [[[and may be able to link multiple inferences made about you, based on when you were browsing??]]]. Our algorithms have determined that you were most tracked this week on <strong>[day of the week] between [hours]</strong>.
+                Trackers are able to track your browsing activity across many different sites and could create a profile of your interests, based on when you browsed online.
             </p>
             <p>
                 The scatterplot shows how many pages you visited for each hour of the last week. The bigger the point, the more likely you were tracked. Click on a point to learn more about the tracking that took place.

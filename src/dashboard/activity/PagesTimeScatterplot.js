@@ -91,11 +91,11 @@ export default class PagesTimeScatterplot extends React.Component {
             }}
             data={data} />
           <XAxis
-            title='Hour'
+            title='Hour of the day'
             tickFormat={timeLabelSimple}
             style={{title: {fill: '#222'}, text: {fill: '#222'}}} />
           <YAxis
-            title='Day of Week'
+            title='Day of the week'
             tickValues={[0, 1, 2, 3, 4, 5, 6, 7]}
             tickFormat={dayOfWeekLabelAdjusted}
             style={{title: {fill: '#222'}, text: {fill: '#222'}}} />

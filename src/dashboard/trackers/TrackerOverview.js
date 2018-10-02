@@ -13,6 +13,8 @@ import RadioInputGroup from '@instructure/ui-forms/lib/components/RadioInputGrou
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import colors from '../../colors'
 import TrackerSummary from './TrackerSummary'
 import TTPanel from '../components/TTPanel'
@@ -175,11 +177,7 @@ export default class TrackerOverview extends React.Component {
     return (
       <TTPanel>
         <Text>
-          <p><strong>{numTrackers} trackers</strong> have collected information about you based on your browsing history. Your most
-              frequently encountered tracker is <strong>{allData[0].name}</strong> which was
-              present on <em>{allData[0].percent.toFixed(2)}%</em> of
-              the pages you visited.
-              Here are your 20 most frequently encountered trackers:</p>
+          <p><strong>{numTrackers} trackers</strong> have collected information about you based on your browsing history. Your most             frequently encountered tracker is <strong>{allData[0].name}</strong> which was present on <strong>{allData[0].percent.toFixed(2)}%</strong> of the pages you visited.</p>
         </Text>
       </TTPanel>
     )
@@ -284,7 +282,7 @@ export default class TrackerOverview extends React.Component {
       <Grid>
         <GridRow>
           <GridCol>
-            <Heading level='h1'>Who is tracking you?</Heading>
+            <Heading level='h1'><FontAwesomeIcon icon='eye'/><strong>&nbsp;  Who is tracking you?</strong></Heading>
           </GridCol>
         </GridRow>
         <GridRow>

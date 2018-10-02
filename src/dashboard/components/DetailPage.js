@@ -14,6 +14,7 @@ import PageTable from '../components/PageTable'
 import PageTimeGraph from '../components/PageTimeGraph'
 import SmallGraphAndTable from '../components/SmallGraphAndTable'
 import TTPanel from '../components/TTPanel'
+import TTPanel2 from '../components/TTPanel2'
 import WordCloud from '../components/WordCloud'
 
 export default class DetailPage extends React.Component {
@@ -102,10 +103,7 @@ export default class DetailPage extends React.Component {
         <Grid>
           <GridRow>
             <GridCol>
-              <Heading level='h1'>{title}</Heading>
-            </GridCol>
-            <GridCol margin='auto'>
-              <Metrics metrics={metrics} />
+              <Heading level='h1'><strong>Your <em>{title}</em> profile</strong></Heading>
             </GridCol>
           </GridRow>
           <GridRow>
@@ -118,7 +116,7 @@ export default class DetailPage extends React.Component {
           <GridRow>
             {inferences && <GridCol width={6}>
               <TTPanel>
-                <Heading level='h2'>Inferences</Heading>
+                <Heading level='h2'>What does {title} think your interests are?</Heading>
                 <SizeMe>
                   {({ size }) => (
                     <WordCloud
@@ -133,10 +131,11 @@ export default class DetailPage extends React.Component {
             {domains && <GridCol width={6}>
               <TTPanel>
                 <SmallGraphAndTable
-                  name='Sites'
+                  // name='Sites'
+                  name='On which sites were you tracked?'
                   description='TODO: description'
                   data={domains}
-                  c1Header='Site'
+                  c1Header='Sites'
                   urlStem='#/sites/'
                   color={accentColor}
                 />
@@ -145,10 +144,11 @@ export default class DetailPage extends React.Component {
             {trackers && <GridCol width={6}>
               <TTPanel>
                 <SmallGraphAndTable
-                  name='Trackers'
+                  // name='Trackers'
+                  name='Which trackers could have tracked you?'
                   description='TODO: description'
                   data={trackers}
-                  c1Header='Site'
+                  c1Header='Trackers'
                   urlStem='#/trackers/'
                   color={accentColor}
                 />

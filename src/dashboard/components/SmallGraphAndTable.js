@@ -21,7 +21,7 @@ import {
 import CustomAxisLabel from './CustomAxisLabel'
 
 export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, description, color }) {
-  const lower = name.toLowerCase()
+  const lower = c1Header.toLowerCase()
   const graphData = data.reverse().slice(-10).map(d => ({
     y: d['name'],
     x: d['count']
@@ -115,7 +115,7 @@ class SmallGraph extends React.Component {
 const SmallTable = ({ data, c1Header, c2Header, c2Accessor, urlStem }) => {
   return (
     <ReactTable
-      data={data}
+      data={data.reverse()}
       columns={[
         {Header: c1Header,
           accessor: 'name',

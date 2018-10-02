@@ -37,7 +37,7 @@ const inferenceRecentList = (data) => {
 const inferenceTopList = (data) => {
   return (
     <div>
-      <Heading level="h3">Your Top Interests</Heading>
+      <Heading level="h3">Your Top Interests<hr/></Heading>
       <span>
         {data.map((p, i, arr) => {
           const last = (i === (arr.length - 1))
@@ -60,7 +60,7 @@ const inferenceTopList = (data) => {
 const trackerList = (data) => {
   return (
     <div>
-      <Heading level="h3">Your Top Trackers</Heading>
+      <Heading level="h3">Your Top Trackers<hr/></Heading>
       <span>
         {data.map((p, i, arr) => {
           const last = (i === (arr.length - 1))
@@ -133,25 +133,6 @@ const arrowPanel = () => {
   )
 }
 
-const stackedIconWord = (icon, word) => {
-  return (
-    <div style={{width: "auto", display:"inline-block"}}>
-      <Grid rowSpacing="none" startAt="small">
-        <GridRow>
-            <GridCol textAlign="center">
-                <div>{icon}</div>
-            </GridCol>
-        </GridRow>
-        <GridRow>
-          <GridCol textAlign="center">
-            <div>{word}</div>
-          </GridCol>
-        </GridRow>
-      </Grid>
-    </div>
-  )
-}
-
 export class Home extends React.Component {
   constructor (props) {
     super(props)
@@ -198,18 +179,23 @@ export class Home extends React.Component {
           <GridCol>
             {arrowPanel()}
             <TTPanel margin='medium 0 0 0'>
-              <Heading level="h3">What does this mean for you?</Heading>
+              <Heading level="h3">What does this mean for you?<hr/></Heading>
                 <Grid>
                   <GridRow>
                     <GridCol>
                       <Text>
-                        <p>If {stackedIconWord(<FontAwesomeIcon icon='user' />, "you")} go online and visit a {stackedIconWord(<FontAwesomeIcon icon='window-maximize' />, "site")} about traveling with {stackedIconWord(<FontAwesomeIcon icon='paw' />, "dogs")}, a third-party {stackedIconWord(<FontAwesomeIcon icon='eye' />, "tracker")} on that {stackedIconWord(<FontAwesomeIcon icon='window-maximize' />, "site")} could {stackedIconWord(<FontAwesomeIcon icon='cogs' />, "guess")} that you have an {stackedIconWord(<FontAwesomeIcon icon='thumbs-up' />, "interest")} in {stackedIconWord(<FontAwesomeIcon icon='paw' />, "dogs")}. Later, you might see an {stackedIconWord(<FontAwesomeIcon icon='ad' />, "ad")} that was specifically {stackedIconWord(<FontAwesomeIcon icon='bullseye' />, "targeted")} to {stackedIconWord(<FontAwesomeIcon icon='user' />, "people")} who like {stackedIconWord(<FontAwesomeIcon icon='paw' />, "dogs")}.</p>
+                        <Heading level='h4'><FontAwesomeIcon icon='user' color="#616530"/> PERSONALIZED SERVICES</Heading>
+                        <p>Web companies can use data about you and your interests to personalize your web experience, such as by tailoring search results and social feeds, or making suggestions for web sites or places to visit.</p>
+                        <Heading level='h4'><FontAwesomeIcon icon='paw' color="#616530"/> RELEVANT ADS</Heading>
+                        <p>If you go online and visit a site about traveling with dogs, a third-party tracker on that site could guess that you have an interest in dogs. Later, you might see an ad that was targeted to people who like dogs.</p>
                       </Text>
                     </GridCol>
                     <GridCol>
                       <Text>
+                        <Heading level='h4'><FontAwesomeIcon icon='exclamation-triangle' color="#9A5324"/> UNEXPECTED TARGETED ADVERTISING</Heading>
                         <p>When advertisers do targeted advertising, they can use your interests in unexpected ways. For example, an advertiser could show you sports ads because they think people who like dogs will also like sports.</p>
-                        <p>A third-party tracker could also guess incorrectly about your interests. If you often visit sites about a topic, trackers might guess you are interested in that topic, even if actually aren't.</p>
+                        <Heading level='h4'><FontAwesomeIcon icon='exclamation-triangle' color="#9A5324"/> INCORRECT GUESSES ABOUT YOUR INTERESTS</Heading>
+                        <p>A third-party tracker could also guess incorrectly about your interests. If you often visit sites about a topic, trackers might guess you are interested in that topic, even if you actually aren't.</p>
                       </Text>
                     </GridCol>
                   </GridRow>

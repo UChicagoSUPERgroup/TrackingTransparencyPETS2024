@@ -12,6 +12,8 @@ import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 import TTPanel from '../components/TTPanel'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 const RecentTable = (data) => {
   let numEntries = data ? data.length : 0
   return (
@@ -173,15 +175,15 @@ export default class SiteOverview extends React.Component {
       <Grid startAt='large'>
         <GridRow>
           <GridCol>
-            <Heading level='h1'>Where were you tracked?</Heading>
+            <Heading level='h1'><FontAwesomeIcon icon='window-maximize' /><strong>&nbsp; Where were you tracked?</strong></Heading>
           </GridCol>
         </GridRow>
         <GridRow>
           <GridCol>
             <TTPanel>
               <Text>
-                <p>Since installing this browser extension, you have visited {numPages} different pages on {numDomains} sites.</p>
-                <p>Trackers see which sites you visited through a variety of tracking methods, including third-party cookies, tracking pixels, and browser fingerprinting. When a tracker sees that a single user has visited multiple sites, they can use that activity to link together multiple inferences.</p>
+                <p>Since installing this browser extension, you have visited <strong>{numPages} different pages</strong> on <strong>{numDomains} sites</strong>.</p>
+                <p>Trackers see which sites you visited through a variety of tracking methods, including third-party cookies, tracking pixels, and browser fingerprinting. When a tracker sees that you have visited multiple sites, they can use that activity to link together your interests.</p>
                 <p>Tracker activity was detected on <strong>{percentTrackedSites}% of the sites you have visited. </strong></p>
               </Text>
             </TTPanel>
