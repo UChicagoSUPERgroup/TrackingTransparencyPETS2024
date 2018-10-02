@@ -133,7 +133,6 @@ export default class DetailPage extends React.Component {
                 <SmallGraphAndTable
                   // name='Sites'
                   name='On which sites were you tracked?'
-                  description='TODO: description'
                   data={domains}
                   c1Header='Sites'
                   urlStem='#/sites/'
@@ -146,7 +145,6 @@ export default class DetailPage extends React.Component {
                 <SmallGraphAndTable
                   // name='Trackers'
                   name='Which trackers could have tracked you?'
-                  description='TODO: description'
                   data={trackers}
                   c1Header='Trackers'
                   urlStem='#/trackers/'

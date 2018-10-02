@@ -67,7 +67,7 @@ export default class InferenceDetailPage extends React.Component {
     } else if (interestInfo.impressions >= 100000000) {
       popularity = 'not very popular'
     }
-    const introText = <Text>We have found that <strong>{this.inference}</strong> is a <strong>{popularity}</strong> interest that companies could infer.</Text>
+    const introText = <Text><strong>{this.inference}</strong> is a <strong>{popularity}</strong> interest for trackers to guess that users are interested in.</Text>
 
     return (
       <this.DetailPage
@@ -87,4 +87,3 @@ export default class InferenceDetailPage extends React.Component {
     )
   }
 }
-
