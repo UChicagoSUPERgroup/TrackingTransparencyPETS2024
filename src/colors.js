@@ -123,4 +123,9 @@ export const themeOverrides = {
   colors: colors
 }
 
+export const axisStyle = {
+  text: {fill: colors.textDark, fontWeight: 400, fontSize: '10pt'},
+  title: {fill: colors.textDark, fontWeight: 400, fontSize: '10pt'}
+}
+
 export default colors

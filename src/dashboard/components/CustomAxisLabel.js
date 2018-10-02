@@ -17,12 +17,13 @@ const CustomAxisLabel = (props/*: {
   const yShift = props.yShift || 1.2
 
   const xLabelOffset = {
-    x: props.innerWidth / 2,
-    y: yShift * props.innerHeight // 1.2 was enough for me to get it below x axis. you may need a diff't #
+    x: props.innerWidth * 0.6,
+    y: props.innerHeight + 60 // 1.2 was enough for me to get it below x axis. you may need a diff't #
   }
   const transform = props.xAxis
     ? `translate(${xLabelOffset.x}, ${xLabelOffset.y})`
     : `translate(${yLabelOffset.x}, ${yLabelOffset.y}) rotate(-90)`
+
 
   return (
     <g

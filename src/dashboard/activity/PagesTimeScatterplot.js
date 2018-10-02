@@ -8,6 +8,8 @@ import {
   Hint
 } from 'react-vis'
 
+import { axisStyle } from '../../colors'
+import CustomAxisLabel from '../components/CustomAxisLabel'
 import las from '../../labels'
 
 export default class PagesTimeScatterplot extends React.Component {
@@ -78,7 +80,7 @@ export default class PagesTimeScatterplot extends React.Component {
           height={300}
           xDomain={[0, 23]}
           yDomain={[0, 7]}
-          margin={{left: 100, right: 50, top: 10, bottom: 50}}
+          margin={{left: 100, right: 50, top: 10, bottom: 60}}
           colorDomain={[0, 1]}
           colorRange={['#616530', '#8A9045']}
           onMouseLeave={() => this.setState({index: [null, null]})}>
@@ -91,14 +93,12 @@ export default class PagesTimeScatterplot extends React.Component {
             }}
             data={data} />
           <XAxis
-            title='Hour of the day'
             tickFormat={timeLabelSimple}
-            style={{title: {fill: '#222'}, text: {fill: '#222'}}} />
+            style={axisStyle} />
           <YAxis
-            title='Day of the week'
             tickValues={[0, 1, 2, 3, 4, 5, 6, 7]}
             tickFormat={dayOfWeekLabelAdjusted}
-            style={{title: {fill: '#222'}, text: {fill: '#222'}}} />
+            style={axisStyle} />
           {index[1]
             ? <Hint
               value={index[1]}>
@@ -113,6 +113,8 @@ export default class PagesTimeScatterplot extends React.Component {
             </Hint>
             : null
           }
+          <CustomAxisLabel title='Day of the week' />
+          <CustomAxisLabel title='Hour of day' xAxis />
         </FlexibleWidthXYPlot>
       </div>
     )

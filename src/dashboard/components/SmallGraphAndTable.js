@@ -8,6 +8,8 @@ import ToggleGroup from '@instructure/ui-toggle-details/lib/components/ToggleGro
 import View from '@instructure/ui-layout/lib/components/View'
 import { lighten } from '@instructure/ui-themeable/lib/utils/color'
 
+import { axisStyle } from '../../colors'
+
 import {
   FlexibleWidthXYPlot,
   XAxis,
@@ -66,17 +68,27 @@ class SmallGraph extends React.Component {
     this.secondaryColor = lighten(props.color, 10)
   }
 
+  formatTick (d) {
+    if (Number.isInteger(d)) {
+      return d.toString()
+    } else {
+      return ''
+    }
+  }
+
   render () {
     let { data, hovered } = this.state
-    const { yTitle, color } = this.props
+    if (data.length === 0) return null // quick crash fix
+    const { yTitle } = this.props
     data = data.map(d => ({
       ...d,
       color: (hovered && d.y === hovered.y) ? 1 : 0
     }))
+
     return (
       <FlexibleWidthXYPlot
         yType={'ordinal'}
-        height={400}
+        height={data.length > 4 ? 400 : 80 * data.length}
         margin={{left: 150, bottom: 80}}
         colorDomain={[0, 1]}
         colorRange={[this.color, this.secondaryColor]}
@@ -84,11 +96,15 @@ class SmallGraph extends React.Component {
       >
         <HorizontalGridLines />
         <VerticalGridLines />
-        <YAxis />
+        <YAxis
+          style={axisStyle}
+        />
         <XAxis
-          position='middle'
+          title='Pages'
           height={200}
           tickLabelAngle={0}
+          tickFormat={this.formatTick}
+          style={axisStyle}
         />
         {hovered && <Hint
           value={hovered}>
@@ -105,8 +121,8 @@ class SmallGraph extends React.Component {
             this.setState({selectedTracker: datapoint})
           }}
         />
-        <CustomAxisLabel xAxis title='Pages' />
         <CustomAxisLabel yAxis title={yTitle} />
+        <CustomAxisLabel xAxis title='Pages' />
       </FlexibleWidthXYPlot>
     )
   }
