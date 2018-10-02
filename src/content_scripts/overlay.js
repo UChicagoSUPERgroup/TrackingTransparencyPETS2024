@@ -33,7 +33,6 @@ function injectOverlay (innerHTML) {
     iframe.contentDocument.head.appendChild(style)
 
     iframe.contentDocument.getElementById('tt_overlay_content').innerHTML = innerHTML
-    overlayContent = iframe.contentDocument.getElementById('tt_overlay_content')
     iframe.contentDocument.getElementById('tt_closebutton').onclick = () => {
       iframe.parentElement.removeChild(iframe)
     }
