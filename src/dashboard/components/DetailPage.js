@@ -20,7 +20,7 @@ import WordCloud from '../components/WordCloud'
 export default class DetailPage extends React.Component {
   constructor (props) {
     super(props)
-    const { metrics, inferences, domains, trackers, pages } = props
+    const { metrics, inferences, domains, trackers, pages, pageType } = props
     const timestamps = pages.map(x => x.id).sort((a, b) => a - b)
     this.state = {
       metrics,
@@ -31,7 +31,8 @@ export default class DetailPage extends React.Component {
       timestamps,
       showDomains: !!domains,
       showInferences: !!inferences,
-      showTrackers: !!trackers
+      showTrackers: !!trackers,
+      pageType
     }
     this.renderPageTable = this.renderPageTable.bind(this)
     this.renderPageTimeGraph = this.renderPageTimeGraph.bind(this)
@@ -41,6 +42,8 @@ export default class DetailPage extends React.Component {
 
   async componentDidMount () {
     const background = await browser.runtime.getBackgroundPage()
+
+    this.setState({pageType: this.props.pageType})
 
     // LOGGING
     let pageType = this.props.pageType
@@ -92,9 +95,27 @@ export default class DetailPage extends React.Component {
     )
   }
 
+  wordcloudDescription (pageType, title, numInferences) {
+    if (pageType=="tracker") {
+      return (
+        <div>
+          <Heading level='h2'>What does <em>{title}</em> think your interests are?</Heading>
+          <Text><br/>{title} could have guessed that you were interested in a total of <strong>{numInferences} topics</strong>. <em>Click on a link in the wordcloud to learn more.</em></Text>
+        </div>
+      )
+    } else if (pageType=="site") {
+      return (
+        <div>
+          <Heading level='h2'>What do trackers on <em>{title}</em> think your interests are?</Heading>
+          <Text><br/>Trackers on {title} could have guessed that you were interested in a total of <strong>{numInferences} topics</strong>. <em>Click on a link in the wordcloud to learn more.</em></Text>
+        </div>
+      )
+    }
+  }
+
   render () {
     const { title, description, accentColor } = this.props
-    const { domains, inferences, trackers, metrics } = this.state
+    const { domains, inferences, trackers, metrics, pageType } = this.state
     const ready = !!metrics
     if (!ready) return <Text>Loading…</Text>
 
@@ -116,7 +137,7 @@ export default class DetailPage extends React.Component {
           <GridRow>
             {inferences && <GridCol width={6}>
               <TTPanel>
-                <Heading level='h2'>What does {title} think your interests are?</Heading>
+                {this.wordcloudDescription(pageType, title, inferences.length)}
                 <SizeMe>
                   {({ size }) => (
                     <WordCloud
@@ -137,6 +158,8 @@ export default class DetailPage extends React.Component {
                   c1Header='Sites'
                   urlStem='#/sites/'
                   color={accentColor}
+                  pageType={pageType}
+                  title={title}
                 />
               </TTPanel>
             </GridCol>}
@@ -149,6 +172,8 @@ export default class DetailPage extends React.Component {
                   c1Header='Trackers'
                   urlStem='#/trackers/'
                   color={accentColor}
+                  pageType={pageType}
+                  title={title}
                 />
               </TTPanel>
             </GridCol>}

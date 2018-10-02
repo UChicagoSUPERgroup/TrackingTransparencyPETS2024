@@ -33,16 +33,13 @@ const TTWordCloud = (props) => {
   })
 
   return (
-    <div>
-      <WordCloud
-        data={wcData}
-        height={height}
-        width={width}
-        fontSizeMapper={fontSizeMapper(min, max, data.length, height)}
-        font='-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
-      />
-      <Text><p><em>Click on a link in the wordcloud to learn more about that interest.</em></p></Text>
-      </div>
+    <WordCloud
+      data={wcData}
+      height={height}
+      width={width}
+      fontSizeMapper={fontSizeMapper(min, max, data.length, height)}
+      font='-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
+    />
   )
 }
 

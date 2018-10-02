@@ -20,17 +20,26 @@ import {
 
 import CustomAxisLabel from './CustomAxisLabel'
 
-export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, description, color }) {
+export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, description, color, pageType, title }) {
   const lower = c1Header.toLowerCase()
-  const singular = lower.slice(0, -1)
   const graphData = data.reverse().slice(-10).map(d => ({
     y: d['name'],
     x: d['count']
   }))
 
+  var head, text
+  if (pageType=="tracker") {
+    head = <Heading level='h2'>On which sites did <em>{title}</em> track you?</Heading>
+    text = <Text><br/>{title} may have been tracking you on <strong>{data.length} sites</strong>. <em>Click on a bar to learn more.</em></Text>
+  } else if (pageType=="site") {
+    head = <Heading level='h2'>Which trackers tracked you on <em>{title}</em>?</Heading>
+    text = <Text><br/>On {title}, you may have been tracked by <strong>{data.length} trackers</strong>. <em>Click on a bar to learn more.</em></Text>
+  }
+
   return (
     <View>
-      <Heading level='h2'>{name}</Heading>
+      {head}
+      {text}
       <View as='div' margin='medium 0 small 0'>
         <SmallGraph
           data={graphData}
@@ -38,7 +47,6 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
           color={color}
         />
       </View>
-      <Text><p><em>Click on a bar in the chart to learn more about that {singular}.</em></p></Text>
       <ToggleGroup
         summary={'See all ' + data.length + ' ' + lower}
         toggleLabel={'Toggle to see table for ' + lower}
