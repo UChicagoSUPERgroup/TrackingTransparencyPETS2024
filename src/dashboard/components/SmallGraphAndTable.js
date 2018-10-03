@@ -30,12 +30,24 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
   }))
 
   var head, text
-  if (pageType=="tracker") {
-    head = <Heading level='h2'>On which sites did <em>{title}</em> track you?</Heading>
-    text = <Text><br/>{title} may have been tracking you on <strong>{data.length} sites</strong>. <em>Click on a bar to learn more.</em></Text>
-  } else if (pageType=="site") {
-    head = <Heading level='h2'>Which trackers tracked you on <em>{title}</em>?</Heading>
-    text = <Text><br/>On {title}, you may have been tracked by <strong>{data.length} trackers</strong>. <em>Click on a bar to learn more.</em></Text>
+  switch (pageType) {
+    case "tracker":
+      head = <Heading level='h2'>On which sites did <em>{title}</em> track you?</Heading>
+      text = <Text><br/>{title} may have been tracking you on <strong>{data.length} sites</strong>. <em>Click on a bar to learn more.</em></Text>
+      break
+    case "site":
+      head = <Heading level='h2'>Which trackers tracked you on <em>{title}</em>?</Heading>
+      text = <Text><br/>On {title}, you may have been tracked by <strong>{data.length} trackers</strong>. <em>Click on a bar to learn more.</em></Text>
+      break
+    case "inference":
+      if (c1Header=="Sites") {
+        head = <Heading level='h2'>Which sites were about <em>{title}</em>?</Heading>
+        text = <Text><br/>You visited <strong>{data.length} sites</strong> that may have been about {title}, which trackers may have guessed is an interest if yours. <em>Click on a bar to learn more.</em></Text>
+      } else if (c1Header=="Trackers"){
+        head = <Heading level='h2'>Which trackers might think you are interested in <em>{title}</em>?</Heading>
+        text = <Text><br/><strong>{data.length} trackers</strong> may have guessed that you are interested in {title}. <em>Click on a bar to learn more.</em></Text>
+      }
+      break
   }
 
   return (
