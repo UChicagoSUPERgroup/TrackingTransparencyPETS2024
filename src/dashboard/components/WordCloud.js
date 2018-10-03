@@ -1,6 +1,22 @@
 import React from 'react'
 import WordCloud from 'react-d3-cloud'
 import { scalePow } from 'd3-scale'
+import Text from '@instructure/ui-elements/lib/components/Text'
+
+function fontSizeMapper (min, max, numEntries, height) {
+  let Px = [0.02, 0.01]
+  if (numEntries < 4) {
+    Px = [0.08, 0.04]
+  } else if (numEntries < 10) {
+    Px = [0.06, 0.03]
+  } else if (numEntries < 40) {
+    Px = [0.05, 0.02]
+  } else if (numEntries < 80) {
+    Px = [0.03, 0.02]
+  }
+  const fontSizeMapper = word => height * (Px[1] + ((word.value - min) / (1 + max - min)) * Px[0])
+  return fontSizeMapper
+}
 
 const TTWordCloud = (props) => {
   const data = props.data || []
