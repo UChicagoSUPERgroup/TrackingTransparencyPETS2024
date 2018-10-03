@@ -33,12 +33,9 @@ class WelcomePage extends React.Component {
     this.state = {
 
     }
-<<<<<<< HEAD
     this.toggleExtensionEnabled = this.toggleExtensionEnabled.bind(this)
-=======
     this.onMTurkCodeInput = this.onMTurkCodeInput.bind(this)
     this.onSave = this.onSave.bind(this)
->>>>>>> master
   }
 
   async componentDidMount () {
