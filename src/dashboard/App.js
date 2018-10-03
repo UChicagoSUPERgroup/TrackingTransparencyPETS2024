@@ -40,11 +40,17 @@ import '../styles/dashboard.css'
 import '../styles/navbar.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEye, faThumbsUp, faAd, faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import { faPaw, faUser, faWindowMaximize, faClock, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import {
+  faEye, faThumbsUp, faAd, faArrowRight, faPaw, faUser,
+  faWindowMaximize, faClock, faExclamationTriangle,
+  faExternalLinkAlt
+} from '@fortawesome/free-solid-svg-icons'
 
-library.add(faEye, faThumbsUp, faAd, faArrowRight)
-library.add(faPaw, faUser, faWindowMaximize, faClock, faExclamationTriangle)
+library.add(
+  faEye, faThumbsUp, faAd, faArrowRight, faPaw, faUser,
+  faWindowMaximize, faClock, faExclamationTriangle,
+  faExternalLinkAlt
+)
 
 theme.use({
   overrides: themeOverrides
