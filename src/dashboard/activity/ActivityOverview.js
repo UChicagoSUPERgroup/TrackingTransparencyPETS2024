@@ -11,6 +11,7 @@ import logging from '../dashboardLogging'
 import TTPanel from '../components/TTPanel'
 
 import las from '../../labels'
+
 const { timeLabelSimple, dayOfWeekLabel } = las
 const millisecondsInDay = 86400000
 const millisecondsInHour = 3600000

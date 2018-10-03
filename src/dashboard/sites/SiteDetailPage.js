@@ -101,6 +101,7 @@ export default class SiteDetailPage extends React.Component {
       <this.DetailPage
         pageType='site'
         title={this.site}
+        icon='window-maximize'
         accentColor={colors.orange1}
         metrics={metrics}
         inferences={inferences}

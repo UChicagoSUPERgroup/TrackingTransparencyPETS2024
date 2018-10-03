@@ -1,6 +1,7 @@
-function generateInnerHTML(tabData) {
-  let innerHTML;
-  let trackerWords = '', inferWords = '';
+function generateInnerHTML (tabData) {
+  let innerHTML
+  let trackerWords = ''
+  let inferWords = ''
 
   if (tabData.trackers) {
     let len = tabData.trackers.length
@@ -13,25 +14,24 @@ function generateInnerHTML(tabData) {
         <span id="num-trackers">${(tabData.trackers.length - 1)}</span>
         others are tracking you on this page.</p>`
     }
-  } 
+  }
 
   if (tabData.inference) {
     inferWords = `<p>We think this page is about <strong>${tabData.inference}</strong>.</p>`
   }
 
-  innerHTML = trackerWords + inferWords;
-  return innerHTML;
-
+  innerHTML = trackerWords + inferWords
+  return innerHTML
 }
 
-function createOrUpdate(tabId, tabData) {
+function createOrUpdate (tabId, tabData) {
   let innerHTML = generateInnerHTML(tabData)
 
   if (innerHTML) {
     chrome.tabs.sendMessage(tabId, {
       type: 'create_or_update_overlay',
       innerHTML: innerHTML
-    });
+    })
   }
 }
 

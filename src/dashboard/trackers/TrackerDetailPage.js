@@ -85,6 +85,7 @@ export default class TrackerDetailPage extends React.Component {
       <this.DetailPage
         pageType='tracker'
         title={this.tracker}
+        icon='eye'
         description={introText}
         accentColor={colors.red1}
         metrics={metrics}

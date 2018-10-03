@@ -15,7 +15,8 @@ import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import colors from '../../colors'
+import colors, { axisStyle } from '../../colors'
+import CustomAxisLabel from '../components/CustomAxisLabel'
 import TrackerSummary from './TrackerSummary'
 import TTPanel from '../components/TTPanel'
 import logging from '../dashboardLogging'
@@ -194,7 +195,7 @@ export default class TrackerOverview extends React.Component {
         <FlexibleWidthXYPlot
           yType={'ordinal'}
           height={800}
-          margin={{left: 100}}
+          margin={{left: 120, bottom: 60}}
           onMouseLeave={() => this.setState({hovered: null})}
           colorDomain={[0, 1]}
           colorRange={[colors.red1, colors.red2]}
@@ -204,9 +205,11 @@ export default class TrackerOverview extends React.Component {
           <YAxis
             height={200}
             tickLabelAngle={0}
+            style={axisStyle}
           />
           <XAxis
             tickFormat={v => (v / numPages * 100).toFixed(2) + '%'}
+            style={axisStyle}
           />
           {hovered && <Hint
             value={hovered}>
@@ -227,6 +230,7 @@ export default class TrackerOverview extends React.Component {
               this.setState({selectedTracker: datapoint})
             }}
           />
+          <CustomAxisLabel title='Percent of pages' xAxis />
         </FlexibleWidthXYPlot>
         <RadioInputGroup
           name='graph-count'
