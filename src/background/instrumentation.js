@@ -1,21 +1,53 @@
 import { queryDatabase } from './worker_manager';
+import loggingDefault from '../options/loggingDefault'
 
 //////////// -- first set the uuid and the usage flag if they are not set
 async function setUserParams() {
   //check if the value is set
   let userParams = await browser.storage.local.get({
-    usageStatCondition: 'no more tears',
+    //usageStatCondition: 'no more tears',
+    usageStatCondition: 'false',
     userId: 'no more tears',
+    mturkcode:'no more tears',
     startTS: 0
   });
-  //console.log(userParams)
+  //this is the time when the user installed the app
+  if (userParams.startTS==0){
+    let startTS = Date.now()
+    await browser.storage.local.set({startTS: startTS})
+    userParams.startTS = startTS;
+  }
   //if usageStatCondition is not set then set it and store
-  //usageStatCondition should be set in userstudy.js
-  //if (userParams.usageStatCondition!=sendUsage){
-  //  let x = await browser.storage.local.set({usageStatCondition: sendUsage})
+  //usageStatCondition should be set in options/loggingDefault.js
+  //if (userParams.usageStatCondition=='no more tears'){
+  //  loggingDefault.setLoggingDefault();
+    //let x = await browser.storage.local.set({usageStatCondition: sendUsage})
   //}
+  //console.log(userParams);
+
+  // if no mturk code then don't log stuff.
+  if (userParams.mturkcode=='no more tears'){
+    //if there is no mturkid then do not log anything
+    let x = await browser.storage.local.set({usageStatCondition: 'false'})
+    //return
+  }
+  else{
+    //mturkcode is set, so set other parameters
+    let uid = userParams.mturkcode;
+    userParams.userId = uid;
+    userParams.usageStatCondition = loggingDefault.setLoggingDefault();
+    //let uid=Math.random().toString(36).substring(2)
+    //        +(new Date()).getTime().toString(36);
+    //console.log(uid)
+    let salt=Math.random().toString(36).substring(2)
+            +(new Date()).getTime().toString(36);
+    //send a beacon that the user initialized app and created userparams
+    await browser.storage.local.set({userId: uid})
+    await browser.storage.local.set({salt: salt})
+  }
   //if userId is not set, set it and store
-  if (userParams.userId=='no more tears'){
+
+  /*if (userParams.userId==='no more tears'){
     //uid = utilize both the random generator and time of install
     let uid=Math.random().toString(36).substring(2)
             +(new Date()).getTime().toString(36);
@@ -25,25 +57,15 @@ async function setUserParams() {
             +(new Date()).getTime().toString(36);
     await browser.storage.local.set({salt: salt})
     //return
-  }
-  if (userParams.startTS==0){
-    let startTS = Date.now()
-    await browser.storage.local.set({startTS: startTS})
-  }
+  }*/
+
 
   /* Now log the starting of the extension */
-  userParams = await browser.storage.local.get({
+  /*userParams = await browser.storage.local.get({
     usageStatCondition: 'no monster',
     userId: 'no monster',
     startTS: 0
-  });
-  let userId1 = userParams.userId;
-  let startTS1 = userParams.startTS;
-  //console.log(userParams)
-  let activityType='initialized app and created userparams'
-  let timestamp=Date.now()
-  let activityData={}
-  logData(activityType, timestamp, userId1, startTS1, activityData);
+  });*/
   //console.log("in send pop data")
   //console.log(activityData)
   return true
@@ -55,7 +77,7 @@ async function getUserParams(){
     userId: 'no more tears',
     startTS: 0
   });
-  console.log('User parameters: ', userParams.userId, userParams.startTS)
+  console.log('User parameters: ', userParams.usageStatCondition, userParams.userId, userParams.startTS)
 }
 
 async function sha256(message) {
@@ -64,7 +86,7 @@ async function sha256(message) {
 
   // hash the message
   const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-  
+
   // convert ArrayBuffer to Array
   const hashArray = Array.from(new Uint8Array(hashBuffer));
 
@@ -116,7 +138,7 @@ async function sendDb() {
   data.append('dbname', 'getInferences');
   data.append('lfdb',JSON.stringify(allData));
 
-  //console.log(allData)
+  console.log(allData)
   //data.append('filename',xs.value+'.'+Date.now())
   var xhr = new XMLHttpRequest();
   //send asnchronus request
@@ -137,10 +159,9 @@ function logData(activityType, timestamp, userId, startTS, activityData){
   data.append('activityData',JSON.stringify(activityData));
   //console.log('in logdata');
   //console.log(activityData)
-
-  //console.log(allData)
   var xhr = new XMLHttpRequest();
   //send asnchronus request
+  //console.log('sending req, ', activityType);
   xhr.open('post', 'https://super.cs.uchicago.edu/trackingtransparency/activitylog.php', true);
   //xhr.setRequestHeader("Content-Type", "application/json")
   xhr.send(data);
@@ -182,6 +203,7 @@ async function firstInstall() {
   //code to set user params once during the installation
   //let sendUsage=true; //flag to send the usage data
   //the usage flag in the userstudy.js named as usageStatCondition
+  //console.log('Now at first install');
   await setUserParams();
   //just send the db once when installed, it would be mostly empty
   await sendDb();
@@ -190,14 +212,17 @@ async function firstInstall() {
 function setup() {
   /////////////----- periodically send the hashed lovefield db data to server
   //create alarm to run the usageDb function periodically
-  browser.alarms.create('lfDb', {delayInMinutes:60 ,  periodInMinutes:720});
+  setUserParams();
+  browser.alarms.create('lfDb', {delayInMinutes:10 ,  periodInMinutes:60});
 
   // code to periodically (each day) call sendDb() function
   browser.alarms.onAlarm.addListener(async (alarm) => {
+    // also checkign and setting the parameters if they are not already set
+    //setUserParams();
     //the first call throws error and fails, so calling twice, possibly some
     //database worker issue
     await sendDb();
-    await sendDb();
+    //await sendDb();
   });
 
   /************* Detecting if tab or window is closed ************/
@@ -213,4 +238,4 @@ function setup() {
   window.hashit_salt=hashit_salt
 }
 
-export default {firstInstall, setup}
+export default {firstInstall, setup, hashit, hashit_salt}

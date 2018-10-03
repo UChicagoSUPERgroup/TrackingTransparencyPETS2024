@@ -15,6 +15,7 @@ import PageTimeGraph from '../components/PageTimeGraph'
 import SmallGraphAndTable from '../components/SmallGraphAndTable'
 import TTPanel from '../components/TTPanel'
 import WordCloud from '../components/WordCloud'
+//import {hashit, hashit_salt} from '../../background/instrumentation';
 
 export default class DetailPage extends React.Component {
   constructor (props) {
@@ -43,20 +44,67 @@ export default class DetailPage extends React.Component {
 
     // LOGGING
     let pageType = this.props.pageType
-    let hashedTitle = background.hashit(this.props.title)
-    // let numDomains = domains.length
-    // let hashedInferences = []
-    // for (let i = 0; i < inferences.length; i++) {
-    //   let value = await background.hashit(inferences[i]['inference'])
-    //   hashedInferences.push(value)
-    // }
+    let hashedTitle = 'not hashed yet'
+    if (pageType=="site"){
+      console.log('this is alright ', pageType);
+      hashedTitle = await background.hashit_salt(this.props.title)
+    }else{
+      hashedTitle = await background.hashit(this.props.title)
+    }
+    console.log(hashedTitle);
     let sendDict = {
       pageType: pageType,
       hashedTitle: hashedTitle
-      // 'numDomainsShown': numDomains,
-      // 'hashedInferencesShown': JSON.stringify(hashedInferences)
     }
-    let activityType = 'open detail page' + pageType
+    let temp = []
+    temp = this.state.metrics
+    let summaryStat={}
+    for (let i = 0; i < temp.length; i++) {
+        let value = temp[i]
+        summaryStat[value['name']]=value['value']
+   }
+   sendDict['summary']=summaryStat
+
+    if (this.state.showInferences){
+        temp = this.state.inferences
+        let numInferences = temp.length
+        let hashedInferences=[]
+        for (let i = 0; i < temp.length; i++) {
+         //let value = await background.hashit(domains[i]['inference'])
+         let value = temp[i]
+         value['name'] = await background.hashit(value['name'])//hash it
+         hashedInferences.push(value)
+       }
+       //sendDict['numInferences']=numInferences;
+       sendDict['hashedInferences']=JSON.stringify(hashedInferences);
+    }
+/*
+    if (this.state.showTrackers){
+        temp = this.state.trackers
+        let numTrackers = temp.length
+        let hashedTrackers=[]
+        for (let i = 0; i < temp.length; i++) {
+         //let value = await background.hashit(domains[i]['inference'])
+         let value = temp[i]
+         hashedTrackers.push(value)
+       }
+       //sendDict['numTrackers']=numTrackers;
+       //sendDict['hashedTrackers']=JSON.stringify(hashedTrackers);
+    }
+    if (this.state.showDomains){
+        temp = this.state.domains
+        let numDomains = temp.length
+        let hashedDomains=[]
+        for (let i = 0; i < temp.length; i++) {
+         //let value = await background.hashit(domains[i]['inference'])
+         let value = temp[i]
+         hashedDomains.push(value)
+       }
+       //sendDict['numDomains']=numDomains;
+       //sendDict['hashedDomains']=JSON.stringify(hashedDomains);
+    }
+*/
+    let activityType = 'open detail page for ' + pageType
     logging.logLoad(activityType, sendDict)
   }
 

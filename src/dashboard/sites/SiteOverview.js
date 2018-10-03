@@ -156,7 +156,7 @@ export default class SiteOverview extends React.Component {
         pages.push(value)
       }
     }
-    let activityType = 'load dashboard sites page'
+    let activityType = 'load dashboard Sites page'
     let sendDict = {'numDomainsShown': pages.length}
     logging.logLoad(activityType, sendDict)
   }

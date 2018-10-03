@@ -185,12 +185,13 @@ export default class TrackerOverview extends React.Component {
     )
   }
 
-  renderChart () {
+renderChart () {
     let { graphData, numPages, hovered } = this.state
     graphData = graphData.map(d => ({
       ...d,
       color: (hovered && d.y === hovered.y) ? 1 : 0
     }))
+    //const background = await browser.runtime.getBackgroundPage()
     return (
       <TTPanel>
         <FlexibleWidthXYPlot
@@ -227,6 +228,8 @@ export default class TrackerOverview extends React.Component {
             }}
             onValueClick={(datapoint) => {
               this.setState({selectedTracker: datapoint})
+                let activityType = 'selected a tracker on trackers page for more info'
+                logging.logLoad(activityType, {'tracker_clicked':datapoint["y"], 'tracker_pages':datapoint["x"]})
             }}
           />
         </FlexibleWidthXYPlot>
@@ -251,11 +254,12 @@ export default class TrackerOverview extends React.Component {
   renderInfoPane () {
     const { selectedTracker } = this.state
     const { hideInferenceContent } = this.props
+
     return (
       <TTPanel textAlign='start'>
         {!selectedTracker && <Text weight='bold'>The graph to the left shows the trackers that we detected on the pages you visited. Click a bar on the graph to learn more about that tracker.</Text>}
         {selectedTracker && <div>
-          <TrackerSummary 
+          <TrackerSummary
             tracker={selectedTracker.y}
             numPages={selectedTracker.x}
             hideInferenceContent={hideInferenceContent}
@@ -279,7 +283,6 @@ export default class TrackerOverview extends React.Component {
     if (!allData) {
       return 'Loading…'
     }
-
     return (
       <Grid>
         <GridRow>

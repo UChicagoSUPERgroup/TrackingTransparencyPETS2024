@@ -207,7 +207,7 @@ export default class InferencesOverview extends React.Component {
   }
 
   async componentDidMount () {
-    let activityType = 'load dashboard inferences page'
+    let activityType = 'load dashboard Interests page'
     logging.logLoad(activityType, {})
     this.getInferences()
   }

@@ -14,6 +14,7 @@ async function logLoad(activityType, sendDict) {
     userId: 'no monster',
     startTS: 0
   });
+  
   if (true){//get data when the user load the page.
     //let activityType='load dashboard about page';
     let timestamp=Date.now();
@@ -27,6 +28,9 @@ async function logLoad(activityType, sendDict) {
       'parentNumTrackers':tabData.numTrackers
     }
     for (let key in sendDict) {
+      if (key =="tracker_clicked"){
+        sendDict[key] = await background.hashit(sendDict[key])
+      }
       activityData[key] = sendDict[key]
     }
     background.logData(activityType, timestamp, userId, startTS, activityData);
@@ -40,7 +44,7 @@ async function logSunburstSelect(select, value){
     userId: 'no monster',
     startTS: 0
   });
-  // if (!JSON.parse(userParams.usageStatCondition)) return true;
+  if (!JSON.parse(userParams.usageStatCondition)) return true;
 
   let activityType = ''
   let extraData = {}
@@ -164,7 +168,7 @@ async function logStartDashboardPage() {
   //this.setState({tabId: tabId});
   //this.setState({parentTabId: parentTabId});
 
-  if (true){//get data when the user load the page.
+  if (JSON.parse(userParams.usageStatCondition)){//get data when the user load the page.
     let activityType='load dashboard home page';
     let timestamp=Date.now();
     let userId=userParams.userId;
@@ -183,14 +187,14 @@ async function logStartDashboardPage() {
 
 
 async function logDashboardClick(e){
-  console.log(e);
+  //console.log(e);
   const background = await browser.runtime.getBackgroundPage();
   let userParams = await browser.storage.local.get({
     usageStatCondition: 'no monster',
     userId: 'no monster',
     startTS: 0
   });
-  // if (!JSON.parse(userParams.usageStatCondition))return true;
+  if (!JSON.parse(userParams.usageStatCondition))return true;
 
   let activityType = ''
   let extraData = {}
@@ -202,7 +206,7 @@ async function logDashboardClick(e){
   //log navbar click activity
   if (e.target.localName =='a' && e.target.parentNode.className.includes('navbarTolog')){
     activityType = 'click on navbar link'
-    extraData = {'navbarTolog_Clicked':e.target.text}
+    extraData = {'navbarTolog_Clicked_text':e.target.text, 'navbarTolog_Clicked_element':e.target.hash}
   }
   /******** trackers section click ********/
 
@@ -232,35 +236,35 @@ async function logDashboardClick(e){
 
   //log click on domains table for a particular inference
   if (e.target.localName =='a' && e.target.className.includes('inferencePageTopTextInferenceLink')){
-    activityType = 'click on inference link on Inferences dashboard page top text'
+    activityType = 'click on Intetest link on Interests dashboard page top text'
     let linkClicked  = e.target.text;
     linkClicked = await background.hashit(linkClicked);
     extraData = {'inferencePageTopTextInferenceLink_Clicked':linkClicked}
   }
 
   if (e.target.localName =='label' && e.target.className.includes('inferencePageDateChoose')){
-    activityType = 'click on date picker button on Inferences dashboard page'
+    activityType = 'click on date picker button on Interests dashboard page'
     let linkClicked  = e.target.innerText;
     //linkClicked = await background.hashit(linkClicked);
     extraData = {'inferencePageDateChoose_Chosen':linkClicked}
   }
 
   if (e.target.localName =='label' && e.target.className.includes('inferencePageSensitivityChoose')){
-    activityType = 'click on sensitivity picker button on Inferences dashboard paget'
+    activityType = 'click on sensitivity picker button on Interests dashboard paget'
     let linkClicked  = e.target.innerText;
     //linkClicked = await background.hashit(linkClicked);
     extraData = {'inferencePageSensitivityChoose_Chosen':linkClicked}
   }
 
   if (e.target.localName =='a' && e.target.className.includes('inferencePageSelected-Inference')){
-    activityType = 'click on inference link for selected inference on Inferences dashboard page '
+    activityType = 'click on inference link for selected Interests on Interests dashboard page '
     let linkClicked  = e.target.text;
     linkClicked = await background.hashit(linkClicked);
     extraData = {'inferencePageSelected-Inference_Clicked':linkClicked}
   }
 
   if (e.target.localName =='a' && e.target.className.includes('domainTableLinkInferencesPage')){
-    activityType = 'click on domain link for an inference on Inferences dashboard page'
+    activityType = 'click on domain link for an interest on Interests dashboard page'
     let linkClicked  = e.target.text;
     linkClicked = await background.hashit_salt(linkClicked);
     extraData = {'domainTableLinkInferencesPage_Clicked':linkClicked}
@@ -275,7 +279,7 @@ async function logDashboardClick(e){
 
   //log click on trackers table for a particular inference
   if (e.target.localName =='a' && e.target.className.includes('trackerTableLinkInferencesPage')){
-    activityType = 'click on tracker link for an inference on Inferences dashboard page'
+    activityType = 'click on tracker link for an Interest on Interests dashboard page'
     let linkClicked  = e.target.text;
     linkClicked = await background.hashit(linkClicked);
     extraData = {'trackerTableLinkInferencesPage_Clicked':linkClicked}
