@@ -40,7 +40,7 @@ const InfoPage = () => (
         Using this information, we show you:
               <ul>
                 <li>Which <Link href='#/trackers'>trackers</Link> have tracked you </li>
-                <li>Which <Link href='#/inferences'>inferences</Link> have been made about you based on the tracking</li>
+                <li>Which <Link href='#/interests'>interests</Link> may have been inferred about your browsing</li>
                 <li>When inferences have been made about you during your <Link href='#/activity'>recent activity</Link></li>
               </ul>
             </p>
@@ -74,7 +74,7 @@ const InfoPage = () => (
           <Heading level='h2'>Who we are</Heading>
           <Text>
             <p>The Tracking Transparency extension was built by a research team at the <Link href='https://super.cs.uchicago.edu' target='_blank' rel='noopener noreferrer'>University of Chicago SUPERgroup</Link>. The project is advised by Blase Ur at the University of Chicago, Michelle L. Mazurek at the University of Maryland, and Lorrie Faith Cranor at Carnegie Mellon University.</p>
-            <p>Should you have any questions about the plugin or our associated research, you may email the research team at <Link href='mailto:trackingtransparency@super.cs.uchicago.edu'>trackingtransparency@super.cs.uchicago.edu</Link>.</p>
+            <p>Should you have any questions about the plugin or our associated research, you may email the research team at <Link href='mailto:trackingtransparency@super.cs.uchicago.edu'>trackingtransparency@lists.uchicago.edu</Link>.</p>
             <p>Our extension is open source, and the code is available under Link free license at <Link href='https://github.com/UChicagoSUPERgroup/trackingtransparency' target='_blank' rel='noopener noreferrer'>GitHub</Link>.</p>
           </Text>
         </TTPanel>

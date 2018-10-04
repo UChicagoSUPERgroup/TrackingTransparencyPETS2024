@@ -12,7 +12,6 @@ import NavItem from 'react-bootstrap/lib/NavItem'
 
 import theme from '@instructure/ui-themes/lib/canvas'
 import IconSettings from '@instructure/ui-icons/lib/Solid/IconSettings'
-import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
 import TTBreadcrumbs from './components/TTBreadcrumbs'
 import {Home, WaitingDataHome} from './Home'
@@ -105,7 +104,6 @@ The code for logclick logs ALL the click in every single page.
   render () {
     const { okToLoad, enoughData } = this.state
     // const enoughData = tt.enoughData();
-    const info = (<IconInfo />)
     const settings = (<IconSettings />)
 
     // some of these are "show..." and others are "hide..."
@@ -135,7 +133,7 @@ The code for logclick logs ALL the click in every single page.
             </Nav>}
             <Nav pullRight>
               {!tt.production && <NavLink to='/debug' title='Debug' />}
-              <NavLink to='/info' title={info} />
+              <NavLink to='/info' title='About' />
               <NavLink to='/settings' title={settings} />
             </Nav>
           </Navbar.Collapse>

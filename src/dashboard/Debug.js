@@ -13,6 +13,7 @@ import NumberInput from '@instructure/ui-forms/lib/components/NumberInput'
 
 import logging from './dashboardLogging'
 import TTPanel from './components/TTPanel'
+import UserstudyOptionsUI from '../options/UserstudyOptionsUI'
 
 class DebugPage extends React.Component {
   constructor (props) {
@@ -221,6 +222,11 @@ class DebugPage extends React.Component {
           <Button type='submit' onClick={this.importData}>
           Import data
           </Button>
+        </TTPanel>
+
+        <TTPanel margin='medium 0 medium 0'>
+          <Heading level='h2' margin='0 0 medium'>Import data</Heading>
+          <UserstudyOptionsUI />
         </TTPanel>
 
         <TTPanel margin='medium 0 medium 0'>

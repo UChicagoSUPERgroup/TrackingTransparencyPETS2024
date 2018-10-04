@@ -4,6 +4,7 @@ import FormFieldGroup from '@instructure/ui-forms/lib/components/FormFieldGroup'
 import Checkbox from '@instructure/ui-forms/lib/components/Checkbox'
 import RadioInputGroup from '@instructure/ui-forms/lib/components/RadioInputGroup'
 import RadioInput from '@instructure/ui-forms/lib/components/RadioInput'
+import Link from '@instructure/ui-elements/lib/components/Link'
 
 import setUserstudyCondition from './userstudy'
 
@@ -147,6 +148,7 @@ export default class UserstudyOptionsUI extends React.Component {
           <RadioInput value='noInferences' label='Everything minus inferences' />
           <RadioInput value='everything' label='Everything' />
         </RadioInputGroup>
+        <Link href='/dist/welcome.html'>Open welcome page</Link>
       </div>
     )
   }
