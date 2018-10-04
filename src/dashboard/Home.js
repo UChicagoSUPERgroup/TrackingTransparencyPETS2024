@@ -174,7 +174,7 @@ export class Home extends React.Component {
     const { hideHistoryContent, hideInferenceContent, hideTrackerContent } = this.props
 
     return (
-      <Grid startAt='large'>
+      <Grid startAt='medium'>
         <GridRow>
           <GridCol>
             {arrowPanel()}

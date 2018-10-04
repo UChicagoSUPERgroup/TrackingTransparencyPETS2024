@@ -120,23 +120,20 @@ The code for logclick logs ALL the click in every single page.
             <LinkContainer to='/'>
               <Navbar.Brand>Tracking Transparency</Navbar.Brand>
             </LinkContainer>
-            <Navbar.Toggle />
           </Navbar.Header>
-          <Navbar.Collapse>
-            {enoughData && <Nav>
-              {!hideInferenceContent && <NavLink to='/interests' title='Interests' />}
-              {!hideHistoryContent && <NavLink to='/sites' title='Sites' />}
-              {!hideHistoryContent && <NavLink to='/activity' title='Activity' />}
-              {!hideTrackerContent && <NavLink to='/trackers' title='Trackers' />}
-              {showLightbeam && <NavLink to='/lightbeam' title='Network' />}
-              {/* <NavLink to="/takeaction"  title="Take Action"/> */}
-            </Nav>}
-            <Nav pullRight>
-              {!tt.production && <NavLink to='/debug' title='Debug' />}
-              <NavLink to='/info' title='About' />
-              <NavLink to='/settings' title={settings} />
-            </Nav>
-          </Navbar.Collapse>
+          {enoughData && <Nav>
+            {!hideInferenceContent && <NavLink to='/interests' title='Interests' />}
+            {!hideHistoryContent && <NavLink to='/sites' title='Sites' />}
+            {!hideHistoryContent && <NavLink to='/activity' title='Activity' />}
+            {!hideTrackerContent && <NavLink to='/trackers' title='Trackers' />}
+            {showLightbeam && <NavLink to='/lightbeam' title='Network' />}
+            {/* <NavLink to="/takeaction"  title="Take Action"/> */}
+          </Nav>}
+          <Nav pullRight>
+            {!tt.production && <NavLink to='/debug' title='Debug' />}
+            <NavLink to='/info' title='About' />
+            <NavLink to='/settings' title={settings} />
+          </Nav>
         </Navbar>
       )
     }

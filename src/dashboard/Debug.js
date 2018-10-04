@@ -5,7 +5,6 @@ import Alert from '@instructure/ui-alerts/lib/components/Alert'
 import Button from '@instructure/ui-buttons/lib/components/Button'
 import ToggleDetails from '@instructure/ui-toggle-details/lib/components/ToggleDetails'
 import FormFieldGroup from '@instructure/ui-forms/lib/components/FormFieldGroup'
-import Select from '@instructure/ui-forms/lib/components/Select'
 import TextArea from '@instructure/ui-forms/lib/components/TextArea'
 import TextInput from '@instructure/ui-forms/lib/components/TextInput'
 import DateInput from '@instructure/ui-forms/lib/components/DateInput'
@@ -225,7 +224,7 @@ class DebugPage extends React.Component {
         </TTPanel>
 
         <TTPanel margin='medium 0 medium 0'>
-          <Heading level='h2' margin='0 0 medium'>Import data</Heading>
+          <Heading level='h2' margin='0 0 medium'>User study settings</Heading>
           <UserstudyOptionsUI />
         </TTPanel>
 
