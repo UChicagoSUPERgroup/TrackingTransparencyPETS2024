@@ -5,7 +5,6 @@ import Alert from '@instructure/ui-alerts/lib/components/Alert'
 import Button from '@instructure/ui-buttons/lib/components/Button'
 import ToggleDetails from '@instructure/ui-toggle-details/lib/components/ToggleDetails'
 import FormFieldGroup from '@instructure/ui-forms/lib/components/FormFieldGroup'
-import Select from '@instructure/ui-forms/lib/components/Select'
 import TextArea from '@instructure/ui-forms/lib/components/TextArea'
 import TextInput from '@instructure/ui-forms/lib/components/TextInput'
 import DateInput from '@instructure/ui-forms/lib/components/DateInput'
@@ -13,6 +12,7 @@ import NumberInput from '@instructure/ui-forms/lib/components/NumberInput'
 
 import logging from './dashboardLogging'
 import TTPanel from './components/TTPanel'
+import UserstudyOptionsUI from '../options/UserstudyOptionsUI'
 
 class DebugPage extends React.Component {
   constructor (props) {
@@ -126,7 +126,7 @@ class DebugPage extends React.Component {
     const {result, error, queryTime} = this.state
     return (
       <div>
-        <Heading level='h1' margin='0 0 medium'>Debug</Heading>
+        <Heading level='h1' margin='0 0 medium'><strong>Debug</strong></Heading>
         <TTPanel margin='medium 0 medium 0'>
           <Heading level='h2' margin='0 0 medium'>Database query</Heading>
           <FormFieldGroup
@@ -221,6 +221,11 @@ class DebugPage extends React.Component {
           <Button type='submit' onClick={this.importData}>
           Import data
           </Button>
+        </TTPanel>
+
+        <TTPanel margin='medium 0 medium 0'>
+          <Heading level='h2' margin='0 0 medium'>User study settings</Heading>
+          <UserstudyOptionsUI />
         </TTPanel>
 
         <TTPanel margin='medium 0 medium 0'>

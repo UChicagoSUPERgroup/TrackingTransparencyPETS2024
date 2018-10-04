@@ -61,6 +61,7 @@
     "@instructure/ui-icons": "^5.25.0",
     "@instructure/ui-layout": "^5.25.0",
     "@instructure/ui-overlays": "^5.25.0",
+    "@instructure/ui-tabs": "^5.25.0",
     "@instructure/ui-themes": "^5.25.0",
     "@instructure/ui-toggle-details": "^5.25.0",
     "alexarank": "^0.2.0",

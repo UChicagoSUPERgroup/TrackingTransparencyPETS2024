@@ -108,10 +108,33 @@ class SmallGraph extends React.Component {
       color: (hovered && d.y === hovered.y) ? 1 : 0
     }))
     const lower = yTitle.toLowerCase()
+    let height
+    switch (data.length) {
+      case 0:
+        height = 0
+        break
+      case 1:
+        height = 150
+        break
+      case 2:
+        height = 200
+        break
+      case 3:
+        height = 250
+        break
+      case 4:
+        height = 300
+        break
+      case 5:
+        height = 350
+        break
+      default:
+        height = 400
+    }
     return (
       <FlexibleWidthXYPlot
         yType={'ordinal'}
-        height={data.length > 4 ? 400 : 80 * data.length}
+        height={height}
         margin={{left: 150, bottom: 80}}
         colorDomain={[0, 1]}
         colorRange={[this.color, this.secondaryColor]}

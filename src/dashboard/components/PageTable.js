@@ -4,6 +4,7 @@ import * as moment from 'moment'
 
 import Link from '@instructure/ui-elements/lib/components/Link'
 import TruncateText from '@instructure/ui-elements/lib/components/TruncateText'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default class PageTable extends React.Component {
   constructor (props) {
@@ -74,7 +75,10 @@ export default class PageTable extends React.Component {
       Cell: row => (row.value.url
         ? (<div key={row.value.title}>
           <Link href={row.value.url} target='_blank'>
-            <TruncateText>{row.value.title}</TruncateText>
+            <TruncateText>
+              {row.value.title}&nbsp;
+              <FontAwesomeIcon icon='external-link-alt' size='xs' />
+            </TruncateText>
           </Link>
         </div>)
         : (<div key={row.value.title}>

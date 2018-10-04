@@ -16,7 +16,8 @@ const urlComponentMapping = {
   info: 'About',
   settings: 'Settings',
   takeaction: 'Take Action',
-  debug: 'Debug'
+  debug: 'Debug',
+  privacypolicy: 'Privacy Policy'
 }
 
 export default class TTBreadcrumbs extends React.Component {

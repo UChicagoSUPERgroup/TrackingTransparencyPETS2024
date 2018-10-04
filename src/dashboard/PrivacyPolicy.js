@@ -14,7 +14,7 @@ const PrivacyPolicyPage = () => (
   <Grid>
     <GridRow>
       <GridCol>
-        <Heading level='h1'>Our Privacy Policy</Heading>
+        <Heading level='h1'><strong>Privacy Policy</strong></Heading>
       </GridCol>
     </GridRow>
 
@@ -34,7 +34,7 @@ const PrivacyPolicyPage = () => (
     <GridRow>
       <GridCol>
         <TTPanel>
-          <Heading level='h2'>Information Gathered by the Extension</Heading>
+          <Heading level='h2'>Information gathered by the extension</Heading>
           <Text>
             <p>In general, this extension collects anonymous data about the configuration of computers, operating systems, browsers, browsers' plugins, adblockers and other privacy software. Although these kinds of data may form a 'fingerprint' that could in principle be combined with information about page requests and identifying details in order to track people's browsing habits, we will never do so.</p>
             <p>The types of information we collect are:
@@ -60,7 +60,7 @@ const PrivacyPolicyPage = () => (
     <GridRow>
       <GridCol>
         <TTPanel>
-          <Heading level='h2'>Updating or Removing Your Information</Heading>
+          <Heading level='h2'>Updating or removing your information</Heading>
           <Text>
             <p>To protect your privacy, we use various techniques to anonymize the data set, and have promised in this policy not to try to de-anonymize the data, which means we don't know which entry in our data set is from your browser. This also means that we have no way to allow you to access, update or remove that specific data. If you have any questions, please contact us.</p>
           </Text>
@@ -71,7 +71,7 @@ const PrivacyPolicyPage = () => (
     <GridRow>
       <GridCol>
         <TTPanel>
-          <Heading level='h2'>Sharing of Our Data</Heading>
+          <Heading level='h2'>Sharing of our data</Heading>
           <Text>
             <p>As part of this project, we may share datasets derived from this project with research partners working on topics related to Internet security or privacy. We may also publish datasets in an effort to further these objectives. The datasets we may share or publish will not intentionally contain personally identifiable information.</p>
             <p>Before sharing, we will evaluate whether further sanitization or aggregation of data is necessary to reduce the likelihood that inferences about identifiable individuals' activities might be made from the published dataset. Because anonymization is an algorithmically complex problem, we cannot promise that it will be flawless or attack-proof. When we believe that a dataset may contain information that is especially sensitive or vulnerable to de-anonymition, we will not publish it, and if we share such data with research partners, we will place them under a contractual obligation to keep the dataset confidential and avoid de-anonymization.</p>
@@ -83,7 +83,7 @@ const PrivacyPolicyPage = () => (
     <GridRow>
       <GridCol>
         <TTPanel>
-          <Heading level='h2'>Data Storage and Retention</Heading>
+          <Heading level='h2'>Data storage and retention</Heading>
           <Text>
             <p>...</p>
           </Text>
@@ -105,7 +105,7 @@ const PrivacyPolicyPage = () => (
     <GridRow>
       <GridCol>
         <TTPanel>
-          <Heading level='h2'>Contacting Us</Heading>
+          <Heading level='h2'>Contacting us</Heading>
           <Text>
             <p>If you have any questions about our privacy and data protection practices, you can reach our Principal Invesgitators at:</p>
             <p><strong>Blase Ur</strong><br/>Room 363<br/>5730 S Ellis Ave<br/>Chicago, IL 60637<br/>Email: blase@uchicago.edu</p>

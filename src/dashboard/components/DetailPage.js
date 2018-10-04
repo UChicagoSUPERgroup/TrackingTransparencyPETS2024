@@ -191,7 +191,7 @@ export default class DetailPage extends React.Component {
                   {({ size }) => (
                     <WordCloud
                       data={inferences}
-                      height={496}
+                      height={inferences.length < 10 ? 250 : 500}
                       width={size.width}
                     />
                   )}

@@ -6,7 +6,6 @@ import Text from '@instructure/ui-elements/lib/components/Text'
 
 import logging from './dashboardLogging'
 import TTPanel from './components/TTPanel'
-import UserstudyOptionsUI from '../options/UserstudyOptionsUI'
 
 // function onCanceled(error) {
 //   console.log(`Canceled: ${error}`);
@@ -59,10 +58,7 @@ export class SettingsPage extends React.Component {
   render () {
     return (
       <div>
-        <Heading level='h1'>Settings</Heading>
-        <TTPanel margin='medium 0 medium 0'>
-          <UserstudyOptionsUI />
-        </TTPanel>
+        <Heading level='h1'><strong>Settings</strong></Heading>
         {resetInfo}
         {uninstallInfo}
       </div>

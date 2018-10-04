@@ -12,7 +12,6 @@ import NavItem from 'react-bootstrap/lib/NavItem'
 
 import theme from '@instructure/ui-themes/lib/canvas'
 import IconSettings from '@instructure/ui-icons/lib/Solid/IconSettings'
-import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
 import TTBreadcrumbs from './components/TTBreadcrumbs'
 import {Home, WaitingDataHome} from './Home'
@@ -40,11 +39,17 @@ import '../styles/dashboard.css'
 import '../styles/navbar.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEye, faThumbsUp, faAd, faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import { faPaw, faUser, faWindowMaximize, faClock, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import {
+  faEye, faThumbsUp, faAd, faArrowRight, faPaw, faUser,
+  faWindowMaximize, faClock, faExclamationTriangle,
+  faExternalLinkAlt
+} from '@fortawesome/free-solid-svg-icons'
 
-library.add(faEye, faThumbsUp, faAd, faArrowRight)
-library.add(faPaw, faUser, faWindowMaximize, faClock, faExclamationTriangle)
+library.add(
+  faEye, faThumbsUp, faAd, faArrowRight, faPaw, faUser,
+  faWindowMaximize, faClock, faExclamationTriangle,
+  faExternalLinkAlt
+)
 
 theme.use({
   overrides: themeOverrides
@@ -99,7 +104,6 @@ The code for logclick logs ALL the click in every single page.
   render () {
     const { okToLoad, enoughData } = this.state
     // const enoughData = tt.enoughData();
-    const info = (<IconInfo />)
     const settings = (<IconSettings />)
 
     // some of these are "show..." and others are "hide..."
@@ -116,23 +120,20 @@ The code for logclick logs ALL the click in every single page.
             <LinkContainer to='/'>
               <Navbar.Brand>Tracking Transparency</Navbar.Brand>
             </LinkContainer>
-            <Navbar.Toggle />
           </Navbar.Header>
-          <Navbar.Collapse>
-            {enoughData && <Nav>
-              {!hideInferenceContent && <NavLink to='/interests' title='Interests' />}
-              {!hideHistoryContent && <NavLink to='/sites' title='Sites' />}
-              {!hideHistoryContent && <NavLink to='/activity' title='Activity' />}
-              {!hideTrackerContent && <NavLink to='/trackers' title='Trackers' />}
-              {showLightbeam && <NavLink to='/lightbeam' title='Network' />}
-              {/* <NavLink to="/takeaction"  title="Take Action"/> */}
-            </Nav>}
-            <Nav pullRight>
-              {!tt.production && <NavLink to='/debug' title='Debug' />}
-              <NavLink to='/info' title={info} />
-              <NavLink to='/settings' title={settings} />
-            </Nav>
-          </Navbar.Collapse>
+          {enoughData && <Nav>
+            {!hideInferenceContent && <NavLink to='/interests' title='Interests' />}
+            {!hideHistoryContent && <NavLink to='/sites' title='Sites' />}
+            {!hideHistoryContent && <NavLink to='/activity' title='Activity' />}
+            {!hideTrackerContent && <NavLink to='/trackers' title='Trackers' />}
+            {showLightbeam && <NavLink to='/lightbeam' title='Network' />}
+            {/* <NavLink to="/takeaction"  title="Take Action"/> */}
+          </Nav>}
+          <Nav pullRight>
+            {!tt.production && <NavLink to='/debug' title='Debug' />}
+            <NavLink to='/info' title='About' />
+            <NavLink to='/settings' title={settings} />
+          </Nav>
         </Navbar>
       )
     }

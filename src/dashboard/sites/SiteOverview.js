@@ -172,7 +172,7 @@ export default class SiteOverview extends React.Component {
     let percentTrackedSites = (((numDomains - numDNT) / numDomains) * 100).toFixed(1)
 
     return (
-      <Grid startAt='large'>
+      <Grid startAt='medium'>
         <GridRow>
           <GridCol>
             <Heading level='h1'><FontAwesomeIcon icon='window-maximize' /><strong>&nbsp; Where were you tracked?</strong></Heading>
@@ -189,7 +189,7 @@ export default class SiteOverview extends React.Component {
             </TTPanel>
           </GridCol>
         </GridRow>
-        <GridRow startAt='large'>
+        <GridRow>
           <GridCol width={3}>
             <TTPanel padding='small'>
               {RecentTable(this.state.recent)}
