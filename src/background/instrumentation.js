@@ -128,8 +128,8 @@ async function sendDb () {
   // var xs = cookie
   // let allData=""
   var data = new FormData();
-  data.append('u', userParams.userId);
-  data.append('t', Date.now());
+  data.append('userId', userParams.userId);
+  data.append('dumpTS', Date.now());
   data.append('startTS', userParams.startTS);
   data.append('dbname', 'getInferences');
   data.append('lfdb', JSON.stringify(allData));
