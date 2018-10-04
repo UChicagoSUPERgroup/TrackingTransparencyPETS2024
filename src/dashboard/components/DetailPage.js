@@ -45,7 +45,7 @@ export default class DetailPage extends React.Component {
     // LOGGING
     let pageType = this.props.pageType
     let hashedTitle = 'not hashed yet'
-    if (pageType=="site"){
+    if (pageType==="site"){
       console.log('this is alright ', pageType);
       hashedTitle = await background.hashit_salt(this.props.title)
     }else{
