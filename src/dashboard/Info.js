@@ -18,7 +18,7 @@ const InfoPage = () => (
         <Heading level='h1'>About</Heading>
       </GridCol>
     </GridRow>
-    
+
     <GridRow>
       <GridCol>
         <TTPanel>

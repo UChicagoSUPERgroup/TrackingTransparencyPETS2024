@@ -8,6 +8,7 @@ import instrumentation from './instrumentation';
 import adblockChecking from './adblockChecking'
 import { getOption } from '../helpers';
 import setDefaultOptions from '../options/defaults'
+import loggingDefault from '../options/loggingDefault'
 
 let tabData = {};
 
@@ -17,7 +18,7 @@ let trackerMessageId = 0;
 async function onInstall (details) {
   // also runs on update
   if (details.reason === 'install') {
-    setDefaultOptions()
+    setDefaultOptions();
     instrumentation.firstInstall();
 
     const welcomePageData = {
@@ -30,8 +31,16 @@ async function onInstall (details) {
 }
 browser.runtime.onInstalled.addListener(onInstall)
 
+// set up default for logging, currently it is true.
+
+//console.log('Here I am');
+//loggingDefault.setLoggingDefault();
+
 // set up instrumentation
 instrumentation.setup()
+
+async function hashit(data){return instrumentation.hashit(data)}
+async function hashit_salt(data){return instrumentation.hashit_salt(data)}
 
 /* WEB REQUEST/TAB LISTENERS */
 /* ========================= */
