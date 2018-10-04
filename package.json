@@ -1,6 +1,6 @@
 {
   "name": "trackingtransparency",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Provides information about online tracking",
   "scripts": {
     "build": "wp --progress --config webpack.dev.js",
