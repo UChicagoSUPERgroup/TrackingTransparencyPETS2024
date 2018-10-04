@@ -7,7 +7,6 @@ import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import TextInput from '@instructure/ui-forms/lib/components/TextInput'
 import Button from '@instructure/ui-buttons/lib/components/Button'
-import Link from '@instructure/ui-elements/lib/components/Link'
 import Table from '@instructure/ui-elements/lib/components/Table'
 import ScreenReaderContent from '@instructure/ui-a11y/lib/components/ScreenReaderContent'
 
@@ -80,8 +79,8 @@ class WelcomePage extends React.Component {
         <Heading margin='large 0 medium 0'>Conflicting extensions</Heading>
         <Text>
           This extension works by collecting information about which trackers and advertisments are on the web pages you visit. As such, having an ad blocker or tracker blocker installed can prevent our extension from collecting the data needed to visualize your web browsing.
-          {!isFirefox && " We have detected that you have the following ad or tracker blockers enabled, we would recommend that you disable them using the switches below."}
-          {isFirefox && " We have detected that you have the following ad or tracker blockers enabled, we would recommend that you disable them on the addons settings age."}
+          {!isFirefox && ' We have detected that you have the following ad or tracker blockers enabled, and recommend that you disable them using the switches below.'}
+          {isFirefox && ' We have detected that you have the following ad or tracker blockers enabled, and recommend that you disable them on the add-ons settings page.'}
         </Text>
         <Table
           caption={<ScreenReaderContent>Installed ad or tracker blockers</ScreenReaderContent>}
@@ -109,8 +108,7 @@ class WelcomePage extends React.Component {
             ), this)}
           </tbody>
         </Table>
-        {isFirefox && <Button onClick={() => window.open('about:addons', '_blank')}>Open add-ons settings</Button>}
-        TODO ADD FF DIRECTIONS
+        {isFirefox && <Text><p>You can disable these add-ons by clicking on the <strong>menu icon</strong> in the top-right corner of your browser window, then clicking <strong>Add-ons</strong>. When the add-ons page opens, click on the <strong>Add-ons</strong> section on the left, and then find the add-ons listed above and clicking <strong>Disable</strong> for each of them.</p></Text>}
       </div>
     )
   }
@@ -136,12 +134,12 @@ class WelcomePage extends React.Component {
           <Text>
             <p>To activate our browser extension, please enter the activation code that is displayed at the end of the survey:</p>
           </Text>
-          <TextInput label="" placeholder="activation code from MTurk" onChange={this.onMTurkCodeInput} />
+          <TextInput label='' placeholder='activation code from MTurk' onChange={this.onMTurkCodeInput} />
           <Text>
             <p>By clicking continue, you indicate that you accept the consent form and will be taken to the extension homepage.</p>
           </Text>
 
-          <Button variant="primary" onClick={this.onSave}>Continue</Button>
+          <Button variant='primary' onClick={this.onSave}>Continue</Button>
         </div>
 
       </div>
