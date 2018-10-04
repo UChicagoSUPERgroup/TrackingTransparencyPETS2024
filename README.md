@@ -33,18 +33,21 @@ A browser extension to provide information about online tracking.
   - OS X: `npm install`
   - Linux/Windows `npm install --no-optional`
 
-- Run webpack: `npm run watch` - this runs Webpack in watch mode and automatically reruns whenever you change any files. Recommended to leave this running in a background terminal.
-
-You can also use [yarn](https://yarnpkg.com/).
+- Build the code: `npm run build` 
+- (Optional for development) Build using `npm run build:watch`. This runs Webpack in watch mode and automatically reruns whenever you change any files. Recommended to leave this running in a background terminal.
 
 ### Chrome
+
+Recommended: run `npm run start:chromium` to start up a temporary Chromium instance in with the extension installed, and pre-seeded data.
+
+Otherwise, to install to your normal chrome profile, do:
 
 1. Visit `chrome://extensions` in your browser \(or open up the Chrome menu by clicking the icon to the far right of the window, and select **Extensions** under the **More Tools** menu to get to the same place\).
 2. Ensure that the **Developer mode** toggle in the top right-hand corner is checked.
 3. Click **Load unpacked extension…** to pop up a file-selection dialog.
 4. Navigate to where the code is located on your computer, and select the `extension/` subdirectory.
 
-Alternatively, you can drag and drop the directory where your extension files live onto `chrome://extensions` in your browser to load it.
+Alternatively, you can drag and drop the directory where the extension files live onto `chrome://extensions` in your browser to load it.
 
 ### Firefox
 
@@ -57,9 +60,9 @@ The extension will now be installed, and will stay installed until you close or 
 
 Run `npm test` to run automated tests that check end-to-end functionality.
 
-Run `npm run chromium` to start up a temporary Chromium (Chrome) instance with the extension installed. The browser will automatically navigate to a few pages before opening the dashboard.
+Run `npm run start:chromium` to start up a temporary Chromium (Chrome) instance with the extension installed, and pre-seeded data.
 
-Run `npm run firefox` to start up a temporary Firefox profile with the extension installed.
+Run `npm run start:firefox` to start up a temporary Firefox profile with the extension installed.
 
 # Building for Production
 
