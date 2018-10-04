@@ -11,6 +11,7 @@ import {
 import * as moment from 'moment'
 import _ from 'lodash'
 
+import { axisStyle } from '../../colors'
 import CustomAxisLabel from './CustomAxisLabel'
 
 export default function PageTimeGraph ({ timestamps, color }) {
@@ -52,8 +53,11 @@ export default function PageTimeGraph ({ timestamps, color }) {
           tickValues={tickValues}
           tickFormat={dataLabel}
           tickLabelAngle={-20}
+          style={axisStyle}
         />
-        <YAxis />
+        <YAxis
+          style={axisStyle}
+        />
         <CustomAxisLabel title='Pages' />
         <CustomAxisLabel title='Day' xAxis yShift={1.6} />
       </FlexibleWidthXYPlot>

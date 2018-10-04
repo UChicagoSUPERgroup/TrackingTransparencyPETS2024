@@ -14,6 +14,8 @@ import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 import IconArrowOpenEnd from '@instructure/ui-icons/lib/Solid/IconArrowOpenEnd'
 import IconInfo from '@instructure/ui-icons/lib/Solid/IconInfo'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import InferenceSummary from './InferenceSummary'
 import InferencesSunburst from './InferencesSunburst'
 import TTPanel from '../components/TTPanel'
@@ -30,7 +32,10 @@ export default class InferencesOverview extends React.Component {
       sensitivitySelection: 'all-sensitive',
       popularitySelection: 'all-popular',
       dateSelection: 'all-dates',
-      numInferences: null
+      numInferences: null,
+      exampleSite: "",
+      exampleInference: "",
+      exampleTracker: ""
     }
 
     this.handleSunburstSelection = this.handleSunburstSelection.bind(this)
@@ -52,6 +57,18 @@ export default class InferencesOverview extends React.Component {
       this.setState({
         inferences: i
       })
+    })
+  }
+
+  async getExample() {
+    let args = {count: 1}
+    const background = await browser.runtime.getBackgroundPage()
+    const example = await background.queryDatabase('getInferencesDomainsToSend', args)
+
+    this.setState({
+      exampleSite: example[0].Pages.domain,
+      exampleInference: this.InferenceLink(example[0].Inferences.inference),
+      exampleTracker: example[0].Trackers.tracker
     })
   }
 
@@ -210,10 +227,12 @@ export default class InferencesOverview extends React.Component {
     let activityType = 'load dashboard Interests page'
     logging.logLoad(activityType, {})
     this.getInferences()
+    this.getExample()
   }
 
   render () {
     let { inferences, selectedInference, numInferences } = this.state
+    let { exampleSite, exampleInference, exampleTracker } = this.state
 
     const popularityTooltipText = (
       <div style={{width: 160}}>
@@ -320,24 +339,23 @@ export default class InferencesOverview extends React.Component {
       <Grid startAt='medium'>
         <GridRow>
           <GridCol>
-            <Heading level='h1'>What could they have learned?</Heading>
+            <Heading level='h1'><FontAwesomeIcon icon='thumbs-up' /><strong>&nbsp; What do they think you like?</strong></Heading>
           </GridCol>
         </GridRow>
         <GridRow>
           <GridCol>
             <TTPanel>
               <Text>
-                <p>Trackers collect information about the pages you visit in order to make guesses about topics you might be interested in. We call these topics <em>interests</em> .These interests are then used to show you targeted ads, to do web analytics, and more. Our algorithms have determined <strong>{numInferences} topics</strong> that trackers might have inferred you are interested in.</p>
-                {inferences && inferences.length >= 3 && <p> {this.InferenceLink(inferences[0].inference)}, {this.InferenceLink(inferences[1].inference)}, and {this.InferenceLink(inferences[2].inference)} were among the most frequent topics that our algorithm determined the pages you visited recently are about.</p>}
+                <p>Trackers collect information about the pages you visit, and use this information in order to make guesses about topics you might like. We call these topics <em>interests</em>. These interests are then used to show you targeted ads, to do web analytics, and more. Our algorithms have identified <strong>{numInferences} topics</strong> that trackers might have guessed you are interested in.</p>
+                <p>You recently visited <Link href={'#/sites/'+exampleSite}>{exampleSite}</Link>, which our algorithms think is about {exampleInference}. The tracker, <Link href={'#/trackers/'+exampleTracker}>{exampleTracker}</Link>, was tracking your browsing activity and may have guessed that you are interested in {exampleInference}.</p>
+                <p>This chart shows some topics that trackers think you might be interested in, based on your browsing activity. Click a slice of the chart to see more details.</p>
               </Text>
-
             </TTPanel>
           </GridCol>
         </GridRow>
         <GridRow>
           <GridCol width={7}>
             <TTPanel padding='0 0 0 0'>
-              {/* <Text>This diagram shows some of the inferences that may have been made about your browsing and their frequency. Click on a piece of the chart to see more details.</Text> */}
               <SizeMe>
                 {({ size }) => {
                   if (inferences) {
@@ -372,7 +390,7 @@ export default class InferencesOverview extends React.Component {
           <GridCol width={5}>
             <TTPanel textAlign='start'>
               {!selectedInference && <Text className='selected-inference' weight='bold'>
-                 This chart shows some interests that trackers could have made about you based on your browsing activity. Click a slice of the chart to see more details. </Text>}
+                 Click a slice of the chart to see what trackers think you might be interested in. </Text>}
               {selectedInference && <div>
                 <InferenceSummary inference={selectedInference} />
                 <Link

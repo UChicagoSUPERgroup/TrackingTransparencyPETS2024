@@ -1,6 +1,10 @@
 import React from 'react'
 import Breadcrumb from '@instructure/ui-breadcrumb/lib/components/Breadcrumb'
 import BreadcrumbLink from '@instructure/ui-breadcrumb/lib/components/Breadcrumb/BreadcrumbLink'
+import View from '@instructure/ui-layout/lib/components/View'
+import { darken } from '@instructure/ui-themeable/lib/utils/color'
+
+import colors from '../../colors'
 
 const urlComponentMapping = {
   '': 'Home',
@@ -55,8 +59,15 @@ export default class TTBreadcrumbs extends React.Component {
   render () {
     let names = this.urlToArray(this.props.url)
     return (
-      <div>
-        <Breadcrumb label='You are here:' margin='none none medium none'>
+      <div
+        style={{
+          background: darken(colors.ltGray, 5),
+          padding: '8px 10px 8px 10px',
+          margin: '10px 0 25px 0',
+          borderRadius: 5
+        }}
+      >
+        <Breadcrumb label='You are here:'>
           {names.map((x, i, arr) => {
             if (i === arr.length - 1) {
               return <BreadcrumbLink key={x.name}>{x.name}</BreadcrumbLink>

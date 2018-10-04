@@ -16,6 +16,7 @@
         "downloads",
         "tabs",
         "alarms",
+        "management",
         "webRequest",
         "webNavigation",
         "<all_urls>"

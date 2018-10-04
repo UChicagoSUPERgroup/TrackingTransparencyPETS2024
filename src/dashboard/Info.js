@@ -9,6 +9,7 @@ import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 
 import logging from './dashboardLogging'
 import TTPanel from './components/TTPanel'
+import PrivacyPolicyPage from './PrivacyPolicy'
 
 const InfoPage = () => (
   <Grid>
@@ -57,7 +58,10 @@ const InfoPage = () => (
           The data that Tracking Transparency collects about you is securely stored in your local browser. Your data is never sent to another server, so not even the researchers and developers of Tracking Transparency have access to your data.
             </p>
             <p>
-          To show you the data that other companies could gather about your browsing behavior, our extension logs your behavior and page visits in a local database on your computer. The extension also sends a limited number of anonymized statistics so we can understand how people are using the extension. We send information about ???, ???, and ???. The specific websites you visit and your browsing history never leave your computer and are not shared in any way. The statistics collected will only be accessed by the University of Chicago research team. We may publish aggregate statistics and findings from the reported data, but will never sell or share your data. (TODO confirm that we can actually say we will *never* share)
+          To show you the data that other companies could gather about your browsing behavior, our extension logs your behavior and page visits in a local database on your computer. The extension also sends a small number of anonymized statistics so we can understand how people are using the extension. We send information about ???, ???, and ???. The specific websites you visit and your browsing history never leave your computer and are not shared in any way. The statistics collected will only be accessed by the University of Chicago research team. We may publish aggregate statistics and findings from the reported data, but will never sell your data.
+            </p>
+            <p>
+          To learn more, please read our {PrivacyPolicyPage}<a href='#/privacypolicy'>privacy policy</a>.
             </p>
           </Text>
         </TTPanel>

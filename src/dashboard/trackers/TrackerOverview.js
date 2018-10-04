@@ -13,7 +13,10 @@ import RadioInputGroup from '@instructure/ui-forms/lib/components/RadioInputGrou
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 
-import colors from '../../colors'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import colors, { axisStyle } from '../../colors'
+import CustomAxisLabel from '../components/CustomAxisLabel'
 import TrackerSummary from './TrackerSummary'
 import TTPanel from '../components/TTPanel'
 import logging from '../dashboardLogging'
@@ -175,11 +178,7 @@ export default class TrackerOverview extends React.Component {
     return (
       <TTPanel>
         <Text>
-          <p><strong>{numTrackers} trackers</strong> have collected information about you based on your browsing history. Your most
-              frequently encountered tracker is <strong>{allData[0].name}</strong> which was
-              present on <em>{allData[0].percent.toFixed(2)}%</em> of
-              the pages you visited.
-              Here are your 20 most frequently encountered trackers:</p>
+          <p><strong>{numTrackers} trackers</strong> have collected information about you based on your browsing history. Your most             frequently encountered tracker is <strong>{allData[0].name}</strong> which was present on <strong>{allData[0].percent.toFixed(2)}%</strong> of the pages you visited.</p>
         </Text>
       </TTPanel>
     )
@@ -197,7 +196,7 @@ renderChart () {
         <FlexibleWidthXYPlot
           yType={'ordinal'}
           height={800}
-          margin={{left: 100}}
+          margin={{left: 120, bottom: 60}}
           onMouseLeave={() => this.setState({hovered: null})}
           colorDomain={[0, 1]}
           colorRange={[colors.red1, colors.red2]}
@@ -207,9 +206,11 @@ renderChart () {
           <YAxis
             height={200}
             tickLabelAngle={0}
+            style={axisStyle}
           />
           <XAxis
             tickFormat={v => (v / numPages * 100).toFixed(2) + '%'}
+            style={axisStyle}
           />
           {hovered && <Hint
             value={hovered}>
@@ -232,6 +233,7 @@ renderChart () {
                 logging.logLoad(activityType, {'tracker_clicked':datapoint["y"], 'tracker_pages':datapoint["x"]})
             }}
           />
+          <CustomAxisLabel title='Percent of pages' xAxis />
         </FlexibleWidthXYPlot>
         <RadioInputGroup
           name='graph-count'
@@ -287,7 +289,7 @@ renderChart () {
       <Grid>
         <GridRow>
           <GridCol>
-            <Heading level='h1'>Who is tracking you?</Heading>
+            <Heading level='h1'><FontAwesomeIcon icon='eye'/><strong>&nbsp;  Who is tracking you?</strong></Heading>
           </GridCol>
         </GridRow>
         <GridRow>

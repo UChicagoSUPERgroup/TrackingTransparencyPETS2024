@@ -5,6 +5,7 @@ import tldjs from 'tldjs';
 import {trackersWorker, databaseWorker, inferencingWorker, queryDatabase} from './worker_manager';
 import overlayManager from './overlay_manager';
 import instrumentation from './instrumentation';
+import adblockChecking from './adblockChecking'
 import { getOption } from '../helpers';
 import setDefaultOptions from '../options/defaults'
 import loggingDefault from '../options/loggingDefault'

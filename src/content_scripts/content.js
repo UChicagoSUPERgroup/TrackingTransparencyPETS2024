@@ -6,6 +6,7 @@ async function runtimeOnMessage (m) {
   switch (m.type) {
     case 'make_inference':
       makeInference()
+      break
     case 'create_or_update_overlay':
       overlay.createOrUpdate(m.innerHTML)
       break

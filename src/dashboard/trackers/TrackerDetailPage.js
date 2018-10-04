@@ -2,6 +2,7 @@ import React from 'react'
 
 import Text from '@instructure/ui-elements/lib/components/Text'
 import ToggleDetails from '@instructure/ui-toggle-details/lib/components/ToggleDetails'
+import Heading from '@instructure/ui-elements/lib/components/Heading'
 
 import colors from '../../colors'
 
@@ -32,9 +33,9 @@ export default class TrackerDetailPage extends React.Component {
 
     const metrics = [
       {
-        name: 'Type',
-        value: trackerInfo.type
-      }, {
+        // name: 'Type',
+        // value: trackerInfo.type
+      // }, {
         name: 'Sites',
         value: domains.length
       }, {
@@ -44,7 +45,7 @@ export default class TrackerDetailPage extends React.Component {
     ]
     if (inferences) {
       metrics.push({
-        name: 'Inferences',
+        name: 'Interests',
         value: inferences.length
       })
     }
@@ -66,12 +67,14 @@ export default class TrackerDetailPage extends React.Component {
 
     const introText = trackerInfo.description
       ? <Text>
+        <Heading level='h2'>What does {this.tracker} do?</Heading>
+
         {trackerInfo.description && <div>
           <div dangerouslySetInnerHTML={{__html: trackerInfo.description}} />
         </div>}
 
         {trackerInfo.notes && <ToggleDetails
-          summary={'Who is ' + this.tracker + '?'}
+          summary={'Read more'}
         >
           <div dangerouslySetInnerHTML={{__html: trackerInfo.notes}} />
         </ToggleDetails>}
@@ -82,6 +85,7 @@ export default class TrackerDetailPage extends React.Component {
       <this.DetailPage
         pageType='tracker'
         title={this.tracker}
+        icon='eye'
         description={introText}
         accentColor={colors.red1}
         metrics={metrics}
@@ -96,4 +100,3 @@ export default class TrackerDetailPage extends React.Component {
     )
   }
 }
-
