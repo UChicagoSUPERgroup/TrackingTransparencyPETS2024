@@ -59,7 +59,7 @@ export class SettingsPage extends React.Component {
   render () {
     return (
       <div>
-        <Heading level='h1'>Settings</Heading>
+        <Heading level='h1'><strong>Settings</strong></Heading>
         <TTPanel margin='medium 0 medium 0'>
           <UserstudyOptionsUI />
         </TTPanel>

@@ -126,7 +126,7 @@ class DebugPage extends React.Component {
     const {result, error, queryTime} = this.state
     return (
       <div>
-        <Heading level='h1' margin='0 0 medium'>Debug</Heading>
+        <Heading level='h1' margin='0 0 medium'><strong>Debug</strong></Heading>
         <TTPanel margin='medium 0 medium 0'>
           <Heading level='h2' margin='0 0 medium'>Database query</Heading>
           <FormFieldGroup
