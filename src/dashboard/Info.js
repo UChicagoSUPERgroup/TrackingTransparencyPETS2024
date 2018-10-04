@@ -16,9 +16,10 @@ export default class InfoPage extends React.Component {
   //   super(props)
   // }
 
-  // componentDidMount () {
-
-  // }
+  componentDidMount () {
+    let activityType = 'load dashboard About page'
+    logging.logLoad(activityType, {})
+  }
 
   render () {
     return (

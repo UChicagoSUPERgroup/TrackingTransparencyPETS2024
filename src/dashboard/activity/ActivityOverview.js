@@ -36,7 +36,7 @@ export default class ActivityOverview extends React.Component {
       tempDate.getMonth(), tempDate.getDate())
     let args = {afterDate: startDate.getTime()}
     const weektimestamps = background.queryDatabase('getTimestamps', args)
-    let activityType = 'load dashboard recent activity page'
+    let activityType = 'load dashboard Activity page'
     logging.logLoad(activityType, {})
     weektimestamps.then(ts => {
       const times = ts.map(x => (

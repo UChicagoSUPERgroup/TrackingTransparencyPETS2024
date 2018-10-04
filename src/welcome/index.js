@@ -13,6 +13,8 @@ import ScreenReaderContent from '@instructure/ui-a11y/lib/components/ScreenReade
 
 import logging from '../dashboard/dashboardLogging'
 import { themeOverrides } from '../colors'
+import instrumentation from '../background/instrumentation';
+import loggingDefault from '../options/loggingDefault'
 
 theme.use({ overrides: themeOverrides })
 
@@ -53,6 +55,8 @@ class WelcomePage extends React.Component {
   async onSave () {
     await browser.storage.local.set({ mturkcode: this.state.mturkcode })
     // TODO do more stuff here
+    loggingDefault.setLoggingDefault()
+    instrumentation.firstInstall()
     window.location.href = '/dist/dashboard.html'
   }
 
