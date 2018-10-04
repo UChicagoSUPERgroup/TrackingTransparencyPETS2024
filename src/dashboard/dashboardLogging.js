@@ -233,7 +233,7 @@ async function logDashboardClick (e) {
 
   // log click on domains table for a particular inference
   if (e.target.localName == 'a' && e.target.className.includes('inferencePageTopTextInferenceLink')) {
-    activityType = 'click on Intetest link on Interests dashboard page top text'
+    activityType = 'click on Interest link on Interests dashboard page top text'
     let linkClicked = e.target.text;
     linkClicked = await background.hashit(linkClicked);
     extraData = {'inferencePageTopTextInferenceLink_Clicked': linkClicked}
