@@ -19,7 +19,6 @@ async function onInstall (details) {
   // also runs on update
   if (details.reason === 'install') {
     setDefaultOptions();
-    instrumentation.firstInstall();
 
     const welcomePageData = {
       active: true,

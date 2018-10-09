@@ -17,8 +17,6 @@ import TTBreadcrumbs from './components/TTBreadcrumbs'
 import {Home, WaitingDataHome} from './Home'
 import logging from './dashboardLogging'
 
-import PrivacyPolicyPage from './PrivacyPolicy'
-
 import {
   Trackers,
   Inferences,
@@ -193,7 +191,6 @@ The code for logclick logs ALL the click in every single page.
 
             <Route path='/debug' component={DebugPage} />
             <Route path='/info' component={InfoPage} />
-            <Route path='/privacypolicy' component={PrivacyPolicyPage} />
             <Route path='/settings' component={SettingsPage} />
           </div>}
 

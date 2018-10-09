@@ -9,7 +9,6 @@ import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 
 import logging from './dashboardLogging'
 import TTPanel from './components/TTPanel'
-import PrivacyPolicyPage from './PrivacyPolicy'
 
 export default class InfoPage extends React.Component {
   // constructor (props) {
@@ -72,7 +71,7 @@ export default class InfoPage extends React.Component {
             To show you the data that other companies could gather about your browsing behavior, our extension logs your behavior and page visits in a local database on your computer. The extension also sends a small number of anonymized statistics so we can understand how people are using the extension. We send information about ???, ???, and ???. The specific websites you visit and your browsing history never leave your computer and are not shared in any way. The statistics collected will only be accessed by the University of Chicago research team. We may publish aggregate statistics and findings from the reported data, but will never sell your data.
                 </p>
                 <p>
-            To learn more, please read our {PrivacyPolicyPage}<a href='#/privacypolicy'>privacy policy</a>.
+                  To learn more, please read our <a href='https://super.cs.uchicago.edu/trackingtransparency/privacy.html' target='_blank'>privacy policy</a>.
                 </p>
               </Text>
             </TTPanel>
