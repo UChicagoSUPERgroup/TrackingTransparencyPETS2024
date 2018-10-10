@@ -320,7 +320,7 @@ export const WaitingDataHome = () => (
     <TTPanel>
       <Text>
         <p>The Tracking Tranparency extension is currently running in the background to collect information about the trackers in your browsing.</p>
-        <p>Continue using the internet and come back here in a few days to see what they might know about your browsing!</p>
+        <p>Continue using the Internet and come back here in a few days to see what they might know about your browsing!</p>
       </Text>
     </TTPanel>
   </div>

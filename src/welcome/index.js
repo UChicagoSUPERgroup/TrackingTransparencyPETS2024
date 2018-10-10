@@ -2,19 +2,27 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import theme from '@instructure/ui-themes/lib/canvas'
-import Checkbox from '@instructure/ui-forms/lib/components/Checkbox'
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Link from '@instructure/ui-elements/lib/components/Link'
-import TextInput from '@instructure/ui-forms/lib/components/TextInput'
-import Button from '@instructure/ui-buttons/lib/components/Button'
-import Table from '@instructure/ui-elements/lib/components/Table'
-import ScreenReaderContent from '@instructure/ui-a11y/lib/components/ScreenReaderContent'
+import Grid from '@instructure/ui-layout/lib/components/Grid'
+import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
+import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
+import View from '@instructure/ui-layout/lib/components/View'
+
+// import Table from '@instructure/ui-elements/lib/components/Table'
+// import Checkbox from '@instructure/ui-forms/lib/components/Checkbox'
+// import ScreenReaderContent from '@instructure/ui-a11y/lib/components/ScreenReaderContent'
 
 import logging from '../dashboard/dashboardLogging'
 import { themeOverrides } from '../colors'
 import instrumentation from '../background/instrumentation';
 import loggingDefault from '../options/loggingDefault'
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCheckSquare, faSquare } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+library.add( faCheckSquare, faSquare )
 
 theme.use({ overrides: themeOverrides })
 
@@ -119,28 +127,74 @@ class WelcomePage extends React.Component {
       <div>
         <div className='container' style={styles.container}>
           <img src='/icons/super.svg' height='120px' />
+          <img src='/icons/umd.gif' height='120px' />
 
-          <Heading margin='large 0 medium 0'>About the extension</Heading>
+          <Heading margin='large 0 medium 0'>About this extension</Heading>
           <Text>
-            <p>This browser extension is a software tool that visualizes aspects of your web browsing. To access the extension, click on the icon in the corner of the upper right of your browser window. </p>
-            <img src='/icons/extension-toolbar.png' width='700px' style={{border: '1px solid black'}} />
+            <p>Tracking Transparency is a software tool that visualizes aspects of your web browsing. To access this extension, click on the icon in the corner of the upper right of your browser window. </p>
+            <img src='/icons/extension-toolbar.png' width="700px" style={{border: '1px solid black'}} />
             <p>The extension icon will appear in the upper right corner for Chrome as well as Firefox users. </p>
+          </Text>
+          <Heading margin='large 0 medium 0'>Our study</Heading>
+          <Text>
+            <p>There are two parts to this study.</p>
+            <Grid hAlign="space-around">
+              <GridRow>
+                <GridCol>
+                  <View as='div' shadow='resting' borderRadius='large' padding='small'>
+                    <Heading level='h3' margin='0 small small 0'>Part 1</Heading>
+                    <Text>
+                      <p><u>When</u>: now</p>
+                      <p><u>Steps</u>:</p>
+                      <p style={{'marginLeft':'1em'}}>
+                        <FontAwesomeIcon icon='check-square'/> install extension<br/>
+                        <FontAwesomeIcon icon='square'/> complete Survey 1 (15 mins.)<br/>
+                      </p>
+                      <p><u>Compensation</u>: $3.00</p>
+                    </Text>
+                  </View>
+                </GridCol>
+                <GridCol>
+                  <View as='div' shadow='resting' borderRadius='large' padding='small'>
+                    <Heading level='h3' margin='0 small small 0'>Part 2</Heading>
+                    <Text>
+                      <p><u>When</u>: in one week, you will be contacted via MTurk</p>
+                      <p><u>Steps</u>:</p>
+                      <p style={{'marginLeft':'1em'}}>
+                        <FontAwesomeIcon icon='square'/> complete Survey 2 (20 mins.)<br/>
+                        <FontAwesomeIcon icon='square'/> remove extension from your browser<br/>
+                      </p>
+                      <p><u>Compensation</u>: $7.00</p>
+                    </Text>
+                  </View>
+                </GridCol>
+              </GridRow>
+              <GridRow>
+                <GridCol>
+                  <View as='div' shadow='resting' borderRadius='large' padding='small' background='inverse'>
+                    <Heading level='h4'>IMPORTANT: You must keep the extension installed until you complete Survey 2. If you uninstall and re-install the extension, your data will no longer be valid and payment for Part 2 will not be processed.</Heading>
+                  </View>
+                </GridCol>
+              </GridRow>
+            </Grid>
           </Text>
           <Heading margin='large 0 medium 0'>Data collection</Heading>
           <Text>
-            <p>To enable its visualizations, the extension will store on your own computer data about your web browsing from while the extension is installed. This detailed data will not leave your computer and will not be shared with the researchers. The software will, however, collect for the researchers non-identifiable metadata, including broad descriptions of the topics of webpages you visit (e.g., “entertainment” or “computer hardware”) as well as how many different websites you visit, but not which particular websites you visit. This metadata will also include broad, non-identifiable usage statistics about your web browsing (e.g., the times of day you browse) and how you interact with the browser extension. Only this non-identifiable data and your survey responses will be collected by the researchers.</p>
+            <p>To enable its visualizations, the extension will store data on your computer about your web browsing.</p>
+            <p>Data that could identify you will <em>not</em> leave your computer and will <em>not</em> be shared with the researchers. The software will, however, collect for the researchers certain anonymized metrics, including:</p>
+            <ul>
+              <li>descriptions of the topics of webpages you visit (e.g., “entertainment” or “computer hardware”)</li>
+              <li>the number of different websites you visit, but not which specific websites</li>
+              <li>how you interact with the browser extension</li>
+            </ul>
             <p>Full information about the data collected by the extension and how we will use it is available in our <Link href='https://super.cs.uchicago.edu/trackingtransparency/privacy.html' target='_blank'>privacy policy</Link>.</p>
           </Text>
-          <Heading margin='large 0 medium 0'>Activation</Heading>
+          <Heading margin='large 0 medium 0'>Begin Survey 1</Heading>
           <Text>
-            <p>To activate our browser extension, please enter the activation code that you have been given:</p>
-          </Text>
-          <TextInput label='' placeholder='activation code from MTurk' onChange={this.onMTurkCodeInput} />
-          <Text>
-            <p>By clicking continue, you indicate that you accept the <Link href='https://super.cs.uchicago.edu/trackingtransparency/privacy.html' target='_blank'>privacy policy</Link> and will be taken to the extension homepage.</p>
+            <p>To begin Survey 1, go to the following link: </p>
+            <Heading level='h3'><a href="">www.qualtrics.com/THIS-IS-A-FAKE-LINK-REPLACE-ME</a></Heading><br/><br/><br/><br/><br/>
           </Text>
 
-          <Button variant='primary' onClick={this.onSave}>Continue</Button>
         </div>
 
       </div>
