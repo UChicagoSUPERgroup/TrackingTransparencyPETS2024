@@ -51,12 +51,12 @@ export default class DetailPage extends React.Component {
     let pageType = this.props.pageType
     let hashedTitle = 'not hashed yet'
     if (pageType==="site"){
-      console.log('this is alright ', pageType);
+      // console.log('this is alright ', pageType);
       hashedTitle = await background.hashit_salt(this.props.title)
     }else{
       hashedTitle = await background.hashit(this.props.title)
     }
-    console.log(hashedTitle);
+    // console.log(hashedTitle);
     let sendDict = {
       pageType: pageType,
       hashedTitle: hashedTitle
@@ -148,15 +148,15 @@ export default class DetailPage extends React.Component {
     if (pageType=="tracker") {
       return (
         <div>
-          <Heading level='h2'>What does <em>{title}</em> think your interests are?</Heading>
-          <Text><br/>{title} could have guessed that you were interested in a total of <strong>{numInferences} topics</strong>. <em>Click on a link in the wordcloud to learn more.</em></Text>
+          <Heading level='h2'>Based on your browsing, what would <em>{title}</em> think your interests are?</Heading>
+           <Text><br/>Using a machine to assign categories to pages you visit, {title} could have guessed that you were interested in a total of <strong>{numInferences} topics</strong>. <em>Click on a link in the wordcloud to learn more about each interest.</em><br/><br/></Text>
         </div>
       )
     } else if (pageType=="site") {
       return (
         <div>
-          <Heading level='h2'>What do trackers on <em>{title}</em> think your interests are?</Heading>
-          <Text><br/>Trackers on {title} could have guessed that you were interested in a total of <strong>{numInferences} topics</strong>. <em>Click on a link in the wordcloud to learn more.</em></Text>
+          <Heading level='h2'>Based on your visits to <em>{title}</em>, what would a tracker think your interests are?</Heading>
+          <Text><br/>Using a machine to assign categories to pages you visit, trackers on {title} could have guessed that you were interested in a total of <strong>{numInferences} topics</strong>. <em>Click on a link in the wordcloud to learn more about each interest.</em><br/></Text>
         </div>
       )
     }
