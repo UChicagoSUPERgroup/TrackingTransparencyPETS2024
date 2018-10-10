@@ -93,7 +93,6 @@ export default class SiteDetailPage extends React.Component {
     const introText = (
       <Text>
         <p>You have visited <strong>{pages.length} pages</strong> on {this.site} since installing this extension.</p>
-        <p>{this.site} the <strong>{rank}</strong> most popular site on the web, according to <a href='https://www.alexa.com/about'>Alexa</a>. </p>
       </Text>
     )
 
