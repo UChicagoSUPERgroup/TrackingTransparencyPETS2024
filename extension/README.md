@@ -8,6 +8,10 @@ Our extension provides users with information about online tracking and advertis
 
 The extension keeps a *local* database with the pages the user visits, along with the web trackers on the pages they visit, and an inference we make about the page's topic using a client-side algorithm bundled as part of the extension. This detailed data will not leave the users' computer and will not be shared with the researchers. The extension will send non-identifiable metadata and survey responses to the researchers. At the end of the study, we will provide detailed instructions for uninstalling this browser extension.
 
+A full privacy policy is available at https://super.cs.uchicago.edu/trackingtransparency/privacy.html
+
+Additionally, the consent form that users will accept before being directed to the installation link is available at https://super.cs.uchicago.edu/trackingtransparency/ConsentForm.pdf
+
 ## Architecture
 
 Our extension has many dependencies, and we use the Webpack build system to manage dependencies and compile the code. A copy of the full source code is provided in the `source/source.zip` file.
