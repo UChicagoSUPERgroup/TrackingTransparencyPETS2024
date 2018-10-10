@@ -2,8 +2,6 @@ import React from 'react'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 
-import alexa from 'alexarank'
-
 import colors from '../../colors'
 
 
@@ -47,34 +45,6 @@ export default class SiteDetailPage extends React.Component {
         value: trackers.length
       })
     }
-
-    alexa(this.site, (error, result) => {
-      if (!error) {
-        let num = result.rank
-        let lastDigit = num % 10
-        let ending
-
-        switch (lastDigit) {
-          case 1:
-            ending = "st"
-            break
-          case 2:
-            ending = "nd"
-            break
-          case 3:
-            ending = "rd"
-            break
-          default:
-            ending = "th"
-        }
-
-          this.setState({
-            rank: (num.toString())+ending
-          })
-      } else {
-          console.log(error);
-      }
-    })
 
     this.setState({
       inferences,
