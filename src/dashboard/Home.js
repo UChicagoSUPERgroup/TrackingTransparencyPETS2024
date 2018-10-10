@@ -12,6 +12,7 @@ import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import View from '@instructure/ui-layout/lib/components/View'
 import Tag from '@instructure/ui-elements/lib/components/Tag'
+import Button from '@instructure/ui-buttons/lib/components/Button'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -116,6 +117,7 @@ const arrowPanel = () => {
             <FontAwesomeIcon icon='arrow-right' size='3x' />
           </GridCol>
           <GridCol textAlign='center' width={3}>
+            {/* <div></div> */}
             <FontAwesomeIcon icon='ad' size='8x' />
           </GridCol>
         </GridRow>
@@ -128,6 +130,7 @@ const arrowPanel = () => {
           </GridCol>
           <GridCol width={3} textAlign='center'>
             <p>Your interests are then used to tailor your web experience, which changes the ads, search results, and social feeds that you see.</p>
+            {/* {handleExampleDisplay()} */}
           </GridCol>
         </GridRow>
 
@@ -136,10 +139,41 @@ const arrowPanel = () => {
   )
 }
 
+const handleExampleDisplay = () => {
+  var example = 0
+  var exampleText, buttonText = ""
+  var icon = null
+
+  switch (example) {
+    case 0:
+      icon = <FontAwesomeIcon icon='user' size='2x' />
+      exampleText = "Your interests are used to tailor your web experience."
+      buttonText = "See example"
+      break
+    case 1:
+      icon = <FontAwesomeIcon icon='paw' size='2x' />
+      exampleText = "You see an ad about dog clothes because you previously visited a blog about traveling with dogs. A third-party tracker on that blog guessed that you have an interest in dogs."
+      buttonText = "See another example"
+      break
+    case 2:
+
+      break
+    case 3:
+      break
+  }
+  return (
+    <div>
+      {icon}
+      <p>{exampleText}</p>
+      <Button size="small">{buttonText}</Button>
+    </div>
+  )
+}
+
 const examplePanel = () => {
   return (
     <TTPanel margin='medium 0 0 0'>
-      <Heading level="h3">Give me an example.<hr/></Heading>
+      <Heading level="h3">Give me some examples.<hr/></Heading>
       <Grid vAlign='middle' hAlign='space-between' colSpacing='none' rowSpacing='none'>
         <GridRow>
           <GridCol>
@@ -148,9 +182,9 @@ const examplePanel = () => {
               display="inline-block"
               margin="large"
               textAlign="center"
-              background="inverse"
               borderRadius="medium"
               maxWidth="200px"
+              shadow="resting"
             >
               <p style={{margin:"10px"}}><FontAwesomeIcon icon='paw' size='2x' /><br/>You see an ad about dog clothes because you previously visited a blog about traveling with dogs. A third-party tracker on that blog guessed that you have an interest in dogs.</p>
             </View>
@@ -161,11 +195,11 @@ const examplePanel = () => {
               display="inline-block"
               margin="large"
               textAlign="center"
-              background="inverse"
               borderRadius="medium"
               maxWidth="200px"
+              shadow="resting"
             >
-              <p style={{margin:"10px"}}><FontAwesomeIcon icon='paw' size='2x' /><br/>You see an ad about dog clothes because you previously visited a blog about traveling with dogs. A third-party tracker on that blog guessed that you have an interest in dogs.</p>
+              <p style={{margin:"10px"}}><FontAwesomeIcon icon='search' size='2x' /><br/>You want to know more about apples, the fruit, so you search for "apple". However, because you made many technology searches in the past, you see results for Apple, the company.</p>
             </View>
           </GridCol>
           <GridCol>
@@ -174,11 +208,11 @@ const examplePanel = () => {
               display="inline-block"
               margin="large"
               textAlign="center"
-              background="inverse"
               borderRadius="medium"
               maxWidth="200px"
+              shadow="resting"
             >
-              <p style={{margin:"10px"}}><FontAwesomeIcon icon='paw' size='2x' /><br/>You see an ad about dog clothes because you previously visited a blog about traveling with dogs. A third-party tracker on that blog guessed that you have an interest in dogs.</p>
+              <p style={{margin:"10px"}}><FontAwesomeIcon icon='users' size='2x' /><br/>You see posts from your close friends first on social media feeds, because you often engage with their posts.</p>
             </View>
           </GridCol>
         </GridRow>
