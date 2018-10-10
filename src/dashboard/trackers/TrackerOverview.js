@@ -272,7 +272,7 @@ renderChart () {
             icon={IconArrowOpenEnd}
             iconPlacement='end'
           >
-            Learn more
+            More about this tracker
           </Link>
         </div>}
       </TTPanel>

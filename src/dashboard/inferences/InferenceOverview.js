@@ -399,7 +399,7 @@ export default class InferencesOverview extends React.Component {
                   icon={IconArrowOpenEnd}
                   iconPlacement='end'
                 >
-                    Learn more
+                    More about this interest
                 </Link>
               </div>}
             </TTPanel>
