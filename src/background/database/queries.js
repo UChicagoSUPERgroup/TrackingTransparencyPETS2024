@@ -458,7 +458,7 @@ async function getPagesByTime (args) {
         Pages.id.lte(args.endTime)),
       Inferences.pageId.eq(Pages.id)))
     : query
-  query = args.count ? query.limit(args.count) : query
+    query = args.count ? query.limit(args.count) : query
   query = query.orderBy(Pages.id, lf.Order.DESC)
   let withInferences = await query.exec()
   withInferences = withInferences.map(x => ({
@@ -468,9 +468,11 @@ async function getPagesByTime (args) {
   let combined = noInferences
     .concat(withInferences)
     .sort(function (a, b) {
-      return a['id'] - b['id']
+      return b['id'] - a['id']
     })
-  return combined
+
+  const rv = args.count ? combined.slice(0, args.count) : combined
+  return rv
 }
 
 /** get pages by tracker
@@ -751,6 +753,7 @@ async function getPagesNoInferences (args) {
     : query
   query = query.groupBy(Pages.id)
     .orderBy(lf.fn.count(Inferences.inference), lf.Order.ASC)
+  // query = args.count ? query.limit(args.count) : query
 
   let pages = new Set()
   var i
