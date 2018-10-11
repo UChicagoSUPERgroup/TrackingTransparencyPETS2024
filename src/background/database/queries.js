@@ -459,7 +459,7 @@ async function getPagesByTime (args) {
       Inferences.pageId.eq(Pages.id)))
     : query
   query = args.count ? query.limit(args.count) : query
-  query = query.orderBy(Pages.id, lf.Order.ASC)
+  query = query.orderBy(Pages.id, lf.Order.DESC)
   let withInferences = await query.exec()
   withInferences = withInferences.map(x => ({
     ...x.Pages,
