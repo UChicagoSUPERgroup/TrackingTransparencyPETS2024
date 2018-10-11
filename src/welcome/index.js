@@ -9,6 +9,7 @@ import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import View from '@instructure/ui-layout/lib/components/View'
+import Button from '@instructure/ui-buttons/lib/components/Button'
 
 // import Table from '@instructure/ui-elements/lib/components/Table'
 // import Checkbox from '@instructure/ui-forms/lib/components/Checkbox'
@@ -172,7 +173,7 @@ class WelcomePage extends React.Component {
               <GridRow>
                 <GridCol>
                   <View as='div' shadow='resting' borderRadius='large' padding='small' background='inverse'>
-                    <Heading level='h4'>IMPORTANT: You must keep the extension installed until you complete Survey 2. If you uninstall and re-install the extension, your data will no longer be valid and payment for Part 2 will not be processed.</Heading>
+                    <Heading level='h4'>IMPORTANT: You must keep the extension installed until you complete Survey 2. If you uninstall and re-install the extension, your data will no longer be valid and payment for Part 2 will NOT be processed.</Heading>
                   </View>
                 </GridCol>
               </GridRow>
@@ -189,12 +190,7 @@ class WelcomePage extends React.Component {
             </ul>
             <p>Full information about the data collected by the extension and how we will use it is available in our <Link href='https://super.cs.uchicago.edu/trackingtransparency/privacy.html' target='_blank'>privacy policy</Link>.</p>
           </Text>
-          <Heading margin='large 0 medium 0'>Begin Survey 1</Heading>
-          <Text>
-            <p>To begin Survey 1, go to the following link: </p>
-            <Heading level='h3'><a href="">www.qualtrics.com/THIS-IS-A-FAKE-LINK-REPLACE-ME</a></Heading><br/><br/><br/><br/><br/>
-          </Text>
-
+          <Button variant='primary' href='qualtrics.com'><Heading margin='medium'>Begin Survey 1</Heading></Button>
         </div>
 
       </div>
