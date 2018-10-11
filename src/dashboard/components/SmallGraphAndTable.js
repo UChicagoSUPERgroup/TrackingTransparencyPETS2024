@@ -50,10 +50,16 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
       break
   }
 
+  maybeSmallGraph() {
+
+    
+  }
+
   return (
     <View>
       {head}
       {text}
+      {/* {maybeSmallGraph()} */}
       <View as='div' margin='medium 0 small 0'>
         <SmallGraph
           data={graphData}
