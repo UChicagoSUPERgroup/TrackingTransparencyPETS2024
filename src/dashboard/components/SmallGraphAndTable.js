@@ -22,6 +22,12 @@ import {
 
 import CustomAxisLabel from './CustomAxisLabel'
 
+function maybeSmallGraph() {
+
+  
+}
+
+
 export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, description, color, pageType, title }) {
   const lower = c1Header.toLowerCase()
   const graphData = data.reverse().slice(-10).map(d => ({
@@ -48,11 +54,6 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
         text = <Text><br/><strong>{data.length} trackers</strong> may have guessed that you are interested in {title}. <em>Click on a bar to learn more.</em></Text>
       }
       break
-  }
-
-  maybeSmallGraph() {
-
-    
   }
 
   return (
