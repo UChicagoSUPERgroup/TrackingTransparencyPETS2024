@@ -41,3 +41,4 @@ docs
 
 *.ipynb_checkpoints
 extension/source
+web-ext-artifacts
