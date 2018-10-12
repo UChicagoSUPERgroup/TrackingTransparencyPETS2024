@@ -38,7 +38,7 @@
             "matches": ["<all_urls>"],
             "exclude_matches": ["*://*/_/chrome/newtab*"],
             "js": [
-                "lib/browser-polyfill.min.js",
+                "lib/browser-polyfill.js",
                 "dist/content.js"
             ],
             "run_at": "document_idle",
