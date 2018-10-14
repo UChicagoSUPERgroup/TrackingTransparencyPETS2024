@@ -4,6 +4,9 @@ import { SizeMe } from 'react-sizeme'
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Text from '@instructure/ui-elements/lib/components/Text'
+import List from '@instructure/ui-elements/lib/components/List'
+import ListItem from '@instructure/ui-elements/lib/components/List/ListItem'
+import Link from '@instructure/ui-elements/lib/components/Link'
 import Grid from '@instructure/ui-layout/lib/components/Grid'
 import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
@@ -51,12 +54,12 @@ export default class DetailPage extends React.Component {
     let pageType = this.props.pageType
     let hashedTitle = 'not hashed yet'
     if (pageType==="site"){
-      console.log('this is alright ', pageType);
+      // console.log('this is alright ', pageType);
       hashedTitle = await background.hashit_salt(this.props.title)
     }else{
       hashedTitle = await background.hashit(this.props.title)
     }
-    console.log(hashedTitle);
+    // console.log(hashedTitle);
     let sendDict = {
       pageType: pageType,
       hashedTitle: hashedTitle
@@ -148,15 +151,49 @@ export default class DetailPage extends React.Component {
     if (pageType=="tracker") {
       return (
         <div>
-          <Heading level='h2'>What does <em>{title}</em> think your interests are?</Heading>
-          <Text><br/>{title} could have guessed that you were interested in a total of <strong>{numInferences} topics</strong>. <em>Click on a link in the wordcloud to learn more.</em></Text>
+          <Heading level='h2'>Based on your browsing, what would <em>{title}</em> think your interests are?</Heading>
+           <Text><br/>Using a machine to assign categories to pages you visit, {title} could have guessed that you were interested in a total of <strong>{numInferences} topics</strong>.</Text>
         </div>
       )
     } else if (pageType=="site") {
       return (
         <div>
-          <Heading level='h2'>What do trackers on <em>{title}</em> think your interests are?</Heading>
-          <Text><br/>Trackers on {title} could have guessed that you were interested in a total of <strong>{numInferences} topics</strong>. <em>Click on a link in the wordcloud to learn more.</em></Text>
+          <Heading level='h2'>Based on your visits to <em>{title}</em>, what would a tracker think your interests are?</Heading>
+          <Text><br/>Using a machine to assign categories to pages you visit, trackers on {title} could have guessed that you were interested in a total of <strong>{numInferences} topics</strong>.</Text>
+        </div>
+      )
+    }
+  }
+
+  maybeWordCloud (inferences) {
+    if (inferences.length > 5) {
+      return (
+        <div>
+          <Text><em>Click on a link in the wordcloud to learn more about each interest.</em><br/><br/></Text>
+          <SizeMe>
+            {({ size }) => (
+              <WordCloud
+                data={inferences}
+                height={inferences.length < 10 ? 250 : 500}
+                width={size.width}
+              />
+            )}
+          </SizeMe>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <List>
+            {inferences.map(function (inference) {
+              let key = inference.name
+              return (<ListItem key={key}>
+                <Link href={'#/interests/' + key}>
+                  {key}
+                </Link>
+              </ListItem>)
+            })}
+          </List>
         </div>
       )
     }
@@ -187,15 +224,7 @@ export default class DetailPage extends React.Component {
             {inferences && <GridCol width={6}>
               <TTPanel>
                 {this.wordcloudDescription(pageType, title, inferences.length)}
-                <SizeMe>
-                  {({ size }) => (
-                    <WordCloud
-                      data={inferences}
-                      height={inferences.length < 10 ? 250 : 500}
-                      width={size.width}
-                    />
-                  )}
-                </SizeMe>
+                {this.maybeWordCloud(inferences)}
               </TTPanel>
             </GridCol>}
             {domains && <GridCol width={6}>

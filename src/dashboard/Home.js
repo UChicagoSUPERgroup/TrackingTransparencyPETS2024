@@ -12,6 +12,7 @@ import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import View from '@instructure/ui-layout/lib/components/View'
 import Tag from '@instructure/ui-elements/lib/components/Tag'
+import Button from '@instructure/ui-buttons/lib/components/Button'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -42,11 +43,12 @@ const inferenceTopList = (data) => {
         {data.map((p, i, arr) => {
           const last = (i === (arr.length - 1))
           const inference = p['inference']
+          const inferenceLink = <Link href={'#interests/' + inference}>{inference}</Link>
           return (
             <div>
               <span><strong>{i+1}</strong></span>
               <span key={inference}>
-                <Tag text={inference} size="large" margin="x-small x-small x-small x-small" />
+                <Tag text={inferenceLink} size="large" margin="x-small x-small x-small x-small" />
                 <br/>
               </span>
             </div>
@@ -64,11 +66,12 @@ const trackerList = (data) => {
       <span>
         {data.map((p, i, arr) => {
           const last = (i === (arr.length - 1))
+          const trackerLink = <Link href={'#trackers/' + p.tracker}>{p.tracker}</Link>
           return (
             <div>
               <span><strong>{i+1}</strong></span>
               <span key={p.tracker}>
-                <Tag text={p.tracker} size="large" margin="x-small x-small x-small x-small" />
+                <Tag text={trackerLink} size="large" margin="x-small x-small x-small x-small" />
                 <br/>
               </span>
             </div>
@@ -98,6 +101,7 @@ const domainList = (data) => {
 const arrowPanel = () => {
   return (
     <TTPanel>
+      <Heading level="h3">What are <em>trackers</em> and <em>interests?</em><hr/></Heading>
       <Grid vAlign='middle' hAlign='space-between' colSpacing='none' rowSpacing='none'>
         <GridRow>
           <GridCol textAlign='center' width={3}>
@@ -113,18 +117,103 @@ const arrowPanel = () => {
             <FontAwesomeIcon icon='arrow-right' size='3x' />
           </GridCol>
           <GridCol textAlign='center' width={3}>
+            {/* <div></div> */}
             <FontAwesomeIcon icon='ad' size='8x' />
           </GridCol>
         </GridRow>
         <GridRow>
           <GridCol width={3} textAlign='center'>
-            <p>When you browse online, your online activity is tracked by the website you're visiting, as well as by analytics and ad companies. </p>
+            <p>When you browse online, your online activity can be tracked by analytics and ad companies. We call these companies <em>trackers</em>.</p>
           </GridCol>
           <GridCol width={3} textAlign='center'>
             <p>These companies track your browsing to make guesses about what topics you might be interested in. We call these topics <em>interests</em>.</p>
           </GridCol>
           <GridCol width={3} textAlign='center'>
             <p>Your interests are then used to tailor your web experience, which changes the ads, search results, and social feeds that you see.</p>
+            {/* {handleExampleDisplay()} */}
+          </GridCol>
+        </GridRow>
+
+      </Grid>
+    </TTPanel>
+  )
+}
+
+const handleExampleDisplay = () => {
+  var example = 0
+  var exampleText, buttonText = ""
+  var icon = null
+
+  switch (example) {
+    case 0:
+      icon = <FontAwesomeIcon icon='user' size='2x' />
+      exampleText = "Your interests are used to tailor your web experience."
+      buttonText = "See example"
+      break
+    case 1:
+      icon = <FontAwesomeIcon icon='paw' size='2x' />
+      exampleText = "You see an ad about dog clothes because you previously visited a blog about traveling with dogs. A third-party tracker on that blog guessed that you have an interest in dogs."
+      buttonText = "See another example"
+      break
+    case 2:
+
+      break
+    case 3:
+      break
+  }
+  return (
+    <div>
+      {icon}
+      <p>{exampleText}</p>
+      <Button size="small">{buttonText}</Button>
+    </div>
+  )
+}
+
+const examplePanel = () => {
+  return (
+    <TTPanel margin='medium 0 0 0'>
+      <Heading level="h3">Give me some examples.<hr/></Heading>
+      <Grid vAlign='middle' hAlign='space-between' colSpacing='none' rowSpacing='none'>
+        <GridRow>
+          <GridCol>
+            <View
+              as="div"
+              display="inline-block"
+              margin="large"
+              textAlign="center"
+              borderRadius="medium"
+              maxWidth="200px"
+              shadow="resting"
+            >
+              <p style={{margin:"10px"}}><FontAwesomeIcon icon='paw' size='2x' /><br/>You see an ad about dog clothes because you previously visited a blog about traveling with dogs. A third-party tracker on that blog guessed that you have an interest in dogs.</p>
+            </View>
+          </GridCol>
+          <GridCol>
+            <View
+              as="div"
+              display="inline-block"
+              margin="large"
+              textAlign="center"
+              borderRadius="medium"
+              maxWidth="200px"
+              shadow="resting"
+            >
+              <p style={{margin:"10px"}}><FontAwesomeIcon icon='search' size='2x' /><br/>You want to know more about apples, the fruit, so you search for "apple". However, because you made many technology searches in the past, you see results for Apple, the company.</p>
+            </View>
+          </GridCol>
+          <GridCol>
+            <View
+              as="div"
+              display="inline-block"
+              margin="large"
+              textAlign="center"
+              borderRadius="medium"
+              maxWidth="200px"
+              shadow="resting"
+            >
+              <p style={{margin:"10px"}}><FontAwesomeIcon icon='users' size='2x' /><br/>You see posts from your close friends first on social media feeds, because you often engage with their posts.</p>
+            </View>
           </GridCol>
         </GridRow>
 
@@ -178,6 +267,7 @@ export class Home extends React.Component {
         <GridRow>
           <GridCol>
             {arrowPanel()}
+            {/*examplePanel()*/}
             <TTPanel margin='medium 0 0 0'>
               <Heading level="h3">What does this mean for you?<hr/></Heading>
                 <Grid>
@@ -187,15 +277,15 @@ export class Home extends React.Component {
                         <Heading level='h4'><FontAwesomeIcon icon='user' color="#616530"/> PERSONALIZED SERVICES</Heading>
                         <p>Web companies can use data about you and your interests to personalize your web experience, such as by tailoring search results and social feeds, or making suggestions for web sites or places to visit.</p>
                         <Heading level='h4'><FontAwesomeIcon icon='paw' color="#616530"/> RELEVANT ADS</Heading>
-                        <p>If you go online and visit a site about traveling with dogs, a third-party tracker on that site could guess that you have an interest in dogs. Later, you might see an ad that was targeted to people who like dogs.</p>
+                        <p> Web companies can make a profile of your interests based on the web pages that you visit. Then, they use this profile to show you advertisements that may be related to your interests.</p>
                       </Text>
                     </GridCol>
                     <GridCol>
                       <Text>
                         <Heading level='h4'><FontAwesomeIcon icon='exclamation-triangle' color="#9A5324"/> UNEXPECTED TARGETED ADVERTISING</Heading>
-                        <p>When advertisers do targeted advertising, they can use your interests in unexpected ways. For example, an advertiser could show you sports ads because they think people who like dogs will also like sports.</p>
+                        <p>When advertisers do targeted advertising, they can use your interests in unexpected ways. For example, an advertiser could show you banana ads because they think people who like dogs will also like bananas.</p>
                         <Heading level='h4'><FontAwesomeIcon icon='exclamation-triangle' color="#9A5324"/> INCORRECT GUESSES ABOUT YOUR INTERESTS</Heading>
-                        <p>A third-party tracker could also guess incorrectly about your interests. If you often visit sites about a topic, trackers might guess you are interested in that topic, even if you actually aren't.</p>
+                        <p>A third-party tracker could also guess incorrectly about your interests. If you often visit sites about a topic, such as for work, trackers might guess you are interested in that topic, even if you actually aren't.</p>
                       </Text>
                     </GridCol>
                   </GridRow>
@@ -264,7 +354,7 @@ export const WaitingDataHome = () => (
     <TTPanel>
       <Text>
         <p>The Tracking Tranparency extension is currently running in the background to collect information about the trackers in your browsing.</p>
-        <p>Continue using the internet and come back here in a few days to see what they might know about your browsing!</p>
+        <p>Continue using the Internet and come back here in a few days to see what they might know about your browsing!</p>
       </Text>
     </TTPanel>
   </div>

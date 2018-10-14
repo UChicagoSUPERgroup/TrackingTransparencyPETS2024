@@ -63,12 +63,14 @@ export default class InferencesOverview extends React.Component {
   async getExample() {
     let args = {count: 1}
     const background = await browser.runtime.getBackgroundPage()
-    const example = await background.queryDatabase('getInferencesDomainsToSend', args)
+    const example = await background.queryDatabase('getPagesByTime', args)
+    args = {count: 1, domain: example[0].domain}
+    const tracker = await background.queryDatabase('getTrackersByDomain', args)
 
     this.setState({
-      exampleSite: example[0].Pages.domain,
-      exampleInference: this.InferenceLink(example[0].Inferences.inference),
-      exampleTracker: example[0].Trackers.tracker
+      exampleSite: example[0].domain,
+      exampleInference: this.InferenceLink(example[0].inference),
+      exampleTracker: tracker[0].name
     })
   }
 
@@ -399,7 +401,7 @@ export default class InferencesOverview extends React.Component {
                   icon={IconArrowOpenEnd}
                   iconPlacement='end'
                 >
-                    Learn more
+                    More about this interest
                 </Link>
               </div>}
             </TTPanel>

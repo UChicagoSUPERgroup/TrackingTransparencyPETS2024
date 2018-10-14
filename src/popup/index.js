@@ -37,7 +37,10 @@ class Popup extends React.Component {
     super(props)
     this.state = {
       tabData: {},
-      trackerData: {}
+      trackerData: {},
+      numTrackers: '…',
+      numPages: '…',
+      numInferences: '…'
     }
     // this.sendPopupData = this.sendPopupData.bind(this);
     this.openDashboard = this.openDashboard.bind(this)
@@ -109,16 +112,15 @@ class Popup extends React.Component {
     */
     await this.getData()
     const options = (await browser.storage.local.get('options')).options
-    const enoughData = await tt.enoughData()
     const okToLoad = true
-    this.setState({ ...options, okToLoad, enoughData })
+    this.setState({ ...options, okToLoad })
     
     logging.logPopupActions('open popup', 'extension icon')
   }
 
   render () {
     const {
-      okToLoad, enoughData, selectedIndex,
+      okToLoad, selectedIndex,
       numTrackers, numInferences, numPages, pageTitle, topTracker, topTrackerCount, tabData,
       showTrackerContent, showInferenceContent, showHistoryContent, showDashboard
     } = this.state
@@ -151,9 +153,9 @@ class Popup extends React.Component {
           </View>
           {showMetrics && <View as='div' borderWidth='0 0 small 0' padding='medium 0 medium 0'>
             <MetricsList theme={{lineHeight: 2}}>
-              {showTrackerContent && <MetricsListItem value={numTrackers || 'Loading…'} label={<span><FontAwesomeIcon icon='eye' /> Trackers you've seen</span>} />}
-              {showHistoryContent && <MetricsListItem value={numPages || 'Loading'} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages you've visited</span>} />}
-              {showInferenceContent && <MetricsListItem value={numInferences || 'Loading'} label={<span><FontAwesomeIcon icon='thumbs-up' /> Your interests</span>} />}
+              {showTrackerContent && <MetricsListItem value={numTrackers} label={<span><FontAwesomeIcon icon='eye' /> Trackers you've seen</span>} />}
+              {showHistoryContent && <MetricsListItem value={numPages} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages you've visited</span>} />}
+              {showInferenceContent && <MetricsListItem value={numInferences} label={<span><FontAwesomeIcon icon='thumbs-up' /> Your interests</span>} />}
             </MetricsList>
           </View>}
         </TabPanel>
@@ -178,7 +180,7 @@ class Popup extends React.Component {
         </Text>
 
       </div> */}
-      {showDashboard && enoughData &&
+      {showDashboard &&
       <View as='div' textAlign='center'>
         <Button onClick={this.openDashboard} margin='small'>Show me more info about my web browsing</Button>
       </View>

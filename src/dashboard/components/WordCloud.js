@@ -40,7 +40,7 @@ const TTWordCloud = (props) => {
       // rotation: rotation
     }
   })
-  console.log(wcData)
+  // console.log(wcData)
 
   return (
     <WordCloud

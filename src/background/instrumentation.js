@@ -120,12 +120,11 @@ async function sendDb () {
 
   for (var i = 0; i < allData.length; i++) {
     allData[i]['Pages']['domain'] = await hashit_salt(allData[i]['Pages']['domain']);
-    allData[i]['Inferences']['inference'] = await hashit(allData[i]['Inferences']['inference']);
-    allData[i]['Trackers']['tracker'] = await hashit(allData[i]['Trackers']['tracker']);
+    allData[i]['Inferences']['inference'] = hashit(allData[i]['Inferences']['inference']);
+    allData[i]['Trackers']['tracker'] = hashit(allData[i]['Trackers']['tracker']);
   }
   // console.log(allData)
-  //console.log('sendDB');
-  //for(const row of allData){
+  // for(const row of alldata){
   //  console.log(row)
   // }
   // var xs = cookie

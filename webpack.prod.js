@@ -2,7 +2,7 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const common = require('./webpack.common.js')
 
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = merge(common, {
   mode: 'production',
@@ -23,5 +23,11 @@ module.exports = merge(common, {
       //   }
       // })
     ]
-  }
+  },
+  // TODO comment this out before user study
+  plugins: [
+    new webpack.DefinePlugin({
+      USERSTUDY_CONDITION: 6
+    })
+  ]
 })

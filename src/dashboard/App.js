@@ -40,13 +40,13 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faEye, faThumbsUp, faAd, faArrowRight, faPaw, faUser,
   faWindowMaximize, faClock, faExclamationTriangle,
-  faExternalLinkAlt
+  faExternalLinkAlt, faSearch, faUsers
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
   faEye, faThumbsUp, faAd, faArrowRight, faPaw, faUser,
   faWindowMaximize, faClock, faExclamationTriangle,
-  faExternalLinkAlt
+  faExternalLinkAlt, faSearch, faUsers
 )
 
 theme.use({

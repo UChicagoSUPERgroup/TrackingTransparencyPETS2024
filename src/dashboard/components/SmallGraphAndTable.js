@@ -22,6 +22,12 @@ import {
 
 import CustomAxisLabel from './CustomAxisLabel'
 
+function maybeSmallGraph() {
+
+  
+}
+
+
 export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, description, color, pageType, title }) {
   const lower = c1Header.toLowerCase()
   const graphData = data.reverse().slice(-10).map(d => ({
@@ -54,6 +60,7 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
     <View>
       {head}
       {text}
+      {/* {maybeSmallGraph()} */}
       <View as='div' margin='medium 0 small 0'>
         <SmallGraph
           data={graphData}

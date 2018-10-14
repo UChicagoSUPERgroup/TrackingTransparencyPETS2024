@@ -7,7 +7,6 @@ import overlayManager from './overlay_manager';
 import instrumentation from './instrumentation';
 import adblockChecking from './adblockChecking'
 import { getOption } from '../helpers';
-import setDefaultOptions from '../options/defaults'
 import loggingDefault from '../options/loggingDefault'
 
 let tabData = {};
@@ -18,8 +17,6 @@ let trackerMessageId = 0;
 async function onInstall (details) {
   // also runs on update
   if (details.reason === 'install') {
-    setDefaultOptions();
-
     const welcomePageData = {
       active: true,
       url: '../dist/welcome.html'
@@ -362,8 +359,6 @@ function resetAllData () {
   databaseWorker.postMessage({
     type: 'empty_db'
   })
-
-  setDefaultOptions();
 
   // TODO: send message to server to wipe all data
 }
