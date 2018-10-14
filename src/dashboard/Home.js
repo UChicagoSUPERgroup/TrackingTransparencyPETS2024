@@ -267,7 +267,7 @@ export class Home extends React.Component {
         <GridRow>
           <GridCol>
             {arrowPanel()}
-            {examplePanel()}
+            {/*examplePanel()*/}
             <TTPanel margin='medium 0 0 0'>
               <Heading level="h3">What does this mean for you?<hr/></Heading>
                 <Grid>
