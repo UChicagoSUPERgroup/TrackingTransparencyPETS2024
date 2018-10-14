@@ -5,8 +5,9 @@ import Checkbox from '@instructure/ui-forms/lib/components/Checkbox'
 import RadioInputGroup from '@instructure/ui-forms/lib/components/RadioInputGroup'
 import RadioInput from '@instructure/ui-forms/lib/components/RadioInput'
 import Link from '@instructure/ui-elements/lib/components/Link'
+import Text from '@instructure/ui-elements/lib/components/Text'
 
-import setUserstudyCondition from './userstudy'
+import { setUserstudyCondition } from './userstudy'
 
 export default class UserstudyOptionsUI extends React.Component {
   constructor (props) {
@@ -53,9 +54,13 @@ export default class UserstudyOptionsUI extends React.Component {
   }
 
   async loadOptions () {
-    const store = await browser.storage.local.get('options')
+    const store = await browser.storage.local.get(['options', 'mturkcode'])
     const options = store.options
-    this.setState(options)
+    const mturkcode = store.mturkcode
+    this.setState({
+      ...options,
+      id: mturkcode
+    })
   }
 
   async componentDidMount () {
@@ -63,12 +68,16 @@ export default class UserstudyOptionsUI extends React.Component {
   }
 
   render () {
+    const id = this.state.id
     return (
       <div>
+        <Text>
+          <p><strong>User ID: {id}</strong></p>
+          <p><Link href='/dist/welcome.html'>Open welcome page</Link></p>
+        </Text>
         <FormFieldGroup
           name='displayOptions'
           description='Display options'
-          layout='inline'
           vAlign='top'
           rowSpacing='small'
         >
@@ -139,7 +148,6 @@ export default class UserstudyOptionsUI extends React.Component {
           description='User study condition'
           value={this.state.userstudyCondition}
           onChange={this.userstudySelectHandler}
-          layout='inline'
         >
           <RadioInput value='staticExplanations' label='First Control -- Static explanations of OBA' />
           <RadioInput value='historyOnly' label='Second Control -- Non-OBA visualization of browsing history' />
@@ -148,7 +156,6 @@ export default class UserstudyOptionsUI extends React.Component {
           <RadioInput value='noInferences' label='Everything minus inferences' />
           <RadioInput value='everything' label='Everything' />
         </RadioInputGroup>
-        <Link href='/dist/welcome.html'>Open welcome page</Link>
       </div>
     )
   }

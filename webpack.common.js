@@ -79,10 +79,13 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(['extension/dist']),
+    new webpack.DefinePlugin({
+      VERSION: JSON.stringify(require('./package.json').version)
+    }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: 'css/[name].css',
+      filename: 'css/[name].css'
       // chunkFilename: 'css/[id].css'
     }),
     // fix importing some dependencies that assume filesystem etc.

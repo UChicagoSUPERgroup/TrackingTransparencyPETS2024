@@ -8,7 +8,36 @@ async function getOptions () {
   return options
 }
 
-export default async function setUserstudyCondition (condition) {
+export async function generateID (cond) {
+  /* eslint-disable no-undef */
+  let condition
+  const v = VERSION.replace(/\./g, '')
+  const isFirefox = navigator.userAgent.toLowerCase().includes('firefox')
+  const br = isFirefox ? 'f' : 'c'
+  if (cond) {
+    condition = cond
+  } else if (USERSTUDY_CONDITION) {
+    condition = USERSTUDY_CONDITION
+  } else {
+    condition = Math.ceil(Math.random() * 6)
+  }
+  const rand = Math.random().toString(16).substr(2,12)
+  const id = condition.toString() + '-' + v + br + '-' + rand
+  return id
+  /* eslint-enable no-undef */
+}
+
+export async function saveID (id) {
+  console.log(id)
+  const cond = +(id.toString()[0]) // first digit of id
+  const conditions = ['staticExplanations', 'historyOnly', 'lightbeam', 'ghostery', 'noInferences', 'everything']
+  const condStr = conditions[cond - 1]
+  console.log(cond, condStr)
+  await setUserstudyCondition(condStr)
+  await browser.storage.local.set({ mturkcode: id })
+}
+
+export async function setUserstudyCondition (condition) {
   const options = await getOptions()
   options.userstudyCondition = condition
 
