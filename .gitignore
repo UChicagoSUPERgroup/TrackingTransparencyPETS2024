@@ -41,3 +41,5 @@ docs
 
 *.ipynb_checkpoints
 extension/source
+extension/ConsentForm.pdf
+web-ext-artifacts
