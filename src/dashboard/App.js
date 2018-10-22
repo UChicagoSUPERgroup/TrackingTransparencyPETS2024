@@ -40,13 +40,13 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faEye, faThumbsUp, faAd, faArrowRight, faPaw, faUser,
   faWindowMaximize, faClock, faExclamationTriangle,
-  faExternalLinkAlt, faSearch, faUsers
+  faExternalLinkAlt, faSearch, faUsers, faQuestionCircle
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
   faEye, faThumbsUp, faAd, faArrowRight, faPaw, faUser,
   faWindowMaximize, faClock, faExclamationTriangle,
-  faExternalLinkAlt, faSearch, faUsers
+  faExternalLinkAlt, faSearch, faUsers, faQuestionCircle
 )
 
 theme.use({
@@ -121,9 +121,9 @@ The code for logclick logs ALL the click in every single page.
           </Navbar.Header>
           {enoughData && <Nav>
             {!hideInferenceContent && <NavLink to='/interests' title='Interests' />}
+            {!hideTrackerContent && <NavLink to='/trackers' title='Trackers' />}
             {!hideHistoryContent && <NavLink to='/sites' title='Sites' />}
             {!hideHistoryContent && <NavLink to='/activity' title='Activity' />}
-            {!hideTrackerContent && <NavLink to='/trackers' title='Trackers' />}
             {showLightbeam && <NavLink to='/lightbeam' title='Network' />}
             {/* <NavLink to="/takeaction"  title="Take Action"/> */}
           </Nav>}
