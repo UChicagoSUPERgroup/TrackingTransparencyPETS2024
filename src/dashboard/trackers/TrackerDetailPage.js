@@ -65,7 +65,7 @@ export default class TrackerDetailPage extends React.Component {
 
     if (!this.DetailPage || !ready) return 'Loading…'
 
-    const introText = trackerInfo.description
+    const introText = trackerInfo && trackerInfo.description
       ? <Text>
         <Heading level='h2'>What does {this.tracker} do?</Heading>
 

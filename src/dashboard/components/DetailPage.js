@@ -148,18 +148,20 @@ export default class DetailPage extends React.Component {
   }
 
   wordcloudDescription (pageType, title, numInferences) {
+    var topicPlurality = (numInferences == 1 ? "topic" : "topics")
+
     if (pageType=="tracker") {
       return (
         <div>
           <Heading level='h2'>Based on your browsing, what would <em>{title}</em> think your interests are?</Heading>
-           <Text><br/>Using a machine to assign categories to pages you visit, {title} could have guessed that you were interested in a total of <strong>{numInferences} topics</strong>.</Text>
+           <Text><br/>Using a machine to assign categories to pages you visit, {title} could have guessed that you were interested in <strong>{numInferences} {topicPlurality}</strong>.</Text>
         </div>
       )
     } else if (pageType=="site") {
       return (
         <div>
           <Heading level='h2'>Based on your visits to <em>{title}</em>, what would a tracker think your interests are?</Heading>
-          <Text><br/>Using a machine to assign categories to pages you visit, trackers on {title} could have guessed that you were interested in a total of <strong>{numInferences} topics</strong>.</Text>
+          <Text><br/>Using a machine to assign categories to pages you visit, trackers on {title} could have guessed that you were interested in <strong>{numInferences} {topicPlurality}</strong>.</Text>
         </div>
       )
     }
@@ -181,9 +183,9 @@ export default class DetailPage extends React.Component {
           </SizeMe>
         </div>
       )
-    } else {
+    } else { // not enough data points, just show bulleted list
       return (
-        <div>
+        <div style={{"marginTop":"1.5em"}}>
           <List>
             {inferences.map(function (inference) {
               let key = inference.name

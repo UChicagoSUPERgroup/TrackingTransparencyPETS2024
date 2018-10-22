@@ -3,6 +3,8 @@ import ReactTable from 'react-table'
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'
 import Link from '@instructure/ui-elements/lib/components/Link'
+import List from '@instructure/ui-elements/lib/components/List'
+import ListItem from '@instructure/ui-elements/lib/components/List/ListItem'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import ToggleGroup from '@instructure/ui-toggle-details/lib/components/ToggleGroup'
 import View from '@instructure/ui-layout/lib/components/View'
@@ -22,12 +24,6 @@ import {
 
 import CustomAxisLabel from './CustomAxisLabel'
 
-function maybeSmallGraph() {
-
-  
-}
-
-
 export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, description, color, pageType, title }) {
   const lower = c1Header.toLowerCase()
   const graphData = data.reverse().slice(-10).map(d => ({
@@ -35,57 +31,88 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
     x: d['count']
   }))
 
+  var trackerPlurality = // for sites pages, need to describe num trackers
+    ((pageType=="site" || c1Header=="site") && data.length==1
+    ? "tracker"
+    : "trackers")
+
+  var sitePlurality = // for tracker pages, need to describe num sites
+    ((pageType=="tracker" || c1Header=="tracker") && data.length==1
+    ? "site"
+    : "sites")
+
   var head, text
   switch (pageType) {
     case "tracker":
       head = <Heading level='h2'>On which sites did <em>{title}</em> track you?</Heading>
-      text = <Text><br/>{title} may have been tracking you on <strong>{data.length} sites</strong>. <em>Click on a bar to learn more.</em></Text>
+      text = <Text><br/>{title} may have been tracking you on <strong>{data.length} {sitePlurality}</strong>.</Text>
       break
     case "site":
       head = <Heading level='h2'>Which trackers tracked you on <em>{title}</em>?</Heading>
-      text = <Text><br/>On {title}, you may have been tracked by <strong>{data.length} trackers</strong>. <em>Click on a bar to learn more.</em></Text>
+      text = <Text><br/>On {title}, you may have been tracked by <strong>{data.length} {trackerPlurality}</strong>.</Text>
       break
     case "inference":
       if (c1Header=="Sites") {
         head = <Heading level='h2'>Which sites were about <em>{title}</em>?</Heading>
-        text = <Text><br/>You visited <strong>{data.length} sites</strong> that may have been about {title}, which trackers may have guessed is an interest if yours. <em>Click on a bar to learn more.</em></Text>
+        text = <Text><br/>You visited <strong>{data.length} {sitePlurality}</strong> that may have been about {title}, which trackers may have guessed is an interest if yours.</Text>
       } else if (c1Header=="Trackers"){
         head = <Heading level='h2'>Which trackers might think you are interested in <em>{title}</em>?</Heading>
-        text = <Text><br/><strong>{data.length} trackers</strong> may have guessed that you are interested in {title}. <em>Click on a bar to learn more.</em></Text>
+        text = <Text><br/><strong>{data.length} {trackerPlurality}</strong> may have guessed that you are interested in {title}.</Text>
       }
       break
   }
 
-  return (
-    <View>
-      {head}
-      {text}
-      {/* {maybeSmallGraph()} */}
-      <View as='div' margin='medium 0 small 0'>
-        <SmallGraph
-          data={graphData}
-          yTitle={c1Header}
-          color={color}
-        />
+  if (data.length > 5) { // if more than 5, show full SmallGraphAndTable
+    return (
+      <View>
+        {head}
+        {text}
+        <Text><em> Click on a bar to learn more.</em></Text>
+        <View as='div' margin='medium 0 small 0'>
+          <SmallGraph
+            data={graphData}
+            yTitle={c1Header}
+            color={color}
+          />
+        </View>
+        <ToggleGroup
+          summary={'See all ' + data.length + ' ' + lower}
+          toggleLabel={'Toggle to see table for ' + lower}
+          margin='medium 0 0 0'
+          border={false}
+        >
+          <SmallTable
+            data={data}
+            name={name}
+            c1Header={c1Header}
+            c1Accessor='name'
+            c2Header='Pages'
+            c2Accessor='count'
+            urlStem={urlStem}
+          />
+        </ToggleGroup>
       </View>
-      <ToggleGroup
-        summary={'See all ' + data.length + ' ' + lower}
-        toggleLabel={'Toggle to see table for ' + lower}
-        margin='medium 0 0 0'
-        border={false}
-      >
-        <SmallTable
-          data={data}
-          name={name}
-          c1Header={c1Header}
-          c1Accessor='name'
-          c2Header='Pages'
-          c2Accessor='count'
-          urlStem={urlStem}
-        />
-      </ToggleGroup>
-    </View>
-  )
+    )
+  } else { // otherwise not enough data points, just show bulleted list
+    return (
+      <View>
+        {head}
+        {text}
+        <div style={{"marginTop":"1.5em"}}>
+          <List>
+            {data.map(function (datum) {
+              let key = datum.name
+              return (<ListItem key={key}>
+                <Link href={'#/'+ c1Header + '/' + key}>
+                  {key}
+                </Link>
+              </ListItem>)
+            })}
+          </List>
+        </div>
+      </View>
+    )
+  }
 }
 
 class SmallGraph extends React.Component {
