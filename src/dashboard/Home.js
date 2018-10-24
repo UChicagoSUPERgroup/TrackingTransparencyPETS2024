@@ -20,7 +20,6 @@ import CloseButton from '@instructure/ui-buttons/lib/components/CloseButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import TTPanel from './components/TTPanel'
-// import ExampleDisplay from './components/ExampleDisplay'
 
 const inferenceRecentList = (data) => {
   return (
