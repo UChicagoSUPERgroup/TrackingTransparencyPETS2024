@@ -22,6 +22,8 @@ import TTPanel2 from '../components/TTPanel2'
 import WordCloud from '../components/WordCloud'
 //import {hashit, hashit_salt} from '../../background/instrumentation';
 
+import * as moment from 'moment'
+
 export default class DetailPage extends React.Component {
   constructor (props) {
     super(props)
@@ -40,7 +42,7 @@ export default class DetailPage extends React.Component {
       pageType
     }
     this.renderPageTable = this.renderPageTable.bind(this)
-    this.renderPageTimeGraph = this.renderPageTimeGraph.bind(this)
+    this.renderPageTimeGraph = this.maybeRenderPageTimeGraph.bind(this)
   }
 
   async componentWillUnmount () {}
@@ -132,19 +134,42 @@ export default class DetailPage extends React.Component {
     )
   }
 
-  renderPageTimeGraph () {
+  maybeRenderPageTimeGraph () {
     const { title, timeChartTitle, timeChartSubtitle, accentColor } = this.props
     const { timestamps } = this.state
-    return (
-      <TTPanel>
-        <Heading level='h2' margin='0 0 medium 0'>{timeChartTitle}</Heading>
-        <Text>{timeChartSubtitle}</Text>
-        {timestamps.length > 0 && <PageTimeGraph
-          timestamps={timestamps}
-          color={accentColor}
-        />}
-      </TTPanel>
-    )
+
+    const times = timestamps.map(t => moment(t))
+
+    let data = []
+
+    const firstDay = times[0].startOf('day')
+    let grouped
+    grouped = _.groupBy(times, t => t.diff(firstDay, 'days'))
+    for (let day in grouped) {
+      data.push({
+        x: parseInt(day),
+        y: grouped[day].length
+      })
+    }
+
+    const maxDay = data[data.length - 1].x
+
+    if (maxDay > 5) {
+      return (
+        <TTPanel>
+          <Heading level='h2' margin='0 0 medium 0'>{timeChartTitle}</Heading>
+          <Text>{timeChartSubtitle}</Text>
+          {timestamps.length > 0 && <PageTimeGraph
+            timestamps={timestamps}
+            color={accentColor}
+          />}
+        </TTPanel>
+      )
+    } else {
+      return (
+        <div></div>
+      )
+    }
   }
 
   wordcloudDescription (pageType, title, numInferences) {
@@ -265,7 +290,7 @@ export default class DetailPage extends React.Component {
           </GridRow>
           <GridRow>
             <GridCol>
-              {this.renderPageTimeGraph()}
+              {this.maybeRenderPageTimeGraph()}
             </GridCol>
           </GridRow>
         </Grid>
