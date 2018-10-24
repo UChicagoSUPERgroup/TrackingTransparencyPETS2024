@@ -157,13 +157,24 @@ export class Home extends React.Component {
     })
   }
 
-  renderCloseButton () {
+  renderAppropCloseButton (which) {
+    var fn
+    if (which==1) {
+      fn = this.hidePopover1
+    } else if (which==2) {
+      fn = this.hidePopover2
+    } else if (which==3) {
+      fn = this.hidePopover3
+    } else {
+      return new Error("close button to show not found")
+    }
+
     return (
       <CloseButton
         placement="end"
         offset="x-small"
         variant="icon"
-        onClick={this.hidePopover1}
+        onClick={fn}
       >
         Close
       </CloseButton>
@@ -190,6 +201,8 @@ export class Home extends React.Component {
             </GridCol>
             <GridCol textAlign='center' width={3}>
               <div></div>
+              {this.exampleCluster()}
+
               {/* <FontAwesomeIcon icon='ad' size='6x' /> */}
             </GridCol>
           </GridRow>
@@ -204,7 +217,7 @@ export class Home extends React.Component {
               <div></div>
               {/* <p>Your interests are then used to tailor your web experience, which changes the ads, search results, and social feeds that you see.</p> */}
               {/* {handleExampleDisplay()} */}
-              {this.exampleCluster()}
+              <p>The interests that trackers think you have can change your experiences online.</p>
             </GridCol>
           </GridRow>
 
@@ -294,7 +307,6 @@ export class Home extends React.Component {
   }
 
   exampleCluster() {
-
     return (
       <View>
         <Popover
@@ -312,7 +324,7 @@ export class Home extends React.Component {
           </PopoverTrigger>
           <PopoverContent>
             <View padding="medium" display="block" as="form">
-              {this.renderCloseButton()}
+              {this.renderAppropCloseButton(1)}
               <Text>You see an ad about dog clothes because you <br/>previously visited a blog about traveling with dogs. <br/>A third-party tracker on that blog guessed that <br/>you have an interest in dogs.</Text>
             </View>
           </PopoverContent>
@@ -333,7 +345,7 @@ export class Home extends React.Component {
           </PopoverTrigger>
           <PopoverContent>
             <View padding="medium" display="block" as="form">
-              {this.renderCloseButton()}
+              {this.renderAppropCloseButton(2)}
               <Text>You want to know more about apples, <br/>the fruit, so you search for "apple". However, <br/>because you often search for technical topics, <br/>you see results for Apple, the company.</Text>
             </View>
           </PopoverContent>
@@ -354,7 +366,7 @@ export class Home extends React.Component {
           </PopoverTrigger>
           <PopoverContent>
             <View padding="medium" display="block" as="form">
-              {this.renderCloseButton()}
+              {this.renderAppropCloseButton(3)}
               <Text>You see an ad for a horror movie, <br/>even though you don't like horror <br/>movies. However, you recently searched <br/>for sweaters and an advertiser decided <br/>that sweater fans should see this ad.</Text>
             </View>
           </PopoverContent>
