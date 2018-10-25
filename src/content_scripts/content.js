@@ -14,6 +14,7 @@ async function runtimeOnMessage (m) {
       overlay.remove()
       break
   }
+  return true
 }
 
 chrome.runtime.onMessage.addListener(runtimeOnMessage)
