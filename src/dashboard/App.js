@@ -97,7 +97,7 @@ The code for logclick logs ALL the click in every single page.
     // window.onbeforeunload = function(){alert('finally');}
   }
 
-  /** ************ END Instrucmentation code ********************************/
+  /** ************ END Instrumentation code ********************************/
 
   render () {
     const { okToLoad, enoughData } = this.state
