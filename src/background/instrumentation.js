@@ -86,7 +86,7 @@ async function getUserParams () {
     userId: 'no more tears',
     startTS: 0
   });
-  console.log('User parameters: ', userParams.usageStatCondition, userParams.userId, userParams.startTS)
+  // console.log('User parameters: ', userParams.usageStatCondition, userParams.userId, userParams.startTS)
 }
 
 async function sha256 (message) {

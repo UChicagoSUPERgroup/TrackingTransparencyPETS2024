@@ -28,11 +28,11 @@ export async function generateID (cond) {
 }
 
 export async function saveID (id) {
-  console.log(id)
+  // console.log(id)
   const cond = +(id.toString()[0]) // first digit of id
   const conditions = ['staticExplanations', 'historyOnly', 'lightbeam', 'ghostery', 'noInferences', 'everything']
   const condStr = conditions[cond - 1]
-  console.log(cond, condStr)
+  // console.log(cond, condStr)
   await setUserstudyCondition(condStr)
   await browser.storage.local.set({ mturkcode: id })
 }
