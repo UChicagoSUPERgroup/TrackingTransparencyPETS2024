@@ -105,15 +105,25 @@ class Popup extends React.Component {
     await logging.logPopupActions(activityType, clickedElem)
   }
 
+  async openWelcome () {
+    const data = {
+      active: true,
+      url: '../dist/welcome.html',
+    }
+    await browser.tabs.create(data)
+  }
+
   async componentDidMount () {
     /* comment this next line if you want to off logging data
     Also preserve the order if you want the log, since sometimes getData fails
     and sendPopupData will not run
     */
     await this.getData()
-    const options = (await browser.storage.local.get('options')).options
+    const store = await browser.storage.local.get(['options', 'usageStatCondition'])
+    const options = store.options
+    const usageStatCondition = store.usageStatCondition === true || store.usageStatCondition === 'true'
     const okToLoad = true
-    this.setState({ ...options, okToLoad })
+    this.setState({ ...options, okToLoad, usageStatCondition })
     
     logging.logPopupActions('open popup', 'extension icon')
   }
@@ -128,6 +138,14 @@ class Popup extends React.Component {
 
     const showMetrics = showDashboard && (showTrackerContent || showHistoryContent || showInferenceContent)
     // this.sendPopupData(numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount);
+
+    if (!this.state.usageStatCondition) {
+        return (
+        <View as='div' textAlign='center'>
+          <Button onClick={this.openWelcome} margin='small'>Resume Tracking Transparency setup</Button>
+        </View>
+        )
+    }
 
     return (<div style={{width: 450}}>
       <TabList
