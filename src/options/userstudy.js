@@ -16,7 +16,7 @@ export async function generateID (cond) {
   const br = isFirefox ? 'f' : 'c'
   if (cond) {
     condition = cond
-  } else if (USERSTUDY_CONDITION) {
+  } else if (typeof USERSTUDY_CONDITION !== 'undefined') {
     condition = USERSTUDY_CONDITION
   } else {
     condition = Math.ceil(Math.random() * 6)
@@ -80,7 +80,7 @@ export async function setUserstudyCondition (condition) {
       break
     case 'noInferences':
       options.showDashboard = true
-      options.showOverlay = true
+      options.showOverlay = false
       options.showLightbeam = false
       options.showTrackerContent = true
       options.showInferenceContent = false
@@ -89,7 +89,7 @@ export async function setUserstudyCondition (condition) {
       break
     case 'everything':
       options.showDashboard = true
-      options.showOverlay = true
+      options.showOverlay = false
       options.showLightbeam = false
       options.showTrackerContent = true
       options.showInferenceContent = true

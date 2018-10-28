@@ -24,10 +24,9 @@ module.exports = merge(common, {
       // })
     ]
   },
-  // TODO comment this out before user study
-  plugins: [
-    new webpack.DefinePlugin({
-      USERSTUDY_CONDITION: 6
-    })
-  ]
+  // plugins: [
+  //   new webpack.DefinePlugin({
+  //     USERSTUDY_CONDITION: 6
+  //   })
+  // ]
 })
