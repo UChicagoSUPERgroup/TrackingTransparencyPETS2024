@@ -1,4 +1,5 @@
 import { queryDatabase } from './worker_manager';
+import { hasTrackerBlocker } from './adblockChecking'
 import loggingDefault from '../options/loggingDefault'
 
 /// ///////// -- first set the uuid and the usage flag if they are not set
@@ -43,11 +44,14 @@ async function setUserParams () {
     await browser.storage.local.set({salt: salt})
 
     // send a beacon that the user initialized app and created userparams
-    let activityType = 'intialize logging'
-    let timestamp = Date.now()
-    let userId = uid
-    let startTS = Date.now()
-    let activityData = {}
+    const blocker = await hasTrackerBlocker()
+    const activityType = 'intialize logging'
+    const timestamp = Date.now()
+    const userId = uid
+    const startTS = Date.now()
+    const activityData = {
+      hasTrackerBlocker: blocker
+    }
     logData(activityType, timestamp, userId, startTS, activityData);
 
   }

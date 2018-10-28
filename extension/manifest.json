@@ -17,6 +17,7 @@
         "tabs",
         "alarms",
         "management",
+        "privacy",
         "webRequest",
         "webNavigation",
         "<all_urls>"
