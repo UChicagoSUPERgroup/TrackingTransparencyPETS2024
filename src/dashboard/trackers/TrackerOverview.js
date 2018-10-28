@@ -178,14 +178,18 @@ export default class TrackerOverview extends React.Component {
     return (
       <TTPanel>
         <Text>
-          <p><strong>{numTrackers} trackers</strong> have collected information about you based on your browsing history. Your most             frequently encountered tracker is <strong>{allData[0].name}</strong> which was present on <strong>{allData[0].percent.toFixed(2)}%</strong> of the pages you visited.</p>
+          <p><strong>{numTrackers} trackers</strong> have collected information about you based on your browsing history. 
+            {allData[0] && <span> Your most frequently encountered tracker is <strong>{allData[0].name}</strong> which was present on <strong>{allData[0].percent.toFixed(2)}%</strong> of the pages you visited.</span>}
+            {!allData[0] && <span> Return to this page after viewing a few sites to see the trackers in your browsing.</span>}
+          </p>
         </Text>
       </TTPanel>
     )
   }
 
-renderChart () {
+  renderChart () {
     let { graphData, numPages, hovered } = this.state
+    if (graphData.length === 0) return null
     graphData = graphData.map(d => ({
       ...d,
       color: (hovered && d.y === hovered.y) ? 1 : 0
@@ -280,7 +284,7 @@ renderChart () {
   }
 
   render () {
-    const { allData } = this.state
+    const { allData, numTrackers } = this.state
 
     if (!allData) {
       return 'Loading…'
@@ -298,12 +302,12 @@ renderChart () {
           </GridCol>
         </GridRow>
         <GridRow>
-          <GridCol width={7}>
+          {allData.length > 0 && <GridCol width={7}>
             {this.renderChart()}
-          </GridCol>
-          <GridCol width={5}>
+          </GridCol>}
+          {allData.length > 0 && <GridCol width={5}>
             {this.renderInfoPane()}
-          </GridCol>
+          </GridCol>}
         </GridRow>
       </Grid>
     )
