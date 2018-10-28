@@ -39,9 +39,17 @@ async function setUserParams () {
     // console.log(uid)
     let salt = Math.random().toString(36).substring(2) +
             (new Date()).getTime().toString(36);
-    // send a beacon that the user initialized app and created userparams
     await browser.storage.local.set({userId: uid})
     await browser.storage.local.set({salt: salt})
+
+    // send a beacon that the user initialized app and created userparams
+    let activityType = 'intialize logging'
+    let timestamp = Date.now()
+    let userId = uid
+    let startTS = Date.now()
+    let activityData = {}
+    logData(activityType, timestamp, userId, startTS, activityData);
+
   }
   // if userId is not set, set it and store
 
@@ -203,6 +211,7 @@ async function firstInstall () {
   // the usage flag in the userstudy.js named as usageStatCondition
   // console.log('Now at first install');
   await setUserParams();
+
   // just send the db once when installed, it would be mostly empty
   await sendDb();
 }

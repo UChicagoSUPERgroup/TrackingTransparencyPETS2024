@@ -67,9 +67,9 @@ class WelcomePage extends React.Component {
   async onSave () {
     const id = this.state.id
     saveID(id)
-    loggingDefault.setLoggingDefault()
-    instrumentation.firstInstall()
-    window.location.href = 'https://super.cs.uchicago.edu/' + id
+    await loggingDefault.setLoggingDefault()
+    await instrumentation.firstInstall()
+    window.location.href = 'https://umdsurvey.umd.edu/jfe/form/SV_6ywfM4gHdHX8UJv?id=' + id
   }
 
   async toggleExtensionEnabled (e) {
