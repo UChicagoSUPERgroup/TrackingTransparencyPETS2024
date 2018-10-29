@@ -22,6 +22,8 @@ import TTPanel2 from '../components/TTPanel2'
 import WordCloud from '../components/WordCloud'
 //import {hashit, hashit_salt} from '../../background/instrumentation';
 
+import * as moment from 'moment'
+
 export default class DetailPage extends React.Component {
   constructor (props) {
     super(props)
@@ -40,7 +42,7 @@ export default class DetailPage extends React.Component {
       pageType
     }
     this.renderPageTable = this.renderPageTable.bind(this)
-    this.renderPageTimeGraph = this.renderPageTimeGraph.bind(this)
+    this.renderPageTimeGraph = this.maybeRenderPageTimeGraph.bind(this)
   }
 
   async componentWillUnmount () {}
@@ -132,34 +134,59 @@ export default class DetailPage extends React.Component {
     )
   }
 
-  renderPageTimeGraph () {
+  maybeRenderPageTimeGraph () {
     const { title, timeChartTitle, timeChartSubtitle, accentColor } = this.props
     const { timestamps } = this.state
-    return (
-      <TTPanel>
-        <Heading level='h2' margin='0 0 medium 0'>{timeChartTitle}</Heading>
-        <Text>{timeChartSubtitle}</Text>
-        {timestamps.length > 0 && <PageTimeGraph
-          timestamps={timestamps}
-          color={accentColor}
-        />}
-      </TTPanel>
-    )
+
+    const times = timestamps.map(t => moment(t))
+
+    let data = []
+
+    const firstDay = times[0].startOf('day')
+    let grouped
+    grouped = _.groupBy(times, t => t.diff(firstDay, 'days'))
+    for (let day in grouped) {
+      data.push({
+        x: parseInt(day),
+        y: grouped[day].length
+      })
+    }
+
+    const maxDay = data[data.length - 1].x
+
+    if (maxDay > 5) {
+      return (
+        <TTPanel>
+          <Heading level='h2' margin='0 0 medium 0'>{timeChartTitle}</Heading>
+          <Text>{timeChartSubtitle}</Text>
+          {timestamps.length > 0 && <PageTimeGraph
+            timestamps={timestamps}
+            color={accentColor}
+          />}
+        </TTPanel>
+      )
+    } else {
+      return (
+        <div></div>
+      )
+    }
   }
 
   wordcloudDescription (pageType, title, numInferences) {
+    var topicPlurality = (numInferences == 1 ? "topic" : "topics")
+
     if (pageType=="tracker") {
       return (
         <div>
           <Heading level='h2'>Based on your browsing, what would <em>{title}</em> think your interests are?</Heading>
-           <Text><br/>Using a machine to assign categories to pages you visit, {title} could have guessed that you were interested in a total of <strong>{numInferences} topics</strong>.</Text>
+           <Text><br/>Using a machine to assign categories to pages you visit, {title} could have guessed that you were interested in <strong>{numInferences} {topicPlurality}</strong>.</Text>
         </div>
       )
     } else if (pageType=="site") {
       return (
         <div>
           <Heading level='h2'>Based on your visits to <em>{title}</em>, what would a tracker think your interests are?</Heading>
-          <Text><br/>Using a machine to assign categories to pages you visit, trackers on {title} could have guessed that you were interested in a total of <strong>{numInferences} topics</strong>.</Text>
+          <Text><br/>Using a machine to assign categories to pages you visit, trackers on {title} could have guessed that you were interested in <strong>{numInferences} {topicPlurality}</strong>.</Text>
         </div>
       )
     }
@@ -181,9 +208,9 @@ export default class DetailPage extends React.Component {
           </SizeMe>
         </div>
       )
-    } else {
+    } else { // not enough data points, just show bulleted list
       return (
-        <div>
+        <div style={{"marginTop":"1.5em"}}>
           <List>
             {inferences.map(function (inference) {
               let key = inference.name
@@ -263,7 +290,7 @@ export default class DetailPage extends React.Component {
           </GridRow>
           <GridRow>
             <GridCol>
-              {this.renderPageTimeGraph()}
+              {this.maybeRenderPageTimeGraph()}
             </GridCol>
           </GridRow>
         </Grid>
