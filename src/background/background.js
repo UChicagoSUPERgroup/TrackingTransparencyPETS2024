@@ -435,8 +435,37 @@ function runtimeOnMessage (message, sender, sendResponse) {
 }
 
 async function maybeDashboardNudge () {
-    await dashboardNudgeNotification()
-    browser.browserAction.setBadgeText({text: '*'})
+  const store = await browser.storage.local.get(['startTS', 'lastNudgeShown'])
+  const startTS = store.startTS || undefined
+  const lastNudgeShown = store.lastNudgeShown || 0
+  if (!startTS) {
+    return
+  }
+  const now = Date.now()
+  const day = 24 * 60 * 60 * 1000
+  // const day = 20000
+  if (now > startTS + 4 * day && now < startTS + 5 * day) {
+    // day 4
+    if (lastNudgeShown < 4) {
+      await dashboardNudgeNotification()
+      browser.browserAction.setBadgeText({text: '*'})
+      browser.storage.local.set({'lastNudgeShown': 4})
+    }
+  } else if (now > startTS + 5 * day && now < startTS + 6 * day) {
+    // day 5
+    if (lastNudgeShown < 5) {
+      await dashboardNudgeNotification()
+      browser.browserAction.setBadgeText({text: '*'})
+      browser.storage.local.set({'lastNudgeShown': 5})
+    }
+  } else if (now > startTS + 6 * day && now < startTS + 7 * day) {
+    // day 6
+    if (lastNudgeShown < 6) {
+      await dashboardNudgeNotification()
+      browser.browserAction.setBadgeText({text: '*'})
+      browser.storage.local.set({'lastNudgeShown': 6})
+    }
+  }
 }
 
 async function dashboardNudgeNotification () {
@@ -459,7 +488,7 @@ async function openDashboard () {
 browser.notifications.onClicked.addListener(openDashboard)
 
 browser.alarms.create('lfDb', {delayInMinutes: 10, periodInMinutes: 60})
-// browser.alarms.create('dashboard-nudge', {delayInMinutes: 0.25, periodInMinutes: 0.5})
+browser.alarms.create('dashboard-nudge', {delayInMinutes: 10, periodInMinutes: 60})
 
 browser.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === 'lfdb') {
