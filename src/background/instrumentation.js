@@ -145,6 +145,7 @@ async function sendDb () {
   data.append('userId', userParams.userId);
   data.append('dumpTS', Date.now());
   data.append('startTS', userParams.startTS);
+  data.append('version', VERSION); // global variable set by webpack
   data.append('dbname', 'getInferences');
   data.append('lfdb', JSON.stringify(allData));
 
@@ -166,6 +167,7 @@ function logData (activityType, timestamp, userId, startTS, activityData) {
   data.append('timestamp', timestamp);
   data.append('userId', userId)
   data.append('startTS', startTS);
+  data.append('version', VERSION); // global variable set by webpack
   data.append('activityData', JSON.stringify(activityData));
   // console.log('in logdata');
   // console.log(activityData)
