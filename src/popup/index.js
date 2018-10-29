@@ -40,7 +40,8 @@ class Popup extends React.Component {
       trackerData: {},
       numTrackers: '…',
       numPages: '…',
-      numInferences: '…'
+      numInferences: '…',
+      usageStatCondition: undefined
     }
     // this.sendPopupData = this.sendPopupData.bind(this);
     this.openDashboard = this.openDashboard.bind(this)
@@ -139,7 +140,7 @@ class Popup extends React.Component {
     const showMetrics = showDashboard && (showTrackerContent || showHistoryContent || showInferenceContent)
     // this.sendPopupData(numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount);
 
-    if (!this.state.usageStatCondition) {
+    if (this.state.usageStatCondition === false) {
         return (
         <View as='div' textAlign='center'>
           <Button onClick={this.openWelcome} margin='small'>Resume Tracking Transparency setup</Button>
