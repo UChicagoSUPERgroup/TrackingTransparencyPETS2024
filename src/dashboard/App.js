@@ -53,6 +53,9 @@ theme.use({
   overrides: themeOverrides
 })
 
+// clear any popup badge nudge
+browser.browserAction.setBadgeText({text: ''})
+
 const NavLink = ({to, title}) => (
   <LinkContainer to={to} className='navbarTolog'>
     <NavItem>{title}</NavItem>

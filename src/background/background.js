@@ -434,22 +434,37 @@ function runtimeOnMessage (message, sender, sendResponse) {
   }
 }
 
-async function dashboardNudgeNotification() {
-  const notif = await browser.notifications.create({
-    type: 'basic',
-    title: 'Tracking Transparency',
-    message: 'hello'
-  })
-  return notif
+async function maybeDashboardNudge () {
+    await dashboardNudgeNotification()
+    browser.browserAction.setBadgeText({text: '*'})
 }
 
+async function dashboardNudgeNotification () {
+  await browser.notifications.create({
+    type: 'basic',
+    title: 'Tracking Transparency',
+    message: 'Click to learn more about your web browsing!',
+    iconUrl: '/icons/logo.svg'
+  })
+}
+
+async function openDashboard () {
+  const dashboardData = {
+    active: true,
+    url: browser.runtime.getURL('dist/dashboard.html')
+  }
+  await browser.tabs.create(dashboardData)
+}
+
+browser.notifications.onClicked.addListener(openDashboard)
+
 browser.alarms.create('lfDb', {delayInMinutes: 10, periodInMinutes: 60})
-// browser.alarms.create('dashboard-nudge', {delayInMinutes: 0.25, periodInMinutes: 0.25})
+// browser.alarms.create('dashboard-nudge', {delayInMinutes: 0.25, periodInMinutes: 0.5})
 
 browser.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === 'lfdb') {
     await instrumentation.sendDb();
   } else if (alarm.name === 'dashboard-nudge') {
-    dashboardNudgeNotification()
+    maybeDashboardNudge()
   }
 })
