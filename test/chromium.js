@@ -44,6 +44,9 @@ async function startChromium (data) {
   }, data)
   await sleep(1000)
   await dashboard.close()
+
+  const debug = await browser.newPage()
+  await debug.goto('chrome://extensions')
 }
 
 function sleep (ms) {

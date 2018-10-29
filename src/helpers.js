@@ -47,7 +47,7 @@ function sleep(ms) {
 
 
 export async function getOption (key) {
-  const store = await browser.storage.local.get('options') || {}
+  const store = (await browser.storage.local.get('options')) || {}
   const val = store['options'][key]
   return store['options'][key]
 }
