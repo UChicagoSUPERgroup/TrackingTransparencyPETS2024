@@ -2,7 +2,7 @@ import makeInference from './inferencing'
 import overlay from './overlay'
 
 async function runtimeOnMessage (m) {
-  console.log('got msg from background', m)
+  // console.log('got msg from background', m)
   switch (m.type) {
     case 'make_inference':
       makeInference()
@@ -14,6 +14,7 @@ async function runtimeOnMessage (m) {
       overlay.remove()
       break
   }
+  return true
 }
 
 chrome.runtime.onMessage.addListener(runtimeOnMessage)
