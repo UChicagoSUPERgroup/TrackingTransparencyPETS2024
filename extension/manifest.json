@@ -17,6 +17,7 @@
         "tabs",
         "alarms",
         "management",
+        "notifications",
         "privacy",
         "webRequest",
         "webNavigation",

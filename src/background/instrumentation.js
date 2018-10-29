@@ -221,21 +221,6 @@ async function firstInstall () {
 }
 
 function setup () {
-  /// //////////----- periodically send the hashed lovefield db data to server
-  // create alarm to run the usageDb function periodically
-  setUserParams();
-  browser.alarms.create('lfDb', {delayInMinutes: 10, periodInMinutes: 60});
-
-  // code to periodically (each day) call sendDb() function
-  browser.alarms.onAlarm.addListener(async (alarm) => {
-    // also checkign and setting the parameters if they are not already set
-    // setUserParams();
-    // the first call throws error and fails, so calling twice, possibly some
-    // database worker issue
-    await sendDb();
-    // await sendDb();
-  });
-
   /** *********** Detecting if tab or window is closed ************/
   browser.tabs.onRemoved.addListener(logLeave)
 
@@ -248,4 +233,4 @@ function setup () {
   window.hashit_salt = hashit_salt
 }
 
-export default {firstInstall, setup, hashit, hashit_salt}
+export default {firstInstall, setup, hashit, hashit_salt, sendDb}

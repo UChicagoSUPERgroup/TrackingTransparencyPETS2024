@@ -433,3 +433,23 @@ function runtimeOnMessage (message, sender, sendResponse) {
       return true; // must do since calling sendResponse asynchronously
   }
 }
+
+async function dashboardNudgeNotification() {
+  const notif = await browser.notifications.create({
+    type: 'basic',
+    title: 'Tracking Transparency',
+    message: 'hello'
+  })
+  return notif
+}
+
+browser.alarms.create('lfDb', {delayInMinutes: 10, periodInMinutes: 60})
+// browser.alarms.create('dashboard-nudge', {delayInMinutes: 0.25, periodInMinutes: 0.25})
+
+browser.alarms.onAlarm.addListener(async (alarm) => {
+  if (alarm.name === 'lfdb') {
+    await instrumentation.sendDb();
+  } else if (alarm.name === 'dashboard-nudge') {
+    dashboardNudgeNotification()
+  }
+})
