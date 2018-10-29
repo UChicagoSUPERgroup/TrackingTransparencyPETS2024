@@ -72,6 +72,6 @@ The built extension will not install easily in permanent non-developer mode - it
 
 # License
 
-GPL? (disconnect list is GPL)
+GNU General Public License v3.0
 
 # Links
