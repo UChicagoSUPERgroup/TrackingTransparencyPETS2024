@@ -34,7 +34,7 @@ function readTextFile(file) {
  * @returns {Object}
  */
 function deserialize(object) {
-  return typeof object == 'string' ? JSON.parse(object) : object;
+  return typeof object === 'string' ? JSON.parse(object) : object
 }
 /**
  * Asynchronous sleep function.
@@ -47,10 +47,9 @@ function sleep(ms) {
 
 
 export async function getOption (key) {
-  const store = await browser.storage.local.get('options')
-  console.log(store)
+  const store = (await browser.storage.local.get('options')) || {}
   const val = store['options'][key]
   return store['options'][key]
 }
 
-export default { production, enoughData, readTextFile, deserialize, sleep, getOption };
+export default { production, enoughData, readTextFile, deserialize, sleep, getOption }

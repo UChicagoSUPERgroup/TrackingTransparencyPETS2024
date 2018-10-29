@@ -11,6 +11,19 @@ async function getAdblockers () {
   }).sort((a, b) => (a.id > b.id))
 }
 
+export async function hasTrackerBlocker () {
+  const blockers = getAdblockers()
+  if (blockers.length > 0) {
+    return true
+  }
+  if (browser.privacy.trackingProtectionMode) {
+    const t = await browser.privacy.websites.trackingProtectionMode.get({})
+    if (t === 'always') {
+      return true
+    }
+  }
+  return false
+}
 function setExtEnabled (id, val) {
   return browser.management.setEnabled(id, val)
 }

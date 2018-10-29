@@ -106,6 +106,11 @@ export class Home extends React.Component {
     super(props)
 
     this.state = {
+      numTrackers: '…',
+      numInferences: '…',
+      numPages: '…',
+      topTrackers: [],
+      topInferences: [],
       showPopover1: false,
       showPopover2: false,
       showPopover3: false
@@ -414,12 +419,12 @@ export class Home extends React.Component {
           </GridCol>
         </GridRow>
         <GridRow>
-          {!hideTrackerContent && <GridCol width={3}>
+          {!hideTrackerContent && topTrackers.length > 0 && <GridCol width={3}>
             <TTPanel>
               {trackerList(topTrackers || [])}
             </TTPanel>
           </GridCol>}
-          {!hideInferenceContent && <GridCol width={3}>
+          {!hideInferenceContent && topInferences.length > 0 && <GridCol width={3}>
             <TTPanel>
               {inferenceTopList(topInferences || [])}
             </TTPanel>
@@ -427,9 +432,9 @@ export class Home extends React.Component {
           {!hideHistoryContent && <GridCol width={6}>
             <TTPanel>
               <MetricsList theme={{lineHeight: 2}}>
-                {!hideTrackerContent && <MetricsListItem value={numTrackers || 'Loading…'} label={<span><FontAwesomeIcon icon='eye' /> Trackers you've seen</span>}/>}
-                <MetricsListItem value={numPages || 'Loading'} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages you've visited</span>}/>
-                {!hideInferenceContent && <MetricsListItem value={numInferences || 'Loading'} label={<span><FontAwesomeIcon icon='thumbs-up' /> Your interests</span>} />}
+                {!hideTrackerContent && <MetricsListItem value={numTrackers} label={<span><FontAwesomeIcon icon='eye' /> Trackers you've seen</span>}/>}
+                <MetricsListItem value={numPages} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages you've visited</span>}/>
+                {!hideInferenceContent && <MetricsListItem value={numInferences} label={<span><FontAwesomeIcon icon='thumbs-up' /> Your interests</span>} />}
               </MetricsList>
             </TTPanel>
 

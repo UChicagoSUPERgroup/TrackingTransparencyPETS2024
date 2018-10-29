@@ -1,4 +1,5 @@
 import { queryDatabase } from './worker_manager';
+import { hasTrackerBlocker } from './adblockChecking'
 import loggingDefault from '../options/loggingDefault'
 
 /// ///////// -- first set the uuid and the usage flag if they are not set
@@ -39,9 +40,20 @@ async function setUserParams () {
     // console.log(uid)
     let salt = Math.random().toString(36).substring(2) +
             (new Date()).getTime().toString(36);
-    // send a beacon that the user initialized app and created userparams
     await browser.storage.local.set({userId: uid})
     await browser.storage.local.set({salt: salt})
+
+    // send a beacon that the user initialized app and created userparams
+    const blocker = await hasTrackerBlocker()
+    const activityType = 'intialize logging'
+    const timestamp = Date.now()
+    const userId = uid
+    const startTS = Date.now()
+    const activityData = {
+      hasTrackerBlocker: blocker
+    }
+    logData(activityType, timestamp, userId, startTS, activityData);
+
   }
   // if userId is not set, set it and store
 
@@ -74,7 +86,7 @@ async function getUserParams () {
     userId: 'no more tears',
     startTS: 0
   });
-  console.log('User parameters: ', userParams.usageStatCondition, userParams.userId, userParams.startTS)
+  // console.log('User parameters: ', userParams.usageStatCondition, userParams.userId, userParams.startTS)
 }
 
 async function sha256 (message) {
@@ -133,6 +145,7 @@ async function sendDb () {
   data.append('userId', userParams.userId);
   data.append('dumpTS', Date.now());
   data.append('startTS', userParams.startTS);
+  data.append('version', VERSION); // global variable set by webpack
   data.append('dbname', 'getInferences');
   data.append('lfdb', JSON.stringify(allData));
 
@@ -154,6 +167,7 @@ function logData (activityType, timestamp, userId, startTS, activityData) {
   data.append('timestamp', timestamp);
   data.append('userId', userId)
   data.append('startTS', startTS);
+  data.append('version', VERSION); // global variable set by webpack
   data.append('activityData', JSON.stringify(activityData));
   // console.log('in logdata');
   // console.log(activityData)
@@ -203,26 +217,12 @@ async function firstInstall () {
   // the usage flag in the userstudy.js named as usageStatCondition
   // console.log('Now at first install');
   await setUserParams();
+
   // just send the db once when installed, it would be mostly empty
   await sendDb();
 }
 
 function setup () {
-  /// //////////----- periodically send the hashed lovefield db data to server
-  // create alarm to run the usageDb function periodically
-  setUserParams();
-  browser.alarms.create('lfDb', {delayInMinutes: 10, periodInMinutes: 60});
-
-  // code to periodically (each day) call sendDb() function
-  browser.alarms.onAlarm.addListener(async (alarm) => {
-    // also checkign and setting the parameters if they are not already set
-    // setUserParams();
-    // the first call throws error and fails, so calling twice, possibly some
-    // database worker issue
-    await sendDb();
-    // await sendDb();
-  });
-
   /** *********** Detecting if tab or window is closed ************/
   browser.tabs.onRemoved.addListener(logLeave)
 
@@ -235,4 +235,4 @@ function setup () {
   window.hashit_salt = hashit_salt
 }
 
-export default {firstInstall, setup, hashit, hashit_salt}
+export default {firstInstall, setup, hashit, hashit_salt, sendDb}
