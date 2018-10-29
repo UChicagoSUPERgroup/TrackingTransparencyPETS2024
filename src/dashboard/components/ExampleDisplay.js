@@ -1,3 +1,5 @@
+// This code is not currently in use; if at a later time we want to change the example button/popover cluster on the homepage to a carousel, then we will need this.
+
 import React from 'react'
 
 import Heading from '@instructure/ui-elements/lib/components/Heading'

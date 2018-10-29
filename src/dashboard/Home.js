@@ -214,8 +214,6 @@ export class Home extends React.Component {
             </GridCol>
             <GridCol width={3} textAlign='center'>
               <div></div>
-              {/* <p>Your interests are then used to tailor your web experience, which changes the ads, search results, and social feeds that you see.</p> */}
-              {/* {handleExampleDisplay()} */}
               <p>The interests that trackers think you have can change your experiences online.</p>
             </GridCol>
           </GridRow>
@@ -317,7 +315,7 @@ export class Home extends React.Component {
           mountNode={() => document.getElementById('main')}
         >
           <PopoverTrigger>
-            <Button variant="circle-primary" onClick={this.showPopover1} margin="small">
+            <Button variant="circle-primary" onClick={this.showPopover1} margin="small" size="large">
               <FontAwesomeIcon icon='paw' />
             </Button>
           </PopoverTrigger>
@@ -338,7 +336,7 @@ export class Home extends React.Component {
           mountNode={() => document.getElementById('main')}
         >
           <PopoverTrigger>
-            <Button variant="circle-primary" onClick={this.showPopover2} margin="small">
+            <Button variant="circle-primary" onClick={this.showPopover2} margin="small" size="large">
               <FontAwesomeIcon icon='search' />
             </Button>
           </PopoverTrigger>
@@ -359,7 +357,7 @@ export class Home extends React.Component {
           mountNode={() => document.getElementById('main')}
         >
           <PopoverTrigger>
-            <Button variant="circle-primary" onClick={this.showPopover3} margin="small">
+            <Button variant="circle-primary" onClick={this.showPopover3} margin="small" size="large">
               <FontAwesomeIcon icon='question' />
             </Button>
           </PopoverTrigger>
