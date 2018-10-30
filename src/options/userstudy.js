@@ -11,7 +11,7 @@ async function getOptions () {
 export async function generateID (cond) {
   /* eslint-disable no-undef */
   let condition
-  const v = VERSION.replace(/\./g, '')
+  const v = EXT.VERSION.replace(/\./g, '')
   const isFirefox = navigator.userAgent.toLowerCase().includes('firefox')
   const br = isFirefox ? 'f' : 'c'
   if (cond) {

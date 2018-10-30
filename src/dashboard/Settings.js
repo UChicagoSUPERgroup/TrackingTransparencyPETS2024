@@ -24,7 +24,7 @@ const resetInfo = (
     <Text>
       <Heading level='h2'>Reset my data</Heading>
       <p>
-        If you wish to reset all data currently being stored by Tracking Transparency, click the button below.
+        If you wish to reset all data currently being stored by {EXT.NAME}, click the button below.
       </p>
       <Button variant='danger'>Reset all data</Button>
     </Text>
@@ -34,9 +34,9 @@ const resetInfo = (
 const uninstallInfo = (
   <TTPanel margin='medium 0 medium 0'>
     <Text>
-      <Heading level='h2'>Stop Tracking Transparency</Heading>
+      <Heading level='h2'>Stop {EXT.NAME}</Heading>
       <p>
-        You can stop participating at any time by uninstalling Tracking Transparency. To uninstall, click the button below. No further data will be set after the extension is uninstalled.
+        You can stop participating at any time by uninstalling {EXT.NAME}. To uninstall, click the button below. No further data will be set after the extension is uninstalled.
       </p>
       <Button variant='danger'>Uninstall extension</Button>
     </Text>

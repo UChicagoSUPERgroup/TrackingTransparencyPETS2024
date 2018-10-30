@@ -5,6 +5,8 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+const EXT_NAME = 'Tracking Transparency'
+
 module.exports = {
   entry: {
     // Each entry in here would declare a file that needs to be transpiled
@@ -80,7 +82,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['extension/dist']),
     new webpack.DefinePlugin({
-      VERSION: JSON.stringify(require('./package.json').version)
+      'EXT.VERSION': JSON.stringify(require('./package.json').version),
+      'EXT.NAME': JSON.stringify(EXT_NAME)
     }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
@@ -99,13 +102,13 @@ module.exports = {
       filename: 'dashboard.html',
       chunks: ['dashboard'],
       template: 'src/template.html',
-      title: 'Tracking Transparency'
+      title: EXT_NAME
     }),
     new HtmlWebpackPlugin({
       filename: 'popup.html',
       chunks: ['popup'],
       template: 'src/template.html',
-      title: 'Tracking Transparency'
+      title: EXT_NAME
     }),
     // new HtmlWebpackPlugin({
     //   filename: 'options.html',
@@ -117,7 +120,7 @@ module.exports = {
       filename: 'welcome.html',
       chunks: ['welcome'],
       template: 'src/template.html',
-      title: 'Welcome to Tracking Transparency'
+      title: 'Welcome to ' + EXT_NAME
     })
   ],
 
