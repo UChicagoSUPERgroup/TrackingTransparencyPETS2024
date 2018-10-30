@@ -9,18 +9,32 @@ import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 
 import logging from './dashboardLogging'
 import TTPanel from './components/TTPanel'
+import UserstudyOptionsUI from '../options/UserstudyOptionsUI'
 
 export default class InfoPage extends React.Component {
-  // constructor (props) {
-  //   super(props)
-  // }
+  constructor (props) {
+    super(props)
+    this.state = {}
+    this.loadID = this.loadID.bind(this)
+  }
 
   componentDidMount () {
     let activityType = 'load dashboard About page'
     logging.logLoad(activityType, {})
+
+    this.loadID()
+  }
+
+  async loadID () {
+    const store = await browser.storage.local.get('mturkcode')
+    const extensionID = store.mturkcode
+    this.setState({ id : extensionID })
+    // console.log(extensionID)
+    var MYID = this.state.id
   }
 
   render () {
+    const id = this.state.id
     return (
       <Grid>
         <GridRow>
@@ -38,10 +52,10 @@ export default class InfoPage extends React.Component {
             With this extension, we hope to bring you more transparency about the world of online tracking, analytics, and advertising. {EXT.NAME} runs in the background of your browser to collect information about online trackers that are tracking you.
                 </p>
                 <p>
-            We track the trackers by looking for data being sent to or from known trackers. We determine whether an entity is a tracker with Disconnect's open-source  <a href = "https://disconnect.me/trackerprotection/blocked" target='_blank' rel='noopener noreferrer'>list of known trackers</a>. Unlike other ad or tracker blockers you might use, this extension does <em>not</em> block ads or otherwise change any aspect of your browsing. Instead, this extension reveals the hidden  where and when you may have encountered these trackers. 
+            We track the trackers by looking for data being sent to or from known trackers. We determine whether an entity is a tracker with Disconnect's open-source  <a href = "https://disconnect.me/trackerprotection/blocked" target='_blank' rel='noopener noreferrer'>list of known trackers</a>. Unlike other ad or tracker blockers you might use, this extension does <em>not</em> block ads or otherwise change any aspect of your browsing. Instead, this extension reveals the hidden  where and when you may have encountered these trackers.
                 </p>
                 <p>
-                {EXT.NAME} also makes guesses about what trackers could have learned about you. Many trackers operate by collecting information about you and your interests and selling this data to other entities. This extension has a built-in algorithm to guess the topic of a web page based on the content, and uses this information to help you understand what trackers could be learning about you.
+            {EXT.NAME} also makes guesses about what trackers could have learned about you. Many trackers operate by collecting information about you and your interests and selling this data to other entities. This extension has a built-in algorithm to guess the topic of a web page based on the content, and uses this information to help you understand what trackers could be learning about you.
                 </p>
               </Text>
             </TTPanel>
@@ -77,6 +91,11 @@ export default class InfoPage extends React.Component {
                 <p>Our extension is open source, and the code is available under Link-free license at <Link href='https://github.com/UChicagoSUPERgroup/trackingtransparency' target='_blank' rel='noopener noreferrer'>GitHub</Link>.</p>
               </Text>
             </TTPanel>
+          </GridCol>
+        </GridRow>
+        <GridRow>
+          <GridCol>
+            <Text><p><em>User ID: {id}</em></p></Text>
           </GridCol>
         </GridRow>
       </Grid>
