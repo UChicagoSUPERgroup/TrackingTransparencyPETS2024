@@ -52,7 +52,7 @@ const inferenceTopList = (data) => {
     return (
       <div>
         <Heading level="h3">Your Top Interests<hr/></Heading>
-        <Text>Visit some pages to see your interests.</Text>
+        <Text>Visit some pages to see if trackers are guessing your interests.</Text>
       </div>
     )
   }
@@ -92,7 +92,7 @@ const trackerList = (data) => {
     return (
       <div>
         <Heading level="h3">Your Top Trackers<hr/></Heading>
-        <Text>No trackers have been found in your browsing!</Text>
+        <Text>Visit some pages to see if trackers are tracking your browsing.</Text>
       </div>
     )
   }
