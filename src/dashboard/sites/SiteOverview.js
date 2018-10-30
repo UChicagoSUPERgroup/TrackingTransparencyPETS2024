@@ -167,9 +167,18 @@ export default class SiteOverview extends React.Component {
     const { numPages, noTrackers, numDomains } = this.state
     const { hideInferenceContent, hideTrackerContent } = this.props
 
-    let numDNT = noTrackers ? noTrackers.length : NaN
+    let numDNT, nodata
+    if (noTrackers) {
+      numDNT = noTrackers.length
+    } else {
+      numDNT = NaN
+      nodata = true
+    }
+
+    // let numDNT = noTrackers ? noTrackers.length : NaN
 
     let percentTrackedSites = (((numDomains - numDNT) / numDomains) * 100).toFixed(1)
+    let ok = (percentTrackedSites==NaN) ? false : true
 
     return (
       <Grid startAt='medium'>
@@ -184,7 +193,8 @@ export default class SiteOverview extends React.Component {
               <Text>
                 <p>Since installing this browser extension, you have visited <strong>{numPages} different pages</strong> on <strong>{numDomains} sites</strong>.</p>
                 <p>Trackers see which sites you visited through a variety of tracking methods, including third-party cookies, tracking pixels, and browser fingerprinting. When a tracker sees that you have visited multiple sites, they can use that activity to link together your interests.</p>
-                <p>Tracker activity was detected on <strong>{percentTrackedSites}% of the sites you have visited. </strong></p>
+                {ok && <p>Tracker activity was detected on <strong>{percentTrackedSites}% of the sites you have visited. </strong></p>}
+                {nodata && <p>Come back after visiting a few sites to see your activity.</p>}
               </Text>
             </TTPanel>
           </GridCol>

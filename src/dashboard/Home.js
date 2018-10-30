@@ -16,6 +16,7 @@ import Button from '@instructure/ui-buttons/lib/components/Button'
 import Popover, { PopoverTrigger, PopoverContent } from '@instructure/ui-overlays/lib/components/Popover'
 import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 import CloseButton from '@instructure/ui-buttons/lib/components/CloseButton'
+import Spinner from '@instructure/ui-elements/lib/components/Spinner'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -39,6 +40,22 @@ const inferenceRecentList = (data) => {
 }
 
 const inferenceTopList = (data) => {
+  if (!data) {
+    return (
+      <div>
+        <Heading level="h3">Your Top Trackers<hr/></Heading>
+        <Spinner title='Loading…' size='small' />
+      </div>
+    )
+  }
+  if (data.length === 0) {
+    return (
+      <div>
+        <Heading level="h3">Your Top Interests<hr/></Heading>
+        <Text>Visit some pages to see if trackers are guessing your interests.</Text>
+      </div>
+    )
+  }
   return (
     <div>
       <Heading level="h3">Your Top Interests<hr/></Heading>
@@ -63,6 +80,22 @@ const inferenceTopList = (data) => {
 }
 
 const trackerList = (data) => {
+  if (!data) {
+    return (
+      <div>
+        <Heading level="h3">Your Top Trackers<hr/></Heading>
+        <Spinner title='Loading…' size='small' />
+      </div>
+    )
+  }
+  if (data.length === 0) {
+    return (
+      <div>
+        <Heading level="h3">Your Top Trackers<hr/></Heading>
+        <Text>Visit some pages to see if trackers are tracking your browsing.</Text>
+      </div>
+    )
+  }
   return (
     <div>
       <Heading level="h3">Your Top Trackers<hr/></Heading>
@@ -109,8 +142,6 @@ export class Home extends React.Component {
       numTrackers: '…',
       numInferences: '…',
       numPages: '…',
-      topTrackers: [],
-      topInferences: [],
       showPopover1: false,
       showPopover2: false,
       showPopover3: false
@@ -381,22 +412,27 @@ export class Home extends React.Component {
     const background = await browser.runtime.getBackgroundPage()
     let args = {count: 5}
 
-    const numPages = background.queryDatabase('getNumberOfPages', {})
-    const numTrackers = background.queryDatabase('getNumberOfTrackers', {})
-    const numInferences = background.queryDatabase('getNumberOfInferences', {})
-    const recentInferences = background.queryDatabase('getInferencesByTime', args)
-    const topInferences = background.queryDatabase('getInferences', args)
-    const recentDomains = background.queryDatabase('getDomains', args)
-    const topTrackers = background.queryDatabase('getTrackers', args)
+    const numPagesP = background.queryDatabase('getNumberOfPages', {})
+    const numTrackersP = background.queryDatabase('getNumberOfTrackers', {})
+    const numInferencesP = background.queryDatabase('getNumberOfInferences', {})
+    const recentInferencesP = background.queryDatabase('getInferencesByTime', args)
+    const topInferencesP = background.queryDatabase('getInferences', args)
+    const recentDomainsP = background.queryDatabase('getDomains', args)
+    const topTrackersP = background.queryDatabase('getTrackers', args)
 
-    // we use promises here instead of async/await because queries are not dependent on each other
-    numPages.then(n => this.setState({numPages: n}))
-    numTrackers.then(n => this.setState({numTrackers: n}))
-    numInferences.then(n => this.setState({numInferences: n}))
-    recentInferences.then(n => this.setState({recentInferences: n}))
-    topInferences.then(n => this.setState({topInferences: n}))
-    recentDomains.then(n => this.setState({recentDomains: n}))
-    topTrackers.then(n => this.setState({topTrackers: n}))
+    const [numPages, numTrackers, numInferences, recentInferences, topInferences, recentDomains, topTrackers] =
+      await Promise.all([numPagesP, numTrackersP, numInferencesP, recentInferencesP, topInferencesP, recentDomainsP, topTrackersP])
+
+    this.setState({
+      numPages,
+      numTrackers,
+      numInferences,
+      recentInferences,
+      topInferences,
+      recentDomains,
+      topTrackers,
+      ok: true
+    })
   }
 
   async componentDidMount () {
@@ -405,7 +441,7 @@ export class Home extends React.Component {
   }
 
   render () {
-    const { numTrackers, numInferences, numPages, recentInferences, recentDomains, topTrackers, topInferences, showPopover1, showPopover2, showPopover3 } = this.state
+    const { numTrackers, numInferences, numPages, recentInferences, recentDomains, topTrackers, topInferences, ok } = this.state
     const { hideHistoryContent, hideInferenceContent, hideTrackerContent } = this.props
 
     return (
@@ -419,14 +455,14 @@ export class Home extends React.Component {
           </GridCol>
         </GridRow>
         <GridRow>
-          {!hideTrackerContent && topTrackers.length > 0 && <GridCol width={3}>
+          {!hideTrackerContent && <GridCol width={3}>
             <TTPanel>
-              {trackerList(topTrackers || [])}
+              {trackerList(topTrackers)}
             </TTPanel>
           </GridCol>}
-          {!hideInferenceContent && topInferences.length > 0 && <GridCol width={3}>
+          {!hideInferenceContent && <GridCol width={3}>
             <TTPanel>
-              {inferenceTopList(topInferences || [])}
+              {inferenceTopList(topInferences)}
             </TTPanel>
           </GridCol>}
           {!hideHistoryContent && <GridCol width={6}>
@@ -438,8 +474,8 @@ export class Home extends React.Component {
               </MetricsList>
             </TTPanel>
 
-            <TTPanel margin='medium 0 0 0'>
-              {!hideInferenceContent &&
+            {(numPages > 0 || numTrackers > 0) && <TTPanel margin='medium 0 0 0'>
+              {!hideInferenceContent && numInferences > 0 &&
                 <View
                   display='inline-block'
                   margin='small small small small'
@@ -453,7 +489,7 @@ export class Home extends React.Component {
                   {recentInferences ? inferenceRecentList(recentInferences) : 'Loading…'}
                 </View>
               }
-              <View
+              {numPages > 0 && <View
                 display='inline-block'
                 margin='small small small small'
               >
@@ -464,8 +500,8 @@ export class Home extends React.Component {
                   <Text weight='bold'>Recent Sites</Text>
                 </View>
                 {recentDomains ? domainList(recentDomains) : 'Loading…'}
-              </View>
-            </TTPanel>
+              </View>}
+            </TTPanel>}
           </GridCol>}
         </GridRow>
       </Grid>

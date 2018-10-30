@@ -1,13 +1,16 @@
 import React from 'react'
 import Loadable from 'react-loadable'
 import Text from '@instructure/ui-elements/lib/components/Text'
+import Spinner from '@instructure/ui-elements/lib/components/Spinner'
 
 const Loading = props => {
   if (props.error) {
-    return <Text>Error! <button onClick={props.retry}>Retry</button></Text>
-  } else {
-    return <Text>Loading…</Text>
-  }
+		return <div>Error! <button onClick={ props.retry }>Retry</button></div>;
+	} else if (props.pastDelay) {
+    return <Spinner title='Page loading' size='medium' />
+	} else {
+		return null;
+	}
 }
 export default Loading
 

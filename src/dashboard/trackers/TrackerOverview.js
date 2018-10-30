@@ -112,7 +112,8 @@ export default class TrackerOverview extends React.Component {
     super(props)
     this.state = {
       trackers: [],
-      graphCount: 25
+      graphCount: 25,
+			numTrackers: '…'
     }
     // this.logLoad = this.logLoad.bind(this);
     this.updateGraphCount = this.updateGraphCount.bind(this)
@@ -179,8 +180,8 @@ export default class TrackerOverview extends React.Component {
       <TTPanel>
         <Text>
           <p><strong>{numTrackers} trackers</strong> have collected information about you based on your browsing history. 
-            {allData[0] && <span> Your most frequently encountered tracker is <strong>{allData[0].name}</strong> which was present on <strong>{allData[0].percent.toFixed(2)}%</strong> of the pages you visited.</span>}
-            {!allData[0] && <span> Return to this page after viewing a few sites to see the trackers in your browsing.</span>}
+            {allData && allData[0] && <span> Your most frequently encountered tracker is <strong>{allData[0].name}</strong> which was present on <strong>{allData[0].percent.toFixed(2)}%</strong> of the pages you visited.</span>}
+            {allData && !allData[0] && <span> Return to this page after viewing a few sites to see the trackers in your browsing.</span>}
           </p>
         </Text>
       </TTPanel>
@@ -286,9 +287,6 @@ export default class TrackerOverview extends React.Component {
   render () {
     const { allData, numTrackers } = this.state
 
-    if (!allData) {
-      return 'Loading…'
-    }
     return (
       <Grid>
         <GridRow>
@@ -302,12 +300,12 @@ export default class TrackerOverview extends React.Component {
           </GridCol>
         </GridRow>
         <GridRow>
-          {allData.length > 0 && <GridCol width={7}>
-            {this.renderChart()}
-          </GridCol>}
-          {allData.length > 0 && <GridCol width={5}>
-            {this.renderInfoPane()}
-          </GridCol>}
+          <GridCol width={7}>
+            {allData && allData.length > 0 && this.renderChart()}
+          </GridCol>
+          <GridCol width={5}>
+            {allData && allData.length > 0 && this.renderInfoPane()}
+          </GridCol>
         </GridRow>
       </Grid>
     )
