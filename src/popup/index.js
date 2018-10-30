@@ -143,7 +143,7 @@ class Popup extends React.Component {
     if (this.state.usageStatCondition === false) {
         return (
         <View as='div' textAlign='center'>
-          <Button onClick={this.openWelcome} margin='small'>Resume Tracking Transparency setup</Button>
+          <Button onClick={this.openWelcome} margin='small'>Resume {EXT.NAME} setup</Button>
         </View>
         )
     }
@@ -167,7 +167,7 @@ class Popup extends React.Component {
               <p>There are <strong>{trackers.length} trackers</strong> on this page.&nbsp;
                 {trackers.length > 0 && <Link onClick={() => this.setState({ selectedIndex: 1 })}>See all ⟩</Link>}</p>
               }
-              {(!pageTitle || (!showInferenceContent && !showTrackerContent)) && <p>The Tracking Transparency plugin provides transparency about online privacy.</p>}
+              {(!pageTitle || (!showInferenceContent && !showTrackerContent)) && <p>The {EXT.NAME} plugin provides transparency about online privacy.</p>}
             </Text>
           </View>
           {showMetrics && <View as='div' borderWidth='0 0 small 0' padding='medium 0 medium 0'>
@@ -194,7 +194,7 @@ class Popup extends React.Component {
           }
 
           {isData &&
-            <p>In total, <em>{numTrackers} trackers</em> have seen you visit <em>{numPages} pages</em>. The Tracking Transparency extension has determined that these companies could have inferred your interest in <em>{numInferences} topics</em>.</p>
+            <p>In total, <em>{numTrackers} trackers</em> have seen you visit <em>{numPages} pages</em>. The {EXT.NAME} extension has determined that these companies could have inferred your interest in <em>{numInferences} topics</em>.</p>
           }
         </Text>
 

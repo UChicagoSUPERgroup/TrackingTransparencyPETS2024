@@ -135,7 +135,7 @@ class WelcomePage extends React.Component {
 
           <Heading margin='large 0 medium 0' border='bottom'>About this extension</Heading>
           <Text>
-            <p>Tracking Transparency is a software tool that visualizes aspects of your web browsing. To access this extension, click on the icon in the corner of the upper right of your browser window. </p>
+            <p>{EXT.NAME} is a software tool that visualizes aspects of your web browsing. To access this extension, click on the icon in the corner of the upper right of your browser window. </p>
             <img src='/icons/extension-toolbar.png' width="700px" style={{border: '1px solid black'}} />
             <p>The extension icon will appear in the upper right corner for Chrome as well as Firefox users. </p>
           </Text>

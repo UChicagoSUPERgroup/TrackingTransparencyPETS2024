@@ -471,7 +471,7 @@ async function maybeDashboardNudge () {
 async function dashboardNudgeNotification () {
   await browser.notifications.create({
     type: 'basic',
-    title: 'Tracking Transparency',
+    title: EXT.NAME,
     message: 'Click to learn more about your web browsing!',
     iconUrl: '/icons/logo.svg'
   })

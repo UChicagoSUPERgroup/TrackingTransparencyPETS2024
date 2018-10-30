@@ -119,7 +119,7 @@ The code for logclick logs ALL the click in every single page.
         <Navbar>
           <Navbar.Header>
             <LinkContainer to='/'>
-              <Navbar.Brand>Tracking Transparency</Navbar.Brand>
+              <Navbar.Brand>{EXT.NAME}</Navbar.Brand>
             </LinkContainer>
           </Navbar.Header>
           {enoughData && <Nav>
