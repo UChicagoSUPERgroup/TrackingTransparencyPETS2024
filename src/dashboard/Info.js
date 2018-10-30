@@ -9,7 +9,6 @@ import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 
 import logging from './dashboardLogging'
 import TTPanel from './components/TTPanel'
-import UserstudyOptionsUI from '../options/UserstudyOptionsUI'
 
 export default class InfoPage extends React.Component {
   constructor (props) {
@@ -29,8 +28,6 @@ export default class InfoPage extends React.Component {
     const store = await browser.storage.local.get('mturkcode')
     const extensionID = store.mturkcode
     this.setState({ id : extensionID })
-    // console.log(extensionID)
-    var MYID = this.state.id
   }
 
   render () {
