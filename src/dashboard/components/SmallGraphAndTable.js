@@ -54,7 +54,7 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
     case "inference":
       if (c1Header=="Sites") {
         head = <Heading level='h2'>Which sites were about <em>{title}</em>?</Heading>
-        text = <Text><br/>You visited <strong>{data.length} {sitePlurality}</strong> that may have been about {title}, which trackers may have guessed is an interest if yours.</Text>
+        text = <Text><br/>You visited <strong>{data.length} {sitePlurality}</strong> that may have been about {title}, which trackers may have guessed is an interest of yours.</Text>
       } else if (c1Header=="Trackers"){
         head = <Heading level='h2'>Which trackers might think you are interested in <em>{title}</em>?</Heading>
         text = <Text><br/><strong>{data.length} {trackerPlurality}</strong> may have guessed that you are interested in {title}.</Text>
