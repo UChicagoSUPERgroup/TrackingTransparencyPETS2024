@@ -35,10 +35,10 @@ export default class InfoPage extends React.Component {
               <Heading level='h2'>How the extension works</Heading>
               <Text>
                 <p>
-            With this extension, we hope to bring you more transparency about the world of online tracking, analytics, and advertising. Tracking Transparency runs in the background while you browse online to collect information about these online trackers.
+            With this extension, we hope to bring you more transparency about the world of online tracking, analytics, and advertising. Tracking Transparency runs in the background of your browser to collect information about online trackers that are tracking you.
                 </p>
                 <p>
-            We track the trackers by looking for data being sent to or from known trackers. We determine whether an entity is a tracker with Disconnect's open-source  <a href = "https://disconnect.me/trackerprotection/blocked" target='_blank' rel='noopener noreferrer'>list of known trackers</a>. Unlike other ad or tracker blockers you might use, this extension does <em>not</em> block ads or otherwise change any aspect of your normal browsing. Instead, while the extension is running, it simply observes where and when you may have encountered these trackers.
+            We track the trackers by looking for data being sent to or from known trackers. We determine whether an entity is a tracker with Disconnect's open-source  <a href = "https://disconnect.me/trackerprotection/blocked" target='_blank' rel='noopener noreferrer'>list of known trackers</a>. Unlike other ad or tracker blockers you might use, this extension does <em>not</em> block ads or otherwise change any aspect of your browsing. Instead, this extension reveals the hidden  where and when you may have encountered these trackers. 
                 </p>
                 <p>
             Tracking Transparency also makes guesses about what trackers could have learned about you. Many trackers operate by collecting information about you and your interests and selling this data to other entities. This extension has a built-in algorithm to guess the topic of a web page based on the content, and uses this information to help you understand what trackers could be learning about you.

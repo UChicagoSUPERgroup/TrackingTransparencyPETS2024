@@ -81,7 +81,7 @@ export default class InferenceDetailPage extends React.Component {
         domains={domains}
         pages={pages}
         pageTableTitle={'What pages have you visited about ' + this.inference + '?'}
-        pageTableSubtitle={'Pages that are likely about ' + this.inference}
+        pageTableSubtitle={'Pages that may have been about ' + this.inference}
         timeChartTitle={'When have you visited pages about ' + this.inference + '?'}
         timeChartSubtitle={'This graph shows the number of pages you visited over time that are likely about ' + this.inference + '.'}
       />
