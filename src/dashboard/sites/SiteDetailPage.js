@@ -1,6 +1,7 @@
 import React from 'react'
 import Text from '@instructure/ui-elements/lib/components/Text'
 import Heading from '@instructure/ui-elements/lib/components/Heading'
+import Spinner from '@instructure/ui-elements/lib/components/Spinner'
 
 import colors from '../../colors'
 
@@ -58,7 +59,7 @@ export default class SiteDetailPage extends React.Component {
     const { metrics, inferences, trackers, pages, rank } = this.state
     const ready = !!pages
 
-    if (!this.DetailPage || !ready) return 'Loading…'
+    if (!this.DetailPage || !ready) return <Spinner title='Page loading' size='medium' />
 
     const introText = (
       <Text>

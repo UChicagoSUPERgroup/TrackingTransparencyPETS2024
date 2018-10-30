@@ -2,17 +2,6 @@
 
 const production = (process.env.NODE_ENV === 'production');
 
-async function enoughData() {
-  const background = await browser.runtime.getBackgroundPage();
-  const numPages = await background.queryDatabase('getNumberOfPages', {});
-
-  if (numPages > 0) {
-    return true;
-  }
-
-  return false;
-}
-
 /**
  * Reads a json file with given path.
  *
@@ -52,4 +41,4 @@ export async function getOption (key) {
   return store['options'][key]
 }
 
-export default { production, enoughData, readTextFile, deserialize, sleep, getOption }
+export default { production, readTextFile, deserialize, sleep, getOption }

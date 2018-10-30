@@ -2,6 +2,7 @@ import React from 'react'
 
 import Text from '@instructure/ui-elements/lib/components/Text'
 import ToggleDetails from '@instructure/ui-toggle-details/lib/components/ToggleDetails'
+import Spinner from '@instructure/ui-elements/lib/components/Spinner'
 
 import colors from '../../colors'
 
@@ -54,7 +55,7 @@ export default class InferenceDetailPage extends React.Component {
     const { metrics, trackers, domains, pages, interestInfo } = this.state
     const ready = !!pages
 
-    if (!this.DetailPage || !ready) return 'Loading…'
+    if (!this.DetailPage || !ready) return <Spinner title='Page loading' size='medium' />
 
     // these cutoffs are a bit haphazard
     let popularity

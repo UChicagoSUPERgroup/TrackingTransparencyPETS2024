@@ -235,6 +235,8 @@ export default class InferencesOverview extends React.Component {
   render () {
     let { inferences, selectedInference, numInferences } = this.state
     let { exampleSite, exampleInference, exampleTracker } = this.state
+    const ok = inferences && inferences.length > 0
+    const nodata = inferences && inferences.length === 0
 
     const popularityTooltipText = (
       <div style={{width: 160}}>
@@ -349,13 +351,14 @@ export default class InferencesOverview extends React.Component {
             <TTPanel>
               <Text>
                 <p>Trackers collect information about the pages you visit, and use this information in order to make guesses about topics you might like. We call these topics <em>interests</em>. These interests are then used to show you targeted ads, to do web analytics, and more. Our algorithms have identified <strong>{numInferences} topics</strong> that trackers might have guessed you are interested in.</p>
-                <p>You recently visited <Link href={'#/sites/'+exampleSite}>{exampleSite}</Link>, which our algorithms think is about {exampleInference}. The tracker, <Link href={'#/trackers/'+exampleTracker}>{exampleTracker}</Link>, was tracking your browsing activity and may have guessed that you are interested in {exampleInference}.</p>
-                <p>This chart shows some topics that trackers think you might be interested in, based on your browsing activity. Click a slice of the chart to see more details.</p>
+                {exampleSite && <p>You recently visited <Link href={'#/sites/'+exampleSite}>{exampleSite}</Link>, which our algorithms think is about {exampleInference}. The tracker, <Link href={'#/trackers/'+exampleTracker}>{exampleTracker}</Link>, was tracking your browsing activity and may have guessed that you are interested in {exampleInference}.</p>}
+                {ok && <p>This chart shows some topics that trackers think you might be interested in, based on your browsing activity. Click a slice of the chart to see more details.</p>}
+                {nodata && <p>Return to this page after viewing a few sites to see what may have been inferred about your interests.</p>}
               </Text>
             </TTPanel>
           </GridCol>
         </GridRow>
-        <GridRow>
+        {ok && <GridRow>
           <GridCol width={7}>
             <TTPanel padding='0 0 0 0'>
               <SizeMe>
@@ -407,7 +410,7 @@ export default class InferencesOverview extends React.Component {
             </TTPanel>
             {filters}
           </GridCol>
-        </GridRow>
+        </GridRow>}
       </Grid>
     )
   }

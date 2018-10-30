@@ -87,9 +87,8 @@ The code for logclick logs ALL the click in every single page.
 
   async componentDidMount () {
     const options = (await browser.storage.local.get('options')).options
-    const enoughData = await tt.enoughData()
     const okToLoad = true
-    this.setState({ ...options, okToLoad, enoughData })
+    this.setState({ ...options, okToLoad })
     logging.logStartDashboardPage()
     window.addEventListener('click', logging.logDashboardClick, true)
 
@@ -103,8 +102,7 @@ The code for logclick logs ALL the click in every single page.
   /** ************ END Instrumentation code ********************************/
 
   render () {
-    const { okToLoad, enoughData } = this.state
-    // const enoughData = tt.enoughData();
+    const { okToLoad } = this.state
     const settings = (<IconSettings />)
 
     // some of these are "show..." and others are "hide..."
@@ -122,14 +120,14 @@ The code for logclick logs ALL the click in every single page.
               <Navbar.Brand>Tracking Transparency</Navbar.Brand>
             </LinkContainer>
           </Navbar.Header>
-          {enoughData && <Nav>
+          <Nav>
             {!hideInferenceContent && <NavLink to='/interests' title='Interests' />}
             {!hideTrackerContent && <NavLink to='/trackers' title='Trackers' />}
             {!hideHistoryContent && <NavLink to='/sites' title='Sites' />}
             {!hideHistoryContent && <NavLink to='/activity' title='Activity' />}
             {showLightbeam && <NavLink to='/lightbeam' title='Network' />}
             {/* <NavLink to="/takeaction"  title="Take Action"/> */}
-          </Nav>}
+          </Nav>
           <Nav pullRight>
             {!tt.production && <NavLink to='/debug' title='Debug' />}
             <NavLink to='/info' title='About' />
@@ -147,7 +145,7 @@ The code for logclick logs ALL the click in every single page.
           {okToLoad && <div className='container containerInner'>
             <Route path='/*' render={({ match }) => <TTBreadcrumbs url={match.url} />} />
 
-            {enoughData && <div>
+            <div>
               <Route exact path='/' render={props => (
                 <Home {...props}
                   hideHistoryContent={hideHistoryContent}
@@ -188,9 +186,7 @@ The code for logclick logs ALL the click in every single page.
 
               {showLightbeam && <Route path='/lightbeam' component={LightbeamWrapper} />}
               {/* <Route path="/takeaction" component={TakeActionPage}/> */}
-            </div>}
-
-            {!enoughData && <Route exact path='/' component={WaitingDataHome} />}
+            </div>
 
             <Route path='/debug' component={DebugPage} />
             <Route path='/info' component={InfoPage} />

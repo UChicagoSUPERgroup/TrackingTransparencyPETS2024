@@ -85,6 +85,8 @@ export default class ActivityOverview extends React.Component {
   render () {
     const { weektimestamps, recent, pagesByTime } = this.state
     const { hideInferenceContent, hideTrackerContent } = this.props
+    const ok = weektimestamps && weektimestamps.length > 0
+    const nodata = weektimestamps && weektimestamps.length === 0
 
     return (
       <div>
@@ -94,31 +96,32 @@ export default class ActivityOverview extends React.Component {
             <p>
                 Trackers are able to track your browsing activity across many different sites and could create a profile of your interests, based on when you browsed online.
             </p>
-            <p>
+            {ok && <p>
                 The scatterplot shows how many pages you visited for each hour of the last week. The bigger the point, the more likely you were tracked. Click on a point to learn more about the tracking that took place.
-            </p>
+            </p>}
+            {nodata && <p>Come back after visiting a few pages to see your activity.</p>}
           </Text>
         </TTPanel>
-        <TTPanel margin='medium 0 medium 0'>
-          {weektimestamps &&
-          <PagesTimeScatterplot
-            weektimestamps={weektimestamps}
-            update={this.handleClick} />
-          }
-        </TTPanel>
-        <TTPanel margin='medium 0 medium 0'>
-          {recent &&
-          <PageTable
-            title={this.recentVisitsTitle(recent)}
-            data={pagesByTime}
-            noDataText='Click in the scatterplot for more information'
-            showSite
-            showInference={!hideInferenceContent}
-            showTrackers={!hideTrackerContent}
-            sortAscending
-          />
-          }
-        </TTPanel>
+        {ok && <div>
+          <TTPanel margin='medium 0 medium 0'>
+            <PagesTimeScatterplot
+              weektimestamps={weektimestamps}
+              update={this.handleClick} />
+          </TTPanel>
+          <TTPanel margin='medium 0 medium 0'>
+            {recent &&
+            <PageTable
+              title={this.recentVisitsTitle(recent)}
+              data={pagesByTime}
+              noDataText='Click in the scatterplot for more information'
+              showSite
+              showInference={!hideInferenceContent}
+              showTrackers={!hideTrackerContent}
+              sortAscending
+            />
+            }
+          </TTPanel>
+        </div>}
 
       </div>
     )
