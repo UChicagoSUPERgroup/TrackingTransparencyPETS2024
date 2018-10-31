@@ -57,8 +57,9 @@ browser.webRequest.onBeforeRequest.addListener(
 );
 
 /* listeners for page navigation (moving to a new page) */
-browser.webNavigation.onDOMContentLoaded.addListener(updateMainFrameInfo);
-browser.webNavigation.onHistoryStateUpdated.addListener(updateMainFrameInfo);
+browser.webNavigation.onBeforeNavigate.addListener(onBeforeNavigate)
+browser.webNavigation.onDOMContentLoaded.addListener(onDOMContentLoaded)
+browser.webNavigation.onHistoryStateUpdated.addListener(onHistoryStateUpdated)
 
 /* listener for tab close */
 browser.tabs.onRemoved.addListener(clearTabData);
@@ -79,50 +80,102 @@ async function logRequest (details) {
     // for main frame page loads, ignore
     return;
   }
+  console.log('logRequest')
 
   if (tabData[details.tabId]) {
     tabData[details.tabId].webRequests.push(details);
   }
 }
 
-/** Called by listeners when user navigates to a new page
- *
- * Creates a new page id, associates page with the current tab, sends info about page to database worker.
- *
- * @param  {Object} details - object from onBeforeRequest or onHistoryStateUpdated listener
- * @param {number} details.frameId - frame id (should be 0 for main frame)
- * @param {number} details.tabId - tab id
- * @param {string} details.url - url
- * @param {number} details.timeStamp - timestamp
- */
-async function updateMainFrameInfo (details) {
-  if (details.frameId !== 0 ||
-      details.tabId === -1 ||
-      details.tabId === browser.tabs.TAB_ID_NONE ||
-      !details.url.startsWith('http') ||
-      details.url.includes('_/chrome/newtab')) {
-    // not a user-initiated page change
-    return;
-  }
+
+function isMainFramePage (details) {
+  const { tabId, frameId, url } = details
+  return (frameId !== 0 &&
+      tabId === -1 &&
+      tabId === browser.tabs.TAB_ID_NONE &&
+      !url.startsWith('http') &&
+      url.includes('_/chrome/newtab'))
+}
+
+function onBeforeNavigate (details) {
+  const { tabId, url } = details
+  if (!isMainFramePage(details)) return
+
+  console.log('onBeforeNavigate', details)
 
   /* if we have data from a previous load, send it to trackers
    * worker and clear out tabData here */
   if (tabData[details.tabId]) {
-    clearTabData(details.tabId);
+    clearTabData(details.tabId)
   }
 
-  /* take time stamp and use as ID for main frame page load
-   * store in object to identify with tab */
-  try {
-    const tab = await browser.tabs.get(details.tabId);
-    if (tab.hasOwnProperty('favIconUrl')) {
-      recordNewPage(details.tabId, details.url, tab.title, tab.favIconUrl);
-    } else {
-      recordNewPage(details.tabId, details.url, tab.title, '');
-    }
-  } catch (err) {
-    console.log("can't updateMainFrameInfo for tab id", details.tabId);
+  const pageId = Date.now()
+  let urlObj = new URL(url)
+
+  const domain = tldjs.getDomain(urlObj.hostname) || urlObj.hostname
+
+  // store info about the tab in memory
+  tabData[tabId] = {
+    pageId: pageId,
+    domain: domain,
+    hostname: urlObj.hostname,
+    path: urlObj.pathname,
+    protocol: urlObj.protocol,
+    url: url,
+    webRequests: [],
+    trackers: []
   }
+  console.log(tabData[tabId])
+}
+
+async function onDOMContentLoaded (details) {
+  const { tabId } = details
+  if (!isMainFramePage(details)) return
+  console.log('onDOMContentLoaded')
+
+  // we now have title
+  // so we can add that to tabdata and push it to database
+  const tab = await browser.tabs.get(details.tabId);
+  tabData[tabId]['title'] = tab.title
+
+  // add new entry to database "Pages" table with into about the page
+  databaseWorker.postMessage({
+    type: 'store_page',
+    info: tabData[tabId]
+  })
+  // now fetch and store the favicon database
+  // fetchSetGetFavicon(url, faviconUrl)
+}
+
+async function onHistoryStateUpdated (details) {
+  const { tabId, url } = details
+  if (!isMainFramePage(details)) return
+
+  // check if url is changed
+  // a lot of pages (yahoo, duckduckgo) do extra redirects
+  // that call this function but really aren't a page change
+  if (tabData[tabId].hostname) {
+    const u = new URL(url)
+    const h1 = u.hostname.split('www.').pop()
+    const h2 = tabData[tabId].hostname.split('www.').pop()
+    const p1 = u.pathname
+    const p2 = tabData[tabId].path
+    console.log(h1, h2, p1, p2)
+    if (h1 === h2 && p1 === p2) return
+  }
+  console.log('onHistoryStateUpdated', details)
+
+  // simulate a new page load
+  onBeforeNavigate(details)
+
+  const tab = await browser.tabs.get(details.tabId)
+  tabData[tabId]['title'] = tab.title
+
+  // add new entry to database "Pages" table with into about the page
+  databaseWorker.postMessage({
+    type: 'store_page',
+    info: tabData[tabId]
+  })
 }
 
 /* check if the site's favicon is already cahced in local storage and
@@ -200,43 +253,6 @@ window.getFavicon=getFavicon;
 */
 
 /**
- * creates a new record for the tab in database and tabData object
- * the tabData object stores basic info about the tab in memory
- *
- * @param  {number} tabId
- * @param  {string} url
- * @param  {string} title
- * @param  {string} faviconUrl
- */
-function recordNewPage (tabId, url, title, faviconUrl) {
-  const pageId = Date.now();
-  let urlObj = new URL(url);
-
-  let domain = tldjs.getDomain(urlObj.hostname);
-  domain = domain || urlObj.hostname; // in case above line returns null
-
-  // store info about the tab in memory
-  tabData[tabId] = {
-    pageId: pageId,
-    domain: domain,
-    hostname: urlObj.hostname,
-    path: urlObj.pathname,
-    protocol: urlObj.protocol,
-    title: title,
-    webRequests: [],
-    trackers: []
-  };
-
-  // add new entry to database "Pages" table with into about the page
-  databaseWorker.postMessage({
-    type: 'store_page',
-    info: tabData[tabId]
-  });
-  // now fetch and store the favicon database
-  // fetchSetGetFavicon(url, faviconUrl)
-}
-
-/**
  * Clears tabData info for a tab,
  * pushing queued web requests to the trackers worker
  * (which will then store to database)
@@ -245,6 +261,7 @@ function recordNewPage (tabId, url, title, faviconUrl) {
  * @param  {number} tabId - tab's id
  */
 function clearTabData (tabId) {
+  console.log('clearTabData')
   if (!tabData[tabId]) {
     return;
   }
@@ -296,9 +313,13 @@ async function onPageLoadFinish (details) {
   if (details.frameId === 0) {
     // not an iframe
     const tabId = details.tabId
-    chrome.tabs.sendMessage(tabId, {
-      type: 'make_inference'
-    })
+    try {
+      chrome.tabs.sendMessage(tabId, {
+        type: 'make_inference'
+      })
+    } catch (e) {
+      console.log(e)
+    }
 
     const data = await getTabData(tabId)
     const showOverlay = await getOption('showOverlay')
