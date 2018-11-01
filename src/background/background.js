@@ -78,30 +78,28 @@ browser.webNavigation.onHistoryStateUpdated.addListener(onPageLoadFinish);
 async function logRequest (details) {
   if (details.type === 'main_frame') {
     // for main frame page loads, ignore
-    return;
+    return
   }
-  console.log('logRequest')
 
   if (tabData[details.tabId]) {
-    tabData[details.tabId].webRequests.push(details);
+    tabData[details.tabId].webRequests.push(details)
   }
 }
 
-
 function isMainFramePage (details) {
   const { tabId, frameId, url } = details
-  return (frameId !== 0 &&
-      tabId === -1 &&
-      tabId === browser.tabs.TAB_ID_NONE &&
-      !url.startsWith('http') &&
-      url.includes('_/chrome/newtab'))
+  return (frameId === 0 &&
+    tabId !== -1 &&
+    tabId !== browser.tabs.TAB_ID_NONE &&
+    url.startsWith('http') &&
+    !url.includes('_/chrome/newtab')) &&
+    !browser.extension.inIncognitoContext
 }
 
 function onBeforeNavigate (details) {
   const { tabId, url } = details
   if (!isMainFramePage(details)) return
 
-  console.log('onBeforeNavigate', details)
 
   /* if we have data from a previous load, send it to trackers
    * worker and clear out tabData here */
@@ -125,17 +123,20 @@ function onBeforeNavigate (details) {
     webRequests: [],
     trackers: []
   }
-  console.log(tabData[tabId])
 }
 
 async function onDOMContentLoaded (details) {
   const { tabId } = details
   if (!isMainFramePage(details)) return
-  console.log('onDOMContentLoaded')
 
   // we now have title
   // so we can add that to tabdata and push it to database
-  const tab = await browser.tabs.get(details.tabId);
+  const tab = await browser.tabs.get(details.tabId)
+  if (tab.incognito) {
+    // we don't want to store private browsing data
+    tabData[tabId] = null
+    return
+  }
   tabData[tabId]['title'] = tab.title
 
   // add new entry to database "Pages" table with into about the page
@@ -160,10 +161,8 @@ async function onHistoryStateUpdated (details) {
     const h2 = tabData[tabId].hostname.split('www.').pop()
     const p1 = u.pathname
     const p2 = tabData[tabId].path
-    console.log(h1, h2, p1, p2)
     if (h1 === h2 && p1 === p2) return
   }
-  console.log('onHistoryStateUpdated', details)
 
   // simulate a new page load
   onBeforeNavigate(details)
@@ -261,7 +260,6 @@ window.getFavicon=getFavicon;
  * @param  {number} tabId - tab's id
  */
 function clearTabData (tabId) {
-  console.log('clearTabData')
   if (!tabData[tabId]) {
     return;
   }

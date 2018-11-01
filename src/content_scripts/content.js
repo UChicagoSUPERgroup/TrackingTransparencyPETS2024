@@ -2,7 +2,10 @@ import makeInference from './inferencing'
 import overlay from './overlay'
 
 async function runtimeOnMessage (m) {
-  // console.log('got msg from background', m)
+  if (browser.extension.inIncognitoContext) {
+    return
+  }
+
   switch (m.type) {
     case 'make_inference':
       makeInference()
