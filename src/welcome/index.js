@@ -184,7 +184,7 @@ class WelcomePage extends React.Component {
           <Heading margin='large 0 medium 0' border='bottom'>Data collection</Heading>
           <Text>
             <p>To enable its visualizations, the extension will store data on your computer about your web browsing.</p>
-            <p>Personally-identifiable information <em>not</em> leave your computer and will <em>not</em> be shared with the researchers. The software will, however, collect for the researchers certain anonymized metrics, including:</p>
+            <p>Personally-identifiable information will <em>not</em> leave your computer and will <em>not</em> be shared with the researchers. The software will, however, collect for the researchers certain anonymized metrics, including:</p>
             <ul>
               <li>descriptions of the topics of webpages you visit (e.g., “entertainment” or “computer hardware”)</li>
               <li>the number of different websites you visit, but not which specific websites</li>

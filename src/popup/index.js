@@ -144,9 +144,10 @@ class Popup extends React.Component {
 
   onClickSurvey2 () {
     let id = this.state.id
+    let condition = id.slice(0,1)
     const survey2link = {
       active: true,
-      url: 'https://umdsurvey.umd.edu/jfe/form/SV_552e1c5EZKv3yMR?id=' + id
+      url: 'https://umdsurvey.umd.edu/jfe/form/SV_552e1c5EZKv3yMR?id=' + id + '&cndt=' + condition
     }
     browser.tabs.create(survey2link)
   }
