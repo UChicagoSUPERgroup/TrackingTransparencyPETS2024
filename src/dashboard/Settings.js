@@ -11,37 +11,6 @@ import TTPanel from './components/TTPanel'
 //   console.log(`Canceled: ${error}`);
 // }
 //
-// function uninstallTrackingTransparency() {
-//   var uninstalling = browser.management.uninstallSelf({
-//     showConfirmDialog: true,
-//     dialogMessage: "Testing self-uninstall"
-//   });
-//   uninstalling.then(null, onCanceled);
-// }
-
-const resetInfo = (
-  <TTPanel margin='medium 0 medium 0'>
-    <Text>
-      <Heading level='h2'>Reset my data</Heading>
-      <p>
-        If you wish to reset all data currently being stored by {EXT.NAME}, click the button below.
-      </p>
-      <Button variant='danger'>Reset all data</Button>
-    </Text>
-  </TTPanel>
-)
-
-const uninstallInfo = (
-  <TTPanel margin='medium 0 medium 0'>
-    <Text>
-      <Heading level='h2'>Stop {EXT.NAME}</Heading>
-      <p>
-        You can stop participating at any time by uninstalling {EXT.NAME}. To uninstall, click the button below. No further data will be set after the extension is uninstalled.
-      </p>
-      <Button variant='danger'>Uninstall extension</Button>
-    </Text>
-  </TTPanel>
-)
 
 export class SettingsPage extends React.Component {
   constructor (props) {
@@ -55,12 +24,52 @@ export class SettingsPage extends React.Component {
     logging.logLoad(activityType, {})
   }
 
+  async resetOnClick() {
+    const background = await browser.runtime.getBackgroundPage()
+    await background.resetAllData()
+  }
+
+  uninstallOnClick() {
+      var uninstalling = browser.management.uninstallSelf({
+        showConfirmDialog: true
+      })
+      uninstalling.then(null, onCanceled)
+  }
+
+  resetInfo () {
+    return (
+      <TTPanel margin='medium 0 medium 0'>
+        <Text>
+          <Heading level='h2'>Reset my data</Heading>
+          <p>
+            If you wish to reset all data currently being stored by {EXT.NAME}, click the button below.
+          </p>
+          <Button variant='danger' onClick={this.resetOnClick}>Reset all data</Button>
+        </Text>
+      </TTPanel>
+    )
+  }
+
+  uninstallInfo () {
+    return (
+      <TTPanel margin='medium 0 medium 0'>
+        <Text>
+          <Heading level='h2'>Stop {EXT.NAME}</Heading>
+          <p>
+            You can stop participating at any time by uninstalling {EXT.NAME}. To uninstall, click the button below. No further data will be set after the extension is uninstalled.
+          </p>
+          <Button variant='danger' onClick={this.uninstallOnClick}>Uninstall extension</Button>
+        </Text>
+      </TTPanel>
+    )
+  }
+
   render () {
     return (
       <div>
         <Heading level='h1'><strong>Settings</strong></Heading>
-        {resetInfo}
-        {uninstallInfo}
+        {this.resetInfo()}
+        {this.uninstallInfo()}
       </div>
     )
   }

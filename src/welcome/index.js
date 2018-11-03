@@ -44,8 +44,7 @@ const isFirefox = navigator.userAgent.toLowerCase().includes('firefox')
 class WelcomePage extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {
-    }
+    this.state = {}
     this.toggleExtensionEnabled = this.toggleExtensionEnabled.bind(this)
     this.onSave = this.onSave.bind(this)
   }
@@ -185,7 +184,7 @@ class WelcomePage extends React.Component {
           <Heading margin='large 0 medium 0' border='bottom'>Data collection</Heading>
           <Text>
             <p>To enable its visualizations, the extension will store data on your computer about your web browsing.</p>
-            <p>Data that could identify you will <em>not</em> leave your computer and will <em>not</em> be shared with the researchers. The software will, however, collect for the researchers certain anonymized metrics, including:</p>
+            <p>Personally-identifiable information <em>not</em> leave your computer and will <em>not</em> be shared with the researchers. The software will, however, collect for the researchers certain anonymized metrics, including:</p>
             <ul>
               <li>descriptions of the topics of webpages you visit (e.g., “entertainment” or “computer hardware”)</li>
               <li>the number of different websites you visit, but not which specific websites</li>
@@ -193,7 +192,6 @@ class WelcomePage extends React.Component {
             </ul>
             <p>Full information about the data collected by the extension and how we will use it is available in our <Link href='https://super.cs.uchicago.edu/trackingtransparency/privacy.html' target='_blank'>privacy policy</Link>.</p>
           </Text>
-          <Text><p>Your user ID is <strong>{this.state.id}</strong></p></Text>
           <Button variant='primary' onClick={this.onSave}><Heading margin='medium'>Begin Survey 1</Heading></Button>
         </div>
 
