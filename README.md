@@ -1,15 +1,11 @@
-<p align="center">
-  <img src="https://super.cs.uchicago.edu/UChicagoSUPERnotext.svg" alt="SUPERgroup" width="150">
-</p>
-
 # Tracking Transparency
 
-<p>
-  <a href="#"><img src="https://img.shields.io/badge/build-passing-blue.svg"></a>
-  <a href="#"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat"></a>
-  <a href="#"><img src="https://img.shields.io/badge/contributors%20-9-lightgrey.svg"></a>
-  <a href="#"><img src="https://img.shields.io/badge/dependencies%20-up%20to%20date-blue.svg"></a>
-</p>
+<img src="https://super.cs.uchicago.edu/trackingtransparency/logos/window-rect.svg" alt="Tracking Transparency" width="600">
+
+
+![License](https://img.shields.io/github/license/UChicagoSUPERgroup/trackingtransparency.svg)
+![Chrome Web Store](https://img.shields.io/chrome-web-store/v/jeoddidpffcjecfojbjpjnjnbjeenhai.svg)
+![Mozilla Add-on](https://img.shields.io/amo/v/trackingtransparency.svg)
 
 A browser extension to provide transparency about online tracking and the inferences companies make about your browsing in order to target advertisements and personalize your web experience.
 
