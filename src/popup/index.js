@@ -49,6 +49,7 @@ class Popup extends React.Component {
     this.openDashboard = this.openDashboard.bind(this)
     this.loadID = this.loadID.bind(this)
     this.onClickSurvey2 = this.onClickSurvey2.bind(this)
+    this.maybeSurvey2 = this.maybeSurvey2.bind(this)
   }
 
   async getData () {
@@ -124,11 +125,12 @@ class Popup extends React.Component {
     and sendPopupData will not run
     */
     await this.getData()
-    const store = await browser.storage.local.get(['options', 'usageStatCondition'])
+    const store = await browser.storage.local.get(['options', 'usageStatCondition', 'startTS'])
     const options = store.options
     const usageStatCondition = store.usageStatCondition === true || store.usageStatCondition === 'true'
+    const startTS = store.startTS
     const okToLoad = true
-    this.setState({ ...options, okToLoad, usageStatCondition })
+    this.setState({ ...options, okToLoad, usageStatCondition, startTS })
 
     logging.logPopupActions('open popup', 'extension icon')
 
@@ -152,6 +154,29 @@ class Popup extends React.Component {
     browser.tabs.create(survey2link)
   }
 
+  async maybeSurvey2 () {
+    const startTS = this.state.startTS
+    if (!startTS) {
+      return
+    }
+
+    const now = Date.now()
+    const day = 24 * 60 * 60 * 1000
+
+    if (now > startTS + 7 * day) {
+      return (
+        <div>
+          <Alert variant='info'>
+            Thank you for keeping our extension installed. Survey 2 is now ready.<br/><br/>
+            <Button variant='primary' onClick={this.onClickSurvey2}>
+              <Text>Take Survey 2</Text>
+            </Button>
+          </Alert>
+        </div>
+      )
+    }
+  }
+
   render () {
     const {
       okToLoad, selectedIndex,
@@ -172,12 +197,7 @@ class Popup extends React.Component {
     }
 
     return (<div style={{width: 450}}>
-      <Alert variant='info'>
-        Thank you for keeping our extension installed. Survey 2 is now ready.<br/><br/>
-        <Button variant='primary' onClick={this.onClickSurvey2}>
-          <Text>Take Survey 2</Text>
-        </Button>
-      </Alert>
+      {this.maybeSurvey2()}
 
       <TabList
         variant='minimal'
