@@ -8,7 +8,7 @@
             "update_url": "https://super.cs.uchicago.edu/trackingtransparency/firefox/updates.json"
         }
     },
-    "description": "Provides information about online tracking",
+    "description": "Helps you visualize your web activity and understand online advertising and tracking.",
     "author": "University of Chicago SUPERgroup",
     "permissions": [
         "storage",
@@ -56,5 +56,6 @@
         "32": "icons/logo32.png",
         "38": "icons/logo38.png",
         "48": "icons/logo48.png"
-  }
+    },
+    "incognito": "not_allowed"
 }
