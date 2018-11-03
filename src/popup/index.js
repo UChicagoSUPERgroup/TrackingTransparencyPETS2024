@@ -12,6 +12,7 @@ import ListItem from '@instructure/ui-elements/lib/components/List/ListItem'
 import MetricsList from '@instructure/ui-elements/lib/components/MetricsList'
 import MetricsListItem from '@instructure/ui-elements/lib/components/MetricsList/MetricsListItem'
 import View from '@instructure/ui-layout/lib/components/View'
+import Alert from '@instructure/ui-alerts/lib/components/Alert'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -41,10 +42,13 @@ class Popup extends React.Component {
       numTrackers: '…',
       numPages: '…',
       numInferences: '…',
-      usageStatCondition: undefined
+      usageStatCondition: undefined,
+      id: ""
     }
     // this.sendPopupData = this.sendPopupData.bind(this);
     this.openDashboard = this.openDashboard.bind(this)
+    this.loadID = this.loadID.bind(this)
+    this.onClickSurvey2 = this.onClickSurvey2.bind(this)
   }
 
   async getData () {
@@ -125,8 +129,26 @@ class Popup extends React.Component {
     const usageStatCondition = store.usageStatCondition === true || store.usageStatCondition === 'true'
     const okToLoad = true
     this.setState({ ...options, okToLoad, usageStatCondition })
-    
+
     logging.logPopupActions('open popup', 'extension icon')
+
+    this.loadID()
+  }
+
+  // alert participants to take survey 2 after 7 days, give link
+  async loadID () {
+    const store = await browser.storage.local.get('mturkcode')
+    const extensionID = store.mturkcode
+    this.setState({ id : extensionID })
+  }
+
+  onClickSurvey2 () {
+    let id = this.state.id
+    const survey2link = {
+      active: true,
+      url: 'https://umdsurvey.umd.edu/jfe/form/SV_552e1c5EZKv3yMR?id=' + id
+    }
+    browser.tabs.create(survey2link)
   }
 
   render () {
@@ -149,6 +171,13 @@ class Popup extends React.Component {
     }
 
     return (<div style={{width: 450}}>
+      <Alert variant='info'>
+        Thank you for keeping our extension installed. Survey 2 is now ready.<br/><br/>
+        <Button variant='primary' onClick={this.onClickSurvey2}>
+          <Text>Take Survey 2</Text>
+        </Button>
+      </Alert>
+
       <TabList
         variant='minimal'
         selectedIndex={selectedIndex}
