@@ -511,11 +511,11 @@ export class Home extends React.Component {
 
 export const WaitingDataHome = () => (
   <div>
-    <Heading level='h1'>{EXT.NAME}</Heading>
+    <Heading level='h1'><strong>{EXT.NAME}</strong></Heading>
     <TTPanel>
       <Text>
-        <p>The Tracking Tranparency extension is currently running in the background to collect information about the trackers in your browsing.</p>
-        <p>Continue using the Internet and check back after you've browsed a few web pages.</p>
+        <p>The {EXT.NAME} extension is currently running in the background to collect information about the trackers in your browsing.</p>
+        <p>Continue using the internet and check back after you've browsed a few web pages.</p>
       </Text>
     </TTPanel>
   </div>

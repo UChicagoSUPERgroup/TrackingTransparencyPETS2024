@@ -130,7 +130,7 @@ The code for logclick logs ALL the click in every single page.
           </Nav>
           <Nav pullRight>
             {!tt.production && <NavLink to='/debug' title='Debug' />}
-            <NavLink to='/info' title='About' />
+            <NavLink to='/about' title='About' />
             <NavLink to='/settings' title={settings} />
           </Nav>
         </Navbar>
@@ -189,7 +189,12 @@ The code for logclick logs ALL the click in every single page.
             </div>
 
             <Route path='/debug' component={DebugPage} />
-            <Route path='/info' component={InfoPage} />
+            <Route path='/about' render={props => (
+              <InfoPage {...props}
+                hideInferenceContent={hideInferenceContent}
+                hideTrackerContent={hideTrackerContent}
+              />
+            )} />
             <Route path='/settings' component={SettingsPage} />
           </div>}
 
