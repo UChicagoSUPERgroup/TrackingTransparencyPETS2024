@@ -154,10 +154,10 @@ class Popup extends React.Component {
     browser.tabs.create(survey2link)
   }
 
-  async maybeSurvey2 () {
+  maybeSurvey2 () {
     const startTS = this.state.startTS
     if (!startTS) {
-      return
+      return null
     }
 
     const now = Date.now()
