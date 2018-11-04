@@ -507,7 +507,7 @@ async function openDashboard () {
 browser.notifications.onClicked.addListener(openDashboard)
 
 browser.alarms.create('lfDb', {delayInMinutes: 10, periodInMinutes: 60})
-browser.alarms.create('dashboard-nudge', {delayInMinutes: 10, periodInMinutes: 60})
+browser.alarms.create('dashboard-nudge', {delayInMinutes: 1, periodInMinutes: 10})
 
 browser.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === 'lfdb') {
