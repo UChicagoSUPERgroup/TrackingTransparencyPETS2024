@@ -65,6 +65,9 @@ class Popup extends React.Component {
 
     const tabs = await browser.tabs.query({active: true, currentWindow: true})
     const tab = tabs[0]
+    if (tab.url === 'https://super.cs.uchicago.edu/trackingtransparency/survey2.html') {
+      this.setState({ showSurvey2: true })
+    }
     // get tab data with trackers and stuff here
     const tabData = await background.getTabData(tab.id)
 
@@ -155,15 +158,16 @@ class Popup extends React.Component {
   }
 
   maybeSurvey2 () {
-    const startTS = this.state.startTS
+    const { startTS, showSurvey2 } = this.state
     if (!startTS) {
       return null
     }
 
     const now = Date.now()
     const day = 24 * 60 * 60 * 1000
+    const timePassed = now > startTS + 7 * day
 
-    if (now > startTS + 7 * day) {
+    if (timePassed || showSurvey2) {
       return (
         <div>
           <Alert variant='info'>
@@ -176,6 +180,7 @@ class Popup extends React.Component {
       )
     }
   }
+
 
   render () {
     const {
@@ -195,6 +200,8 @@ class Popup extends React.Component {
         </View>
         )
     }
+
+    const logo = <img src='/icons/logo.svg' height='24px' />
 
     return (<div style={{width: 450}}>
       {this.maybeSurvey2()}
@@ -251,7 +258,7 @@ class Popup extends React.Component {
       </div> */}
       {showDashboard &&
       <View as='div' textAlign='center'>
-        <Button onClick={this.openDashboard} margin='small'>Show me more info about my web browsing</Button>
+        <Button onClick={this.openDashboard} variant='primary' margin='small'>Open {EXT.NAME} dashboard</Button>
       </View>
       }
     </div>)
