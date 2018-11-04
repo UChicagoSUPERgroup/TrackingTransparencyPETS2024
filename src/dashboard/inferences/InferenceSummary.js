@@ -5,6 +5,8 @@ import Text from '@instructure/ui-elements/lib/components/Text'
 import MetricsList from '@instructure/ui-elements/lib/components/MetricsList'
 import MetricsListItem from '@instructure/ui-elements/lib/components/MetricsList/MetricsListItem'
 
+import { getPopularityString, getComfortString } from './interestHelpers'
+
 // import categories from '../../data/categories_comfort_list.json'
 
 // const SensitivePanel = (inference) => {
@@ -38,10 +40,15 @@ export default class InferenceSummary extends React.Component {
     const trackersP = background.queryDatabaseRecursive('getTrackersByInference', {inference: inference})
     const topSitesP = background.queryDatabaseRecursive('getDomainsByInference', {inference: inference})
     const [trackers, topSites] = await Promise.all([trackersP, topSitesP])
+
     this.setState({
       trackers,
       topSites
     })
+
+    const interestData = await import(/* webpackChunkName: "data/trackerData" */'../../data/interests/interests.json')
+    const interestInfo = interestData.default[inference]
+    this.setState({ interestInfo })
   }
 
   componentWillReceiveProps (nextProps) {
@@ -55,7 +62,7 @@ export default class InferenceSummary extends React.Component {
 
   render () {
     const { inference } = this.props
-    const { trackers, topSites } = this.state
+    const { trackers, topSites, interestInfo } = this.state
     if (!Array.isArray(trackers) || !Array.isArray(topSites)) {
       return null
     }
@@ -65,24 +72,29 @@ export default class InferenceSummary extends React.Component {
     /* inadequate data/error conditions */
 
     if (!inference) {
-      content = (
+      return (<div>
+        <Heading level='h2' margin='0 0 medium 0'>{inference}</Heading>
         <p>This category does not exist.</p>
-      )
+      </div>)
+    }
+
+    let popularity = getPopularityString(interestInfo)
+    let comfort = getComfortString(interestInfo)
 
     /* main condition */
-    } else {
-      content = (
-        <div>
-          <MetricsList>
-            <MetricsListItem label='Sites' value={topSites.length} />
-            <MetricsListItem label='Trackers' value={trackers.length} />
-          </MetricsList>
-          <Text>
-            <p>Our algorithms have determined that <strong>{topSites.length} of the sites</strong> you visited were about {inference}. These sites contained a total of <strong>{trackers.length} trackers</strong>.</p>
-          </Text>
-        </div>
-      )
-    }
+    content = (
+      <div>
+        <MetricsList>
+          <MetricsListItem label='Sites' value={topSites.length} />
+          <MetricsListItem label='Trackers' value={trackers.length} />
+        </MetricsList>
+        <Text>
+          <p>Our algorithms have determined that <strong>{topSites.length} of the sites</strong> you visited were about {inference}. These sites contained a total of <strong>{trackers.length} trackers</strong>.</p>
+          {popularity && <p>Among other users, <strong>{this.inference}</strong> is a <strong>{popularity}</strong> interest for trackers to guess people are interested in.</p>}
+          {comfort && <p>Other users are often <strong>{comfort}</strong> with having their interest in this topic being used to personalize their web experience.</p>}
+        </Text>
+      </div>
+    )
 
     return (<div>
       <Heading level='h2' margin='0 0 medium 0'>{inference}</Heading>

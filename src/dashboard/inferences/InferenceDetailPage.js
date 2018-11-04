@@ -4,6 +4,7 @@ import Text from '@instructure/ui-elements/lib/components/Text'
 import ToggleDetails from '@instructure/ui-toggle-details/lib/components/ToggleDetails'
 import Spinner from '@instructure/ui-elements/lib/components/Spinner'
 
+import { getPopularityString, getComfortString } from './interestHelpers'
 import colors from '../../colors'
 
 export default class InferenceDetailPage extends React.Component {
@@ -57,18 +58,13 @@ export default class InferenceDetailPage extends React.Component {
 
     if (!this.DetailPage || !ready) return <Spinner title='Page loading' size='medium' />
 
-    // these cutoffs are a bit haphazard
-    let popularity
-    if (interestInfo.impressions >= 10000000000) {
-      popularity = 'very popular'
-    } else if (interestInfo.impressions >= 1000000000) {
-      popularity = 'popular'
-    } else if (interestInfo.impressions >= 100000000) {
-      popularity = 'somewhat popular'
-    } else if (interestInfo.impressions >= 100000000) {
-      popularity = 'not very popular'
-    }
-    const introText = <Text><strong>{this.inference}</strong> is a <strong>{popularity}</strong> interest for trackers to guess that users are interested in.</Text>
+    let popularity = getPopularityString(interestInfo)
+    let comfort = getComfortString(interestInfo)
+
+    const introText = <Text>
+      {popularity && <p>Among other users, <strong>{this.inference}</strong> is a <strong>{popularity}</strong> interest for trackers to guess people are interested in.</p>}
+      {comfort && <p>Other users are often <strong>{comfort}</strong> with having their interest in this topic being used to personalize their web experience.</p>}
+      </Text>
 
     return (
       <this.DetailPage
