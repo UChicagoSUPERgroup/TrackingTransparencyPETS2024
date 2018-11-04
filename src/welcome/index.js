@@ -62,6 +62,7 @@ class WelcomePage extends React.Component {
     }
     await saveID(id)
     this.setState({ id })
+    this.renderOverlayInfo = this.renderOverlayInfo.bind(this)
   }
 
   async onSave () {
@@ -78,6 +79,18 @@ class WelcomePage extends React.Component {
     await background.setExtEnabled(id, checked)
     const adblockers = await background.getAdblockers()
     this.setState({ adblockers })
+  }
+
+  renderOverlayInfo () {
+    const id = this.state.id || '6'
+    const cond = (id.split('-')[0])
+    if (cond === '4') { // ghostery condition
+      return (<div>
+        <p>{EXT.NAME} will load an overlay on each page with the current tracker as displayed below. If you wish to disable the overlay you may do so in your browser's extension options page.</p>
+        <img src='/icons/overlay.png' width='700px' style={{border: '1px solid black'}} />
+      </div>)
+    }
+    return null
   }
 
   // renderAdblockTable () {
@@ -137,6 +150,7 @@ class WelcomePage extends React.Component {
             <p>{EXT.NAME} is a software tool that visualizes aspects of your web browsing. To access this extension, click on the icon in the corner of the upper right of your browser window. </p>
             <img src='/icons/extension-toolbar.png' width="700px" style={{border: '1px solid black'}} />
             <p>The extension icon will appear in the upper right corner for Chrome as well as Firefox users. </p>
+            {this.renderOverlayInfo()}
           </Text>
           <Heading margin='large 0 medium 0' border='bottom'>Our study</Heading>
           <Text>
