@@ -179,7 +179,8 @@ export default class TrackerOverview extends React.Component {
     return (
       <TTPanel>
         <Text>
-          <p><strong>{numTrackers} trackers</strong> have collected information about you based on your browsing history. 
+          <p>
+            <strong>{numTrackers} trackers</strong> have been present on the sites you visited since installing {EXT.NAME}.
             {allData && allData[0] && <span> Your most frequently encountered tracker is <strong>{allData[0].name}</strong> which was present on <strong>{allData[0].percent.toFixed(2)}%</strong> of the pages you visited.</span>}
             {allData && !allData[0] && <span> Return to this page after viewing a few sites to see the trackers in your browsing.</span>}
           </p>
