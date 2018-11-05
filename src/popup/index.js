@@ -49,7 +49,9 @@ class Popup extends React.Component {
     this.openDashboard = this.openDashboard.bind(this)
     this.loadID = this.loadID.bind(this)
     this.onClickSurvey2 = this.onClickSurvey2.bind(this)
+    this.onClickUninstall = this.onClickUninstall.bind(this)
     this.maybeSurvey2 = this.maybeSurvey2.bind(this)
+    this.renderUninstall = this.renderUninstall.bind(this)
   }
 
   async getData () {
@@ -67,6 +69,9 @@ class Popup extends React.Component {
     const tab = tabs[0]
     if (tab.url === 'https://super.cs.uchicago.edu/trackingtransparency/survey2.html') {
       this.setState({ showSurvey2: true })
+    }
+    if (tab.url === 'https://super.cs.uchicago.edu/trackingtransparency/uninstall.html') {
+      this.setState({ showUninstall: true })
     }
     // get tab data with trackers and stuff here
     const tabData = await background.getTabData(tab.id)
@@ -157,6 +162,16 @@ class Popup extends React.Component {
     browser.tabs.create(survey2link)
   }
 
+  async onClickUninstall() {
+    logging.logPopupActions('click uninstall button', 'popup uninstall button')
+    const uninstalling = browser.management.uninstallSelf({
+      showConfirmDialog: true
+    })
+    uninstalling.then(null, () => {
+      logging.logPopupActions('uninstall failed', 'popup uninstall button')
+    })
+  }
+
   maybeSurvey2 () {
     const { startTS, showSurvey2 } = this.state
     if (!startTS) {
@@ -170,9 +185,9 @@ class Popup extends React.Component {
     if (timePassed || showSurvey2) {
       return (
         <div>
-          <Alert variant='info'>
-            Thank you for keeping our extension installed. Survey 2 is now ready.<br/><br/>
-            <Button variant='primary' onClick={this.onClickSurvey2}>
+          <Alert variant='success'>
+            Survey 2 is now ready. When you are ready to take it, click the button below. The survey will take about 20 minutes, and after completion you will receive a $7.00 bonus through MTurk.<br/><br/>
+            <Button variant='success' onClick={this.onClickSurvey2}>
               <Text>Take Survey 2</Text>
             </Button>
           </Alert>
@@ -181,10 +196,22 @@ class Popup extends React.Component {
     }
   }
 
+  renderUninstall () {
+    return (
+      <div style={{width: 450}}>
+        <Alert variant='error'>
+          Thank you for participating in our study. Click the button below to uninstall the extension.<br/><br/>
+          <Button variant='danger' onClick={this.onClickUninstall}>
+            <Text>Uninstall</Text>
+          </Button>
+        </Alert>
+      </div>
+    )
+  }
 
   render () {
     const {
-      okToLoad, selectedIndex,
+      okToLoad, selectedIndex, showUninstall,
       numTrackers, numInferences, numPages, pageTitle, topTracker, topTrackerCount, tabData,
       showTrackerContent, showInferenceContent, showHistoryContent, showDashboard
     } = this.state
@@ -204,6 +231,7 @@ class Popup extends React.Component {
     const logo = <img src='/icons/logo.svg' height='24px' />
 
     return (<div style={{width: 450}}>
+      {showUninstall && this.renderUninstall()}
       {this.maybeSurvey2()}
 
       <TabList
