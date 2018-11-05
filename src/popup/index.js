@@ -218,6 +218,8 @@ class Popup extends React.Component {
     }
 
     const logo = <img src='/icons/logo.svg' height='24px' />
+    const pluralTrackers = (trackers && trackers.length === 1) ? 'tracker' : 'trackers'
+    const areTrackers = (trackers && trackers.length === 1) ? 'is' : 'are'
 
     return (<div style={{width: 450}}>
       {showUninstall && this.renderUninstall()}
@@ -238,7 +240,7 @@ class Popup extends React.Component {
               <p>Our algorithms have determined that this page is likely about <strong>{inference}</strong>.</p>
               }
               {showTrackerContent && trackers &&
-              <p>There are <strong>{trackers.length} trackers</strong> on this page.&nbsp;
+              <p>There {areTrackers} <strong>{trackers.length} {pluralTrackers}</strong> on this page.&nbsp;
                 {trackers.length > 0 && <Link onClick={() => this.setState({ selectedIndex: 1 })}>See all ⟩</Link>}</p>
               }
               {(!pageTitle || (!showInferenceContent && !showTrackerContent)) && <p>The {EXT.NAME} plugin provides transparency about online privacy.</p>}
@@ -253,7 +255,7 @@ class Popup extends React.Component {
           </View>}
         </TabPanel>
         {showTrackerContent && trackers && trackers.length > 0 && <TabPanel title='Trackers'>
-          <Text><p>There are {trackers && trackers.length} trackers on this page, including:</p></Text>
+          <Text><p>There {areTrackers} {trackers && trackers.length} {pluralTrackers} on this page:</p></Text>
           <List>
             {trackers && trackers.map(t => <ListItem key={t}>{t}</ListItem>)}
           </List>
