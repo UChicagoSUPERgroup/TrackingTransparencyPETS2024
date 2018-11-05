@@ -151,6 +151,7 @@ The code for logclick logs ALL the click in every single page.
                   hideHistoryContent={hideHistoryContent}
                   hideInferenceContent={hideInferenceContent}
                   hideTrackerContent={hideTrackerContent}
+                  showLightbeam={showLightbeam}
                 />
               )} />
 

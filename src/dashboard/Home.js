@@ -408,6 +408,20 @@ export class Home extends React.Component {
     )
   }
 
+  renderLightbeamButton() {
+    return (
+      <GridRow>
+        <GridCol>
+          <TTPanel>
+            <Button variant="primary" href='#/lightbeam'>
+              See the trackers in your browsing
+            </Button>
+          </TTPanel>
+        </GridCol>
+      </GridRow>
+    )
+  }
+
   async getData () {
     const background = await browser.runtime.getBackgroundPage()
     let args = {count: 5}
@@ -442,7 +456,7 @@ export class Home extends React.Component {
 
   render () {
     const { numTrackers, numInferences, numPages, recentInferences, recentDomains, topTrackers, topInferences, ok } = this.state
-    const { hideHistoryContent, hideInferenceContent, hideTrackerContent } = this.props
+    const { hideHistoryContent, hideInferenceContent, hideTrackerContent, showLightbeam } = this.props
 
     return (
       <Grid startAt='medium'>
@@ -504,6 +518,7 @@ export class Home extends React.Component {
             </TTPanel>}
           </GridCol>}
         </GridRow>
+        {showLightbeam && this.renderLightbeamButton()}
       </Grid>
     )
   }
