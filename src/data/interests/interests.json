@@ -3,6 +3,7 @@
     "path": [
       "Arts & Entertainment"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 10000000001
   },
   "Celebrities & Entertainment News": {
@@ -10,6 +11,7 @@
       "Arts & Entertainment",
       "Celebrities & Entertainment News"
     ],
+    "comfort": -0.727272727272727,
     "impressions": 10000000001
   },
   "Comics & Animation": {
@@ -17,6 +19,7 @@
       "Arts & Entertainment",
       "Comics & Animation"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 4400000000
   },
   "Anime & Manga": {
@@ -25,6 +28,7 @@
       "Comics & Animation",
       "Anime & Manga"
     ],
+    "comfort": 1.0,
     "impressions": 1200000000
   },
   "Cartoons": {
@@ -33,6 +37,7 @@
       "Comics & Animation",
       "Cartoons"
     ],
+    "comfort": 0.25,
     "impressions": 1300000000
   },
   "Comics": {
@@ -41,6 +46,7 @@
       "Comics & Animation",
       "Comics"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 1900000000
   },
   "Entertainment Industry": {
@@ -48,6 +54,7 @@
       "Arts & Entertainment",
       "Entertainment Industry"
     ],
+    "comfort": 0.4,
     "impressions": 630000000
   },
   "Film & TV Industry": {
@@ -56,6 +63,7 @@
       "Entertainment Industry",
       "Film & TV Industry"
     ],
+    "comfort": 0.6,
     "impressions": 260000000
   },
   "Film & TV Awards": {
@@ -65,6 +73,7 @@
       "Film & TV Industry",
       "Film & TV Awards"
     ],
+    "comfort": 1.5,
     "impressions": 74000000
   },
   "Film & TV Production": {
@@ -74,6 +83,7 @@
       "Film & TV Industry",
       "Film & TV Production"
     ],
+    "comfort": -0.142857142857143,
     "impressions": 75000000
   },
   "Recording Industry": {
@@ -82,6 +92,7 @@
       "Entertainment Industry",
       "Recording Industry"
     ],
+    "comfort": -1.0,
     "impressions": 380000000
   },
   "Music Awards": {
@@ -91,6 +102,7 @@
       "Recording Industry",
       "Music Awards"
     ],
+    "comfort": 1.25,
     "impressions": 74000000
   },
   "Record Labels": {
@@ -100,6 +112,7 @@
       "Recording Industry",
       "Record Labels"
     ],
+    "comfort": 0.25,
     "impressions": 41000000
   },
   "Events & Listings": {
@@ -107,6 +120,7 @@
       "Arts & Entertainment",
       "Events & Listings"
     ],
+    "comfort": 0.2,
     "impressions": 1400000000
   },
   "Clubs & Nightlife": {
@@ -115,6 +129,7 @@
       "Events & Listings",
       "Clubs & Nightlife"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 110000000
   },
   "Concerts & Music Festivals": {
@@ -123,6 +138,7 @@
       "Events & Listings",
       "Concerts & Music Festivals"
     ],
+    "comfort": 1.5,
     "impressions": 390000000
   },
   "Film Festivals": {
@@ -131,6 +147,7 @@
       "Events & Listings",
       "Film Festivals"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 85000000
   },
   "Live Sporting Events": {
@@ -139,6 +156,7 @@
       "Events & Listings",
       "Live Sporting Events"
     ],
+    "comfort": -1.0,
     "impressions": 410000000
   },
   "Movie Listings & Theater Showtimes": {
@@ -147,6 +165,7 @@
       "Events & Listings",
       "Movie Listings & Theater Showtimes"
     ],
+    "comfort": 1.0,
     "impressions": 150000000
   },
   "Ticket Sales": {
@@ -155,6 +174,7 @@
       "Events & Listings",
       "Ticket Sales"
     ],
+    "comfort": 2.0,
     "impressions": 260000000
   },
   "Fun & Trivia": {
@@ -162,6 +182,7 @@
       "Arts & Entertainment",
       "Fun & Trivia"
     ],
+    "comfort": 0.5,
     "impressions": 10000000001
   },
   "Flash-Based Entertainment": {
@@ -170,6 +191,7 @@
       "Fun & Trivia",
       "Flash-Based Entertainment"
     ],
+    "comfort": 1.0,
     "impressions": 8400000000
   },
   "Fun Tests & Silly Surveys": {
@@ -178,6 +200,7 @@
       "Fun & Trivia",
       "Fun Tests & Silly Surveys"
     ],
+    "comfort": 0.4,
     "impressions": 2800000000
   },
   "Humor": {
@@ -185,6 +208,7 @@
       "Arts & Entertainment",
       "Humor"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 10000000001
   },
   "Live Comedy": {
@@ -193,6 +217,7 @@
       "Humor",
       "Live Comedy"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 350000000
   },
   "Political Humor": {
@@ -201,6 +226,7 @@
       "Humor",
       "Political Humor"
     ],
+    "comfort": 0.0,
     "impressions": 72000000
   },
   "Spoofs & Satire": {
@@ -209,6 +235,7 @@
       "Humor",
       "Spoofs & Satire"
     ],
+    "comfort": -0.6,
     "impressions": 1200000000
   },
   "Movies": {
@@ -216,6 +243,7 @@
       "Arts & Entertainment",
       "Movies"
     ],
+    "comfort": 1.5,
     "impressions": 6600000000
   },
   "Action & Adventure Films": {
@@ -224,6 +252,7 @@
       "Movies",
       "Action & Adventure Films"
     ],
+    "comfort": 0.4,
     "impressions": 2200000000
   },
   "Martial Arts Films": {
@@ -233,6 +262,7 @@
       "Action & Adventure Films",
       "Martial Arts Films"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 39000000
   },
   "Superhero Films": {
@@ -242,6 +272,7 @@
       "Action & Adventure Films",
       "Superhero Films"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 1500000000
   },
   "Western Films": {
@@ -251,6 +282,7 @@
       "Action & Adventure Films",
       "Western Films"
     ],
+    "comfort": 0.545454545454545,
     "impressions": 76000000
   },
   "Animated Films": {
@@ -259,6 +291,7 @@
       "Movies",
       "Animated Films"
     ],
+    "comfort": -0.8,
     "impressions": 960000000
   },
   "Bollywood & South Asian Film": {
@@ -267,6 +300,7 @@
       "Movies",
       "Bollywood & South Asian Film"
     ],
+    "comfort": 0.75,
     "impressions": 650000000
   },
   "Classic Films": {
@@ -275,6 +309,7 @@
       "Movies",
       "Classic Films"
     ],
+    "comfort": 2.0,
     "impressions": 150000000
   },
   "Silent Films": {
@@ -284,6 +319,7 @@
       "Classic Films",
       "Silent Films"
     ],
+    "comfort": 1.16666666666667,
     "impressions": 21000000
   },
   "Comedy Films": {
@@ -292,6 +328,7 @@
       "Movies",
       "Comedy Films"
     ],
+    "comfort": 2.0,
     "impressions": 460000000
   },
   "Cult & Indie Films": {
@@ -300,6 +337,7 @@
       "Movies",
       "Cult & Indie Films"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 150000000
   },
   "DVD & Video Shopping": {
@@ -308,6 +346,7 @@
       "Movies",
       "DVD & Video Shopping"
     ],
+    "comfort": 1.5,
     "impressions": 93000000
   },
   "DVD & Video Rentals": {
@@ -317,6 +356,7 @@
       "DVD & Video Shopping",
       "DVD & Video Rentals"
     ],
+    "comfort": 1.57142857142857,
     "impressions": 70000000
   },
   "Documentary Films": {
@@ -325,6 +365,7 @@
       "Movies",
       "Documentary Films"
     ],
+    "comfort": 0.6,
     "impressions": 99000000
   },
   "Drama Films": {
@@ -333,6 +374,7 @@
       "Movies",
       "Drama Films"
     ],
+    "comfort": 0.4,
     "impressions": 720000000
   },
   "Family Films": {
@@ -341,6 +383,7 @@
       "Movies",
       "Family Films"
     ],
+    "comfort": 0.5,
     "impressions": 450000000
   },
   "Horror Films": {
@@ -349,6 +392,7 @@
       "Movies",
       "Horror Films"
     ],
+    "comfort": 0.875,
     "impressions": 170000000
   },
   "Movie Memorabilia": {
@@ -357,6 +401,7 @@
       "Movies",
       "Movie Memorabilia"
     ],
+    "comfort": 0.5,
     "impressions": 35000000
   },
   "Movie Reference": {
@@ -365,6 +410,7 @@
       "Movies",
       "Movie Reference"
     ],
+    "comfort": 0.0,
     "impressions": 1800000000
   },
   "Movie Reviews & Previews": {
@@ -374,6 +420,7 @@
       "Movie Reference",
       "Movie Reviews & Previews"
     ],
+    "comfort": 0.888888888888889,
     "impressions": 1200000000
   },
   "Musical Films": {
@@ -382,6 +429,7 @@
       "Movies",
       "Musical Films"
     ],
+    "comfort": 0.777777777777778,
     "impressions": 150000000
   },
   "Romance Films": {
@@ -390,6 +438,7 @@
       "Movies",
       "Romance Films"
     ],
+    "comfort": -2.33333333333333,
     "impressions": 140000000
   },
   "Science Fiction & Fantasy Films": {
@@ -398,6 +447,7 @@
       "Movies",
       "Science Fiction & Fantasy Films"
     ],
+    "comfort": 0.0,
     "impressions": 1200000000
   },
   "Thriller, Crime & Mystery Films": {
@@ -406,6 +456,7 @@
       "Movies",
       "Thriller, Crime & Mystery Films"
     ],
+    "comfort": 0.571428571428571,
     "impressions": 510000000
   },
   "Music & Audio": {
@@ -413,6 +464,7 @@
       "Arts & Entertainment",
       "Music & Audio"
     ],
+    "comfort": 1.0,
     "impressions": 10000000001
   },
   "CD & Audio Shopping": {
@@ -421,6 +473,7 @@
       "Music & Audio",
       "CD & Audio Shopping"
     ],
+    "comfort": 0.0,
     "impressions": 25000000
   },
   "Classical Music": {
@@ -429,6 +482,7 @@
       "Music & Audio",
       "Classical Music"
     ],
+    "comfort": 0.4,
     "impressions": 120000000
   },
   "Country Music": {
@@ -437,6 +491,7 @@
       "Music & Audio",
       "Country Music"
     ],
+    "comfort": -1.0,
     "impressions": 730000000
   },
   "Dance & Electronic Music": {
@@ -445,6 +500,7 @@
       "Music & Audio",
       "Dance & Electronic Music"
     ],
+    "comfort": 0.25,
     "impressions": 940000000
   },
   "Experimental & Industrial Music": {
@@ -453,6 +509,7 @@
       "Music & Audio",
       "Experimental & Industrial Music"
     ],
+    "comfort": 1.5,
     "impressions": 54000000
   },
   "Folk & Traditional Music": {
@@ -461,6 +518,7 @@
       "Music & Audio",
       "Folk & Traditional Music"
     ],
+    "comfort": 0.222222222222222,
     "impressions": 250000000
   },
   "Jazz & Blues": {
@@ -469,6 +527,7 @@
       "Music & Audio",
       "Jazz & Blues"
     ],
+    "comfort": 0.727272727272727,
     "impressions": 160000000
   },
   "Blues": {
@@ -478,6 +537,7 @@
       "Jazz & Blues",
       "Blues"
     ],
+    "comfort": 1.0,
     "impressions": 57000000
   },
   "Jazz": {
@@ -487,6 +547,7 @@
       "Jazz & Blues",
       "Jazz"
     ],
+    "comfort": 1.25,
     "impressions": 74000000
   },
   "Music Art & Memorabilia": {
@@ -495,6 +556,7 @@
       "Music & Audio",
       "Music Art & Memorabilia"
     ],
+    "comfort": 0.0,
     "impressions": 30000000
   },
   "Music Education & Instruction": {
@@ -503,6 +565,7 @@
       "Music & Audio",
       "Music Education & Instruction"
     ],
+    "comfort": 1.14285714285714,
     "impressions": 92000000
   },
   "Music Equipment & Technology": {
@@ -511,6 +574,7 @@
       "Music & Audio",
       "Music Equipment & Technology"
     ],
+    "comfort": 0.0,
     "impressions": 610000000
   },
   "DJ Resources & Equipment": {
@@ -520,6 +584,7 @@
       "Music Equipment & Technology",
       "DJ Resources & Equipment"
     ],
+    "comfort": 2.0,
     "impressions": 8600000
   },
   "Music Recording Technology": {
@@ -529,6 +594,7 @@
       "Music Equipment & Technology",
       "Music Recording Technology"
     ],
+    "comfort": 0.0,
     "impressions": 100000000
   },
   "Musical Instruments": {
@@ -538,6 +604,7 @@
       "Music Equipment & Technology",
       "Musical Instruments"
     ],
+    "comfort": -0.25,
     "impressions": 210000000
   },
   "Drums & Percussion": {
@@ -548,6 +615,7 @@
       "Musical Instruments",
       "Drums & Percussion"
     ],
+    "comfort": -0.5,
     "impressions": 33000000
   },
   "Guitars": {
@@ -558,6 +626,7 @@
       "Musical Instruments",
       "Guitars"
     ],
+    "comfort": -0.2,
     "impressions": 100000000
   },
   "Pianos & Keyboards": {
@@ -568,6 +637,7 @@
       "Musical Instruments",
       "Pianos & Keyboards"
     ],
+    "comfort": -0.6,
     "impressions": 53000000
   },
   "Samples & Sound Libraries": {
@@ -577,6 +647,7 @@
       "Music Equipment & Technology",
       "Samples & Sound Libraries"
     ],
+    "comfort": -1.28571428571429,
     "impressions": 200000000
   },
   "Music Reference": {
@@ -585,6 +656,7 @@
       "Music & Audio",
       "Music Reference"
     ],
+    "comfort": 0.75,
     "impressions": 10000000000
   },
   "Music Composition & Theory": {
@@ -594,6 +666,7 @@
       "Music Reference",
       "Music Composition & Theory"
     ],
+    "comfort": -1.25,
     "impressions": 62000000
   },
   "Sheet Music": {
@@ -603,6 +676,7 @@
       "Music Reference",
       "Sheet Music"
     ],
+    "comfort": 1.5,
     "impressions": 64000000
   },
   "Song Lyrics & Tabs": {
@@ -612,6 +686,7 @@
       "Music Reference",
       "Song Lyrics & Tabs"
     ],
+    "comfort": -0.5,
     "impressions": 1400000000
   },
   "Music Streams & Downloads": {
@@ -620,6 +695,7 @@
       "Music & Audio",
       "Music Streams & Downloads"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 9900000000
   },
   "Pop Music": {
@@ -628,6 +704,7 @@
       "Music & Audio",
       "Pop Music"
     ],
+    "comfort": 0.571428571428571,
     "impressions": 9300000000
   },
   "Radio": {
@@ -636,6 +713,7 @@
       "Music & Audio",
       "Radio"
     ],
+    "comfort": 0.5,
     "impressions": 8100000000
   },
   "Podcasting": {
@@ -645,6 +723,7 @@
       "Radio",
       "Podcasting"
     ],
+    "comfort": 0.0,
     "impressions": 510000000
   },
   "Talk Radio": {
@@ -654,6 +733,7 @@
       "Radio",
       "Talk Radio"
     ],
+    "comfort": 1.75,
     "impressions": 260000000
   },
   "Religious Music": {
@@ -662,6 +742,7 @@
       "Music & Audio",
       "Religious Music"
     ],
+    "comfort": 0.0,
     "impressions": 130000000
   },
   "Christian & Gospel Music": {
@@ -671,6 +752,7 @@
       "Religious Music",
       "Christian & Gospel Music"
     ],
+    "comfort": 0.125,
     "impressions": 330000000
   },
   "Rock Music": {
@@ -679,6 +761,7 @@
       "Music & Audio",
       "Rock Music"
     ],
+    "comfort": 1.0,
     "impressions": 2200000000
   },
   "Classic Rock & Oldies": {
@@ -688,6 +771,7 @@
       "Rock Music",
       "Classic Rock & Oldies"
     ],
+    "comfort": 1.25,
     "impressions": 750000000
   },
   "Hard Rock & Progressive": {
@@ -697,6 +781,7 @@
       "Rock Music",
       "Hard Rock & Progressive"
     ],
+    "comfort": -0.2,
     "impressions": 290000000
   },
   "Indie & Alternative Music": {
@@ -706,6 +791,7 @@
       "Rock Music",
       "Indie & Alternative Music"
     ],
+    "comfort": 0.2,
     "impressions": 590000000
   },
   "Metal (Music)": {
@@ -715,6 +801,7 @@
       "Rock Music",
       "Metal (Music)"
     ],
+    "comfort": 0.375,
     "impressions": 280000000
   },
   "Punk (Music)": {
@@ -724,6 +811,7 @@
       "Rock Music",
       "Punk (Music)"
     ],
+    "comfort": 1.25,
     "impressions": 140000000
   },
   "Soundtracks": {
@@ -732,6 +820,7 @@
       "Music & Audio",
       "Soundtracks"
     ],
+    "comfort": 0.857142857142857,
     "impressions": 650000000
   },
   "Urban & Hip-Hop": {
@@ -740,6 +829,7 @@
       "Music & Audio",
       "Urban & Hip-Hop"
     ],
+    "comfort": 1.0,
     "impressions": 5000000000
   },
   "Rap & Hip-Hop": {
@@ -749,6 +839,7 @@
       "Urban & Hip-Hop",
       "Rap & Hip-Hop"
     ],
+    "comfort": 0.444444444444444,
     "impressions": 4000000000
   },
   "Reggaeton": {
@@ -758,6 +849,7 @@
       "Urban & Hip-Hop",
       "Reggaeton"
     ],
+    "comfort": -0.8,
     "impressions": 370000000
   },
   "Soul & R&B": {
@@ -767,6 +859,7 @@
       "Urban & Hip-Hop",
       "Soul & R&B"
     ],
+    "comfort": 1.2,
     "impressions": 1000000000
   },
   "Vocals & Show Tunes": {
@@ -775,6 +868,7 @@
       "Music & Audio",
       "Vocals & Show Tunes"
     ],
+    "comfort": 0.0,
     "impressions": 60000000
   },
   "World Music": {
@@ -783,6 +877,7 @@
       "Music & Audio",
       "World Music"
     ],
+    "comfort": 0.0,
     "impressions": 10000000000
   },
   "African Music": {
@@ -792,6 +887,7 @@
       "World Music",
       "African Music"
     ],
+    "comfort": 0.25,
     "impressions": 83000000
   },
   "Arab & Middle Eastern Music": {
@@ -801,6 +897,7 @@
       "World Music",
       "Arab & Middle Eastern Music"
     ],
+    "comfort": -1.14285714285714,
     "impressions": 110000000
   },
   "East Asian Music": {
@@ -810,6 +907,7 @@
       "World Music",
       "East Asian Music"
     ],
+    "comfort": -0.25,
     "impressions": 510000000
   },
   "Latin American Music": {
@@ -819,6 +917,7 @@
       "World Music",
       "Latin American Music"
     ],
+    "comfort": 0.0,
     "impressions": 910000000
   },
   "Brazilian Music": {
@@ -829,6 +928,7 @@
       "Latin American Music",
       "Brazilian Music"
     ],
+    "comfort": 0.75,
     "impressions": 87000000
   },
   "Latin Pop": {
@@ -839,6 +939,7 @@
       "Latin American Music",
       "Latin Pop"
     ],
+    "comfort": 0.0,
     "impressions": 100000000
   },
   "Salsa & Tropical Music": {
@@ -849,6 +950,7 @@
       "Latin American Music",
       "Salsa & Tropical Music"
     ],
+    "comfort": 1.5,
     "impressions": 88000000
   },
   "Reggae & Caribbean Music": {
@@ -858,6 +960,7 @@
       "World Music",
       "Reggae & Caribbean Music"
     ],
+    "comfort": 1.0,
     "impressions": 580000000
   },
   "South Asian Music": {
@@ -867,6 +970,7 @@
       "World Music",
       "South Asian Music"
     ],
+    "comfort": 0.857142857142857,
     "impressions": 280000000
   },
   "Offbeat": {
@@ -874,6 +978,7 @@
       "Arts & Entertainment",
       "Offbeat"
     ],
+    "comfort": -1.66666666666667,
     "impressions": 9000000000
   },
   "Edgy & Bizarre": {
@@ -882,6 +987,7 @@
       "Offbeat",
       "Edgy & Bizarre"
     ],
+    "comfort": -1.5,
     "impressions": 1800000000
   },
   "Occult & Paranormal": {
@@ -890,6 +996,7 @@
       "Offbeat",
       "Occult & Paranormal"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 1300000000
   },
   "Online Media": {
@@ -897,6 +1004,7 @@
       "Arts & Entertainment",
       "Online Media"
     ],
+    "comfort": 1.71428571428571,
     "impressions": 10000000001
   },
   "Online Image Galleries": {
@@ -905,6 +1013,7 @@
       "Online Media",
       "Online Image Galleries"
     ],
+    "comfort": -1.25,
     "impressions": 9100000000
   },
   "Webcams & Virtual Tours": {
@@ -913,6 +1022,7 @@
       "Online Media",
       "Webcams & Virtual Tours"
     ],
+    "comfort": -0.111111111111111,
     "impressions": 3000000000
   },
   "Performing Arts": {
@@ -920,6 +1030,7 @@
       "Arts & Entertainment",
       "Performing Arts"
     ],
+    "comfort": 1.0,
     "impressions": 940000000
   },
   "Acting & Theater": {
@@ -928,6 +1039,7 @@
       "Performing Arts",
       "Acting & Theater"
     ],
+    "comfort": 0.75,
     "impressions": 120000000
   },
   "Broadway & Musical Theater": {
@@ -936,6 +1048,7 @@
       "Performing Arts",
       "Broadway & Musical Theater"
     ],
+    "comfort": 1.25,
     "impressions": 140000000
   },
   "Dance": {
@@ -944,6 +1057,7 @@
       "Performing Arts",
       "Dance"
     ],
+    "comfort": 0.0,
     "impressions": 250000000
   },
   "Opera": {
@@ -952,6 +1066,7 @@
       "Performing Arts",
       "Opera"
     ],
+    "comfort": -1.83333333333333,
     "impressions": 25000000
   },
   "TV & Video": {
@@ -959,6 +1074,7 @@
       "Arts & Entertainment",
       "TV & Video"
     ],
+    "comfort": 1.0,
     "impressions": 10000000001
   },
   "Online Video": {
@@ -967,6 +1083,7 @@
       "TV & Video",
       "Online Video"
     ],
+    "comfort": 0.0,
     "impressions": 10000000001
   },
   "TV Commercials": {
@@ -975,6 +1092,7 @@
       "TV & Video",
       "TV Commercials"
     ],
+    "comfort": -1.0,
     "impressions": 28000000
   },
   "TV Guides & Reference": {
@@ -983,6 +1101,7 @@
       "TV & Video",
       "TV Guides & Reference"
     ],
+    "comfort": 2.5,
     "impressions": 2100000000
   },
   "TV Networks & Stations": {
@@ -991,6 +1110,7 @@
       "TV & Video",
       "TV Networks & Stations"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 2700000000
   },
   "TV Shows & Programs": {
@@ -999,6 +1119,7 @@
       "TV & Video",
       "TV Shows & Programs"
     ],
+    "comfort": 0.25,
     "impressions": 10000000001
   },
   "TV Comedies": {
@@ -1008,6 +1129,7 @@
       "TV Shows & Programs",
       "TV Comedies"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 1500000000
   },
   "TV Dramas": {
@@ -1017,6 +1139,7 @@
       "TV Shows & Programs",
       "TV Dramas"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 2900000000
   },
   "TV Crime & Legal Shows": {
@@ -1027,6 +1150,7 @@
       "TV Dramas",
       "TV Crime & Legal Shows"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 1000000000
   },
   "TV Medical Shows": {
@@ -1037,6 +1161,7 @@
       "TV Dramas",
       "TV Medical Shows"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 530000000
   },
   "TV Soap Operas": {
@@ -1047,6 +1172,7 @@
       "TV Dramas",
       "TV Soap Operas"
     ],
+    "comfort": -0.5,
     "impressions": 390000000
   },
   "TV Family-Oriented Shows": {
@@ -1056,6 +1182,7 @@
       "TV Shows & Programs",
       "TV Family-Oriented Shows"
     ],
+    "comfort": -1.25,
     "impressions": 660000000
   },
   "TV Game Shows": {
@@ -1065,6 +1192,7 @@
       "TV Shows & Programs",
       "TV Game Shows"
     ],
+    "comfort": -1.0,
     "impressions": 780000000
   },
   "TV Reality Shows": {
@@ -1074,6 +1202,7 @@
       "TV Shows & Programs",
       "TV Reality Shows"
     ],
+    "comfort": 0.111111111111111,
     "impressions": 1900000000
   },
   "TV Sci-Fi & Fantasy Shows": {
@@ -1083,6 +1212,7 @@
       "TV Shows & Programs",
       "TV Sci-Fi & Fantasy Shows"
     ],
+    "comfort": 0.5,
     "impressions": 560000000
   },
   "TV Talk Shows": {
@@ -1092,6 +1222,7 @@
       "TV Shows & Programs",
       "TV Talk Shows"
     ],
+    "comfort": 0.833333333333333,
     "impressions": 710000000
   },
   "Visual Art & Design": {
@@ -1099,6 +1230,7 @@
       "Arts & Entertainment",
       "Visual Art & Design"
     ],
+    "comfort": 0.25,
     "impressions": 3000000000
   },
   "Architecture": {
@@ -1107,6 +1239,7 @@
       "Visual Art & Design",
       "Architecture"
     ],
+    "comfort": 0.75,
     "impressions": 180000000
   },
   "Art & Craft Supplies": {
@@ -1115,6 +1248,7 @@
       "Visual Art & Design",
       "Art & Craft Supplies"
     ],
+    "comfort": 0.428571428571429,
     "impressions": 110000000
   },
   "Arts Education": {
@@ -1123,6 +1257,7 @@
       "Visual Art & Design",
       "Arts Education"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 27000000
   },
   "Design": {
@@ -1131,6 +1266,7 @@
       "Visual Art & Design",
       "Design"
     ],
+    "comfort": 0.5,
     "impressions": 500000000
   },
   "Graphic Design": {
@@ -1140,6 +1276,7 @@
       "Design",
       "Graphic Design"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 120000000
   },
   "Industrial & Product Design": {
@@ -1149,6 +1286,7 @@
       "Design",
       "Industrial & Product Design"
     ],
+    "comfort": 0.5,
     "impressions": 16000000
   },
   "Interior Design": {
@@ -1158,6 +1296,7 @@
       "Design",
       "Interior Design"
     ],
+    "comfort": 0.0,
     "impressions": 310000000
   },
   "Painting": {
@@ -1166,6 +1305,7 @@
       "Visual Art & Design",
       "Painting"
     ],
+    "comfort": -1.25,
     "impressions": 100000000
   },
   "Photographic & Digital Arts": {
@@ -1174,12 +1314,14 @@
       "Visual Art & Design",
       "Photographic & Digital Arts"
     ],
+    "comfort": 0.0,
     "impressions": 1900000000
   },
   "Autos & Vehicles": {
     "path": [
       "Autos & Vehicles"
     ],
+    "comfort": 0.285714285714286,
     "impressions": 4600000000
   },
   "Bicycles & Accessories": {
@@ -1187,6 +1329,7 @@
       "Autos & Vehicles",
       "Bicycles & Accessories"
     ],
+    "comfort": 1.0,
     "impressions": 110000000
   },
   "Boats & Watercraft": {
@@ -1194,6 +1337,7 @@
       "Autos & Vehicles",
       "Boats & Watercraft"
     ],
+    "comfort": 0.875,
     "impressions": 270000000
   },
   "Campers & RVs": {
@@ -1201,6 +1345,7 @@
       "Autos & Vehicles",
       "Campers & RVs"
     ],
+    "comfort": 0.0,
     "impressions": 140000000
   },
   "Classic Vehicles": {
@@ -1208,6 +1353,7 @@
       "Autos & Vehicles",
       "Classic Vehicles"
     ],
+    "comfort": -0.555555555555556,
     "impressions": 180000000
   },
   "Commercial Vehicles": {
@@ -1215,6 +1361,7 @@
       "Autos & Vehicles",
       "Commercial Vehicles"
     ],
+    "comfort": -2.0,
     "impressions": 190000000
   },
   "Cargo Trucks & Trailers": {
@@ -1223,6 +1370,7 @@
       "Commercial Vehicles",
       "Cargo Trucks & Trailers"
     ],
+    "comfort": 2.33333333333333,
     "impressions": 92000000
   },
   "Custom & Performance Vehicles": {
@@ -1230,6 +1378,7 @@
       "Autos & Vehicles",
       "Custom & Performance Vehicles"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 310000000
   },
   "Hybrid & Alternative Vehicles": {
@@ -1237,6 +1386,7 @@
       "Autos & Vehicles",
       "Hybrid & Alternative Vehicles"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 160000000
   },
   "Electric & Plug-In Vehicles": {
@@ -1245,6 +1395,7 @@
       "Hybrid & Alternative Vehicles",
       "Electric & Plug-In Vehicles"
     ],
+    "comfort": 0.0,
     "impressions": 66000000
   },
   "Microcars & City Cars": {
@@ -1252,6 +1403,7 @@
       "Autos & Vehicles",
       "Microcars & City Cars"
     ],
+    "comfort": 0.0,
     "impressions": 27000000
   },
   "Motorcycles": {
@@ -1259,6 +1411,7 @@
       "Autos & Vehicles",
       "Motorcycles"
     ],
+    "comfort": 1.83333333333333,
     "impressions": 290000000
   },
   "Off-Road Vehicles": {
@@ -1266,6 +1419,7 @@
       "Autos & Vehicles",
       "Off-Road Vehicles"
     ],
+    "comfort": -0.75,
     "impressions": 220000000
   },
   "Personal Aircraft": {
@@ -1273,6 +1427,7 @@
       "Autos & Vehicles",
       "Personal Aircraft"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 210000000
   },
   "Scooters & Mopeds": {
@@ -1280,6 +1435,7 @@
       "Autos & Vehicles",
       "Scooters & Mopeds"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 120000000
   },
   "Trucks & SUVs": {
@@ -1287,6 +1443,7 @@
       "Autos & Vehicles",
       "Trucks & SUVs"
     ],
+    "comfort": -1.28571428571429,
     "impressions": 800000000
   },
   "SUVs": {
@@ -1295,6 +1452,7 @@
       "Trucks & SUVs",
       "SUVs"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 310000000
   },
   "Trucks": {
@@ -1303,6 +1461,7 @@
       "Trucks & SUVs",
       "Trucks"
     ],
+    "comfort": -1.25,
     "impressions": 350000000
   },
   "Vans & Minivans": {
@@ -1311,6 +1470,7 @@
       "Trucks & SUVs",
       "Vans & Minivans"
     ],
+    "comfort": -2.66666666666667,
     "impressions": 110000000
   },
   "Vehicle Brands": {
@@ -1318,6 +1478,7 @@
       "Autos & Vehicles",
       "Vehicle Brands"
     ],
+    "comfort": -0.428571428571429,
     "impressions": 1500000000
   },
   "Acura": {
@@ -1326,6 +1487,7 @@
       "Vehicle Brands",
       "Acura"
     ],
+    "comfort": -0.25,
     "impressions": 12000000
   },
   "Audi": {
@@ -1334,6 +1496,7 @@
       "Vehicle Brands",
       "Audi"
     ],
+    "comfort": 0.571428571428571,
     "impressions": 27000000
   },
   "BMW": {
@@ -1342,6 +1505,7 @@
       "Vehicle Brands",
       "BMW"
     ],
+    "comfort": 0.0,
     "impressions": 61000000
   },
   "Bentley": {
@@ -1350,6 +1514,7 @@
       "Vehicle Brands",
       "Bentley"
     ],
+    "comfort": -1.5,
     "impressions": 7400000
   },
   "Buick": {
@@ -1358,6 +1523,7 @@
       "Vehicle Brands",
       "Buick"
     ],
+    "comfort": -1.0,
     "impressions": 24000000
   },
   "Cadillac": {
@@ -1366,6 +1532,7 @@
       "Vehicle Brands",
       "Cadillac"
     ],
+    "comfort": 0.8,
     "impressions": 30000000
   },
   "Chevrolet": {
@@ -1374,6 +1541,7 @@
       "Vehicle Brands",
       "Chevrolet"
     ],
+    "comfort": 0.0,
     "impressions": 190000000
   },
   "Chrysler": {
@@ -1382,6 +1550,7 @@
       "Vehicle Brands",
       "Chrysler"
     ],
+    "comfort": 0.6,
     "impressions": 66000000
   },
   "Citroën": {
@@ -1390,6 +1559,7 @@
       "Vehicle Brands",
       "Citroën"
     ],
+    "comfort": -0.6,
     "impressions": 330000
   },
   "Dodge": {
@@ -1398,6 +1568,7 @@
       "Vehicle Brands",
       "Dodge"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 97000000
   },
   "Ferrari": {
@@ -1406,6 +1577,7 @@
       "Vehicle Brands",
       "Ferrari"
     ],
+    "comfort": 0.25,
     "impressions": 51000000
   },
   "Fiat": {
@@ -1414,6 +1586,7 @@
       "Vehicle Brands",
       "Fiat"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 4800000
   },
   "Ford": {
@@ -1422,6 +1595,7 @@
       "Vehicle Brands",
       "Ford"
     ],
+    "comfort": -0.25,
     "impressions": 210000000
   },
   "GM-Daewoo": {
@@ -1430,6 +1604,7 @@
       "Vehicle Brands",
       "GM-Daewoo"
     ],
+    "comfort": 0.375,
     "impressions": 1100000
   },
   "GMC": {
@@ -1438,6 +1613,7 @@
       "Vehicle Brands",
       "GMC"
     ],
+    "comfort": 0.0,
     "impressions": 130000000
   },
   "Honda": {
@@ -1446,6 +1622,7 @@
       "Vehicle Brands",
       "Honda"
     ],
+    "comfort": 0.0,
     "impressions": 160000000
   },
   "Hummer": {
@@ -1454,6 +1631,7 @@
       "Vehicle Brands",
       "Hummer"
     ],
+    "comfort": -3.0,
     "impressions": 2200000
   },
   "Hyundai": {
@@ -1462,6 +1640,7 @@
       "Vehicle Brands",
       "Hyundai"
     ],
+    "comfort": 2.0,
     "impressions": 13000000
   },
   "Isuzu": {
@@ -1470,6 +1649,7 @@
       "Vehicle Brands",
       "Isuzu"
     ],
+    "comfort": -0.75,
     "impressions": 34000000
   },
   "Jaguar": {
@@ -1478,6 +1658,7 @@
       "Vehicle Brands",
       "Jaguar"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 9800000
   },
   "Jeep": {
@@ -1486,6 +1667,7 @@
       "Vehicle Brands",
       "Jeep"
     ],
+    "comfort": 0.5,
     "impressions": 92000000
   },
   "Kia": {
@@ -1494,6 +1676,7 @@
       "Vehicle Brands",
       "Kia"
     ],
+    "comfort": -0.8,
     "impressions": 9100000
   },
   "Lamborghini": {
@@ -1502,6 +1685,7 @@
       "Vehicle Brands",
       "Lamborghini"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 20000000
   },
   "Land Rover": {
@@ -1510,6 +1694,7 @@
       "Vehicle Brands",
       "Land Rover"
     ],
+    "comfort": -1.0,
     "impressions": 11000000
   },
   "Lexus": {
@@ -1518,6 +1703,7 @@
       "Vehicle Brands",
       "Lexus"
     ],
+    "comfort": 0.0,
     "impressions": 23000000
   },
   "Lincoln": {
@@ -1526,6 +1712,7 @@
       "Vehicle Brands",
       "Lincoln"
     ],
+    "comfort": 1.0,
     "impressions": 26000000
   },
   "Maserati": {
@@ -1534,6 +1721,7 @@
       "Vehicle Brands",
       "Maserati"
     ],
+    "comfort": -1.0,
     "impressions": 5800000
   },
   "Mazda": {
@@ -1542,6 +1730,7 @@
       "Vehicle Brands",
       "Mazda"
     ],
+    "comfort": 0.0,
     "impressions": 16000000
   },
   "Mercedes-Benz": {
@@ -1550,6 +1739,7 @@
       "Vehicle Brands",
       "Mercedes-Benz"
     ],
+    "comfort": -0.571428571428571,
     "impressions": 53000000
   },
   "Mercury": {
@@ -1558,6 +1748,7 @@
       "Vehicle Brands",
       "Mercury"
     ],
+    "comfort": -1.0,
     "impressions": 14000000
   },
   "Mini": {
@@ -1566,6 +1757,7 @@
       "Vehicle Brands",
       "Mini"
     ],
+    "comfort": 0.8,
     "impressions": 4600000
   },
   "Mitsubishi": {
@@ -1574,6 +1766,7 @@
       "Vehicle Brands",
       "Mitsubishi"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 7900000
   },
   "Nissan": {
@@ -1582,6 +1775,7 @@
       "Vehicle Brands",
       "Nissan"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 55000000
   },
   "Infiniti": {
@@ -1591,6 +1785,7 @@
       "Nissan",
       "Infiniti"
     ],
+    "comfort": 1.0,
     "impressions": 12000000
   },
   "Peugeot": {
@@ -1599,6 +1794,7 @@
       "Vehicle Brands",
       "Peugeot"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 360000
   },
   "Pontiac": {
@@ -1607,6 +1803,7 @@
       "Vehicle Brands",
       "Pontiac"
     ],
+    "comfort": 0.0,
     "impressions": 18000000
   },
   "Porsche": {
@@ -1615,6 +1812,7 @@
       "Vehicle Brands",
       "Porsche"
     ],
+    "comfort": -0.8,
     "impressions": 27000000
   },
   "Renault-Samsung": {
@@ -1623,6 +1821,7 @@
       "Vehicle Brands",
       "Renault-Samsung"
     ],
+    "comfort": -0.5,
     "impressions": 590000
   },
   "Rolls-Royce": {
@@ -1631,6 +1830,7 @@
       "Vehicle Brands",
       "Rolls-Royce"
     ],
+    "comfort": -1.0,
     "impressions": 7800000
   },
   "Saab": {
@@ -1639,6 +1839,7 @@
       "Vehicle Brands",
       "Saab"
     ],
+    "comfort": 0.222222222222222,
     "impressions": 2200000
   },
   "Saturn": {
@@ -1647,6 +1848,7 @@
       "Vehicle Brands",
       "Saturn"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 9900000
   },
   "Subaru": {
@@ -1655,6 +1857,7 @@
       "Vehicle Brands",
       "Subaru"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 40000000
   },
   "Suzuki": {
@@ -1663,6 +1866,7 @@
       "Vehicle Brands",
       "Suzuki"
     ],
+    "comfort": 0.285714285714286,
     "impressions": 6500000
   },
   "Toyota": {
@@ -1671,6 +1875,7 @@
       "Vehicle Brands",
       "Toyota"
     ],
+    "comfort": 0.857142857142857,
     "impressions": 120000000
   },
   "Scion": {
@@ -1680,6 +1885,7 @@
       "Toyota",
       "Scion"
     ],
+    "comfort": -0.25,
     "impressions": 4000000
   },
   "Vauxhall-Opel": {
@@ -1688,6 +1894,7 @@
       "Vehicle Brands",
       "Vauxhall-Opel"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 750000
   },
   "Volkswagen": {
@@ -1696,6 +1903,7 @@
       "Vehicle Brands",
       "Volkswagen"
     ],
+    "comfort": 0.0,
     "impressions": 31000000
   },
   "Volvo": {
@@ -1704,6 +1912,7 @@
       "Vehicle Brands",
       "Volvo"
     ],
+    "comfort": 1.0,
     "impressions": 7900000
   },
   "Vehicle Licensing & Registration": {
@@ -1711,6 +1920,7 @@
       "Autos & Vehicles",
       "Vehicle Licensing & Registration"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 290000000
   },
   "Vehicle Maintenance": {
@@ -1718,6 +1928,7 @@
       "Autos & Vehicles",
       "Vehicle Maintenance"
     ],
+    "comfort": 0.5,
     "impressions": 560000000
   },
   "Vehicle Parts & Accessories": {
@@ -1725,6 +1936,7 @@
       "Autos & Vehicles",
       "Vehicle Parts & Accessories"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 1100000000
   },
   "Auto Exterior": {
@@ -1733,6 +1945,7 @@
       "Vehicle Parts & Accessories",
       "Auto Exterior"
     ],
+    "comfort": 1.2,
     "impressions": 200000000
   },
   "Auto Interior": {
@@ -1741,6 +1954,7 @@
       "Vehicle Parts & Accessories",
       "Auto Interior"
     ],
+    "comfort": 2.0,
     "impressions": 89000000
   },
   "Engine & Transmission": {
@@ -1749,6 +1963,7 @@
       "Vehicle Parts & Accessories",
       "Engine & Transmission"
     ],
+    "comfort": -0.25,
     "impressions": 390000000
   },
   "Vehicle Fuels & Lubricants": {
@@ -1757,6 +1972,7 @@
       "Vehicle Parts & Accessories",
       "Vehicle Fuels & Lubricants"
     ],
+    "comfort": 0.0,
     "impressions": 130000000
   },
   "Vehicle Wheels & Tires": {
@@ -1765,6 +1981,7 @@
       "Vehicle Parts & Accessories",
       "Vehicle Wheels & Tires"
     ],
+    "comfort": -0.833333333333333,
     "impressions": 70000000
   },
   "Vehicle Shopping": {
@@ -1772,6 +1989,7 @@
       "Autos & Vehicles",
       "Vehicle Shopping"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 1700000000
   },
   "Fuel Economy & Gas Prices": {
@@ -1780,6 +1998,7 @@
       "Vehicle Shopping",
       "Fuel Economy & Gas Prices"
     ],
+    "comfort": -1.66666666666667,
     "impressions": 160000000
   },
   "Vehicle Specs, Reviews & Comparisons": {
@@ -1788,6 +2007,7 @@
       "Vehicle Shopping",
       "Vehicle Specs, Reviews & Comparisons"
     ],
+    "comfort": -2.0,
     "impressions": 700000000
   },
   "Vehicle Shows": {
@@ -1795,12 +2015,14 @@
       "Autos & Vehicles",
       "Vehicle Shows"
     ],
+    "comfort": 0.777777777777778,
     "impressions": 19000000
   },
   "Beauty & Fitness": {
     "path": [
       "Beauty & Fitness"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 5400000000
   },
   "Beauty Pageants": {
@@ -1808,6 +2030,7 @@
       "Beauty & Fitness",
       "Beauty Pageants"
     ],
+    "comfort": 0.75,
     "impressions": 29000000
   },
   "Body Art": {
@@ -1815,6 +2038,7 @@
       "Beauty & Fitness",
       "Body Art"
     ],
+    "comfort": -1.0,
     "impressions": 150000000
   },
   "Cosmetic Procedures": {
@@ -1822,6 +2046,7 @@
       "Beauty & Fitness",
       "Cosmetic Procedures"
     ],
+    "comfort": -0.75,
     "impressions": 260000000
   },
   "Cosmetic Surgery": {
@@ -1830,6 +2055,7 @@
       "Cosmetic Procedures",
       "Cosmetic Surgery"
     ],
+    "comfort": -1.4,
     "impressions": 110000000
   },
   "Cosmetology & Beauty Professionals": {
@@ -1837,6 +2063,7 @@
       "Beauty & Fitness",
       "Cosmetology & Beauty Professionals"
     ],
+    "comfort": 0.0,
     "impressions": 300000000
   },
   "Face & Body Care": {
@@ -1844,6 +2071,7 @@
       "Beauty & Fitness",
       "Face & Body Care"
     ],
+    "comfort": -0.8,
     "impressions": 1200000000
   },
   "Hygiene & Toiletries": {
@@ -1852,6 +2080,7 @@
       "Face & Body Care",
       "Hygiene & Toiletries"
     ],
+    "comfort": 0.8,
     "impressions": 320000000
   },
   "Make-Up & Cosmetics": {
@@ -1860,6 +2089,7 @@
       "Face & Body Care",
       "Make-Up & Cosmetics"
     ],
+    "comfort": 1.0,
     "impressions": 510000000
   },
   "Perfumes & Fragrances": {
@@ -1868,6 +2098,7 @@
       "Face & Body Care",
       "Perfumes & Fragrances"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 28000000
   },
   "Skin & Nail Care": {
@@ -1876,6 +2107,7 @@
       "Face & Body Care",
       "Skin & Nail Care"
     ],
+    "comfort": 0.0,
     "impressions": 710000000
   },
   "Unwanted Body & Facial Hair Removal": {
@@ -1884,6 +2116,7 @@
       "Face & Body Care",
       "Unwanted Body & Facial Hair Removal"
     ],
+    "comfort": 0.0,
     "impressions": 45000000
   },
   "Fashion & Style": {
@@ -1891,6 +2124,7 @@
       "Beauty & Fitness",
       "Fashion & Style"
     ],
+    "comfort": 0.5,
     "impressions": 2700000000
   },
   "Fashion Designers & Collections": {
@@ -1899,6 +2133,7 @@
       "Fashion & Style",
       "Fashion Designers & Collections"
     ],
+    "comfort": 0.375,
     "impressions": 310000000
   },
   "Fashion Modeling": {
@@ -1907,6 +2142,7 @@
       "Fashion & Style",
       "Fashion Modeling"
     ],
+    "comfort": 0.0,
     "impressions": 1400000000
   },
   "Fitness": {
@@ -1914,6 +2150,7 @@
       "Beauty & Fitness",
       "Fitness"
     ],
+    "comfort": 1.16666666666667,
     "impressions": 1200000000
   },
   "Bodybuilding": {
@@ -1922,6 +2159,7 @@
       "Fitness",
       "Bodybuilding"
     ],
+    "comfort": 0.5,
     "impressions": 330000000
   },
   "Yoga & Pilates": {
@@ -1930,6 +2168,7 @@
       "Fitness",
       "Yoga & Pilates"
     ],
+    "comfort": 2.2,
     "impressions": 70000000
   },
   "Hair Care": {
@@ -1937,6 +2176,7 @@
       "Beauty & Fitness",
       "Hair Care"
     ],
+    "comfort": 0.0,
     "impressions": 530000000
   },
   "Hair Loss": {
@@ -1945,6 +2185,7 @@
       "Hair Care",
       "Hair Loss"
     ],
+    "comfort": -0.2,
     "impressions": 26000000
   },
   "Spas & Beauty Services": {
@@ -1952,6 +2193,7 @@
       "Beauty & Fitness",
       "Spas & Beauty Services"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 100000000
   },
   "Massage Therapy": {
@@ -1960,6 +2202,7 @@
       "Spas & Beauty Services",
       "Massage Therapy"
     ],
+    "comfort": -0.4,
     "impressions": 68000000
   },
   "Weight Loss": {
@@ -1967,12 +2210,14 @@
       "Beauty & Fitness",
       "Weight Loss"
     ],
+    "comfort": 0.5,
     "impressions": 1100000000
   },
   "Books & Literature": {
     "path": [
       "Books & Literature"
     ],
+    "comfort": 0.833333333333333,
     "impressions": 3800000000
   },
   "Book Retailers": {
@@ -1980,6 +2225,7 @@
       "Books & Literature",
       "Book Retailers"
     ],
+    "comfort": -0.5,
     "impressions": 25000000
   },
   "Children's Literature": {
@@ -1987,6 +2233,7 @@
       "Books & Literature",
       "Children's Literature"
     ],
+    "comfort": -0.2,
     "impressions": 430000000
   },
   "E-Books": {
@@ -1994,6 +2241,7 @@
       "Books & Literature",
       "E-Books"
     ],
+    "comfort": -0.285714285714286,
     "impressions": 600000000
   },
   "Fan Fiction": {
@@ -2001,6 +2249,7 @@
       "Books & Literature",
       "Fan Fiction"
     ],
+    "comfort": 0.857142857142857,
     "impressions": 630000000
   },
   "Literary Classics": {
@@ -2008,6 +2257,7 @@
       "Books & Literature",
       "Literary Classics"
     ],
+    "comfort": 0.5,
     "impressions": 290000000
   },
   "Magazines": {
@@ -2015,6 +2265,7 @@
       "Books & Literature",
       "Magazines"
     ],
+    "comfort": -1.66666666666667,
     "impressions": 290000000
   },
   "Poetry": {
@@ -2022,6 +2273,7 @@
       "Books & Literature",
       "Poetry"
     ],
+    "comfort": 0.25,
     "impressions": 190000000
   },
   "Writers Resources": {
@@ -2029,12 +2281,14 @@
       "Books & Literature",
       "Writers Resources"
     ],
+    "comfort": 0.8,
     "impressions": 340000000
   },
   "Business & Industrial": {
     "path": [
       "Business & Industrial"
     ],
+    "comfort": -1.0,
     "impressions": 10000000001
   },
   "Advertising & Marketing": {
@@ -2042,6 +2296,7 @@
       "Business & Industrial",
       "Advertising & Marketing"
     ],
+    "comfort": -0.6,
     "impressions": 1200000000
   },
   "Marketing Services": {
@@ -2050,6 +2305,7 @@
       "Advertising & Marketing",
       "Marketing Services"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 13000000
   },
   "Public Relations": {
@@ -2058,6 +2314,7 @@
       "Advertising & Marketing",
       "Public Relations"
     ],
+    "comfort": -0.8,
     "impressions": 3700000
   },
   "Telemarketing": {
@@ -2066,6 +2323,7 @@
       "Advertising & Marketing",
       "Telemarketing"
     ],
+    "comfort": -1.375,
     "impressions": 6000000
   },
   "Aerospace & Defense": {
@@ -2073,6 +2331,7 @@
       "Business & Industrial",
       "Aerospace & Defense"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 440000000
   },
   "Defense Industry": {
@@ -2081,6 +2340,7 @@
       "Aerospace & Defense",
       "Defense Industry"
     ],
+    "comfort": -2.25,
     "impressions": 270000000
   },
   "Space Technology": {
@@ -2089,6 +2349,7 @@
       "Aerospace & Defense",
       "Space Technology"
     ],
+    "comfort": 0.714285714285714,
     "impressions": 180000000
   },
   "Agriculture & Forestry": {
@@ -2096,6 +2357,7 @@
       "Business & Industrial",
       "Agriculture & Forestry"
     ],
+    "comfort": -0.5,
     "impressions": 630000000
   },
   "Agricultural Equipment": {
@@ -2104,6 +2366,7 @@
       "Agriculture & Forestry",
       "Agricultural Equipment"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 67000000
   },
   "Aquaculture": {
@@ -2112,6 +2375,7 @@
       "Agriculture & Forestry",
       "Aquaculture"
     ],
+    "comfort": 1.0,
     "impressions": 120000000
   },
   "Crops & Seed": {
@@ -2120,6 +2384,7 @@
       "Agriculture & Forestry",
       "Crops & Seed"
     ],
+    "comfort": 0.25,
     "impressions": 76000000
   },
   "Food Production": {
@@ -2128,6 +2393,7 @@
       "Agriculture & Forestry",
       "Food Production"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 46000000
   },
   "Forestry": {
@@ -2136,6 +2402,7 @@
       "Agriculture & Forestry",
       "Forestry"
     ],
+    "comfort": 0.0,
     "impressions": 170000000
   },
   "Horticulture": {
@@ -2144,6 +2411,7 @@
       "Agriculture & Forestry",
       "Horticulture"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 290000000
   },
   "Livestock": {
@@ -2152,6 +2420,7 @@
       "Agriculture & Forestry",
       "Livestock"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 51000000
   },
   "Automotive Industry": {
@@ -2159,6 +2428,7 @@
       "Business & Industrial",
       "Automotive Industry"
     ],
+    "comfort": 0.142857142857143,
     "impressions": 83000000
   },
   "Business Education": {
@@ -2166,6 +2436,7 @@
       "Business & Industrial",
       "Business Education"
     ],
+    "comfort": 0.142857142857143,
     "impressions": 270000000
   },
   "Business Finance": {
@@ -2173,6 +2444,7 @@
       "Business & Industrial",
       "Business Finance"
     ],
+    "comfort": 0.142857142857143,
     "impressions": 290000000
   },
   "Commercial Lending": {
@@ -2181,6 +2453,7 @@
       "Business Finance",
       "Commercial Lending"
     ],
+    "comfort": 0.6,
     "impressions": 33000000
   },
   "Investment Banking": {
@@ -2189,6 +2462,7 @@
       "Business Finance",
       "Investment Banking"
     ],
+    "comfort": 2.0,
     "impressions": 210000000
   },
   "Risk Management": {
@@ -2197,6 +2471,7 @@
       "Business Finance",
       "Risk Management"
     ],
+    "comfort": 2.25,
     "impressions": 4400000
   },
   "Venture Capital": {
@@ -2205,6 +2480,7 @@
       "Business Finance",
       "Venture Capital"
     ],
+    "comfort": 0.0,
     "impressions": 19000000
   },
   "Business Operations": {
@@ -2212,6 +2488,7 @@
       "Business & Industrial",
       "Business Operations"
     ],
+    "comfort": -1.25,
     "impressions": 670000000
   },
   "Business Plans & Presentations": {
@@ -2220,6 +2497,7 @@
       "Business Operations",
       "Business Plans & Presentations"
     ],
+    "comfort": 0.7,
     "impressions": 14000000
   },
   "Human Resources": {
@@ -2228,6 +2506,7 @@
       "Business Operations",
       "Human Resources"
     ],
+    "comfort": 0.75,
     "impressions": 530000000
   },
   "Compensation & Benefits": {
@@ -2237,6 +2516,7 @@
       "Human Resources",
       "Compensation & Benefits"
     ],
+    "comfort": 1.0,
     "impressions": 240000000
   },
   "Corporate Training": {
@@ -2246,6 +2526,7 @@
       "Human Resources",
       "Corporate Training"
     ],
+    "comfort": -0.571428571428571,
     "impressions": 30000000
   },
   "Payroll Services": {
@@ -2255,6 +2536,7 @@
       "Human Resources",
       "Payroll Services"
     ],
+    "comfort": 1.2,
     "impressions": 34000000
   },
   "Recruitment & Staffing": {
@@ -2264,6 +2546,7 @@
       "Human Resources",
       "Recruitment & Staffing"
     ],
+    "comfort": 1.0,
     "impressions": 250000000
   },
   "Management": {
@@ -2272,6 +2555,7 @@
       "Business Operations",
       "Management"
     ],
+    "comfort": 0.0,
     "impressions": 130000000
   },
   "Business Process": {
@@ -2281,6 +2565,7 @@
       "Management",
       "Business Process"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 17000000
   },
   "Project Management": {
@@ -2290,6 +2575,7 @@
       "Management",
       "Project Management"
     ],
+    "comfort": 1.16666666666667,
     "impressions": 19000000
   },
   "Strategic Planning": {
@@ -2299,6 +2585,7 @@
       "Management",
       "Strategic Planning"
     ],
+    "comfort": -0.363636363636364,
     "impressions": 12000000
   },
   "Supply Chain Management": {
@@ -2308,6 +2595,7 @@
       "Management",
       "Supply Chain Management"
     ],
+    "comfort": 2.0,
     "impressions": 7000000
   },
   "Business Services": {
@@ -2315,6 +2603,7 @@
       "Business & Industrial",
       "Business Services"
     ],
+    "comfort": -0.6,
     "impressions": 2300000000
   },
   "Consulting": {
@@ -2323,6 +2612,7 @@
       "Business Services",
       "Consulting"
     ],
+    "comfort": 0.0,
     "impressions": 32000000
   },
   "Corporate Events": {
@@ -2331,6 +2621,7 @@
       "Business Services",
       "Corporate Events"
     ],
+    "comfort": 2.5,
     "impressions": 33000000
   },
   "Trade Shows & Conventions": {
@@ -2340,6 +2631,7 @@
       "Corporate Events",
       "Trade Shows & Conventions"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 8500000
   },
   "E-Commerce Services": {
@@ -2348,6 +2640,7 @@
       "Business Services",
       "E-Commerce Services"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 120000000
   },
   "Merchant Services & Payment Systems": {
@@ -2357,6 +2650,7 @@
       "E-Commerce Services",
       "Merchant Services & Payment Systems"
     ],
+    "comfort": -1.75,
     "impressions": 54000000
   },
   "Fire & Security Services": {
@@ -2365,6 +2659,7 @@
       "Business Services",
       "Fire & Security Services"
     ],
+    "comfort": -0.5,
     "impressions": 36000000
   },
   "Knowledge Management": {
@@ -2373,6 +2668,7 @@
       "Business Services",
       "Knowledge Management"
     ],
+    "comfort": -0.2,
     "impressions": 11000000
   },
   "Office Services": {
@@ -2381,6 +2677,7 @@
       "Business Services",
       "Office Services"
     ],
+    "comfort": -0.6,
     "impressions": 55000000
   },
   "Office & Facilities Management": {
@@ -2390,6 +2687,7 @@
       "Office Services",
       "Office & Facilities Management"
     ],
+    "comfort": 0.2,
     "impressions": 10000000
   },
   "Office Supplies": {
@@ -2398,6 +2696,7 @@
       "Business Services",
       "Office Supplies"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 220000000
   },
   "Office Furniture": {
@@ -2407,6 +2706,7 @@
       "Office Supplies",
       "Office Furniture"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 100000000
   },
   "Outsourcing": {
@@ -2415,6 +2715,7 @@
       "Business Services",
       "Outsourcing"
     ],
+    "comfort": 0.142857142857143,
     "impressions": 3500000
   },
   "Physical Asset Management": {
@@ -2423,6 +2724,7 @@
       "Business Services",
       "Physical Asset Management"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 6700000
   },
   "Quality Control & Tracking": {
@@ -2431,6 +2733,7 @@
       "Business Services",
       "Quality Control & Tracking"
     ],
+    "comfort": -1.5,
     "impressions": 7800000
   },
   "Signage": {
@@ -2439,6 +2742,7 @@
       "Business Services",
       "Signage"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 32000000
   },
   "Writing & Editing Services": {
@@ -2447,6 +2751,7 @@
       "Business Services",
       "Writing & Editing Services"
     ],
+    "comfort": 0.444444444444444,
     "impressions": 280000000
   },
   "Chemicals Industry": {
@@ -2454,6 +2759,7 @@
       "Business & Industrial",
       "Chemicals Industry"
     ],
+    "comfort": -0.75,
     "impressions": 310000000
   },
   "Agrochemicals": {
@@ -2462,6 +2768,7 @@
       "Chemicals Industry",
       "Agrochemicals"
     ],
+    "comfort": 0.142857142857143,
     "impressions": 49000000
   },
   "Cleaning Agents": {
@@ -2470,6 +2777,7 @@
       "Chemicals Industry",
       "Cleaning Agents"
     ],
+    "comfort": 1.0,
     "impressions": 100000000
   },
   "Coatings & Adhesives": {
@@ -2478,6 +2786,7 @@
       "Chemicals Industry",
       "Coatings & Adhesives"
     ],
+    "comfort": -0.375,
     "impressions": 50000000
   },
   "Dyes & Pigments": {
@@ -2486,6 +2795,7 @@
       "Chemicals Industry",
       "Dyes & Pigments"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 27000000
   },
   "Plastics & Polymers": {
@@ -2494,6 +2804,7 @@
       "Chemicals Industry",
       "Plastics & Polymers"
     ],
+    "comfort": -1.0,
     "impressions": 17000000
   },
   "Construction & Maintenance": {
@@ -2501,6 +2812,7 @@
       "Business & Industrial",
       "Construction & Maintenance"
     ],
+    "comfort": -0.75,
     "impressions": 830000000
   },
   "Building Materials & Supplies": {
@@ -2509,6 +2821,7 @@
       "Construction & Maintenance",
       "Building Materials & Supplies"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 500000000
   },
   "Nails Screws & Fasteners": {
@@ -2518,6 +2831,7 @@
       "Building Materials & Supplies",
       "Nails Screws & Fasteners"
     ],
+    "comfort": -0.166666666666667,
     "impressions": 45000000
   },
   "Plumbing Fixtures & Equipment": {
@@ -2527,6 +2841,7 @@
       "Building Materials & Supplies",
       "Plumbing Fixtures & Equipment"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 65000000
   },
   "Wood & Plastics": {
@@ -2536,6 +2851,7 @@
       "Building Materials & Supplies",
       "Wood & Plastics"
     ],
+    "comfort": 0.0,
     "impressions": 84000000
   },
   "Civil Engineering": {
@@ -2544,6 +2860,7 @@
       "Construction & Maintenance",
       "Civil Engineering"
     ],
+    "comfort": 1.8,
     "impressions": 79000000
   },
   "Construction Consulting & Contracting": {
@@ -2552,6 +2869,7 @@
       "Construction & Maintenance",
       "Construction Consulting & Contracting"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 80000000
   },
   "Urban & Regional Planning": {
@@ -2560,6 +2878,7 @@
       "Construction & Maintenance",
       "Urban & Regional Planning"
     ],
+    "comfort": -0.5,
     "impressions": 100000000
   },
   "Energy & Utilities": {
@@ -2567,6 +2886,7 @@
       "Business & Industrial",
       "Energy & Utilities"
     ],
+    "comfort": -0.111111111111111,
     "impressions": 410000000
   },
   "Electricity": {
@@ -2575,6 +2895,7 @@
       "Energy & Utilities",
       "Electricity"
     ],
+    "comfort": -1.28571428571429,
     "impressions": 63000000
   },
   "Nuclear Energy": {
@@ -2583,6 +2904,7 @@
       "Energy & Utilities",
       "Nuclear Energy"
     ],
+    "comfort": 1.0,
     "impressions": 7500000
   },
   "Oil & Gas": {
@@ -2591,6 +2913,7 @@
       "Energy & Utilities",
       "Oil & Gas"
     ],
+    "comfort": -0.8,
     "impressions": 220000000
   },
   "Renewable & Alternative Energy": {
@@ -2599,6 +2922,7 @@
       "Energy & Utilities",
       "Renewable & Alternative Energy"
     ],
+    "comfort": 1.5,
     "impressions": 110000000
   },
   "Waste Management": {
@@ -2607,6 +2931,7 @@
       "Energy & Utilities",
       "Waste Management"
     ],
+    "comfort": 1.5,
     "impressions": 42000000
   },
   "Recycling": {
@@ -2616,6 +2941,7 @@
       "Waste Management",
       "Recycling"
     ],
+    "comfort": 0.2,
     "impressions": 19000000
   },
   "Water Supply & Treatment": {
@@ -2624,6 +2950,7 @@
       "Energy & Utilities",
       "Water Supply & Treatment"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 36000000
   },
   "Hospitality Industry": {
@@ -2631,6 +2958,7 @@
       "Business & Industrial",
       "Hospitality Industry"
     ],
+    "comfort": 0.5,
     "impressions": 1200000000
   },
   "Event Planning": {
@@ -2639,6 +2967,7 @@
       "Hospitality Industry",
       "Event Planning"
     ],
+    "comfort": 0.125,
     "impressions": 180000000
   },
   "Food Service": {
@@ -2647,6 +2976,7 @@
       "Hospitality Industry",
       "Food Service"
     ],
+    "comfort": 0.5,
     "impressions": 980000000
   },
   "Restaurant Supply": {
@@ -2656,6 +2986,7 @@
       "Food Service",
       "Restaurant Supply"
     ],
+    "comfort": -0.25,
     "impressions": 52000000
   },
   "Industrial Materials & Equipment": {
@@ -2663,6 +2994,7 @@
       "Business & Industrial",
       "Industrial Materials & Equipment"
     ],
+    "comfort": -0.375,
     "impressions": 170000000
   },
   "Fluid Handling": {
@@ -2671,6 +3003,7 @@
       "Industrial Materials & Equipment",
       "Fluid Handling"
     ],
+    "comfort": 1.0,
     "impressions": 27000000
   },
   "Valves Hoses & Fittings": {
@@ -2680,6 +3013,7 @@
       "Fluid Handling",
       "Valves Hoses & Fittings"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 14000000
   },
   "Generators": {
@@ -2688,6 +3022,7 @@
       "Industrial Materials & Equipment",
       "Generators"
     ],
+    "comfort": 0.0,
     "impressions": 6300000
   },
   "Heavy Machinery": {
@@ -2696,6 +3031,7 @@
       "Industrial Materials & Equipment",
       "Heavy Machinery"
     ],
+    "comfort": 2.33333333333333,
     "impressions": 78000000
   },
   "Manufacturing": {
@@ -2703,6 +3039,7 @@
       "Business & Industrial",
       "Manufacturing"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 86000000
   },
   "Factory Automation": {
@@ -2711,6 +3048,7 @@
       "Manufacturing",
       "Factory Automation"
     ],
+    "comfort": -0.444444444444444,
     "impressions": 34000000
   },
   "Metals & Mining": {
@@ -2718,6 +3056,7 @@
       "Business & Industrial",
       "Metals & Mining"
     ],
+    "comfort": -1.6,
     "impressions": 210000000
   },
   "Pharmaceuticals & Biotech": {
@@ -2725,6 +3064,7 @@
       "Business & Industrial",
       "Pharmaceuticals & Biotech"
     ],
+    "comfort": -0.2,
     "impressions": 130000000
   },
   "Printing & Publishing": {
@@ -2732,6 +3072,7 @@
       "Business & Industrial",
       "Printing & Publishing"
     ],
+    "comfort": -0.4,
     "impressions": 180000000
   },
   "Document & Printing Services": {
@@ -2740,6 +3081,7 @@
       "Printing & Publishing",
       "Document & Printing Services"
     ],
+    "comfort": -0.5,
     "impressions": 40000000
   },
   "Business Cards & Stationary": {
@@ -2749,6 +3091,7 @@
       "Document & Printing Services",
       "Business Cards & Stationary"
     ],
+    "comfort": 0.8,
     "impressions": 9300000
   },
   "Professional & Trade Associations": {
@@ -2756,6 +3099,7 @@
       "Business & Industrial",
       "Professional & Trade Associations"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 32000000
   },
   "Retail Trade": {
@@ -2763,6 +3107,7 @@
       "Business & Industrial",
       "Retail Trade"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 98000000
   },
   "Retail Equipment & Technology": {
@@ -2771,6 +3116,7 @@
       "Retail Trade",
       "Retail Equipment & Technology"
     ],
+    "comfort": -0.8,
     "impressions": 48000000
   },
   "Small Business": {
@@ -2778,6 +3124,7 @@
       "Business & Industrial",
       "Small Business"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 440000000
   },
   "Business Formation": {
@@ -2786,6 +3133,7 @@
       "Small Business",
       "Business Formation"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 71000000
   },
   "Home Office": {
@@ -2794,6 +3142,7 @@
       "Small Business",
       "Home Office"
     ],
+    "comfort": 0.125,
     "impressions": 170000000
   },
   "MLM & Business Opportunities": {
@@ -2802,6 +3151,7 @@
       "Small Business",
       "MLM & Business Opportunities"
     ],
+    "comfort": -0.166666666666667,
     "impressions": 390000000
   },
   "Textiles & Nonwovens": {
@@ -2809,6 +3159,7 @@
       "Business & Industrial",
       "Textiles & Nonwovens"
     ],
+    "comfort": -0.2,
     "impressions": 130000000
   },
   "Transportation & Logistics": {
@@ -2816,6 +3167,7 @@
       "Business & Industrial",
       "Transportation & Logistics"
     ],
+    "comfort": 1.0,
     "impressions": 1500000000
   },
   "Aviation": {
@@ -2824,6 +3176,7 @@
       "Transportation & Logistics",
       "Aviation"
     ],
+    "comfort": 1.14285714285714,
     "impressions": 680000000
   },
   "Distribution & Logistics": {
@@ -2832,6 +3185,7 @@
       "Transportation & Logistics",
       "Distribution & Logistics"
     ],
+    "comfort": -0.6,
     "impressions": 55000000
   },
   "Freight & Trucking": {
@@ -2840,6 +3194,7 @@
       "Transportation & Logistics",
       "Freight & Trucking"
     ],
+    "comfort": 0.4,
     "impressions": 240000000
   },
   "Import & Export": {
@@ -2848,6 +3203,7 @@
       "Transportation & Logistics",
       "Import & Export"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 37000000
   },
   "Mail & Package Delivery": {
@@ -2856,6 +3212,7 @@
       "Transportation & Logistics",
       "Mail & Package Delivery"
     ],
+    "comfort": -1.0,
     "impressions": 88000000
   },
   "Couriers & Messengers": {
@@ -2865,6 +3222,7 @@
       "Mail & Package Delivery",
       "Couriers & Messengers"
     ],
+    "comfort": 0.6,
     "impressions": 38000000
   },
   "Maritime Transport": {
@@ -2873,6 +3231,7 @@
       "Transportation & Logistics",
       "Maritime Transport"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 230000000
   },
   "Moving & Relocation": {
@@ -2881,6 +3240,7 @@
       "Transportation & Logistics",
       "Moving & Relocation"
     ],
+    "comfort": -0.75,
     "impressions": 29000000
   },
   "Packaging": {
@@ -2889,6 +3249,7 @@
       "Transportation & Logistics",
       "Packaging"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 23000000
   },
   "Parking": {
@@ -2897,6 +3258,7 @@
       "Transportation & Logistics",
       "Parking"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 55000000
   },
   "Public Storage": {
@@ -2905,6 +3267,7 @@
       "Transportation & Logistics",
       "Public Storage"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 19000000
   },
   "Rail Transport": {
@@ -2913,6 +3276,7 @@
       "Transportation & Logistics",
       "Rail Transport"
     ],
+    "comfort": 0.0,
     "impressions": 150000000
   },
   "Urban Transport": {
@@ -2921,12 +3285,14 @@
       "Transportation & Logistics",
       "Urban Transport"
     ],
+    "comfort": 1.2,
     "impressions": 170000000
   },
   "Computers & Electronics": {
     "path": [
       "Computers & Electronics"
     ],
+    "comfort": 2.75,
     "impressions": 10000000001
   },
   "CAD & CAM": {
@@ -2934,6 +3300,7 @@
       "Computers & Electronics",
       "CAD & CAM"
     ],
+    "comfort": 0.5,
     "impressions": 68000000
   },
   "Computer Hardware": {
@@ -2941,6 +3308,7 @@
       "Computers & Electronics",
       "Computer Hardware"
     ],
+    "comfort": 0.375,
     "impressions": 750000000
   },
   "Computer Components": {
@@ -2949,6 +3317,7 @@
       "Computer Hardware",
       "Computer Components"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 130000000
   },
   "Chips & Processors": {
@@ -2958,6 +3327,7 @@
       "Computer Components",
       "Chips & Processors"
     ],
+    "comfort": -0.2,
     "impressions": 37000000
   },
   "Computer Memory": {
@@ -2967,6 +3337,7 @@
       "Computer Components",
       "Computer Memory"
     ],
+    "comfort": 0.2,
     "impressions": 20000000
   },
   "Sound & Video Cards": {
@@ -2976,6 +3347,7 @@
       "Computer Components",
       "Sound & Video Cards"
     ],
+    "comfort": 1.4,
     "impressions": 25000000
   },
   "Computer Drives & Storage": {
@@ -2984,6 +3356,7 @@
       "Computer Hardware",
       "Computer Drives & Storage"
     ],
+    "comfort": -0.166666666666667,
     "impressions": 84000000
   },
   "CD & DVD Drives & Burners": {
@@ -2993,6 +3366,7 @@
       "Computer Drives & Storage",
       "CD & DVD Drives & Burners"
     ],
+    "comfort": 1.2,
     "impressions": 4099999
   },
   "CD & DVD Storage Media": {
@@ -3002,6 +3376,7 @@
       "Computer Drives & Storage",
       "CD & DVD Storage Media"
     ],
+    "comfort": 0.833333333333333,
     "impressions": 3800000
   },
   "Data Backup & Recovery": {
@@ -3011,6 +3386,7 @@
       "Computer Drives & Storage",
       "Data Backup & Recovery"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 14000000
   },
   "Flash Drives & Memory Cards": {
@@ -3020,6 +3396,7 @@
       "Computer Drives & Storage",
       "Flash Drives & Memory Cards"
     ],
+    "comfort": 0.0,
     "impressions": 14000000
   },
   "Hard Drives": {
@@ -3029,6 +3406,7 @@
       "Computer Drives & Storage",
       "Hard Drives"
     ],
+    "comfort": -0.714285714285714,
     "impressions": 17000000
   },
   "Memory Card Readers": {
@@ -3038,6 +3416,7 @@
       "Computer Drives & Storage",
       "Memory Card Readers"
     ],
+    "comfort": -1.66666666666667,
     "impressions": 4900000
   },
   "Network Storage": {
@@ -3047,6 +3426,7 @@
       "Computer Drives & Storage",
       "Network Storage"
     ],
+    "comfort": 0.142857142857143,
     "impressions": 34000000
   },
   "Computer Peripherals": {
@@ -3055,6 +3435,7 @@
       "Computer Hardware",
       "Computer Peripherals"
     ],
+    "comfort": 0.5,
     "impressions": 380000000
   },
   "Computer Monitors & Displays": {
@@ -3064,6 +3445,7 @@
       "Computer Peripherals",
       "Computer Monitors & Displays"
     ],
+    "comfort": -0.714285714285714,
     "impressions": 71000000
   },
   "Input Devices": {
@@ -3073,6 +3455,7 @@
       "Computer Peripherals",
       "Input Devices"
     ],
+    "comfort": -0.5,
     "impressions": 180000000
   },
   "Printers, Copiers & Fax": {
@@ -3082,6 +3465,7 @@
       "Computer Peripherals",
       "Printers, Copiers & Fax"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 47000000
   },
   "Copiers": {
@@ -3092,6 +3476,7 @@
       "Printers, Copiers & Fax",
       "Copiers"
     ],
+    "comfort": 1.5,
     "impressions": 14000000
   },
   "Fax Machines": {
@@ -3102,6 +3487,7 @@
       "Printers, Copiers & Fax",
       "Fax Machines"
     ],
+    "comfort": 0.2,
     "impressions": 4800000
   },
   "Ink & Toner": {
@@ -3112,6 +3498,7 @@
       "Printers, Copiers & Fax",
       "Ink & Toner"
     ],
+    "comfort": 2.0,
     "impressions": 13000000
   },
   "Printers": {
@@ -3122,6 +3509,7 @@
       "Printers, Copiers & Fax",
       "Printers"
     ],
+    "comfort": 1.54545454545455,
     "impressions": 27000000
   },
   "Scanners": {
@@ -3132,6 +3520,7 @@
       "Printers, Copiers & Fax",
       "Scanners"
     ],
+    "comfort": -0.8,
     "impressions": 23000000
   },
   "Computer Servers": {
@@ -3140,6 +3529,7 @@
       "Computer Hardware",
       "Computer Servers"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 25000000
   },
   "Desktop Computers": {
@@ -3148,6 +3538,7 @@
       "Computer Hardware",
       "Desktop Computers"
     ],
+    "comfort": 1.5,
     "impressions": 100000000
   },
   "Hardware Modding & Tuning": {
@@ -3156,6 +3547,7 @@
       "Computer Hardware",
       "Hardware Modding & Tuning"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 79000000
   },
   "Laptops & Notebooks": {
@@ -3164,6 +3556,7 @@
       "Computer Hardware",
       "Laptops & Notebooks"
     ],
+    "comfort": 0.0,
     "impressions": 80000000
   },
   "Tablet PCs": {
@@ -3173,6 +3566,7 @@
       "Laptops & Notebooks",
       "Tablet PCs"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 130000000
   },
   "Computer Security": {
@@ -3180,6 +3574,7 @@
       "Computers & Electronics",
       "Computer Security"
     ],
+    "comfort": -0.375,
     "impressions": 2600000000
   },
   "Antivirus & Malware": {
@@ -3188,6 +3583,7 @@
       "Computer Security",
       "Antivirus & Malware"
     ],
+    "comfort": 0.25,
     "impressions": 2000000000
   },
   "Network Security": {
@@ -3196,6 +3592,7 @@
       "Computer Security",
       "Network Security"
     ],
+    "comfort": -0.125,
     "impressions": 1100000000
   },
   "Consumer Electronics": {
@@ -3203,6 +3600,7 @@
       "Computers & Electronics",
       "Consumer Electronics"
     ],
+    "comfort": 1.6,
     "impressions": 4400000000
   },
   "Audio Equipment": {
@@ -3211,6 +3609,7 @@
       "Consumer Electronics",
       "Audio Equipment"
     ],
+    "comfort": 1.0,
     "impressions": 240000000
   },
   "Headphones": {
@@ -3220,6 +3619,7 @@
       "Audio Equipment",
       "Headphones"
     ],
+    "comfort": 0.875,
     "impressions": 37000000
   },
   "Speakers": {
@@ -3229,6 +3629,7 @@
       "Audio Equipment",
       "Speakers"
     ],
+    "comfort": 1.0,
     "impressions": 150000000
   },
   "Stereo Systems & Components": {
@@ -3238,6 +3639,7 @@
       "Audio Equipment",
       "Stereo Systems & Components"
     ],
+    "comfort": 0.25,
     "impressions": 100000000
   },
   "Camera & Photo Equipment": {
@@ -3246,6 +3648,7 @@
       "Consumer Electronics",
       "Camera & Photo Equipment"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 120000000
   },
   "Binoculars, Telescopes & Optical Devices": {
@@ -3255,6 +3658,7 @@
       "Camera & Photo Equipment",
       "Binoculars, Telescopes & Optical Devices"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 13000000
   },
   "Cameras & Camcorders": {
@@ -3264,6 +3668,7 @@
       "Camera & Photo Equipment",
       "Cameras & Camcorders"
     ],
+    "comfort": 1.5,
     "impressions": 110000000
   },
   "Camcorders": {
@@ -3274,6 +3679,7 @@
       "Cameras & Camcorders",
       "Camcorders"
     ],
+    "comfort": -0.25,
     "impressions": 44000000
   },
   "Camera Lenses": {
@@ -3284,6 +3690,7 @@
       "Cameras & Camcorders",
       "Camera Lenses"
     ],
+    "comfort": 0.0,
     "impressions": 34000000
   },
   "Cameras": {
@@ -3294,6 +3701,7 @@
       "Cameras & Camcorders",
       "Cameras"
     ],
+    "comfort": 0.428571428571429,
     "impressions": 73000000
   },
   "Car Electronics": {
@@ -3302,6 +3710,7 @@
       "Consumer Electronics",
       "Car Electronics"
     ],
+    "comfort": -0.4,
     "impressions": 150000000
   },
   "Car Audio": {
@@ -3311,6 +3720,7 @@
       "Car Electronics",
       "Car Audio"
     ],
+    "comfort": -0.4,
     "impressions": 110000000
   },
   "Car Video": {
@@ -3320,6 +3730,7 @@
       "Car Electronics",
       "Car Video"
     ],
+    "comfort": 1.0,
     "impressions": 18000000
   },
   "Electronic Accessories": {
@@ -3328,6 +3739,7 @@
       "Consumer Electronics",
       "Electronic Accessories"
     ],
+    "comfort": 2.0,
     "impressions": 130000000
   },
   "GPS & Navigation": {
@@ -3336,6 +3748,7 @@
       "Consumer Electronics",
       "GPS & Navigation"
     ],
+    "comfort": -2.0,
     "impressions": 46000000
   },
   "Gadgets & Portable Electronics": {
@@ -3344,6 +3757,7 @@
       "Consumer Electronics",
       "Gadgets & Portable Electronics"
     ],
+    "comfort": 2.5,
     "impressions": 780000000
   },
   "E-Book Readers": {
@@ -3353,6 +3767,7 @@
       "Gadgets & Portable Electronics",
       "E-Book Readers"
     ],
+    "comfort": 0.363636363636364,
     "impressions": 8500000
   },
   "MP3 & Portable Media Players": {
@@ -3362,6 +3777,7 @@
       "Gadgets & Portable Electronics",
       "MP3 & Portable Media Players"
     ],
+    "comfort": 0.714285714285714,
     "impressions": 23000000
   },
   "PDAs & Handhelds": {
@@ -3371,6 +3787,7 @@
       "Gadgets & Portable Electronics",
       "PDAs & Handhelds"
     ],
+    "comfort": -0.25,
     "impressions": 190000000
   },
   "Game Systems & Consoles": {
@@ -3379,6 +3796,7 @@
       "Consumer Electronics",
       "Game Systems & Consoles"
     ],
+    "comfort": 1.125,
     "impressions": 330000000
   },
   "Handheld Game Consoles": {
@@ -3388,6 +3806,7 @@
       "Game Systems & Consoles",
       "Handheld Game Consoles"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 71000000
   },
   "Nintendo": {
@@ -3397,6 +3816,7 @@
       "Game Systems & Consoles",
       "Nintendo"
     ],
+    "comfort": -0.6,
     "impressions": 190000000
   },
   "Sony PlayStation": {
@@ -3406,6 +3826,7 @@
       "Game Systems & Consoles",
       "Sony PlayStation"
     ],
+    "comfort": 2.25,
     "impressions": 89000000
   },
   "Xbox": {
@@ -3415,6 +3836,7 @@
       "Game Systems & Consoles",
       "Xbox"
     ],
+    "comfort": 1.0,
     "impressions": 64000000
   },
   "TV & Video Equipment": {
@@ -3423,6 +3845,7 @@
       "Consumer Electronics",
       "TV & Video Equipment"
     ],
+    "comfort": 1.14285714285714,
     "impressions": 650000000
   },
   "DVRs & Set-Top Boxes": {
@@ -3432,6 +3855,7 @@
       "TV & Video Equipment",
       "DVRs & Set-Top Boxes"
     ],
+    "comfort": 1.4,
     "impressions": 51000000
   },
   "Home Theater Systems": {
@@ -3441,6 +3865,7 @@
       "TV & Video Equipment",
       "Home Theater Systems"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 120000000
   },
   "Projectors & Screens": {
@@ -3450,6 +3875,7 @@
       "TV & Video Equipment",
       "Projectors & Screens"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 9600000
   },
   "Televisions": {
@@ -3459,6 +3885,7 @@
       "TV & Video Equipment",
       "Televisions"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 330000000
   },
   "HDTVs": {
@@ -3469,6 +3896,7 @@
       "Televisions",
       "HDTVs"
     ],
+    "comfort": 1.25,
     "impressions": 51000000
   },
   "LCD TVs": {
@@ -3479,6 +3907,7 @@
       "Televisions",
       "LCD TVs"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 46000000
   },
   "Plasma TVs": {
@@ -3489,6 +3918,7 @@
       "Televisions",
       "Plasma TVs"
     ],
+    "comfort": 1.75,
     "impressions": 8100000
   },
   "Projection TVs": {
@@ -3499,6 +3929,7 @@
       "Televisions",
       "Projection TVs"
     ],
+    "comfort": 0.8,
     "impressions": 17000000
   },
   "Video Players & Recorders": {
@@ -3508,6 +3939,7 @@
       "TV & Video Equipment",
       "Video Players & Recorders"
     ],
+    "comfort": -1.0,
     "impressions": 230000000
   },
   "Blu-Ray Players & Recorders": {
@@ -3518,6 +3950,7 @@
       "Video Players & Recorders",
       "Blu-Ray Players & Recorders"
     ],
+    "comfort": -2.33333333333333,
     "impressions": 8900000
   },
   "DVD Players & Recorders": {
@@ -3528,6 +3961,7 @@
       "Video Players & Recorders",
       "DVD Players & Recorders"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 4800000
   },
   "Electronics & Electrical": {
@@ -3535,6 +3969,7 @@
       "Computers & Electronics",
       "Electronics & Electrical"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 1500000000
   },
   "Data Sheets & Electronics Reference": {
@@ -3543,6 +3978,7 @@
       "Electronics & Electrical",
       "Data Sheets & Electronics Reference"
     ],
+    "comfort": -0.833333333333333,
     "impressions": 19000000
   },
   "Electromechanical Devices": {
@@ -3551,6 +3987,7 @@
       "Electronics & Electrical",
       "Electromechanical Devices"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 32000000
   },
   "Electronic Components": {
@@ -3559,6 +3996,7 @@
       "Electronics & Electrical",
       "Electronic Components"
     ],
+    "comfort": 2.0,
     "impressions": 220000000
   },
   "Optoelectronics & Fiber": {
@@ -3567,6 +4005,7 @@
       "Electronics & Electrical",
       "Optoelectronics & Fiber"
     ],
+    "comfort": -0.285714285714286,
     "impressions": 980000000
   },
   "Power Supplies": {
@@ -3575,6 +4014,7 @@
       "Electronics & Electrical",
       "Power Supplies"
     ],
+    "comfort": 0.2,
     "impressions": 100000000
   },
   "Test & Measurement": {
@@ -3583,6 +4023,7 @@
       "Electronics & Electrical",
       "Test & Measurement"
     ],
+    "comfort": -0.75,
     "impressions": 24000000
   },
   "Enterprise Technology": {
@@ -3590,6 +4031,7 @@
       "Computers & Electronics",
       "Enterprise Technology"
     ],
+    "comfort": -0.25,
     "impressions": 360000000
   },
   "Customer Relationship Management (CRM)": {
@@ -3598,6 +4040,7 @@
       "Enterprise Technology",
       "Customer Relationship Management (CRM)"
     ],
+    "comfort": -0.125,
     "impressions": 53000000
   },
   "Data Management": {
@@ -3606,6 +4049,7 @@
       "Enterprise Technology",
       "Data Management"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 65000000
   },
   "Enterprise Resource Planning (ERP)": {
@@ -3614,6 +4058,7 @@
       "Enterprise Technology",
       "Enterprise Resource Planning (ERP)"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 89000000
   },
   "Networking": {
@@ -3621,6 +4066,7 @@
       "Computers & Electronics",
       "Networking"
     ],
+    "comfort": -1.0,
     "impressions": 690000000
   },
   "Data Formats & Protocols": {
@@ -3629,6 +4075,7 @@
       "Networking",
       "Data Formats & Protocols"
     ],
+    "comfort": 1.0,
     "impressions": 98000000
   },
   "Network Monitoring & Management": {
@@ -3637,6 +4084,7 @@
       "Networking",
       "Network Monitoring & Management"
     ],
+    "comfort": 0.0,
     "impressions": 240000000
   },
   "Networking Equipment": {
@@ -3645,6 +4093,7 @@
       "Networking",
       "Networking Equipment"
     ],
+    "comfort": 0.0,
     "impressions": 73000000
   },
   "VPN & Remote Access": {
@@ -3653,6 +4102,7 @@
       "Networking",
       "VPN & Remote Access"
     ],
+    "comfort": 1.22222222222222,
     "impressions": 440000000
   },
   "Programming": {
@@ -3660,6 +4110,7 @@
       "Computers & Electronics",
       "Programming"
     ],
+    "comfort": -0.166666666666667,
     "impressions": 380000000
   },
   "C & C++": {
@@ -3668,6 +4119,7 @@
       "Programming",
       "C & C++"
     ],
+    "comfort": 0.0,
     "impressions": 22000000
   },
   "Developer Jobs": {
@@ -3676,6 +4128,7 @@
       "Programming",
       "Developer Jobs"
     ],
+    "comfort": -0.25,
     "impressions": 73000000
   },
   "Development Tools": {
@@ -3684,6 +4137,7 @@
       "Programming",
       "Development Tools"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 100000000
   },
   "Java": {
@@ -3692,6 +4146,7 @@
       "Programming",
       "Java"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 40000000
   },
   "Scripting Languages": {
@@ -3700,6 +4155,7 @@
       "Programming",
       "Scripting Languages"
     ],
+    "comfort": 1.25,
     "impressions": 78000000
   },
   "Windows & .NET": {
@@ -3708,6 +4164,7 @@
       "Programming",
       "Windows & .NET"
     ],
+    "comfort": 0.5,
     "impressions": 89000000
   },
   "Software": {
@@ -3715,6 +4172,7 @@
       "Computers & Electronics",
       "Software"
     ],
+    "comfort": 1.375,
     "impressions": 10000000001
   },
   "Business & Productivity Software": {
@@ -3723,6 +4181,7 @@
       "Software",
       "Business & Productivity Software"
     ],
+    "comfort": 1.2,
     "impressions": 1400000000
   },
   "Accounting & Financial Software": {
@@ -3732,6 +4191,7 @@
       "Business & Productivity Software",
       "Accounting & Financial Software"
     ],
+    "comfort": 0.8,
     "impressions": 20000000
   },
   "Calendar & Scheduling Software": {
@@ -3741,6 +4201,7 @@
       "Business & Productivity Software",
       "Calendar & Scheduling Software"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 210000000
   },
   "Presentation Software": {
@@ -3750,6 +4211,7 @@
       "Business & Productivity Software",
       "Presentation Software"
     ],
+    "comfort": -1.22222222222222,
     "impressions": 23000000
   },
   "Project Management Software": {
@@ -3759,6 +4221,7 @@
       "Business & Productivity Software",
       "Project Management Software"
     ],
+    "comfort": -0.8,
     "impressions": 15000000
   },
   "Spreadsheet Software": {
@@ -3768,6 +4231,7 @@
       "Business & Productivity Software",
       "Spreadsheet Software"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 31000000
   },
   "Word Processing Software": {
@@ -3777,6 +4241,7 @@
       "Business & Productivity Software",
       "Word Processing Software"
     ],
+    "comfort": 0.571428571428571,
     "impressions": 110000000
   },
   "Device Drivers": {
@@ -3785,6 +4250,7 @@
       "Software",
       "Device Drivers"
     ],
+    "comfort": -0.428571428571429,
     "impressions": 39000000
   },
   "Educational Software": {
@@ -3793,6 +4259,7 @@
       "Software",
       "Educational Software"
     ],
+    "comfort": 0.0,
     "impressions": 150000000
   },
   "Freeware & Shareware": {
@@ -3801,6 +4268,7 @@
       "Software",
       "Freeware & Shareware"
     ],
+    "comfort": 0.285714285714286,
     "impressions": 2100000000
   },
   "Internet Software": {
@@ -3809,6 +4277,7 @@
       "Software",
       "Internet Software"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 1400000000
   },
   "Content Management": {
@@ -3818,6 +4287,7 @@
       "Internet Software",
       "Content Management"
     ],
+    "comfort": -0.2,
     "impressions": 40000000
   },
   "Internet Clients & Browsers": {
@@ -3827,6 +4297,7 @@
       "Internet Software",
       "Internet Clients & Browsers"
     ],
+    "comfort": 0.0,
     "impressions": 230000000
   },
   "Proxying & Filtering": {
@@ -3836,6 +4307,7 @@
       "Internet Software",
       "Proxying & Filtering"
     ],
+    "comfort": 0.5,
     "impressions": 340000000
   },
   "Multimedia Software": {
@@ -3844,6 +4316,7 @@
       "Software",
       "Multimedia Software"
     ],
+    "comfort": 0.0,
     "impressions": 4700000000
   },
   "Audio & Music Software": {
@@ -3853,6 +4326,7 @@
       "Multimedia Software",
       "Audio & Music Software"
     ],
+    "comfort": 0.5,
     "impressions": 560000000
   },
   "Audio Files Formats & Codecs": {
@@ -3863,6 +4337,7 @@
       "Audio & Music Software",
       "Audio Files Formats & Codecs"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 83000000
   },
   "Desktop Publishing": {
@@ -3872,6 +4347,7 @@
       "Multimedia Software",
       "Desktop Publishing"
     ],
+    "comfort": -0.142857142857143,
     "impressions": 790000000
   },
   "Fonts": {
@@ -3882,6 +4358,7 @@
       "Desktop Publishing",
       "Fonts"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 53000000
   },
   "Graphics & Animation Software": {
@@ -3891,6 +4368,7 @@
       "Multimedia Software",
       "Graphics & Animation Software"
     ],
+    "comfort": 2.25,
     "impressions": 1300000000
   },
   "Media Players": {
@@ -3900,6 +4378,7 @@
       "Multimedia Software",
       "Media Players"
     ],
+    "comfort": 1.0,
     "impressions": 690000000
   },
   "Photo & Video Software": {
@@ -3909,6 +4388,7 @@
       "Multimedia Software",
       "Photo & Video Software"
     ],
+    "comfort": -0.4,
     "impressions": 1500000000
   },
   "Video File Formats & Codecs": {
@@ -3919,6 +4399,7 @@
       "Photo & Video Software",
       "Video File Formats & Codecs"
     ],
+    "comfort": 0.6,
     "impressions": 41000000
   },
   "Open Source": {
@@ -3927,6 +4408,7 @@
       "Software",
       "Open Source"
     ],
+    "comfort": -0.25,
     "impressions": 64000000
   },
   "Operating Systems": {
@@ -3935,6 +4417,7 @@
       "Software",
       "Operating Systems"
     ],
+    "comfort": 0.428571428571429,
     "impressions": 1400000000
   },
   "Linux & Unix": {
@@ -3944,6 +4427,7 @@
       "Operating Systems",
       "Linux & Unix"
     ],
+    "comfort": 0.5,
     "impressions": 27000000
   },
   "Mac OS": {
@@ -3953,6 +4437,7 @@
       "Operating Systems",
       "Mac OS"
     ],
+    "comfort": -0.6,
     "impressions": 93000000
   },
   "Mobile OS": {
@@ -3962,6 +4447,7 @@
       "Operating Systems",
       "Mobile OS"
     ],
+    "comfort": -1.66666666666667,
     "impressions": 1200000000
   },
   "Windows OS": {
@@ -3971,6 +4457,7 @@
       "Operating Systems",
       "Windows OS"
     ],
+    "comfort": 1.25,
     "impressions": 120000000
   },
   "Software Utilities": {
@@ -3979,12 +4466,14 @@
       "Software",
       "Software Utilities"
     ],
+    "comfort": -0.6,
     "impressions": 8600000000
   },
   "Finance": {
     "path": [
       "Finance"
     ],
+    "comfort": -0.5,
     "impressions": 2400000000
   },
   "Accounting & Auditing": {
@@ -3992,6 +4481,7 @@
       "Finance",
       "Accounting & Auditing"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 200000000
   },
   "Tax Preparation & Planning": {
@@ -4000,6 +4490,7 @@
       "Accounting & Auditing",
       "Tax Preparation & Planning"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 160000000
   },
   "Banking": {
@@ -4007,6 +4498,7 @@
       "Finance",
       "Banking"
     ],
+    "comfort": 0.0,
     "impressions": 320000000
   },
   "Credit & Lending": {
@@ -4014,6 +4506,7 @@
       "Finance",
       "Credit & Lending"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 280000000
   },
   "Auto Financing": {
@@ -4022,6 +4515,7 @@
       "Credit & Lending",
       "Auto Financing"
     ],
+    "comfort": 0.0,
     "impressions": 28000000
   },
   "College Financing": {
@@ -4030,6 +4524,7 @@
       "Credit & Lending",
       "College Financing"
     ],
+    "comfort": -0.636363636363636,
     "impressions": 24000000
   },
   "Credit Cards": {
@@ -4038,6 +4533,7 @@
       "Credit & Lending",
       "Credit Cards"
     ],
+    "comfort": -0.25,
     "impressions": 95000000
   },
   "Debt Management": {
@@ -4046,6 +4542,7 @@
       "Credit & Lending",
       "Debt Management"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 31000000
   },
   "Home Financing": {
@@ -4054,6 +4551,7 @@
       "Credit & Lending",
       "Home Financing"
     ],
+    "comfort": 1.28571428571429,
     "impressions": 91000000
   },
   "Currencies & Foreign Exchange": {
@@ -4061,6 +4559,7 @@
       "Finance",
       "Currencies & Foreign Exchange"
     ],
+    "comfort": -0.833333333333333,
     "impressions": 220000000
   },
   "Financial Planning": {
@@ -4068,6 +4567,7 @@
       "Finance",
       "Financial Planning"
     ],
+    "comfort": 2.2,
     "impressions": 300000000
   },
   "Grants & Financial Assistance": {
@@ -4075,6 +4575,7 @@
       "Finance",
       "Grants & Financial Assistance"
     ],
+    "comfort": 0.5,
     "impressions": 22000000
   },
   "Insurance": {
@@ -4082,6 +4583,7 @@
       "Finance",
       "Insurance"
     ],
+    "comfort": -0.75,
     "impressions": 210000000
   },
   "Auto Insurance": {
@@ -4090,6 +4592,7 @@
       "Insurance",
       "Auto Insurance"
     ],
+    "comfort": 0.25,
     "impressions": 29000000
   },
   "Health Insurance": {
@@ -4098,6 +4601,7 @@
       "Insurance",
       "Health Insurance"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 59000000
   },
   "Home Insurance": {
@@ -4106,6 +4610,7 @@
       "Insurance",
       "Home Insurance"
     ],
+    "comfort": 0.8,
     "impressions": 28000000
   },
   "Investing": {
@@ -4113,6 +4618,7 @@
       "Finance",
       "Investing"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 1400000000
   },
   "Commodities & Futures Trading": {
@@ -4121,6 +4627,7 @@
       "Investing",
       "Commodities & Futures Trading"
     ],
+    "comfort": -0.25,
     "impressions": 230000000
   },
   "Retirement & Pension": {
@@ -4128,12 +4635,14 @@
       "Finance",
       "Retirement & Pension"
     ],
+    "comfort": -0.428571428571429,
     "impressions": 87000000
   },
   "Food & Drink": {
     "path": [
       "Food & Drink"
     ],
+    "comfort": 0.5,
     "impressions": 5000000000
   },
   "Candy & Sweets": {
@@ -4141,6 +4650,7 @@
       "Food & Drink",
       "Candy & Sweets"
     ],
+    "comfort": 0.0,
     "impressions": 240000000
   },
   "Cooking & Recipes": {
@@ -4148,6 +4658,7 @@
       "Food & Drink",
       "Cooking & Recipes"
     ],
+    "comfort": 1.0,
     "impressions": 3300000000
   },
   "Baked Goods": {
@@ -4156,6 +4667,7 @@
       "Cooking & Recipes",
       "Baked Goods"
     ],
+    "comfort": 0.5,
     "impressions": 1400000000
   },
   "Fruits & Vegetables": {
@@ -4164,6 +4676,7 @@
       "Cooking & Recipes",
       "Fruits & Vegetables"
     ],
+    "comfort": 2.25,
     "impressions": 570000000
   },
   "Meat & Seafood": {
@@ -4172,6 +4685,7 @@
       "Cooking & Recipes",
       "Meat & Seafood"
     ],
+    "comfort": -0.1,
     "impressions": 1500000000
   },
   "Soups & Stews": {
@@ -4180,6 +4694,7 @@
       "Cooking & Recipes",
       "Soups & Stews"
     ],
+    "comfort": 0.0,
     "impressions": 390000000
   },
   "Vegetarian Cuisine": {
@@ -4188,6 +4703,7 @@
       "Cooking & Recipes",
       "Vegetarian Cuisine"
     ],
+    "comfort": 1.14285714285714,
     "impressions": 230000000
   },
   "World Cuisines": {
@@ -4196,6 +4712,7 @@
       "Cooking & Recipes",
       "World Cuisines"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 1300000000
   },
   "Asian Cuisine": {
@@ -4205,6 +4722,7 @@
       "World Cuisines",
       "Asian Cuisine"
     ],
+    "comfort": 2.33333333333333,
     "impressions": 350000000
   },
   "Latin American Cuisine": {
@@ -4214,6 +4732,7 @@
       "World Cuisines",
       "Latin American Cuisine"
     ],
+    "comfort": 0.0909090909090909,
     "impressions": 150000000
   },
   "Mediterranean Cuisine": {
@@ -4223,6 +4742,7 @@
       "World Cuisines",
       "Mediterranean Cuisine"
     ],
+    "comfort": 0.363636363636364,
     "impressions": 250000000
   },
   "North American Cuisine": {
@@ -4232,6 +4752,7 @@
       "World Cuisines",
       "North American Cuisine"
     ],
+    "comfort": 2.0,
     "impressions": 260000000
   },
   "Culinary Training": {
@@ -4239,6 +4760,7 @@
       "Food & Drink",
       "Culinary Training"
     ],
+    "comfort": 0.375,
     "impressions": 12000000
   },
   "Grocery & Food Retailers": {
@@ -4246,6 +4768,7 @@
       "Food & Drink",
       "Grocery & Food Retailers"
     ],
+    "comfort": 1.6,
     "impressions": 890000000
   },
   "Non-Alcoholic Beverages": {
@@ -4253,6 +4776,7 @@
       "Food & Drink",
       "Non-Alcoholic Beverages"
     ],
+    "comfort": 1.125,
     "impressions": 320000000
   },
   "Coffee & Tea": {
@@ -4261,6 +4785,7 @@
       "Non-Alcoholic Beverages",
       "Coffee & Tea"
     ],
+    "comfort": 1.6,
     "impressions": 100000000
   },
   "Restaurants": {
@@ -4268,6 +4793,7 @@
       "Food & Drink",
       "Restaurants"
     ],
+    "comfort": 1.0,
     "impressions": 870000000
   },
   "Dining Guides": {
@@ -4276,6 +4802,7 @@
       "Restaurants",
       "Dining Guides"
     ],
+    "comfort": 2.0,
     "impressions": 220000000
   },
   "Fast Food": {
@@ -4284,12 +4811,14 @@
       "Restaurants",
       "Fast Food"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 260000000
   },
   "Games": {
     "path": [
       "Games"
     ],
+    "comfort": 1.0,
     "impressions": 10000000001
   },
   "Arcade & Coin-Op Games": {
@@ -4297,6 +4826,7 @@
       "Games",
       "Arcade & Coin-Op Games"
     ],
+    "comfort": 0.2,
     "impressions": 260000000
   },
   "Board Games": {
@@ -4304,6 +4834,7 @@
       "Games",
       "Board Games"
     ],
+    "comfort": 1.83333333333333,
     "impressions": 4600000000
   },
   "Chess & Abstract Strategy Games": {
@@ -4312,6 +4843,7 @@
       "Board Games",
       "Chess & Abstract Strategy Games"
     ],
+    "comfort": 1.125,
     "impressions": 190000000
   },
   "Miniatures & Wargaming": {
@@ -4320,6 +4852,7 @@
       "Board Games",
       "Miniatures & Wargaming"
     ],
+    "comfort": 0.428571428571429,
     "impressions": 27000000
   },
   "Card Games": {
@@ -4327,6 +4860,7 @@
       "Games",
       "Card Games"
     ],
+    "comfort": 0.0,
     "impressions": 4700000000
   },
   "Collectible Card Games": {
@@ -4335,6 +4869,7 @@
       "Card Games",
       "Collectible Card Games"
     ],
+    "comfort": 0.8,
     "impressions": 500000000
   },
   "Computer & Video Games": {
@@ -4342,6 +4877,7 @@
       "Games",
       "Computer & Video Games"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 10000000001
   },
   "Action & Platform Games": {
@@ -4350,6 +4886,7 @@
       "Computer & Video Games",
       "Action & Platform Games"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 2800000000
   },
   "Adventure Games": {
@@ -4358,6 +4895,7 @@
       "Computer & Video Games",
       "Adventure Games"
     ],
+    "comfort": 2.66666666666667,
     "impressions": 1500000000
   },
   "Casual Games": {
@@ -4366,6 +4904,7 @@
       "Computer & Video Games",
       "Casual Games"
     ],
+    "comfort": 0.8,
     "impressions": 10000000001
   },
   "Driving & Racing Games": {
@@ -4374,6 +4913,7 @@
       "Computer & Video Games",
       "Driving & Racing Games"
     ],
+    "comfort": 2.0,
     "impressions": 1900000000
   },
   "Fighting Games": {
@@ -4382,6 +4922,7 @@
       "Computer & Video Games",
       "Fighting Games"
     ],
+    "comfort": -0.2,
     "impressions": 270000000
   },
   "Gaming Media & Reference": {
@@ -4390,6 +4931,7 @@
       "Computer & Video Games",
       "Gaming Media & Reference"
     ],
+    "comfort": -0.285714285714286,
     "impressions": 3400000000
   },
   "Game Cheats & Hints": {
@@ -4399,6 +4941,7 @@
       "Gaming Media & Reference",
       "Game Cheats & Hints"
     ],
+    "comfort": 0.0,
     "impressions": 2400000000
   },
   "Music & Dance Games": {
@@ -4407,6 +4950,7 @@
       "Computer & Video Games",
       "Music & Dance Games"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 94000000
   },
   "Shooter Games": {
@@ -4415,6 +4959,7 @@
       "Computer & Video Games",
       "Shooter Games"
     ],
+    "comfort": 1.75,
     "impressions": 1900000000
   },
   "Simulation Games": {
@@ -4423,6 +4968,7 @@
       "Computer & Video Games",
       "Simulation Games"
     ],
+    "comfort": -0.571428571428571,
     "impressions": 1500000000
   },
   "Sports Games": {
@@ -4431,6 +4977,7 @@
       "Computer & Video Games",
       "Sports Games"
     ],
+    "comfort": 0.5,
     "impressions": 900000000
   },
   "Strategy Games": {
@@ -4439,6 +4986,7 @@
       "Computer & Video Games",
       "Strategy Games"
     ],
+    "comfort": 2.16666666666667,
     "impressions": 760000000
   },
   "Video Game Emulation": {
@@ -4447,6 +4995,7 @@
       "Computer & Video Games",
       "Video Game Emulation"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 40000000
   },
   "Video Game Retailers": {
@@ -4455,6 +5004,7 @@
       "Computer & Video Games",
       "Video Game Retailers"
     ],
+    "comfort": 0.5,
     "impressions": 75000000
   },
   "Family-Oriented Games & Activities": {
@@ -4462,6 +5012,7 @@
       "Games",
       "Family-Oriented Games & Activities"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 5100000000
   },
   "Drawing & Coloring": {
@@ -4470,6 +5021,7 @@
       "Family-Oriented Games & Activities",
       "Drawing & Coloring"
     ],
+    "comfort": 2.33333333333333,
     "impressions": 1300000000
   },
   "Dress-Up & Fashion Games": {
@@ -4478,6 +5030,7 @@
       "Family-Oriented Games & Activities",
       "Dress-Up & Fashion Games"
     ],
+    "comfort": 0.5,
     "impressions": 3300000000
   },
   "Online Games": {
@@ -4485,6 +5038,7 @@
       "Games",
       "Online Games"
     ],
+    "comfort": 0.2,
     "impressions": 8300000000
   },
   "Massive Multiplayer": {
@@ -4493,6 +5047,7 @@
       "Online Games",
       "Massive Multiplayer"
     ],
+    "comfort": 1.0,
     "impressions": 1600000000
   },
   "Party Games": {
@@ -4500,6 +5055,7 @@
       "Games",
       "Party Games"
     ],
+    "comfort": 1.11111111111111,
     "impressions": 110000000
   },
   "Puzzles & Brainteasers": {
@@ -4507,6 +5063,7 @@
       "Games",
       "Puzzles & Brainteasers"
     ],
+    "comfort": 0.0,
     "impressions": 9700000000
   },
   "Roleplaying Games": {
@@ -4514,6 +5071,7 @@
       "Games",
       "Roleplaying Games"
     ],
+    "comfort": 0.6,
     "impressions": 2100000000
   },
   "Table Games": {
@@ -4521,6 +5079,7 @@
       "Games",
       "Table Games"
     ],
+    "comfort": 1.2,
     "impressions": 180000000
   },
   "Billiards": {
@@ -4529,6 +5088,7 @@
       "Table Games",
       "Billiards"
     ],
+    "comfort": 0.5,
     "impressions": 88000000
   },
   "Table Tennis": {
@@ -4537,12 +5097,14 @@
       "Table Games",
       "Table Tennis"
     ],
+    "comfort": 0.8,
     "impressions": 96000000
   },
   "Health": {
     "path": [
       "Health"
     ],
+    "comfort": -0.4,
     "impressions": 180000000
   },
   "Aging & Geriatrics": {
@@ -4550,6 +5112,7 @@
       "Health",
       "Aging & Geriatrics"
     ],
+    "comfort": 1.6,
     "impressions": 87000000
   },
   "Alzheimer's Disease": {
@@ -4558,6 +5121,7 @@
       "Aging & Geriatrics",
       "Alzheimer's Disease"
     ],
+    "comfort": -1.0,
     "impressions": 21000000
   },
   "Alternative & Natural Medicine": {
@@ -4565,6 +5129,7 @@
       "Health",
       "Alternative & Natural Medicine"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 340000000
   },
   "Acupuncture & Chinese Medicine": {
@@ -4573,6 +5138,7 @@
       "Alternative & Natural Medicine",
       "Acupuncture & Chinese Medicine"
     ],
+    "comfort": -0.8,
     "impressions": 96000000
   },
   "Cleansing & Detoxification": {
@@ -4581,6 +5147,7 @@
       "Alternative & Natural Medicine",
       "Cleansing & Detoxification"
     ],
+    "comfort": -1.0,
     "impressions": 48000000
   },
   "Health Conditions": {
@@ -4588,6 +5155,7 @@
       "Health",
       "Health Conditions"
     ],
+    "comfort": -0.5,
     "impressions": 780000000
   },
   "AIDS & HIV": {
@@ -4596,6 +5164,7 @@
       "Health Conditions",
       "AIDS & HIV"
     ],
+    "comfort": -1.42857142857143,
     "impressions": 22000000
   },
   "Allergies": {
@@ -4604,6 +5173,7 @@
       "Health Conditions",
       "Allergies"
     ],
+    "comfort": 0.75,
     "impressions": 120000000
   },
   "Arthritis": {
@@ -4612,6 +5182,7 @@
       "Health Conditions",
       "Arthritis"
     ],
+    "comfort": -0.857142857142857,
     "impressions": 170000000
   },
   "Cancer": {
@@ -4620,6 +5191,7 @@
       "Health Conditions",
       "Cancer"
     ],
+    "comfort": -2.0,
     "impressions": 220000000
   },
   "Cold & Flu": {
@@ -4628,6 +5200,7 @@
       "Health Conditions",
       "Cold & Flu"
     ],
+    "comfort": -1.14285714285714,
     "impressions": 260000000
   },
   "Diabetes": {
@@ -4636,6 +5209,7 @@
       "Health Conditions",
       "Diabetes"
     ],
+    "comfort": 1.2,
     "impressions": 79000000
   },
   "Ear Nose & Throat": {
@@ -4644,6 +5218,7 @@
       "Health Conditions",
       "Ear Nose & Throat"
     ],
+    "comfort": -0.857142857142857,
     "impressions": 86000000
   },
   "Eating Disorders": {
@@ -4652,6 +5227,7 @@
       "Health Conditions",
       "Eating Disorders"
     ],
+    "comfort": -0.75,
     "impressions": 44000000
   },
   "Endocrine Conditions": {
@@ -4660,6 +5236,7 @@
       "Health Conditions",
       "Endocrine Conditions"
     ],
+    "comfort": 1.0,
     "impressions": 180000000
   },
   "Thyroid Conditions": {
@@ -4669,6 +5246,7 @@
       "Endocrine Conditions",
       "Thyroid Conditions"
     ],
+    "comfort": -1.0,
     "impressions": 38000000
   },
   "GERD & Digestive Disorders": {
@@ -4677,6 +5255,7 @@
       "Health Conditions",
       "GERD & Digestive Disorders"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 580000000
   },
   "Genetic Disorders": {
@@ -4685,6 +5264,7 @@
       "Health Conditions",
       "Genetic Disorders"
     ],
+    "comfort": -1.0,
     "impressions": 79000000
   },
   "Heart & Hypertension": {
@@ -4693,6 +5273,7 @@
       "Health Conditions",
       "Heart & Hypertension"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 210000000
   },
   "Infectious Diseases": {
@@ -4701,6 +5282,7 @@
       "Health Conditions",
       "Infectious Diseases"
     ],
+    "comfort": -0.285714285714286,
     "impressions": 220000000
   },
   "Parasites & Parasitic Diseases": {
@@ -4710,6 +5292,7 @@
       "Infectious Diseases",
       "Parasites & Parasitic Diseases"
     ],
+    "comfort": -0.75,
     "impressions": 86000000
   },
   "Vaccines & Immunizations": {
@@ -4719,6 +5302,7 @@
       "Infectious Diseases",
       "Vaccines & Immunizations"
     ],
+    "comfort": 1.0,
     "impressions": 17000000
   },
   "Injury": {
@@ -4727,6 +5311,7 @@
       "Health Conditions",
       "Injury"
     ],
+    "comfort": -0.833333333333333,
     "impressions": 190000000
   },
   "Neurological Disorders": {
@@ -4735,6 +5320,7 @@
       "Health Conditions",
       "Neurological Disorders"
     ],
+    "comfort": -1.25,
     "impressions": 280000000
   },
   "Obesity": {
@@ -4743,6 +5329,7 @@
       "Health Conditions",
       "Obesity"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 140000000
   },
   "Pain Management": {
@@ -4751,6 +5338,7 @@
       "Health Conditions",
       "Pain Management"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 270000000
   },
   "Headaches & Migraines": {
@@ -4760,6 +5348,7 @@
       "Pain Management",
       "Headaches & Migraines"
     ],
+    "comfort": 1.0,
     "impressions": 65000000
   },
   "Respiratory Conditions": {
@@ -4768,6 +5357,7 @@
       "Health Conditions",
       "Respiratory Conditions"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 380000000
   },
   "Asthma": {
@@ -4777,6 +5367,7 @@
       "Respiratory Conditions",
       "Asthma"
     ],
+    "comfort": 0.75,
     "impressions": 35000000
   },
   "Skin Conditions": {
@@ -4785,6 +5376,7 @@
       "Health Conditions",
       "Skin Conditions"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 360000000
   },
   "Sleep Disorders": {
@@ -4793,6 +5385,7 @@
       "Health Conditions",
       "Sleep Disorders"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 270000000
   },
   "Health Education & Medical Training": {
@@ -4800,6 +5393,7 @@
       "Health",
       "Health Education & Medical Training"
     ],
+    "comfort": 2.5,
     "impressions": 120000000
   },
   "Health Foundations & Medical Research": {
@@ -4807,6 +5401,7 @@
       "Health",
       "Health Foundations & Medical Research"
     ],
+    "comfort": -0.25,
     "impressions": 120000000
   },
   "Medical Devices & Equipment": {
@@ -4814,6 +5409,7 @@
       "Health",
       "Medical Devices & Equipment"
     ],
+    "comfort": 2.4,
     "impressions": 50000000
   },
   "Assistive Technology": {
@@ -4822,6 +5418,7 @@
       "Medical Devices & Equipment",
       "Assistive Technology"
     ],
+    "comfort": -0.75,
     "impressions": 1800000
   },
   "Mobility Equipment & Accessories": {
@@ -4831,6 +5428,7 @@
       "Assistive Technology",
       "Mobility Equipment & Accessories"
     ],
+    "comfort": -1.0,
     "impressions": 29000000
   },
   "Medical Facilities & Services": {
@@ -4838,6 +5436,7 @@
       "Health",
       "Medical Facilities & Services"
     ],
+    "comfort": -0.75,
     "impressions": 160000000
   },
   "Doctors' Offices": {
@@ -4846,6 +5445,7 @@
       "Medical Facilities & Services",
       "Doctors' Offices"
     ],
+    "comfort": 0.25,
     "impressions": 140000000
   },
   "Hospitals & Treatment Centers": {
@@ -4854,6 +5454,7 @@
       "Medical Facilities & Services",
       "Hospitals & Treatment Centers"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 140000000
   },
   "Medical Procedures": {
@@ -4862,6 +5463,7 @@
       "Medical Facilities & Services",
       "Medical Procedures"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 400000000
   },
   "Medical Tests & Exams": {
@@ -4871,6 +5473,7 @@
       "Medical Procedures",
       "Medical Tests & Exams"
     ],
+    "comfort": -2.33333333333333,
     "impressions": 99000000
   },
   "Surgery": {
@@ -4880,6 +5483,7 @@
       "Medical Procedures",
       "Surgery"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 170000000
   },
   "Physical Therapy": {
@@ -4888,6 +5492,7 @@
       "Medical Facilities & Services",
       "Physical Therapy"
     ],
+    "comfort": -1.0,
     "impressions": 37000000
   },
   "Medical Literature & Resources": {
@@ -4895,6 +5500,7 @@
       "Health",
       "Medical Literature & Resources"
     ],
+    "comfort": -0.428571428571429,
     "impressions": 1900000000
   },
   "Medical Photos & Illustration": {
@@ -4903,6 +5509,7 @@
       "Medical Literature & Resources",
       "Medical Photos & Illustration"
     ],
+    "comfort": 1.25,
     "impressions": 56000000
   },
   "Men's Health": {
@@ -4910,6 +5517,7 @@
       "Health",
       "Men's Health"
     ],
+    "comfort": -0.166666666666667,
     "impressions": 210000000
   },
   "Mental Health": {
@@ -4917,6 +5525,7 @@
       "Health",
       "Mental Health"
     ],
+    "comfort": 0.0,
     "impressions": 250000000
   },
   "Anxiety & Stress": {
@@ -4925,6 +5534,7 @@
       "Mental Health",
       "Anxiety & Stress"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 230000000
   },
   "Depression": {
@@ -4933,6 +5543,7 @@
       "Mental Health",
       "Depression"
     ],
+    "comfort": -2.75,
     "impressions": 130000000
   },
   "Learning & Developmental Disabilities": {
@@ -4941,6 +5552,7 @@
       "Mental Health",
       "Learning & Developmental Disabilities"
     ],
+    "comfort": 0.2,
     "impressions": 54000000
   },
   "ADD & ADHD": {
@@ -4950,6 +5562,7 @@
       "Learning & Developmental Disabilities",
       "ADD & ADHD"
     ],
+    "comfort": -1.0,
     "impressions": 19000000
   },
   "Nursing": {
@@ -4957,6 +5570,7 @@
       "Health",
       "Nursing"
     ],
+    "comfort": 0.714285714285714,
     "impressions": 46000000
   },
   "Assisted Living & Long Term Care": {
@@ -4965,6 +5579,7 @@
       "Nursing",
       "Assisted Living & Long Term Care"
     ],
+    "comfort": 0.0,
     "impressions": 86000000
   },
   "Nutrition": {
@@ -4972,6 +5587,7 @@
       "Health",
       "Nutrition"
     ],
+    "comfort": 0.714285714285714,
     "impressions": 940000000
   },
   "Special & Restricted Diets": {
@@ -4980,6 +5596,7 @@
       "Nutrition",
       "Special & Restricted Diets"
     ],
+    "comfort": -0.2,
     "impressions": 460000000
   },
   "Cholesterol Issues": {
@@ -4989,6 +5606,7 @@
       "Special & Restricted Diets",
       "Cholesterol Issues"
     ],
+    "comfort": 0.875,
     "impressions": 240000000
   },
   "Vitamins & Supplements": {
@@ -4997,6 +5615,7 @@
       "Nutrition",
       "Vitamins & Supplements"
     ],
+    "comfort": -1.5,
     "impressions": 250000000
   },
   "Oral & Dental Care": {
@@ -5004,6 +5623,7 @@
       "Health",
       "Oral & Dental Care"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 100000000
   },
   "Pediatrics": {
@@ -5011,6 +5631,7 @@
       "Health",
       "Pediatrics"
     ],
+    "comfort": -2.0,
     "impressions": 430000000
   },
   "Pharmacy": {
@@ -5018,6 +5639,7 @@
       "Health",
       "Pharmacy"
     ],
+    "comfort": -2.0,
     "impressions": 16000000
   },
   "Drugs & Medications": {
@@ -5026,6 +5648,7 @@
       "Pharmacy",
       "Drugs & Medications"
     ],
+    "comfort": 0.6,
     "impressions": 500000000
   },
   "Public Health": {
@@ -5033,6 +5656,7 @@
       "Health",
       "Public Health"
     ],
+    "comfort": 1.25,
     "impressions": 98000000
   },
   "Health Policy": {
@@ -5041,6 +5665,7 @@
       "Public Health",
       "Health Policy"
     ],
+    "comfort": -0.5,
     "impressions": 44000000
   },
   "Occupational Health & Safety": {
@@ -5049,6 +5674,7 @@
       "Public Health",
       "Occupational Health & Safety"
     ],
+    "comfort": 0.0,
     "impressions": 32000000
   },
   "Poisons & Overdoses": {
@@ -5057,6 +5683,7 @@
       "Public Health",
       "Poisons & Overdoses"
     ],
+    "comfort": 1.0,
     "impressions": 79000000
   },
   "Reproductive Health": {
@@ -5064,6 +5691,7 @@
       "Health",
       "Reproductive Health"
     ],
+    "comfort": -1.6,
     "impressions": 130000000
   },
   "Birth Control": {
@@ -5072,6 +5700,7 @@
       "Reproductive Health",
       "Birth Control"
     ],
+    "comfort": -0.2,
     "impressions": 35000000
   },
   "Erectile Dysfunction": {
@@ -5080,6 +5709,7 @@
       "Reproductive Health",
       "Erectile Dysfunction"
     ],
+    "comfort": -1.16666666666667,
     "impressions": 20000000
   },
   "Infertility": {
@@ -5088,6 +5718,7 @@
       "Reproductive Health",
       "Infertility"
     ],
+    "comfort": -1.75,
     "impressions": 470000000
   },
   "OBGYN": {
@@ -5096,6 +5727,7 @@
       "Reproductive Health",
       "OBGYN"
     ],
+    "comfort": 0.5,
     "impressions": 310000000
   },
   "Sex Education & Counseling": {
@@ -5104,6 +5736,7 @@
       "Reproductive Health",
       "Sex Education & Counseling"
     ],
+    "comfort": -1.0,
     "impressions": 200000000
   },
   "Sexual Enhancement": {
@@ -5112,6 +5745,7 @@
       "Reproductive Health",
       "Sexual Enhancement"
     ],
+    "comfort": -0.166666666666667,
     "impressions": 100000000
   },
   "Sexually Transmitted Diseases": {
@@ -5120,6 +5754,7 @@
       "Reproductive Health",
       "Sexually Transmitted Diseases"
     ],
+    "comfort": 0.0,
     "impressions": 83000000
   },
   "Substance Abuse": {
@@ -5127,6 +5762,7 @@
       "Health",
       "Substance Abuse"
     ],
+    "comfort": -1.5,
     "impressions": 95000000
   },
   "Drug & Alcohol Testing": {
@@ -5135,6 +5771,7 @@
       "Substance Abuse",
       "Drug & Alcohol Testing"
     ],
+    "comfort": -0.8,
     "impressions": 12000000
   },
   "Drug & Alcohol Treatment": {
@@ -5143,6 +5780,7 @@
       "Substance Abuse",
       "Drug & Alcohol Treatment"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 67000000
   },
   "Smoking & Smoking Cessation": {
@@ -5151,6 +5789,7 @@
       "Substance Abuse",
       "Smoking & Smoking Cessation"
     ],
+    "comfort": -0.833333333333333,
     "impressions": 36000000
   },
   "Steroids & Performance-Enhancing Drugs": {
@@ -5159,6 +5798,7 @@
       "Substance Abuse",
       "Steroids & Performance-Enhancing Drugs"
     ],
+    "comfort": -0.571428571428571,
     "impressions": 78000000
   },
   "Vision Care": {
@@ -5166,6 +5806,7 @@
       "Health",
       "Vision Care"
     ],
+    "comfort": -1.25,
     "impressions": 40000000
   },
   "Eyeglasses & Contacts": {
@@ -5174,6 +5815,7 @@
       "Vision Care",
       "Eyeglasses & Contacts"
     ],
+    "comfort": 0.375,
     "impressions": 14000000
   },
   "Women's Health": {
@@ -5181,12 +5823,14 @@
       "Health",
       "Women's Health"
     ],
+    "comfort": -0.5,
     "impressions": 330000000
   },
   "Hobbies & Leisure": {
     "path": [
       "Hobbies & Leisure"
     ],
+    "comfort": 1.5,
     "impressions": 10000000001
   },
   "Clubs & Organizations": {
@@ -5194,6 +5838,7 @@
       "Hobbies & Leisure",
       "Clubs & Organizations"
     ],
+    "comfort": -0.4,
     "impressions": 110000000
   },
   "Contests, Awards & Prizes": {
@@ -5201,6 +5846,7 @@
       "Hobbies & Leisure",
       "Contests, Awards & Prizes"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 560000000
   },
   "Crafts": {
@@ -5208,6 +5854,7 @@
       "Hobbies & Leisure",
       "Crafts"
     ],
+    "comfort": 0.75,
     "impressions": 860000000
   },
   "Fiber & Textile Arts": {
@@ -5216,6 +5863,7 @@
       "Crafts",
       "Fiber & Textile Arts"
     ],
+    "comfort": 1.5,
     "impressions": 150000000
   },
   "Outdoors": {
@@ -5223,6 +5871,7 @@
       "Hobbies & Leisure",
       "Outdoors"
     ],
+    "comfort": 0.833333333333333,
     "impressions": 710000000
   },
   "Equestrian": {
@@ -5231,6 +5880,7 @@
       "Outdoors",
       "Equestrian"
     ],
+    "comfort": -0.166666666666667,
     "impressions": 67000000
   },
   "Fishing": {
@@ -5239,6 +5889,7 @@
       "Outdoors",
       "Fishing"
     ],
+    "comfort": 0.75,
     "impressions": 250000000
   },
   "Hiking & Camping": {
@@ -5247,6 +5898,7 @@
       "Outdoors",
       "Hiking & Camping"
     ],
+    "comfort": 0.0,
     "impressions": 160000000
   },
   "Hunting & Shooting": {
@@ -5255,6 +5907,7 @@
       "Outdoors",
       "Hunting & Shooting"
     ],
+    "comfort": 0.25,
     "impressions": 260000000
   },
   "Paintball": {
@@ -5262,6 +5915,7 @@
       "Hobbies & Leisure",
       "Paintball"
     ],
+    "comfort": 2.0,
     "impressions": 57000000
   },
   "Radio Control & Modeling": {
@@ -5269,6 +5923,7 @@
       "Hobbies & Leisure",
       "Radio Control & Modeling"
     ],
+    "comfort": 0.0,
     "impressions": 83000000
   },
   "Recreational Aviation": {
@@ -5276,6 +5931,7 @@
       "Hobbies & Leisure",
       "Recreational Aviation"
     ],
+    "comfort": -0.111111111111111,
     "impressions": 210000000
   },
   "Special Occasions": {
@@ -5283,6 +5939,7 @@
       "Hobbies & Leisure",
       "Special Occasions"
     ],
+    "comfort": 0.0,
     "impressions": 2800000000
   },
   "Holidays & Seasonal Events": {
@@ -5291,6 +5948,7 @@
       "Special Occasions",
       "Holidays & Seasonal Events"
     ],
+    "comfort": 0.8,
     "impressions": 550000000
   },
   "Birthdays & Name Days": {
@@ -5300,6 +5958,7 @@
       "Holidays & Seasonal Events",
       "Birthdays & Name Days"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 190000000
   },
   "Carnival & Mardi Gras": {
@@ -5309,6 +5968,7 @@
       "Holidays & Seasonal Events",
       "Carnival & Mardi Gras"
     ],
+    "comfort": -1.0,
     "impressions": 9000000
   },
   "Christian Holidays": {
@@ -5318,6 +5978,7 @@
       "Holidays & Seasonal Events",
       "Christian Holidays"
     ],
+    "comfort": 0.428571428571429,
     "impressions": 85000000
   },
   "Christmas": {
@@ -5328,6 +5989,7 @@
       "Christian Holidays",
       "Christmas"
     ],
+    "comfort": -0.75,
     "impressions": 150000000
   },
   "Easter": {
@@ -5338,6 +6000,7 @@
       "Christian Holidays",
       "Easter"
     ],
+    "comfort": 0.833333333333333,
     "impressions": 70000000
   },
   "Halloween & October 31st": {
@@ -5347,6 +6010,7 @@
       "Holidays & Seasonal Events",
       "Halloween & October 31st"
     ],
+    "comfort": 1.5,
     "impressions": 59000000
   },
   "Islamic Holidays": {
@@ -5356,6 +6020,7 @@
       "Holidays & Seasonal Events",
       "Islamic Holidays"
     ],
+    "comfort": -0.875,
     "impressions": 42000000
   },
   "Jewish Holidays": {
@@ -5365,6 +6030,7 @@
       "Holidays & Seasonal Events",
       "Jewish Holidays"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 12000000
   },
   "New Year": {
@@ -5374,6 +6040,7 @@
       "Holidays & Seasonal Events",
       "New Year"
     ],
+    "comfort": 1.0,
     "impressions": 92000000
   },
   "Thanksgiving": {
@@ -5383,6 +6050,7 @@
       "Holidays & Seasonal Events",
       "Thanksgiving"
     ],
+    "comfort": -2.33333333333333,
     "impressions": 6300000
   },
   "Valentine's Day": {
@@ -5392,6 +6060,7 @@
       "Holidays & Seasonal Events",
       "Valentine's Day"
     ],
+    "comfort": -1.0,
     "impressions": 140000000
   },
   "Weddings": {
@@ -5400,6 +6069,7 @@
       "Special Occasions",
       "Weddings"
     ],
+    "comfort": -0.1,
     "impressions": 2000000000
   },
   "Water Activities": {
@@ -5407,6 +6077,7 @@
       "Hobbies & Leisure",
       "Water Activities"
     ],
+    "comfort": 0.0,
     "impressions": 630000000
   },
   "Boating": {
@@ -5415,6 +6086,7 @@
       "Water Activities",
       "Boating"
     ],
+    "comfort": 0.5,
     "impressions": 340000000
   },
   "Diving & Underwater Activities": {
@@ -5423,6 +6095,7 @@
       "Water Activities",
       "Diving & Underwater Activities"
     ],
+    "comfort": 1.0,
     "impressions": 23000000
   },
   "Surf & Swim": {
@@ -5431,12 +6104,14 @@
       "Water Activities",
       "Surf & Swim"
     ],
+    "comfort": -1.1,
     "impressions": 170000000
   },
   "Home & Garden": {
     "path": [
       "Home & Garden"
     ],
+    "comfort": 1.5,
     "impressions": 4300000000
   },
   "Bed & Bath": {
@@ -5444,6 +6119,7 @@
       "Home & Garden",
       "Bed & Bath"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 550000000
   },
   "Bathroom": {
@@ -5452,6 +6128,7 @@
       "Bed & Bath",
       "Bathroom"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 88000000
   },
   "Bedroom": {
@@ -5460,6 +6137,7 @@
       "Bed & Bath",
       "Bedroom"
     ],
+    "comfort": 1.55555555555556,
     "impressions": 440000000
   },
   "Bedding & Bed Linens": {
@@ -5469,6 +6147,7 @@
       "Bedroom",
       "Bedding & Bed Linens"
     ],
+    "comfort": 0.285714285714286,
     "impressions": 95000000
   },
   "Beds & Headboards": {
@@ -5478,6 +6157,7 @@
       "Bedroom",
       "Beds & Headboards"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 76000000
   },
   "Mattresses": {
@@ -5487,6 +6167,7 @@
       "Bedroom",
       "Mattresses"
     ],
+    "comfort": 0.25,
     "impressions": 66000000
   },
   "Domestic Services": {
@@ -5494,6 +6175,7 @@
       "Home & Garden",
       "Domestic Services"
     ],
+    "comfort": 1.5,
     "impressions": 160000000
   },
   "Cleaning Supplies & Services": {
@@ -5502,6 +6184,7 @@
       "Domestic Services",
       "Cleaning Supplies & Services"
     ],
+    "comfort": 0.75,
     "impressions": 150000000
   },
   "Gardening & Landscaping": {
@@ -5509,6 +6192,7 @@
       "Home & Garden",
       "Gardening & Landscaping"
     ],
+    "comfort": 1.71428571428571,
     "impressions": 500000000
   },
   "HVAC & Climate Control": {
@@ -5516,6 +6200,7 @@
       "Home & Garden",
       "HVAC & Climate Control"
     ],
+    "comfort": -0.285714285714286,
     "impressions": 110000000
   },
   "Home Appliances": {
@@ -5523,6 +6208,7 @@
       "Home & Garden",
       "Home Appliances"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 360000000
   },
   "Water Filters & Purifiers": {
@@ -5531,6 +6217,7 @@
       "Home Appliances",
       "Water Filters & Purifiers"
     ],
+    "comfort": 0.0,
     "impressions": 15000000
   },
   "Home Furnishings": {
@@ -5538,6 +6225,7 @@
       "Home & Garden",
       "Home Furnishings"
     ],
+    "comfort": 1.14285714285714,
     "impressions": 670000000
   },
   "Clocks": {
@@ -5546,6 +6234,7 @@
       "Home Furnishings",
       "Clocks"
     ],
+    "comfort": 0.0,
     "impressions": 35000000
   },
   "Lamps & Lighting": {
@@ -5554,6 +6243,7 @@
       "Home Furnishings",
       "Lamps & Lighting"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 61000000
   },
   "Rugs & Carpets": {
@@ -5562,6 +6252,7 @@
       "Home Furnishings",
       "Rugs & Carpets"
     ],
+    "comfort": 0.0,
     "impressions": 37000000
   },
   "Sofas & Chairs": {
@@ -5570,6 +6261,7 @@
       "Home Furnishings",
       "Sofas & Chairs"
     ],
+    "comfort": 0.2,
     "impressions": 74000000
   },
   "Home Improvement": {
@@ -5577,6 +6269,7 @@
       "Home & Garden",
       "Home Improvement"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 930000000
   },
   "Construction & Power Tools": {
@@ -5585,6 +6278,7 @@
       "Home Improvement",
       "Construction & Power Tools"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 180000000
   },
   "Doors & Windows": {
@@ -5593,6 +6287,7 @@
       "Home Improvement",
       "Doors & Windows"
     ],
+    "comfort": -0.125,
     "impressions": 65000000
   },
   "Flooring": {
@@ -5601,6 +6296,7 @@
       "Home Improvement",
       "Flooring"
     ],
+    "comfort": -0.833333333333333,
     "impressions": 84000000
   },
   "House Painting & Finishing": {
@@ -5609,6 +6305,7 @@
       "Home Improvement",
       "House Painting & Finishing"
     ],
+    "comfort": -2.66666666666667,
     "impressions": 83000000
   },
   "Plumbing": {
@@ -5617,6 +6314,7 @@
       "Home Improvement",
       "Plumbing"
     ],
+    "comfort": -0.166666666666667,
     "impressions": 110000000
   },
   "Roofing": {
@@ -5625,6 +6323,7 @@
       "Home Improvement",
       "Roofing"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 30000000
   },
   "Home Storage & Shelving": {
@@ -5632,6 +6331,7 @@
       "Home & Garden",
       "Home Storage & Shelving"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 180000000
   },
   "Homemaking & Interior Decor": {
@@ -5639,6 +6339,7 @@
       "Home & Garden",
       "Homemaking & Interior Decor"
     ],
+    "comfort": -0.166666666666667,
     "impressions": 930000000
   },
   "Kitchen & Dining": {
@@ -5646,6 +6347,7 @@
       "Home & Garden",
       "Kitchen & Dining"
     ],
+    "comfort": 0.625,
     "impressions": 620000000
   },
   "Cookware & Diningware": {
@@ -5654,6 +6356,7 @@
       "Kitchen & Dining",
       "Cookware & Diningware"
     ],
+    "comfort": 0.714285714285714,
     "impressions": 110000000
   },
   "Cutlery & Cutting Accessories": {
@@ -5663,6 +6366,7 @@
       "Cookware & Diningware",
       "Cutlery & Cutting Accessories"
     ],
+    "comfort": 1.42857142857143,
     "impressions": 17000000
   },
   "Major Kitchen Appliances": {
@@ -5671,6 +6375,7 @@
       "Kitchen & Dining",
       "Major Kitchen Appliances"
     ],
+    "comfort": 1.16666666666667,
     "impressions": 100000000
   },
   "Small Kitchen Appliances": {
@@ -5679,6 +6384,7 @@
       "Kitchen & Dining",
       "Small Kitchen Appliances"
     ],
+    "comfort": 2.4,
     "impressions": 150000000
   },
   "Laundry": {
@@ -5686,6 +6392,7 @@
       "Home & Garden",
       "Laundry"
     ],
+    "comfort": -0.111111111111111,
     "impressions": 88000000
   },
   "Nursery & Playroom": {
@@ -5693,6 +6400,7 @@
       "Home & Garden",
       "Nursery & Playroom"
     ],
+    "comfort": -0.166666666666667,
     "impressions": 81000000
   },
   "Pest Control": {
@@ -5700,6 +6408,7 @@
       "Home & Garden",
       "Pest Control"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 130000000
   },
   "Swimming Pools & Spas": {
@@ -5707,6 +6416,7 @@
       "Home & Garden",
       "Swimming Pools & Spas"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 34000000
   },
   "Yard & Patio": {
@@ -5714,12 +6424,14 @@
       "Home & Garden",
       "Yard & Patio"
     ],
+    "comfort": -0.25,
     "impressions": 550000000
   },
   "Internet & Telecom": {
     "path": [
       "Internet & Telecom"
     ],
+    "comfort": 1.75,
     "impressions": 10000000001
   },
   "Communications Equipment": {
@@ -5727,6 +6439,7 @@
       "Internet & Telecom",
       "Communications Equipment"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 320000000
   },
   "Radio Equipment": {
@@ -5735,6 +6448,7 @@
       "Communications Equipment",
       "Radio Equipment"
     ],
+    "comfort": 0.2,
     "impressions": 200000000
   },
   "Email & Messaging": {
@@ -5742,6 +6456,7 @@
       "Internet & Telecom",
       "Email & Messaging"
     ],
+    "comfort": 0.5,
     "impressions": 9100000000
   },
   "Text & Instant Messaging": {
@@ -5750,6 +6465,7 @@
       "Email & Messaging",
       "Text & Instant Messaging"
     ],
+    "comfort": 0.25,
     "impressions": 5400000000
   },
   "Voice & Video Chat": {
@@ -5758,6 +6474,7 @@
       "Email & Messaging",
       "Voice & Video Chat"
     ],
+    "comfort": -1.0,
     "impressions": 2400000000
   },
   "Mobile & Wireless": {
@@ -5765,6 +6482,7 @@
       "Internet & Telecom",
       "Mobile & Wireless"
     ],
+    "comfort": 1.0,
     "impressions": 10000000001
   },
   "Mobile & Wireless Accessories": {
@@ -5773,6 +6491,7 @@
       "Mobile & Wireless",
       "Mobile & Wireless Accessories"
     ],
+    "comfort": 1.4,
     "impressions": 150000000
   },
   "Bluetooth Accessories": {
@@ -5782,6 +6501,7 @@
       "Mobile & Wireless Accessories",
       "Bluetooth Accessories"
     ],
+    "comfort": 1.85714285714286,
     "impressions": 49000000
   },
   "Mobile Apps & Add-Ons": {
@@ -5790,6 +6510,7 @@
       "Mobile & Wireless",
       "Mobile Apps & Add-Ons"
     ],
+    "comfort": 2.0,
     "impressions": 10000000001
   },
   "Ringtones & Mobile Goodies": {
@@ -5799,6 +6520,7 @@
       "Mobile Apps & Add-Ons",
       "Ringtones & Mobile Goodies"
     ],
+    "comfort": 1.0,
     "impressions": 3000000000
   },
   "Mobile Phones": {
@@ -5807,6 +6529,7 @@
       "Mobile & Wireless",
       "Mobile Phones"
     ],
+    "comfort": 2.4,
     "impressions": 1300000000
   },
   "Smart Phones": {
@@ -5816,6 +6539,7 @@
       "Mobile Phones",
       "Smart Phones"
     ],
+    "comfort": 1.28571428571429,
     "impressions": 900000000
   },
   "Search Engines": {
@@ -5823,6 +6547,7 @@
       "Internet & Telecom",
       "Search Engines"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 750000000
   },
   "People Search": {
@@ -5831,6 +6556,7 @@
       "Search Engines",
       "People Search"
     ],
+    "comfort": 0.25,
     "impressions": 190000000
   },
   "Service Providers": {
@@ -5838,6 +6564,7 @@
       "Internet & Telecom",
       "Service Providers"
     ],
+    "comfort": 2.0,
     "impressions": 5400000000
   },
   "Cable & Satellite Providers": {
@@ -5846,6 +6573,7 @@
       "Service Providers",
       "Cable & Satellite Providers"
     ],
+    "comfort": 1.0,
     "impressions": 1400000000
   },
   "ISPs": {
@@ -5854,6 +6582,7 @@
       "Service Providers",
       "ISPs"
     ],
+    "comfort": 0.222222222222222,
     "impressions": 2500000000
   },
   "Phone Service Providers": {
@@ -5862,6 +6591,7 @@
       "Service Providers",
       "Phone Service Providers"
     ],
+    "comfort": 0.5,
     "impressions": 5000000000
   },
   "Calling Cards": {
@@ -5871,6 +6601,7 @@
       "Phone Service Providers",
       "Calling Cards"
     ],
+    "comfort": 0.375,
     "impressions": 3300000
   },
   "Teleconferencing": {
@@ -5878,6 +6609,7 @@
       "Internet & Telecom",
       "Teleconferencing"
     ],
+    "comfort": 0.5,
     "impressions": 100000000
   },
   "Web Apps & Online Tools": {
@@ -5885,6 +6617,7 @@
       "Internet & Telecom",
       "Web Apps & Online Tools"
     ],
+    "comfort": 0.0,
     "impressions": 3500000000
   },
   "Web Portals": {
@@ -5892,6 +6625,7 @@
       "Internet & Telecom",
       "Web Portals"
     ],
+    "comfort": 1.0,
     "impressions": 1700000000
   },
   "Web Services": {
@@ -5899,6 +6633,7 @@
       "Internet & Telecom",
       "Web Services"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 1300000000
   },
   "Affiliate Programs": {
@@ -5907,6 +6642,7 @@
       "Web Services",
       "Affiliate Programs"
     ],
+    "comfort": 1.75,
     "impressions": 220000000
   },
   "Search Engine Optimization & Marketing": {
@@ -5915,6 +6651,7 @@
       "Web Services",
       "Search Engine Optimization & Marketing"
     ],
+    "comfort": 2.33333333333333,
     "impressions": 54000000
   },
   "Web Design & Development": {
@@ -5923,6 +6660,7 @@
       "Web Services",
       "Web Design & Development"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 180000000
   },
   "Web Hosting & Domain Registration": {
@@ -5931,6 +6669,7 @@
       "Web Services",
       "Web Hosting & Domain Registration"
     ],
+    "comfort": 0.5,
     "impressions": 49000000
   },
   "Web Stats & Analytics": {
@@ -5939,12 +6678,14 @@
       "Web Services",
       "Web Stats & Analytics"
     ],
+    "comfort": 0.857142857142857,
     "impressions": 130000000
   },
   "Jobs & Education": {
     "path": [
       "Jobs & Education"
     ],
+    "comfort": 0.75,
     "impressions": 8700000000
   },
   "Education": {
@@ -5952,6 +6693,7 @@
       "Jobs & Education",
       "Education"
     ],
+    "comfort": -1.0,
     "impressions": 8000000000
   },
   "Academic Conferences & Publications": {
@@ -5960,6 +6702,7 @@
       "Education",
       "Academic Conferences & Publications"
     ],
+    "comfort": -0.142857142857143,
     "impressions": 76000000
   },
   "Alumni & Reunions": {
@@ -5968,6 +6711,7 @@
       "Education",
       "Alumni & Reunions"
     ],
+    "comfort": -1.0,
     "impressions": 300000000
   },
   "Colleges & Universities": {
@@ -5976,6 +6720,7 @@
       "Education",
       "Colleges & Universities"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 1900000000
   },
   "Distance Learning": {
@@ -5984,6 +6729,7 @@
       "Education",
       "Distance Learning"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 240000000
   },
   "Early Childhood Education": {
@@ -5992,6 +6738,7 @@
       "Education",
       "Early Childhood Education"
     ],
+    "comfort": -0.111111111111111,
     "impressions": 220000000
   },
   "Homeschooling": {
@@ -6000,6 +6747,7 @@
       "Education",
       "Homeschooling"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 55000000
   },
   "Primary & Secondary Schooling (K-12)": {
@@ -6008,6 +6756,7 @@
       "Education",
       "Primary & Secondary Schooling (K-12)"
     ],
+    "comfort": -0.75,
     "impressions": 2400000000
   },
   "Special Education": {
@@ -6016,6 +6765,7 @@
       "Education",
       "Special Education"
     ],
+    "comfort": -0.5,
     "impressions": 23000000
   },
   "Standardized & Admissions Tests": {
@@ -6024,6 +6774,7 @@
       "Education",
       "Standardized & Admissions Tests"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 490000000
   },
   "Study Abroad": {
@@ -6032,6 +6783,7 @@
       "Education",
       "Study Abroad"
     ],
+    "comfort": -0.75,
     "impressions": 43000000
   },
   "Teaching & Classroom Resources": {
@@ -6040,6 +6792,7 @@
       "Education",
       "Teaching & Classroom Resources"
     ],
+    "comfort": 1.25,
     "impressions": 1500000000
   },
   "Training & Certification": {
@@ -6048,6 +6801,7 @@
       "Education",
       "Training & Certification"
     ],
+    "comfort": 0.375,
     "impressions": 88000000
   },
   "Vocational & Continuing Education": {
@@ -6056,6 +6810,7 @@
       "Education",
       "Vocational & Continuing Education"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 61000000
   },
   "Computer Education": {
@@ -6065,6 +6820,7 @@
       "Vocational & Continuing Education",
       "Computer Education"
     ],
+    "comfort": 1.83333333333333,
     "impressions": 130000000
   },
   "Jobs": {
@@ -6072,6 +6828,7 @@
       "Jobs & Education",
       "Jobs"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 840000000
   },
   "Career Resources & Planning": {
@@ -6080,6 +6837,7 @@
       "Jobs",
       "Career Resources & Planning"
     ],
+    "comfort": 0.0,
     "impressions": 370000000
   },
   "Job Listings": {
@@ -6088,6 +6846,7 @@
       "Jobs",
       "Job Listings"
     ],
+    "comfort": 0.5,
     "impressions": 570000000
   },
   "Resumes & Portfolios": {
@@ -6096,12 +6855,14 @@
       "Jobs",
       "Resumes & Portfolios"
     ],
+    "comfort": 1.25,
     "impressions": 32000000
   },
   "Law & Government": {
     "path": [
       "Law & Government"
     ],
+    "comfort": 0.285714285714286,
     "impressions": 10000000001
   },
   "Government": {
@@ -6109,6 +6870,7 @@
       "Law & Government",
       "Government"
     ],
+    "comfort": 0.0,
     "impressions": 8400000000
   },
   "Courts & Judiciary": {
@@ -6117,6 +6879,7 @@
       "Government",
       "Courts & Judiciary"
     ],
+    "comfort": -0.8,
     "impressions": 250000000
   },
   "Embassies & Consulates": {
@@ -6125,6 +6888,7 @@
       "Government",
       "Embassies & Consulates"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 68000000
   },
   "Executive Branch": {
@@ -6133,6 +6897,7 @@
       "Government",
       "Executive Branch"
     ],
+    "comfort": 0.0,
     "impressions": 2800000000
   },
   "Government Agencies": {
@@ -6141,6 +6906,7 @@
       "Government",
       "Government Agencies"
     ],
+    "comfort": 0.428571428571429,
     "impressions": 57000000
   },
   "Government Contracting & Procurement": {
@@ -6149,6 +6915,7 @@
       "Government",
       "Government Contracting & Procurement"
     ],
+    "comfort": -1.0,
     "impressions": 2600000
   },
   "Intelligence & Counterterrorism": {
@@ -6157,6 +6924,7 @@
       "Government",
       "Intelligence & Counterterrorism"
     ],
+    "comfort": -1.0,
     "impressions": 160000000
   },
   "Legislative Branch": {
@@ -6165,6 +6933,7 @@
       "Government",
       "Legislative Branch"
     ],
+    "comfort": -0.25,
     "impressions": 890000000
   },
   "Lobbying": {
@@ -6173,6 +6942,7 @@
       "Government",
       "Lobbying"
     ],
+    "comfort": 1.125,
     "impressions": 7300000
   },
   "Multilateral Organizations": {
@@ -6181,6 +6951,7 @@
       "Government",
       "Multilateral Organizations"
     ],
+    "comfort": 0.714285714285714,
     "impressions": 47000000
   },
   "Public Finance": {
@@ -6189,6 +6960,7 @@
       "Government",
       "Public Finance"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 82000000
   },
   "Public Policy": {
@@ -6197,6 +6969,7 @@
       "Government",
       "Public Policy"
     ],
+    "comfort": -0.5,
     "impressions": 780000000
   },
   "Royalty": {
@@ -6205,6 +6978,7 @@
       "Government",
       "Royalty"
     ],
+    "comfort": -0.714285714285714,
     "impressions": 3800000000
   },
   "State & Local Government": {
@@ -6213,6 +6987,7 @@
       "Government",
       "State & Local Government"
     ],
+    "comfort": -0.571428571428571,
     "impressions": 340000000
   },
   "Visa & Immigration": {
@@ -6221,6 +6996,7 @@
       "Government",
       "Visa & Immigration"
     ],
+    "comfort": 0.0,
     "impressions": 180000000
   },
   "Legal": {
@@ -6228,6 +7004,7 @@
       "Law & Government",
       "Legal"
     ],
+    "comfort": -1.66666666666667,
     "impressions": 1300000000
   },
   "Accident & Personal Injury Law": {
@@ -6236,6 +7013,7 @@
       "Legal",
       "Accident & Personal Injury Law"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 64000000
   },
   "Bankruptcy": {
@@ -6244,6 +7022,7 @@
       "Legal",
       "Bankruptcy"
     ],
+    "comfort": -0.2,
     "impressions": 15000000
   },
   "Business & Corporate Law": {
@@ -6252,6 +7031,7 @@
       "Legal",
       "Business & Corporate Law"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 60000000
   },
   "Constitutional Law & Civil Rights": {
@@ -6260,6 +7040,7 @@
       "Legal",
       "Constitutional Law & Civil Rights"
     ],
+    "comfort": -0.75,
     "impressions": 84000000
   },
   "Criminal Law": {
@@ -6268,6 +7049,7 @@
       "Legal",
       "Criminal Law"
     ],
+    "comfort": 0.0,
     "impressions": 370000000
   },
   "Family Law": {
@@ -6276,6 +7058,7 @@
       "Legal",
       "Family Law"
     ],
+    "comfort": -0.2,
     "impressions": 86000000
   },
   "Intellectual Property": {
@@ -6284,6 +7067,7 @@
       "Legal",
       "Intellectual Property"
     ],
+    "comfort": -0.8,
     "impressions": 18000000
   },
   "Labor & Employment Law": {
@@ -6292,6 +7076,7 @@
       "Legal",
       "Labor & Employment Law"
     ],
+    "comfort": 0.625,
     "impressions": 87000000
   },
   "Legal Education": {
@@ -6300,6 +7085,7 @@
       "Legal",
       "Legal Education"
     ],
+    "comfort": -0.285714285714286,
     "impressions": 250000000
   },
   "Legal Services": {
@@ -6308,6 +7094,7 @@
       "Legal",
       "Legal Services"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 230000000
   },
   "Product Liability": {
@@ -6316,6 +7103,7 @@
       "Legal",
       "Product Liability"
     ],
+    "comfort": 0.428571428571429,
     "impressions": 49000000
   },
   "Vehicle Codes & Driving Laws": {
@@ -6324,6 +7112,7 @@
       "Legal",
       "Vehicle Codes & Driving Laws"
     ],
+    "comfort": 1.25,
     "impressions": 430000000
   },
   "Drunk Driving Law": {
@@ -6333,6 +7122,7 @@
       "Vehicle Codes & Driving Laws",
       "Drunk Driving Law"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 98000000
   },
   "Military": {
@@ -6340,6 +7130,7 @@
       "Law & Government",
       "Military"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 1700000000
   },
   "Air Force": {
@@ -6348,6 +7139,7 @@
       "Military",
       "Air Force"
     ],
+    "comfort": 2.33333333333333,
     "impressions": 190000000
   },
   "Army": {
@@ -6356,6 +7148,7 @@
       "Military",
       "Army"
     ],
+    "comfort": -0.8,
     "impressions": 120000000
   },
   "Marines": {
@@ -6364,6 +7157,7 @@
       "Military",
       "Marines"
     ],
+    "comfort": -2.33333333333333,
     "impressions": 81000000
   },
   "Navy": {
@@ -6372,6 +7166,7 @@
       "Military",
       "Navy"
     ],
+    "comfort": -0.5,
     "impressions": 140000000
   },
   "Veterans": {
@@ -6380,6 +7175,7 @@
       "Military",
       "Veterans"
     ],
+    "comfort": 0.0,
     "impressions": 34000000
   },
   "Public Safety": {
@@ -6387,6 +7183,7 @@
       "Law & Government",
       "Public Safety"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 4600000000
   },
   "Crime & Justice": {
@@ -6395,6 +7192,7 @@
       "Public Safety",
       "Crime & Justice"
     ],
+    "comfort": -0.833333333333333,
     "impressions": 2400000000
   },
   "Corporate & Financial Crime": {
@@ -6404,6 +7202,7 @@
       "Crime & Justice",
       "Corporate & Financial Crime"
     ],
+    "comfort": 0.571428571428571,
     "impressions": 650000000
   },
   "Gangs & Organized Crime": {
@@ -6413,6 +7212,7 @@
       "Crime & Justice",
       "Gangs & Organized Crime"
     ],
+    "comfort": -0.0909090909090909,
     "impressions": 190000000
   },
   "Prisons & Corrections": {
@@ -6422,6 +7222,7 @@
       "Crime & Justice",
       "Prisons & Corrections"
     ],
+    "comfort": -1.0,
     "impressions": 130000000
   },
   "Emergency Services": {
@@ -6430,6 +7231,7 @@
       "Public Safety",
       "Emergency Services"
     ],
+    "comfort": -1.0,
     "impressions": 120000000
   },
   "Law Enforcement": {
@@ -6438,6 +7240,7 @@
       "Public Safety",
       "Law Enforcement"
     ],
+    "comfort": 1.0,
     "impressions": 1300000000
   },
   "Security Products & Services": {
@@ -6446,6 +7249,7 @@
       "Public Safety",
       "Security Products & Services"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 1300000000
   },
   "Social Services": {
@@ -6453,6 +7257,7 @@
       "Law & Government",
       "Social Services"
     ],
+    "comfort": 0.75,
     "impressions": 83000000
   },
   "Counseling Services": {
@@ -6461,6 +7266,7 @@
       "Social Services",
       "Counseling Services"
     ],
+    "comfort": -1.375,
     "impressions": 180000000
   },
   "Welfare & Unemployment": {
@@ -6469,12 +7275,14 @@
       "Social Services",
       "Welfare & Unemployment"
     ],
+    "comfort": -3.0,
     "impressions": 94000000
   },
   "News": {
     "path": [
       "News"
     ],
+    "comfort": 0.555555555555556,
     "impressions": 10000000001
   },
   "Broadcast & Network News": {
@@ -6482,6 +7290,7 @@
       "News",
       "Broadcast & Network News"
     ],
+    "comfort": -0.571428571428571,
     "impressions": 2200000000
   },
   "Business News": {
@@ -6489,6 +7298,7 @@
       "News",
       "Business News"
     ],
+    "comfort": -1.125,
     "impressions": 2200000000
   },
   "Company News": {
@@ -6497,6 +7307,7 @@
       "Business News",
       "Company News"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 750000000
   },
   "Company Earnings": {
@@ -6506,6 +7317,7 @@
       "Company News",
       "Company Earnings"
     ],
+    "comfort": 0.0,
     "impressions": 26000000
   },
   "Mergers & Acquisitions": {
@@ -6515,6 +7327,7 @@
       "Company News",
       "Mergers & Acquisitions"
     ],
+    "comfort": -0.5,
     "impressions": 13000000
   },
   "Economy News": {
@@ -6523,6 +7336,7 @@
       "Business News",
       "Economy News"
     ],
+    "comfort": -1.0,
     "impressions": 380000000
   },
   "Financial Markets": {
@@ -6531,6 +7345,7 @@
       "Business News",
       "Financial Markets"
     ],
+    "comfort": 0.857142857142857,
     "impressions": 1000000000
   },
   "Fiscal Policy News": {
@@ -6539,6 +7354,7 @@
       "Business News",
       "Fiscal Policy News"
     ],
+    "comfort": -1.2,
     "impressions": 85000000
   },
   "Gossip & Tabloid News": {
@@ -6546,6 +7362,7 @@
       "News",
       "Gossip & Tabloid News"
     ],
+    "comfort": -0.4,
     "impressions": 9500000000
   },
   "Scandals & Investigations": {
@@ -6554,6 +7371,7 @@
       "Gossip & Tabloid News",
       "Scandals & Investigations"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 3600000000
   },
   "Health News": {
@@ -6561,6 +7379,7 @@
       "News",
       "Health News"
     ],
+    "comfort": 0.0,
     "impressions": 420000000
   },
   "Journalism & News Industry": {
@@ -6568,6 +7387,7 @@
       "News",
       "Journalism & News Industry"
     ],
+    "comfort": -0.25,
     "impressions": 110000000
   },
   "Local News": {
@@ -6575,6 +7395,7 @@
       "News",
       "Local News"
     ],
+    "comfort": 1.5,
     "impressions": 6100000000
   },
   "Newspapers": {
@@ -6582,6 +7403,7 @@
       "News",
       "Newspapers"
     ],
+    "comfort": 0.714285714285714,
     "impressions": 4900000000
   },
   "Politics": {
@@ -6589,6 +7411,7 @@
       "News",
       "Politics"
     ],
+    "comfort": -2.0,
     "impressions": 6100000000
   },
   "Campaigns & Elections": {
@@ -6597,6 +7420,7 @@
       "Politics",
       "Campaigns & Elections"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 2000000000
   },
   "Left-Wing Politics": {
@@ -6605,6 +7429,7 @@
       "Politics",
       "Left-Wing Politics"
     ],
+    "comfort": -0.5,
     "impressions": 1000000000
   },
   "Media Critics & Watchdogs": {
@@ -6613,6 +7438,7 @@
       "Politics",
       "Media Critics & Watchdogs"
     ],
+    "comfort": -2.1,
     "impressions": 57000000
   },
   "Opinion & Commentary": {
@@ -6621,6 +7447,7 @@
       "Politics",
       "Opinion & Commentary"
     ],
+    "comfort": 0.0,
     "impressions": 1200000000
   },
   "Political Polls & Surveys": {
@@ -6629,6 +7456,7 @@
       "Politics",
       "Political Polls & Surveys"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 340000000
   },
   "Right-Wing Politics": {
@@ -6637,6 +7465,7 @@
       "Politics",
       "Right-Wing Politics"
     ],
+    "comfort": -1.375,
     "impressions": 3600000000
   },
   "Sports News": {
@@ -6644,6 +7473,7 @@
       "News",
       "Sports News"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 6800000000
   },
   "Technology News": {
@@ -6651,6 +7481,7 @@
       "News",
       "Technology News"
     ],
+    "comfort": 1.0,
     "impressions": 560000000
   },
   "Weather": {
@@ -6658,6 +7489,7 @@
       "News",
       "Weather"
     ],
+    "comfort": 1.5,
     "impressions": 6300000000
   },
   "World News": {
@@ -6665,12 +7497,14 @@
       "News",
       "World News"
     ],
+    "comfort": 1.125,
     "impressions": 1100000000
   },
   "Online Communities": {
     "path": [
       "Online Communities"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 10000000001
   },
   "Blogging Resources & Services": {
@@ -6678,6 +7512,7 @@
       "Online Communities",
       "Blogging Resources & Services"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 760000000
   },
   "Microblogging": {
@@ -6686,6 +7521,7 @@
       "Blogging Resources & Services",
       "Microblogging"
     ],
+    "comfort": 0.0,
     "impressions": 670000000
   },
   "Dating & Personals": {
@@ -6693,6 +7529,7 @@
       "Online Communities",
       "Dating & Personals"
     ],
+    "comfort": -1.5,
     "impressions": 2800000000
   },
   "Matrimonial Services": {
@@ -6701,6 +7538,7 @@
       "Dating & Personals",
       "Matrimonial Services"
     ],
+    "comfort": -0.8,
     "impressions": 11000000
   },
   "Personals": {
@@ -6709,6 +7547,7 @@
       "Dating & Personals",
       "Personals"
     ],
+    "comfort": -2.5,
     "impressions": 2100000000
   },
   "Photo Rating Sites": {
@@ -6717,6 +7556,7 @@
       "Dating & Personals",
       "Photo Rating Sites"
     ],
+    "comfort": -0.6,
     "impressions": 8400000
   },
   "File Sharing & Hosting": {
@@ -6724,6 +7564,7 @@
       "Online Communities",
       "File Sharing & Hosting"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 160000000
   },
   "Forum & Chat Providers": {
@@ -6731,6 +7572,7 @@
       "Online Communities",
       "Forum & Chat Providers"
     ],
+    "comfort": -1.2,
     "impressions": 1400000000
   },
   "Online Goodies": {
@@ -6738,6 +7580,7 @@
       "Online Communities",
       "Online Goodies"
     ],
+    "comfort": -0.6,
     "impressions": 2900000000
   },
   "Clip Art & Animated GIFs": {
@@ -6746,6 +7589,7 @@
       "Online Goodies",
       "Clip Art & Animated GIFs"
     ],
+    "comfort": 0.222222222222222,
     "impressions": 2400000000
   },
   "Skins Themes & Wallpapers": {
@@ -6754,6 +7598,7 @@
       "Online Goodies",
       "Skins Themes & Wallpapers"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 820000000
   },
   "Social Network Apps & Add-Ons": {
@@ -6762,6 +7607,7 @@
       "Online Goodies",
       "Social Network Apps & Add-Ons"
     ],
+    "comfort": 1.0,
     "impressions": 1400000000
   },
   "Online Journals & Personal Sites": {
@@ -6769,6 +7615,7 @@
       "Online Communities",
       "Online Journals & Personal Sites"
     ],
+    "comfort": 0.4,
     "impressions": 420000000
   },
   "Photo & Video Sharing": {
@@ -6776,6 +7623,7 @@
       "Online Communities",
       "Photo & Video Sharing"
     ],
+    "comfort": 1.0,
     "impressions": 4300000000
   },
   "Photo & Image Sharing": {
@@ -6784,6 +7632,7 @@
       "Photo & Video Sharing",
       "Photo & Image Sharing"
     ],
+    "comfort": 0.6,
     "impressions": 4000000000
   },
   "Video Sharing": {
@@ -6792,6 +7641,7 @@
       "Photo & Video Sharing",
       "Video Sharing"
     ],
+    "comfort": 1.5,
     "impressions": 180000000
   },
   "Social Networks": {
@@ -6799,6 +7649,7 @@
       "Online Communities",
       "Social Networks"
     ],
+    "comfort": 1.2,
     "impressions": 4700000000
   },
   "Virtual Worlds": {
@@ -6806,12 +7657,14 @@
       "Online Communities",
       "Virtual Worlds"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 1800000000
   },
   "People & Society": {
     "path": [
       "People & Society"
     ],
+    "comfort": 2.33333333333333,
     "impressions": 10000000001
   },
   "Disabled & Special Needs": {
@@ -6819,6 +7672,7 @@
       "People & Society",
       "Disabled & Special Needs"
     ],
+    "comfort": -1.0,
     "impressions": 180000000
   },
   "Ethnic & Identity Groups": {
@@ -6826,6 +7680,7 @@
       "People & Society",
       "Ethnic & Identity Groups"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 190000000
   },
   "Africans & Diaspora": {
@@ -6834,6 +7689,7 @@
       "Ethnic & Identity Groups",
       "Africans & Diaspora"
     ],
+    "comfort": 1.5,
     "impressions": 36000000
   },
   "African-Americans": {
@@ -6843,6 +7699,7 @@
       "Africans & Diaspora",
       "African-Americans"
     ],
+    "comfort": 0.6,
     "impressions": 180000000
   },
   "Arabs & Middle Easterners": {
@@ -6851,6 +7708,7 @@
       "Ethnic & Identity Groups",
       "Arabs & Middle Easterners"
     ],
+    "comfort": 0.0,
     "impressions": 140000000
   },
   "Asians & Diaspora": {
@@ -6859,6 +7717,7 @@
       "Ethnic & Identity Groups",
       "Asians & Diaspora"
     ],
+    "comfort": 1.0,
     "impressions": 20000000
   },
   "East Asians & Diaspora": {
@@ -6868,6 +7727,7 @@
       "Asians & Diaspora",
       "East Asians & Diaspora"
     ],
+    "comfort": -1.6,
     "impressions": 88000000
   },
   "South Asians & Diaspora": {
@@ -6877,6 +7737,7 @@
       "Asians & Diaspora",
       "South Asians & Diaspora"
     ],
+    "comfort": 0.857142857142857,
     "impressions": 94000000
   },
   "Southeast Asians & Pacific Islanders": {
@@ -6886,6 +7747,7 @@
       "Asians & Diaspora",
       "Southeast Asians & Pacific Islanders"
     ],
+    "comfort": -0.2,
     "impressions": 22000000
   },
   "Eastern Europeans": {
@@ -6894,6 +7756,7 @@
       "Ethnic & Identity Groups",
       "Eastern Europeans"
     ],
+    "comfort": -0.5,
     "impressions": 8400000
   },
   "Expatriate Communities": {
@@ -6902,6 +7765,7 @@
       "Ethnic & Identity Groups",
       "Expatriate Communities"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 37000000
   },
   "Gay-Lesbian-Bisexual-Transgender": {
@@ -6910,6 +7774,7 @@
       "Ethnic & Identity Groups",
       "Gay-Lesbian-Bisexual-Transgender"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 420000000
   },
   "Indigenous Peoples": {
@@ -6918,6 +7783,7 @@
       "Ethnic & Identity Groups",
       "Indigenous Peoples"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 16000000
   },
   "Native Americans": {
@@ -6927,6 +7793,7 @@
       "Indigenous Peoples",
       "Native Americans"
     ],
+    "comfort": 1.16666666666667,
     "impressions": 33000000
   },
   "Jewish Culture": {
@@ -6935,6 +7802,7 @@
       "Ethnic & Identity Groups",
       "Jewish Culture"
     ],
+    "comfort": -2.25,
     "impressions": 41000000
   },
   "Latinos & Latin-Americans": {
@@ -6943,6 +7811,7 @@
       "Ethnic & Identity Groups",
       "Latinos & Latin-Americans"
     ],
+    "comfort": -0.625,
     "impressions": 54000000
   },
   "Western Europeans": {
@@ -6951,6 +7820,7 @@
       "Ethnic & Identity Groups",
       "Western Europeans"
     ],
+    "comfort": -0.2,
     "impressions": 280000000
   },
   "Family & Relationships": {
@@ -6958,6 +7828,7 @@
       "People & Society",
       "Family & Relationships"
     ],
+    "comfort": -0.5,
     "impressions": 9100000000
   },
   "Etiquette": {
@@ -6966,6 +7837,7 @@
       "Family & Relationships",
       "Etiquette"
     ],
+    "comfort": 0.0,
     "impressions": 29000000
   },
   "Family": {
@@ -6974,6 +7846,7 @@
       "Family & Relationships",
       "Family"
     ],
+    "comfort": 1.0,
     "impressions": 3000000000
   },
   "Ancestry & Genealogy": {
@@ -6983,6 +7856,7 @@
       "Family",
       "Ancestry & Genealogy"
     ],
+    "comfort": 1.28571428571429,
     "impressions": 220000000
   },
   "Baby & Pet Names": {
@@ -6992,6 +7866,7 @@
       "Family",
       "Baby & Pet Names"
     ],
+    "comfort": 1.0,
     "impressions": 230000000
   },
   "Parenting": {
@@ -7001,6 +7876,7 @@
       "Family",
       "Parenting"
     ],
+    "comfort": 0.833333333333333,
     "impressions": 2300000000
   },
   "Adoption": {
@@ -7011,6 +7887,7 @@
       "Parenting",
       "Adoption"
     ],
+    "comfort": 1.0,
     "impressions": 110000000
   },
   "Babies & Toddlers": {
@@ -7021,6 +7898,7 @@
       "Parenting",
       "Babies & Toddlers"
     ],
+    "comfort": -1.25,
     "impressions": 690000000
   },
   "Baby Care & Hygiene": {
@@ -7032,6 +7910,7 @@
       "Babies & Toddlers",
       "Baby Care & Hygiene"
     ],
+    "comfort": -1.4,
     "impressions": 210000000
   },
   "Child Care": {
@@ -7042,6 +7921,7 @@
       "Parenting",
       "Child Care"
     ],
+    "comfort": -0.375,
     "impressions": 120000000
   },
   "Pregnancy & Maternity": {
@@ -7052,6 +7932,7 @@
       "Parenting",
       "Pregnancy & Maternity"
     ],
+    "comfort": 0.0,
     "impressions": 1100000000
   },
   "Youth Camps": {
@@ -7062,6 +7943,7 @@
       "Parenting",
       "Youth Camps"
     ],
+    "comfort": 0.25,
     "impressions": 17000000
   },
   "Friendship": {
@@ -7070,6 +7952,7 @@
       "Family & Relationships",
       "Friendship"
     ],
+    "comfort": -0.166666666666667,
     "impressions": 1800000000
   },
   "Marriage": {
@@ -7078,6 +7961,7 @@
       "Family & Relationships",
       "Marriage"
     ],
+    "comfort": 2.0,
     "impressions": 2700000000
   },
   "Romance": {
@@ -7086,6 +7970,7 @@
       "Family & Relationships",
       "Romance"
     ],
+    "comfort": 0.0,
     "impressions": 3900000000
   },
   "Troubled Relationships": {
@@ -7094,6 +7979,7 @@
       "Family & Relationships",
       "Troubled Relationships"
     ],
+    "comfort": -1.75,
     "impressions": 1400000000
   },
   "Divorce & Separation": {
@@ -7103,6 +7989,7 @@
       "Troubled Relationships",
       "Divorce & Separation"
     ],
+    "comfort": -1.66666666666667,
     "impressions": 71000000
   },
   "Men's Interests": {
@@ -7110,6 +7997,7 @@
       "People & Society",
       "Men's Interests"
     ],
+    "comfort": 1.0,
     "impressions": 830000000
   },
   "Men's Interests (Mature)": {
@@ -7118,6 +8006,7 @@
       "Men's Interests",
       "Men's Interests (Mature)"
     ],
+    "comfort": 1.0,
     "impressions": 880000000
   },
   "Religion & Belief": {
@@ -7125,6 +8014,7 @@
       "People & Society",
       "Religion & Belief"
     ],
+    "comfort": -2.75,
     "impressions": 240000000
   },
   "Astrology & Divination": {
@@ -7133,6 +8023,7 @@
       "Religion & Belief",
       "Astrology & Divination"
     ],
+    "comfort": -2.0,
     "impressions": 1600000000
   },
   "Buddhism": {
@@ -7141,6 +8032,7 @@
       "Religion & Belief",
       "Buddhism"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 15000000
   },
   "Christianity": {
@@ -7149,6 +8041,7 @@
       "Religion & Belief",
       "Christianity"
     ],
+    "comfort": -0.2,
     "impressions": 2000000000
   },
   "Hinduism": {
@@ -7157,6 +8050,7 @@
       "Religion & Belief",
       "Hinduism"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 69000000
   },
   "Islam": {
@@ -7165,6 +8059,7 @@
       "Religion & Belief",
       "Islam"
     ],
+    "comfort": -1.66666666666667,
     "impressions": 300000000
   },
   "Judaism": {
@@ -7173,6 +8068,7 @@
       "Religion & Belief",
       "Judaism"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 970000000
   },
   "Pagan & Esoteric Traditions": {
@@ -7181,6 +8077,7 @@
       "Religion & Belief",
       "Pagan & Esoteric Traditions"
     ],
+    "comfort": -1.6,
     "impressions": 790000000
   },
   "Places of Worship": {
@@ -7189,6 +8086,7 @@
       "Religion & Belief",
       "Places of Worship"
     ],
+    "comfort": -2.75,
     "impressions": 1000000000
   },
   "Scientology": {
@@ -7197,6 +8095,7 @@
       "Religion & Belief",
       "Scientology"
     ],
+    "comfort": -2.0,
     "impressions": 9000000
   },
   "Self-Help & Motivational": {
@@ -7205,6 +8104,7 @@
       "Religion & Belief",
       "Self-Help & Motivational"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 630000000
   },
   "Skeptics & Non-Believers": {
@@ -7213,6 +8113,7 @@
       "Religion & Belief",
       "Skeptics & Non-Believers"
     ],
+    "comfort": -0.571428571428571,
     "impressions": 280000000
   },
   "Spirituality": {
@@ -7221,6 +8122,7 @@
       "Religion & Belief",
       "Spirituality"
     ],
+    "comfort": 0.0,
     "impressions": 620000000
   },
   "Theology & Religious Study": {
@@ -7229,6 +8131,7 @@
       "Religion & Belief",
       "Theology & Religious Study"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 1300000000
   },
   "Seniors & Retirement": {
@@ -7236,6 +8139,7 @@
       "People & Society",
       "Seniors & Retirement"
     ],
+    "comfort": 0.25,
     "impressions": 190000000
   },
   "Social Issues & Advocacy": {
@@ -7243,6 +8147,7 @@
       "People & Society",
       "Social Issues & Advocacy"
     ],
+    "comfort": -0.2,
     "impressions": 1800000000
   },
   "Charity & Philanthropy": {
@@ -7251,6 +8156,7 @@
       "Social Issues & Advocacy",
       "Charity & Philanthropy"
     ],
+    "comfort": 1.25,
     "impressions": 300000000
   },
   "Discrimination & Identity Relations": {
@@ -7259,6 +8165,7 @@
       "Social Issues & Advocacy",
       "Discrimination & Identity Relations"
     ],
+    "comfort": 0.6,
     "impressions": 280000000
   },
   "Drug Laws & Policy": {
@@ -7267,6 +8174,7 @@
       "Social Issues & Advocacy",
       "Drug Laws & Policy"
     ],
+    "comfort": -0.181818181818182,
     "impressions": 81000000
   },
   "Environmental Issues": {
@@ -7275,6 +8183,7 @@
       "Social Issues & Advocacy",
       "Environmental Issues"
     ],
+    "comfort": -1.0,
     "impressions": 210000000
   },
   "Housing & Development": {
@@ -7283,6 +8192,7 @@
       "Social Issues & Advocacy",
       "Housing & Development"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 59000000
   },
   "Human Rights & Liberties": {
@@ -7291,6 +8201,7 @@
       "Social Issues & Advocacy",
       "Human Rights & Liberties"
     ],
+    "comfort": 0.0,
     "impressions": 75000000
   },
   "Immigration Policy & Border Issues": {
@@ -7299,6 +8210,7 @@
       "Social Issues & Advocacy",
       "Immigration Policy & Border Issues"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 150000000
   },
   "Poverty & Hunger": {
@@ -7307,6 +8219,7 @@
       "Social Issues & Advocacy",
       "Poverty & Hunger"
     ],
+    "comfort": -0.8,
     "impressions": 130000000
   },
   "Privacy Issues": {
@@ -7315,6 +8228,7 @@
       "Social Issues & Advocacy",
       "Privacy Issues"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 18000000
   },
   "Reproductive Rights": {
@@ -7323,6 +8237,7 @@
       "Social Issues & Advocacy",
       "Reproductive Rights"
     ],
+    "comfort": 0.4,
     "impressions": 95000000
   },
   "Same-Sex Marriage": {
@@ -7331,6 +8246,7 @@
       "Social Issues & Advocacy",
       "Same-Sex Marriage"
     ],
+    "comfort": -1.625,
     "impressions": 100000000
   },
   "Work & Labor Issues": {
@@ -7339,6 +8255,7 @@
       "Social Issues & Advocacy",
       "Work & Labor Issues"
     ],
+    "comfort": 1.0,
     "impressions": 120000000
   },
   "Unions & Labor Movement": {
@@ -7348,6 +8265,7 @@
       "Work & Labor Issues",
       "Unions & Labor Movement"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 12000000
   },
   "Social Sciences": {
@@ -7355,6 +8273,7 @@
       "People & Society",
       "Social Sciences"
     ],
+    "comfort": 0.5,
     "impressions": 1700000000
   },
   "Communications & Media Studies": {
@@ -7363,6 +8282,7 @@
       "Social Sciences",
       "Communications & Media Studies"
     ],
+    "comfort": -1.4,
     "impressions": 280000000
   },
   "Public Speaking": {
@@ -7372,6 +8292,7 @@
       "Communications & Media Studies",
       "Public Speaking"
     ],
+    "comfort": 0.4,
     "impressions": 280000000
   },
   "Demographics": {
@@ -7380,6 +8301,7 @@
       "Social Sciences",
       "Demographics"
     ],
+    "comfort": 0.0,
     "impressions": 200000000
   },
   "Economics": {
@@ -7388,6 +8310,7 @@
       "Social Sciences",
       "Economics"
     ],
+    "comfort": 0.0,
     "impressions": 220000000
   },
   "International Relations": {
@@ -7396,6 +8319,7 @@
       "Social Sciences",
       "International Relations"
     ],
+    "comfort": 0.25,
     "impressions": 430000000
   },
   "Psychology": {
@@ -7404,6 +8328,7 @@
       "Social Sciences",
       "Psychology"
     ],
+    "comfort": 0.25,
     "impressions": 350000000
   },
   "Subcultures & Niche Interests": {
@@ -7411,6 +8336,7 @@
       "People & Society",
       "Subcultures & Niche Interests"
     ],
+    "comfort": 0.714285714285714,
     "impressions": 700000000
   },
   "Goth Subculture": {
@@ -7419,6 +8345,7 @@
       "Subcultures & Niche Interests",
       "Goth Subculture"
     ],
+    "comfort": -0.5,
     "impressions": 7900000
   },
   "Science Fiction & Fantasy": {
@@ -7427,6 +8354,7 @@
       "Subcultures & Niche Interests",
       "Science Fiction & Fantasy"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 680000000
   },
   "Women's Interests": {
@@ -7434,12 +8362,14 @@
       "People & Society",
       "Women's Interests"
     ],
+    "comfort": -1.4,
     "impressions": 270000000
   },
   "Pets & Animals": {
     "path": [
       "Pets & Animals"
     ],
+    "comfort": 0.6,
     "impressions": 2300000000
   },
   "Animal Products & Services": {
@@ -7447,6 +8377,7 @@
       "Pets & Animals",
       "Animal Products & Services"
     ],
+    "comfort": 1.71428571428571,
     "impressions": 850000000
   },
   "Animal Welfare": {
@@ -7455,6 +8386,7 @@
       "Animal Products & Services",
       "Animal Welfare"
     ],
+    "comfort": 1.25,
     "impressions": 600000000
   },
   "Pet Food & Supplies": {
@@ -7463,6 +8395,7 @@
       "Animal Products & Services",
       "Pet Food & Supplies"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 590000000
   },
   "Veterinarians": {
@@ -7471,6 +8404,7 @@
       "Animal Products & Services",
       "Veterinarians"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 61000000
   },
   "Pets": {
@@ -7478,6 +8412,7 @@
       "Pets & Animals",
       "Pets"
     ],
+    "comfort": 1.75,
     "impressions": 1700000000
   },
   "Birds": {
@@ -7486,6 +8421,7 @@
       "Pets",
       "Birds"
     ],
+    "comfort": -0.75,
     "impressions": 94000000
   },
   "Cats": {
@@ -7494,6 +8430,7 @@
       "Pets",
       "Cats"
     ],
+    "comfort": 0.25,
     "impressions": 490000000
   },
   "Dogs": {
@@ -7502,6 +8439,7 @@
       "Pets",
       "Dogs"
     ],
+    "comfort": 2.0,
     "impressions": 1100000000
   },
   "Exotic Pets": {
@@ -7510,6 +8448,7 @@
       "Pets",
       "Exotic Pets"
     ],
+    "comfort": 1.0,
     "impressions": 330000000
   },
   "Fish & Aquaria": {
@@ -7518,6 +8457,7 @@
       "Pets",
       "Fish & Aquaria"
     ],
+    "comfort": 1.14285714285714,
     "impressions": 99000000
   },
   "Horses": {
@@ -7526,6 +8466,7 @@
       "Pets",
       "Horses"
     ],
+    "comfort": -0.6,
     "impressions": 38000000
   },
   "Rabbits & Rodents": {
@@ -7534,6 +8475,7 @@
       "Pets",
       "Rabbits & Rodents"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 140000000
   },
   "Reptiles & Amphibians": {
@@ -7542,6 +8484,7 @@
       "Pets",
       "Reptiles & Amphibians"
     ],
+    "comfort": 0.0,
     "impressions": 270000000
   },
   "Wildlife": {
@@ -7549,12 +8492,14 @@
       "Pets & Animals",
       "Wildlife"
     ],
+    "comfort": 1.75,
     "impressions": 1000000000
   },
   "Real Estate": {
     "path": [
       "Real Estate"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 2200000000
   },
   "Apartments & Residential Rentals": {
@@ -7562,6 +8507,7 @@
       "Real Estate",
       "Apartments & Residential Rentals"
     ],
+    "comfort": -0.5,
     "impressions": 780000000
   },
   "Bank-Owned & Foreclosed Properties": {
@@ -7569,6 +8515,7 @@
       "Real Estate",
       "Bank-Owned & Foreclosed Properties"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 13000000
   },
   "Commercial & Investment Real Estate": {
@@ -7576,6 +8523,7 @@
       "Real Estate",
       "Commercial & Investment Real Estate"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 69000000
   },
   "Property Development": {
@@ -7583,6 +8531,7 @@
       "Real Estate",
       "Property Development"
     ],
+    "comfort": 1.0,
     "impressions": 990000000
   },
   "Property Inspections & Appraisals": {
@@ -7590,6 +8539,7 @@
       "Real Estate",
       "Property Inspections & Appraisals"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 19000000
   },
   "Property Management": {
@@ -7597,6 +8547,7 @@
       "Real Estate",
       "Property Management"
     ],
+    "comfort": 0.375,
     "impressions": 22000000
   },
   "Real Estate Agencies": {
@@ -7604,6 +8555,7 @@
       "Real Estate",
       "Real Estate Agencies"
     ],
+    "comfort": 0.2,
     "impressions": 1300000000
   },
   "Real Estate Listings": {
@@ -7611,6 +8563,7 @@
       "Real Estate",
       "Real Estate Listings"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 1900000000
   },
   "Timeshares & Vacation Properties": {
@@ -7618,12 +8571,14 @@
       "Real Estate",
       "Timeshares & Vacation Properties"
     ],
+    "comfort": 0.2,
     "impressions": 76000000
   },
   "Reference": {
     "path": [
       "Reference"
     ],
+    "comfort": 0.0,
     "impressions": 10000000001
   },
   "Directories & Listings": {
@@ -7631,6 +8586,7 @@
       "Reference",
       "Directories & Listings"
     ],
+    "comfort": -1.4,
     "impressions": 510000000
   },
   "Business & Personal Listings": {
@@ -7639,6 +8595,7 @@
       "Directories & Listings",
       "Business & Personal Listings"
     ],
+    "comfort": -0.714285714285714,
     "impressions": 340000000
   },
   "General Reference": {
@@ -7646,6 +8603,7 @@
       "Reference",
       "General Reference"
     ],
+    "comfort": 0.285714285714286,
     "impressions": 9900000000
   },
   "Biographies & Quotations": {
@@ -7654,6 +8612,7 @@
       "General Reference",
       "Biographies & Quotations"
     ],
+    "comfort": 1.25,
     "impressions": 610000000
   },
   "Calculators & Reference Tools": {
@@ -7662,6 +8621,7 @@
       "General Reference",
       "Calculators & Reference Tools"
     ],
+    "comfort": 1.6,
     "impressions": 560000000
   },
   "Dictionaries & Encyclopedias": {
@@ -7670,6 +8630,7 @@
       "General Reference",
       "Dictionaries & Encyclopedias"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 1100000000
   },
   "Educational Resources": {
@@ -7678,6 +8639,7 @@
       "General Reference",
       "Educational Resources"
     ],
+    "comfort": 0.5,
     "impressions": 3900000000
   },
   "Forms Guides & Templates": {
@@ -7686,6 +8648,7 @@
       "General Reference",
       "Forms Guides & Templates"
     ],
+    "comfort": 0.4,
     "impressions": 290000000
   },
   "Legal Forms": {
@@ -7695,6 +8658,7 @@
       "Forms Guides & Templates",
       "Legal Forms"
     ],
+    "comfort": -1.0,
     "impressions": 75000000
   },
   "How-To, DIY & Expert Content": {
@@ -7703,6 +8667,7 @@
       "General Reference",
       "How-To, DIY & Expert Content"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 2600000000
   },
   "Public Records": {
@@ -7711,6 +8676,7 @@
       "General Reference",
       "Public Records"
     ],
+    "comfort": 0.375,
     "impressions": 240000000
   },
   "Time & Calendars": {
@@ -7719,6 +8685,7 @@
       "General Reference",
       "Time & Calendars"
     ],
+    "comfort": 0.0,
     "impressions": 600000000
   },
   "Geographic Reference": {
@@ -7726,6 +8693,7 @@
       "Reference",
       "Geographic Reference"
     ],
+    "comfort": -0.5,
     "impressions": 930000000
   },
   "City & Local Guides": {
@@ -7734,6 +8702,7 @@
       "Geographic Reference",
       "City & Local Guides"
     ],
+    "comfort": 1.75,
     "impressions": 240000000
   },
   "Maps": {
@@ -7742,6 +8711,7 @@
       "Geographic Reference",
       "Maps"
     ],
+    "comfort": -0.5,
     "impressions": 480000000
   },
   "Traffic & Public Transit": {
@@ -7751,6 +8721,7 @@
       "Maps",
       "Traffic & Public Transit"
     ],
+    "comfort": 0.307692307692308,
     "impressions": 250000000
   },
   "Humanities": {
@@ -7758,6 +8729,7 @@
       "Reference",
       "Humanities"
     ],
+    "comfort": 0.5,
     "impressions": 4600000000
   },
   "History": {
@@ -7766,6 +8738,7 @@
       "Humanities",
       "History"
     ],
+    "comfort": 1.0,
     "impressions": 3500000000
   },
   "Military History": {
@@ -7775,6 +8748,7 @@
       "History",
       "Military History"
     ],
+    "comfort": 0.4,
     "impressions": 1100000000
   },
   "Myth & Folklore": {
@@ -7783,6 +8757,7 @@
       "Humanities",
       "Myth & Folklore"
     ],
+    "comfort": -0.4,
     "impressions": 180000000
   },
   "Philosophy": {
@@ -7791,6 +8766,7 @@
       "Humanities",
       "Philosophy"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 330000000
   },
   "Language Resources": {
@@ -7798,6 +8774,7 @@
       "Reference",
       "Language Resources"
     ],
+    "comfort": 0.4,
     "impressions": 1500000000
   },
   "Foreign Language Resources": {
@@ -7806,6 +8783,7 @@
       "Language Resources",
       "Foreign Language Resources"
     ],
+    "comfort": 1.75,
     "impressions": 990000000
   },
   "Foreign Language Study": {
@@ -7815,6 +8793,7 @@
       "Foreign Language Resources",
       "Foreign Language Study"
     ],
+    "comfort": -1.0,
     "impressions": 200000000
   },
   "Translation Tools & Resources": {
@@ -7824,6 +8803,7 @@
       "Foreign Language Resources",
       "Translation Tools & Resources"
     ],
+    "comfort": 1.2,
     "impressions": 760000000
   },
   "Libraries & Museums": {
@@ -7831,6 +8811,7 @@
       "Reference",
       "Libraries & Museums"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 170000000
   },
   "Technical Reference": {
@@ -7838,12 +8819,14 @@
       "Reference",
       "Technical Reference"
     ],
+    "comfort": 0.666666666666667,
     "impressions": 900000000
   },
   "Science": {
     "path": [
       "Science"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 7900000000
   },
   "Astronomy": {
@@ -7851,6 +8834,7 @@
       "Science",
       "Astronomy"
     ],
+    "comfort": 0.0,
     "impressions": 280000000
   },
   "Biological Sciences": {
@@ -7858,6 +8842,7 @@
       "Science",
       "Biological Sciences"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 850000000
   },
   "Anatomy": {
@@ -7866,6 +8851,7 @@
       "Biological Sciences",
       "Anatomy"
     ],
+    "comfort": -0.285714285714286,
     "impressions": 100000000
   },
   "Flora & Fauna": {
@@ -7874,6 +8860,7 @@
       "Biological Sciences",
       "Flora & Fauna"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 520000000
   },
   "Insects & Entomology": {
@@ -7883,6 +8870,7 @@
       "Flora & Fauna",
       "Insects & Entomology"
     ],
+    "comfort": 0.285714285714286,
     "impressions": 180000000
   },
   "Genetics": {
@@ -7891,6 +8879,7 @@
       "Biological Sciences",
       "Genetics"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 77000000
   },
   "Neuroscience": {
@@ -7899,6 +8888,7 @@
       "Biological Sciences",
       "Neuroscience"
     ],
+    "comfort": -0.8,
     "impressions": 94000000
   },
   "Chemistry": {
@@ -7906,6 +8896,7 @@
       "Science",
       "Chemistry"
     ],
+    "comfort": 1.5,
     "impressions": 170000000
   },
   "Computer Science": {
@@ -7913,6 +8904,7 @@
       "Science",
       "Computer Science"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 790000000
   },
   "Distributed & Parallel Computing": {
@@ -7921,6 +8913,7 @@
       "Computer Science",
       "Distributed & Parallel Computing"
     ],
+    "comfort": 0.714285714285714,
     "impressions": 44000000
   },
   "Machine Learning & Artificial Intelligence": {
@@ -7929,6 +8922,7 @@
       "Computer Science",
       "Machine Learning & Artificial Intelligence"
     ],
+    "comfort": 1.5,
     "impressions": 39000000
   },
   "Earth Sciences": {
@@ -7936,6 +8930,7 @@
       "Science",
       "Earth Sciences"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 3800000000
   },
   "Atmospheric Science": {
@@ -7944,6 +8939,7 @@
       "Earth Sciences",
       "Atmospheric Science"
     ],
+    "comfort": -2.33333333333333,
     "impressions": 3300000000
   },
   "Geology": {
@@ -7952,6 +8948,7 @@
       "Earth Sciences",
       "Geology"
     ],
+    "comfort": -0.25,
     "impressions": 420000000
   },
   "Paleontology": {
@@ -7960,6 +8957,7 @@
       "Earth Sciences",
       "Paleontology"
     ],
+    "comfort": 0.2,
     "impressions": 86000000
   },
   "Water & Marine Sciences": {
@@ -7968,6 +8966,7 @@
       "Earth Sciences",
       "Water & Marine Sciences"
     ],
+    "comfort": 1.25,
     "impressions": 260000000
   },
   "Ecology & Environment": {
@@ -7975,6 +8974,7 @@
       "Science",
       "Ecology & Environment"
     ],
+    "comfort": 1.4,
     "impressions": 120000000
   },
   "Climate Change & Global Warming": {
@@ -7983,6 +8983,7 @@
       "Ecology & Environment",
       "Climate Change & Global Warming"
     ],
+    "comfort": 0.5,
     "impressions": 39000000
   },
   "Engineering & Technology": {
@@ -7990,6 +8991,7 @@
       "Science",
       "Engineering & Technology"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 1000000000
   },
   "Robotics": {
@@ -7998,6 +9000,7 @@
       "Engineering & Technology",
       "Robotics"
     ],
+    "comfort": -0.75,
     "impressions": 32000000
   },
   "Mathematics": {
@@ -8005,6 +9008,7 @@
       "Science",
       "Mathematics"
     ],
+    "comfort": 0.0,
     "impressions": 1500000000
   },
   "Statistics": {
@@ -8013,6 +9017,7 @@
       "Mathematics",
       "Statistics"
     ],
+    "comfort": 0.777777777777778,
     "impressions": 29000000
   },
   "Physics": {
@@ -8020,6 +9025,7 @@
       "Science",
       "Physics"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 260000000
   },
   "Scientific Equipment": {
@@ -8027,6 +9033,7 @@
       "Science",
       "Scientific Equipment"
     ],
+    "comfort": -0.6,
     "impressions": 17000000
   },
   "Scientific Institutions": {
@@ -8034,12 +9041,14 @@
       "Science",
       "Scientific Institutions"
     ],
+    "comfort": 0.461538461538462,
     "impressions": 15000000
   },
   "Shopping": {
     "path": [
       "Shopping"
     ],
+    "comfort": 1.75,
     "impressions": 10000000000
   },
   "Antiques & Collectibles": {
@@ -8047,6 +9056,7 @@
       "Shopping",
       "Antiques & Collectibles"
     ],
+    "comfort": 0.8,
     "impressions": 630000000
   },
   "Apparel": {
@@ -8054,6 +9064,7 @@
       "Shopping",
       "Apparel"
     ],
+    "comfort": 1.0,
     "impressions": 2200000000
   },
   "Apparel Services": {
@@ -8062,6 +9073,7 @@
       "Apparel",
       "Apparel Services"
     ],
+    "comfort": 0.8,
     "impressions": 41000000
   },
   "Athletic Apparel": {
@@ -8070,6 +9082,7 @@
       "Apparel",
       "Athletic Apparel"
     ],
+    "comfort": 2.0,
     "impressions": 270000000
   },
   "Casual Apparel": {
@@ -8078,6 +9091,7 @@
       "Apparel",
       "Casual Apparel"
     ],
+    "comfort": 0.7,
     "impressions": 200000000
   },
   "T-Shirts": {
@@ -8087,6 +9101,7 @@
       "Casual Apparel",
       "T-Shirts"
     ],
+    "comfort": 0.25,
     "impressions": 66000000
   },
   "Children's Clothing": {
@@ -8095,6 +9110,7 @@
       "Apparel",
       "Children's Clothing"
     ],
+    "comfort": 0.0,
     "impressions": 150000000
   },
   "Clothing Accessories": {
@@ -8103,6 +9119,7 @@
       "Apparel",
       "Clothing Accessories"
     ],
+    "comfort": 0.0,
     "impressions": 600000000
   },
   "Gems & Jewelry": {
@@ -8112,6 +9129,7 @@
       "Clothing Accessories",
       "Gems & Jewelry"
     ],
+    "comfort": 0.25,
     "impressions": 330000000
   },
   "Handbags & Purses": {
@@ -8121,6 +9139,7 @@
       "Clothing Accessories",
       "Handbags & Purses"
     ],
+    "comfort": 0.2,
     "impressions": 86000000
   },
   "Watches": {
@@ -8130,6 +9149,7 @@
       "Clothing Accessories",
       "Watches"
     ],
+    "comfort": 2.25,
     "impressions": 150000000
   },
   "Costumes": {
@@ -8138,6 +9158,7 @@
       "Apparel",
       "Costumes"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 140000000
   },
   "Eyewear": {
@@ -8146,6 +9167,7 @@
       "Apparel",
       "Eyewear"
     ],
+    "comfort": -0.6,
     "impressions": 15000000
   },
   "Footwear": {
@@ -8154,6 +9176,7 @@
       "Apparel",
       "Footwear"
     ],
+    "comfort": 1.71428571428571,
     "impressions": 290000000
   },
   "Formal Wear": {
@@ -8162,6 +9185,7 @@
       "Apparel",
       "Formal Wear"
     ],
+    "comfort": 1.83333333333333,
     "impressions": 220000000
   },
   "Headwear": {
@@ -8170,6 +9194,7 @@
       "Apparel",
       "Headwear"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 21000000
   },
   "Men's Clothing": {
@@ -8178,6 +9203,7 @@
       "Apparel",
       "Men's Clothing"
     ],
+    "comfort": 0.25,
     "impressions": 330000000
   },
   "Outerwear": {
@@ -8186,6 +9212,7 @@
       "Apparel",
       "Outerwear"
     ],
+    "comfort": 1.0,
     "impressions": 170000000
   },
   "Sleepwear": {
@@ -8194,6 +9221,7 @@
       "Apparel",
       "Sleepwear"
     ],
+    "comfort": 0.5,
     "impressions": 87000000
   },
   "Swimwear": {
@@ -8202,6 +9230,7 @@
       "Apparel",
       "Swimwear"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 80000000
   },
   "Undergarments": {
@@ -8210,6 +9239,7 @@
       "Apparel",
       "Undergarments"
     ],
+    "comfort": -0.5,
     "impressions": 120000000
   },
   "Uniforms & Workwear": {
@@ -8218,6 +9248,7 @@
       "Apparel",
       "Uniforms & Workwear"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 16000000
   },
   "Women's Clothing": {
@@ -8226,6 +9257,7 @@
       "Apparel",
       "Women's Clothing"
     ],
+    "comfort": 1.0,
     "impressions": 910000000
   },
   "Auctions": {
@@ -8233,6 +9265,7 @@
       "Shopping",
       "Auctions"
     ],
+    "comfort": 1.28571428571429,
     "impressions": 1100000000
   },
   "Classifieds": {
@@ -8240,6 +9273,7 @@
       "Shopping",
       "Classifieds"
     ],
+    "comfort": 1.83333333333333,
     "impressions": 990000000
   },
   "Consumer Resources": {
@@ -8247,6 +9281,7 @@
       "Shopping",
       "Consumer Resources"
     ],
+    "comfort": 1.25,
     "impressions": 3200000000
   },
   "Consumer Advocacy & Protection": {
@@ -8255,6 +9290,7 @@
       "Consumer Resources",
       "Consumer Advocacy & Protection"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 94000000
   },
   "Coupons & Discount Offers": {
@@ -8263,6 +9299,7 @@
       "Consumer Resources",
       "Coupons & Discount Offers"
     ],
+    "comfort": 0.857142857142857,
     "impressions": 1500000000
   },
   "Customer Services": {
@@ -8271,6 +9308,7 @@
       "Consumer Resources",
       "Customer Services"
     ],
+    "comfort": -0.75,
     "impressions": 650000000
   },
   "Loyalty Cards & Programs": {
@@ -8280,6 +9318,7 @@
       "Customer Services",
       "Loyalty Cards & Programs"
     ],
+    "comfort": -1.66666666666667,
     "impressions": 460000000
   },
   "Technical Support": {
@@ -8289,6 +9328,7 @@
       "Customer Services",
       "Technical Support"
     ],
+    "comfort": -1.28571428571429,
     "impressions": 180000000
   },
   "Warranties & Service Contracts": {
@@ -8298,6 +9338,7 @@
       "Customer Services",
       "Warranties & Service Contracts"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 5100000
   },
   "Product Reviews & Price Comparisons": {
@@ -8306,6 +9347,7 @@
       "Consumer Resources",
       "Product Reviews & Price Comparisons"
     ],
+    "comfort": 1.0,
     "impressions": 1300000000
   },
   "Price Comparisons": {
@@ -8315,6 +9357,7 @@
       "Product Reviews & Price Comparisons",
       "Price Comparisons"
     ],
+    "comfort": -1.0,
     "impressions": 93000000
   },
   "Entertainment Media": {
@@ -8322,6 +9365,7 @@
       "Shopping",
       "Entertainment Media"
     ],
+    "comfort": -0.25,
     "impressions": 200000000
   },
   "Entertainment Media Rentals": {
@@ -8330,6 +9374,7 @@
       "Entertainment Media",
       "Entertainment Media Rentals"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 79000000
   },
   "Gifts & Special Event Items": {
@@ -8337,6 +9382,7 @@
       "Shopping",
       "Gifts & Special Event Items"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 630000000
   },
   "Cards & Greetings": {
@@ -8345,6 +9391,7 @@
       "Gifts & Special Event Items",
       "Cards & Greetings"
     ],
+    "comfort": -0.5,
     "impressions": 310000000
   },
   "Flowers": {
@@ -8353,6 +9400,7 @@
       "Gifts & Special Event Items",
       "Flowers"
     ],
+    "comfort": 1.85714285714286,
     "impressions": 39000000
   },
   "Gifts": {
@@ -8361,6 +9409,7 @@
       "Gifts & Special Event Items",
       "Gifts"
     ],
+    "comfort": 0.0,
     "impressions": 140000000
   },
   "Party & Holiday Supplies": {
@@ -8369,6 +9418,7 @@
       "Gifts & Special Event Items",
       "Party & Holiday Supplies"
     ],
+    "comfort": 1.0,
     "impressions": 170000000
   },
   "Luxury Goods": {
@@ -8376,6 +9426,7 @@
       "Shopping",
       "Luxury Goods"
     ],
+    "comfort": 2.0,
     "impressions": 420000000
   },
   "Mass Merchants & Department Stores": {
@@ -8383,6 +9434,7 @@
       "Shopping",
       "Mass Merchants & Department Stores"
     ],
+    "comfort": 0.2,
     "impressions": 1100000000
   },
   "Photo & Video Services": {
@@ -8390,6 +9442,7 @@
       "Shopping",
       "Photo & Video Services"
     ],
+    "comfort": 0.428571428571429,
     "impressions": 330000000
   },
   "Stock Photography": {
@@ -8398,6 +9451,7 @@
       "Photo & Video Services",
       "Stock Photography"
     ],
+    "comfort": 0.0,
     "impressions": 23000000
   },
   "Shopping Portals & Search Engines": {
@@ -8405,6 +9459,7 @@
       "Shopping",
       "Shopping Portals & Search Engines"
     ],
+    "comfort": -0.777777777777778,
     "impressions": 1300000000
   },
   "Swap Meets & Outdoor Markets": {
@@ -8412,6 +9467,7 @@
       "Shopping",
       "Swap Meets & Outdoor Markets"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 89000000
   },
   "Toys": {
@@ -8419,6 +9475,7 @@
       "Shopping",
       "Toys"
     ],
+    "comfort": 0.0,
     "impressions": 1800000000
   },
   "Wholesalers & Liquidators": {
@@ -8426,12 +9483,14 @@
       "Shopping",
       "Wholesalers & Liquidators"
     ],
+    "comfort": 1.0,
     "impressions": 28000000
   },
   "Sports": {
     "path": [
       "Sports"
     ],
+    "comfort": 1.0,
     "impressions": 10000000000
   },
   "College Sports": {
@@ -8439,6 +9498,7 @@
       "Sports",
       "College Sports"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 3000000000
   },
   "Combat Sports": {
@@ -8446,6 +9506,7 @@
       "Sports",
       "Combat Sports"
     ],
+    "comfort": -0.666666666666667,
     "impressions": 750000000
   },
   "Boxing": {
@@ -8454,6 +9515,7 @@
       "Combat Sports",
       "Boxing"
     ],
+    "comfort": -1.33333333333333,
     "impressions": 390000000
   },
   "Martial Arts": {
@@ -8462,6 +9524,7 @@
       "Combat Sports",
       "Martial Arts"
     ],
+    "comfort": -1.5,
     "impressions": 470000000
   },
   "Wrestling": {
@@ -8470,6 +9533,7 @@
       "Combat Sports",
       "Wrestling"
     ],
+    "comfort": -0.75,
     "impressions": 600000000
   },
   "Extreme Sports": {
@@ -8477,6 +9541,7 @@
       "Sports",
       "Extreme Sports"
     ],
+    "comfort": -0.428571428571429,
     "impressions": 98000000
   },
   "Fantasy Sports": {
@@ -8484,6 +9549,7 @@
       "Sports",
       "Fantasy Sports"
     ],
+    "comfort": 0.0,
     "impressions": 210000000
   },
   "Individual Sports": {
@@ -8491,6 +9557,7 @@
       "Sports",
       "Individual Sports"
     ],
+    "comfort": 0.75,
     "impressions": 950000000
   },
   "Bowling": {
@@ -8499,6 +9566,7 @@
       "Individual Sports",
       "Bowling"
     ],
+    "comfort": 0.222222222222222,
     "impressions": 15000000
   },
   "Cycling": {
@@ -8507,6 +9575,7 @@
       "Individual Sports",
       "Cycling"
     ],
+    "comfort": -0.25,
     "impressions": 230000000
   },
   "Golf": {
@@ -8515,6 +9584,7 @@
       "Individual Sports",
       "Golf"
     ],
+    "comfort": 1.66666666666667,
     "impressions": 330000000
   },
   "Gymnastics": {
@@ -8523,6 +9593,7 @@
       "Individual Sports",
       "Gymnastics"
     ],
+    "comfort": 0.0,
     "impressions": 74000000
   },
   "Racquet Sports": {
@@ -8531,6 +9602,7 @@
       "Individual Sports",
       "Racquet Sports"
     ],
+    "comfort": -1.4,
     "impressions": 99000000
   },
   "Tennis": {
@@ -8540,6 +9612,7 @@
       "Racquet Sports",
       "Tennis"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 26000000
   },
   "Running & Walking": {
@@ -8548,6 +9621,7 @@
       "Individual Sports",
       "Running & Walking"
     ],
+    "comfort": -0.142857142857143,
     "impressions": 210000000
   },
   "Skate Sports": {
@@ -8556,6 +9630,7 @@
       "Individual Sports",
       "Skate Sports"
     ],
+    "comfort": -1.5,
     "impressions": 41000000
   },
   "Track & Field": {
@@ -8564,6 +9639,7 @@
       "Individual Sports",
       "Track & Field"
     ],
+    "comfort": 1.57142857142857,
     "impressions": 150000000
   },
   "Motor Sports": {
@@ -8571,6 +9647,7 @@
       "Sports",
       "Motor Sports"
     ],
+    "comfort": 2.0,
     "impressions": 210000000
   },
   "Sporting Goods": {
@@ -8578,6 +9655,7 @@
       "Sports",
       "Sporting Goods"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 610000000
   },
   "Sports Memorabilia": {
@@ -8586,6 +9664,7 @@
       "Sporting Goods",
       "Sports Memorabilia"
     ],
+    "comfort": 0.25,
     "impressions": 140000000
   },
   "Sports Coaching & Training": {
@@ -8593,6 +9672,7 @@
       "Sports",
       "Sports Coaching & Training"
     ],
+    "comfort": -0.222222222222222,
     "impressions": 250000000
   },
   "Team Sports": {
@@ -8600,6 +9680,7 @@
       "Sports",
       "Team Sports"
     ],
+    "comfort": -0.4,
     "impressions": 6300000000
   },
   "American Football": {
@@ -8608,6 +9689,7 @@
       "Team Sports",
       "American Football"
     ],
+    "comfort": -0.375,
     "impressions": 1600000000
   },
   "Baseball": {
@@ -8616,6 +9698,7 @@
       "Team Sports",
       "Baseball"
     ],
+    "comfort": 0.0,
     "impressions": 2400000000
   },
   "Basketball": {
@@ -8624,6 +9707,7 @@
       "Team Sports",
       "Basketball"
     ],
+    "comfort": -1.0,
     "impressions": 3000000000
   },
   "Cheerleading": {
@@ -8632,6 +9716,7 @@
       "Team Sports",
       "Cheerleading"
     ],
+    "comfort": -0.625,
     "impressions": 25000000
   },
   "Cricket": {
@@ -8640,6 +9725,7 @@
       "Team Sports",
       "Cricket"
     ],
+    "comfort": -0.4,
     "impressions": 240000000
   },
   "Handball": {
@@ -8648,6 +9734,7 @@
       "Team Sports",
       "Handball"
     ],
+    "comfort": 1.0,
     "impressions": 510000
   },
   "Hockey": {
@@ -8656,6 +9743,7 @@
       "Team Sports",
       "Hockey"
     ],
+    "comfort": 1.42857142857143,
     "impressions": 260000000
   },
   "Rugby": {
@@ -8664,6 +9752,7 @@
       "Team Sports",
       "Rugby"
     ],
+    "comfort": -0.111111111111111,
     "impressions": 8300000
   },
   "Soccer": {
@@ -8672,6 +9761,7 @@
       "Team Sports",
       "Soccer"
     ],
+    "comfort": -0.0909090909090909,
     "impressions": 1500000000
   },
   "Volleyball": {
@@ -8680,6 +9770,7 @@
       "Team Sports",
       "Volleyball"
     ],
+    "comfort": 1.6,
     "impressions": 410000000
   },
   "Water Sports": {
@@ -8687,6 +9778,7 @@
       "Sports",
       "Water Sports"
     ],
+    "comfort": 0.75,
     "impressions": 230000000
   },
   "Winter Sports": {
@@ -8694,6 +9786,7 @@
       "Sports",
       "Winter Sports"
     ],
+    "comfort": 1.22222222222222,
     "impressions": 260000000
   },
   "Ice Skating": {
@@ -8702,6 +9795,7 @@
       "Winter Sports",
       "Ice Skating"
     ],
+    "comfort": 0.25,
     "impressions": 19000000
   },
   "Skiing & Snowboarding": {
@@ -8710,6 +9804,7 @@
       "Winter Sports",
       "Skiing & Snowboarding"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 17000000
   },
   "World Sports Competitions": {
@@ -8717,6 +9812,7 @@
       "Sports",
       "World Sports Competitions"
     ],
+    "comfort": -1.2,
     "impressions": 940000000
   },
   "Olympics": {
@@ -8725,12 +9821,14 @@
       "World Sports Competitions",
       "Olympics"
     ],
+    "comfort": 0.833333333333333,
     "impressions": 38000000
   },
   "Travel": {
     "path": [
       "Travel"
     ],
+    "comfort": 1.0,
     "impressions": 3700000000
   },
   "Air Travel": {
@@ -8738,6 +9836,7 @@
       "Travel",
       "Air Travel"
     ],
+    "comfort": 0.333333333333333,
     "impressions": 1000000000
   },
   "Airport Parking & Transportation": {
@@ -8746,6 +9845,7 @@
       "Air Travel",
       "Airport Parking & Transportation"
     ],
+    "comfort": 2.4,
     "impressions": 48000000
   },
   "Bus & Rail": {
@@ -8753,6 +9853,7 @@
       "Travel",
       "Bus & Rail"
     ],
+    "comfort": 0.8,
     "impressions": 210000000
   },
   "Car Rental & Taxi Services": {
@@ -8760,6 +9861,7 @@
       "Travel",
       "Car Rental & Taxi Services"
     ],
+    "comfort": 0.833333333333333,
     "impressions": 200000000
   },
   "Carpooling & Ridesharing": {
@@ -8767,6 +9869,7 @@
       "Travel",
       "Carpooling & Ridesharing"
     ],
+    "comfort": -1.42857142857143,
     "impressions": 50000000
   },
   "Cruises & Charters": {
@@ -8774,6 +9877,7 @@
       "Travel",
       "Cruises & Charters"
     ],
+    "comfort": 2.33333333333333,
     "impressions": 270000000
   },
   "Hotels & Accommodations": {
@@ -8781,6 +9885,7 @@
       "Travel",
       "Hotels & Accommodations"
     ],
+    "comfort": 1.0,
     "impressions": 840000000
   },
   "Luggage & Travel Accessories": {
@@ -8788,6 +9893,7 @@
       "Travel",
       "Luggage & Travel Accessories"
     ],
+    "comfort": 1.0,
     "impressions": 77000000
   },
   "Specialty Travel": {
@@ -8795,6 +9901,7 @@
       "Travel",
       "Specialty Travel"
     ],
+    "comfort": 0.5,
     "impressions": 680000000
   },
   "Adventure Travel": {
@@ -8803,6 +9910,7 @@
       "Specialty Travel",
       "Adventure Travel"
     ],
+    "comfort": -0.333333333333333,
     "impressions": 86000000
   },
   "Agritourism": {
@@ -8811,6 +9919,7 @@
       "Specialty Travel",
       "Agritourism"
     ],
+    "comfort": -0.125,
     "impressions": 1600000
   },
   "Ecotourism": {
@@ -8819,6 +9928,7 @@
       "Specialty Travel",
       "Ecotourism"
     ],
+    "comfort": 0.6,
     "impressions": 36000000
   },
   "Sightseeing Tours": {
@@ -8827,6 +9937,7 @@
       "Specialty Travel",
       "Sightseeing Tours"
     ],
+    "comfort": 2.33333333333333,
     "impressions": 450000000
   },
   "Vineyards & Wine Tourism": {
@@ -8835,6 +9946,7 @@
       "Specialty Travel",
       "Vineyards & Wine Tourism"
     ],
+    "comfort": -1.75,
     "impressions": 19000000
   },
   "Tourist Destinations": {
@@ -8842,6 +9954,7 @@
       "Travel",
       "Tourist Destinations"
     ],
+    "comfort": 1.0,
     "impressions": 1900000000
   },
   "Beaches & Islands": {
@@ -8850,6 +9963,7 @@
       "Tourist Destinations",
       "Beaches & Islands"
     ],
+    "comfort": 1.45454545454545,
     "impressions": 800000000
   },
   "Historical Sites & Buildings": {
@@ -8858,6 +9972,7 @@
       "Tourist Destinations",
       "Historical Sites & Buildings"
     ],
+    "comfort": 1.6,
     "impressions": 170000000
   },
   "Lakes & Rivers": {
@@ -8866,6 +9981,7 @@
       "Tourist Destinations",
       "Lakes & Rivers"
     ],
+    "comfort": 0.2,
     "impressions": 100000000
   },
   "Mountain & Ski Resorts": {
@@ -8874,6 +9990,7 @@
       "Tourist Destinations",
       "Mountain & Ski Resorts"
     ],
+    "comfort": -0.428571428571429,
     "impressions": 56000000
   },
   "Regional Parks & Gardens": {
@@ -8882,6 +9999,7 @@
       "Tourist Destinations",
       "Regional Parks & Gardens"
     ],
+    "comfort": 1.33333333333333,
     "impressions": 200000000
   },
   "Theme Parks": {
@@ -8890,6 +10008,7 @@
       "Tourist Destinations",
       "Theme Parks"
     ],
+    "comfort": 1.0,
     "impressions": 300000000
   },
   "Zoos-Aquariums-Preserves": {
@@ -8898,6 +10017,7 @@
       "Tourist Destinations",
       "Zoos-Aquariums-Preserves"
     ],
+    "comfort": 1.28571428571429,
     "impressions": 170000000
   },
   "Travel Agencies & Services": {
@@ -8905,6 +10025,7 @@
       "Travel",
       "Travel Agencies & Services"
     ],
+    "comfort": 1.25,
     "impressions": 1200000000
   },
   "Tourist Boards & Visitor Centers": {
@@ -8913,6 +10034,7 @@
       "Travel Agencies & Services",
       "Tourist Boards & Visitor Centers"
     ],
+    "comfort": 0.166666666666667,
     "impressions": 54000000
   },
   "Vacation Offers": {
@@ -8921,6 +10043,7 @@
       "Travel Agencies & Services",
       "Vacation Offers"
     ],
+    "comfort": 1.125,
     "impressions": 800000000
   },
   "Travel Guides & Travelogues": {
@@ -8928,6 +10051,7 @@
       "Travel",
       "Travel Guides & Travelogues"
     ],
+    "comfort": 1.5,
     "impressions": 630000000
   },
   "World Localities": {

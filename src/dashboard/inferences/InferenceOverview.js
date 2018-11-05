@@ -9,6 +9,7 @@ import GridRow from '@instructure/ui-layout/lib/components/Grid/GridRow'
 import GridCol from '@instructure/ui-layout/lib/components/Grid/GridCol'
 import RadioInput from '@instructure/ui-forms/lib/components/RadioInput'
 import RadioInputGroup from '@instructure/ui-forms/lib/components/RadioInputGroup'
+import FormFieldGroup from '@instructure/ui-forms/lib/components/FormFieldGroup'
 import Spinner from '@instructure/ui-elements/lib/components/Spinner'
 import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 import IconArrowOpenEnd from '@instructure/ui-icons/lib/Solid/IconArrowOpenEnd'
@@ -76,7 +77,7 @@ export default class InferencesOverview extends React.Component {
 
   InferenceLink (inference) {
     return (
-      <a className='inferencePageTopTextInferenceLink' key={inference} onClick={this.handleInferenceLinkClick}>{inference}</a>
+      <a className='inferencePageTopTextInferenceLink' onClick={this.handleInferenceLinkClick}>{inference}</a>
     )
   }
 
@@ -93,13 +94,11 @@ export default class InferencesOverview extends React.Component {
   async handleSensitivitySelection (event) {
     let cats
     const key = event.target.value
+    const { comfortableCats, uncomfortableCats } = this.state
 
     this.setState({
       inferences: null
     })
-
-    const background = await browser.runtime.getBackgroundPage()
-    const sensitiveCats = (await import(/* webpackChunkName: "data/sensitiveCats" */'../../data/categories_comfort_list.json')).default
 
     if (key === 'all-sensitive') {
       // reset to default
@@ -112,11 +111,12 @@ export default class InferencesOverview extends React.Component {
       })
       return
     } else if (key === 'less-sensitive') {
-      cats = sensitiveCats.slice(-50).reverse() // 50 least sensitive categories
+      cats = comfortableCats
     } else if (key === 'more-sensitive') {
-      cats = sensitiveCats.slice(0, 50)
+      cats = uncomfortableCats
     }
 
+    const background = await browser.runtime.getBackgroundPage()
     const queryPromises = cats.map(cat => {
       return background.queryDatabase('getInferenceCount', {inference: cat})
     })
@@ -144,13 +144,11 @@ export default class InferencesOverview extends React.Component {
   async handlePopularitySelection (event) {
     let cats
     const key = event.target.value
+    const { popularCats, unpopularCats } = this.state
 
     this.setState({
       inferences: null
     })
-
-    const background = await browser.runtime.getBackgroundPage()
-    const popularCats = (await import(/* webpackChunkName: "data/sensitiveCats" */'../../data/interests/by_impressions.json')).default
 
     if (key === 'all-popular') {
       // reset to default
@@ -163,11 +161,12 @@ export default class InferencesOverview extends React.Component {
       })
       return
     } else if (key === 'less-popular') {
-      cats = popularCats.slice(-1500).reverse()
+      cats = unpopularCats
     } else if (key === 'more-popular') {
-      cats = popularCats.slice(0, 500)
+      cats = popularCats
     }
 
+    const background = await browser.runtime.getBackgroundPage()
     const queryPromises = cats.map(cat => {
       return background.queryDatabase('getInferenceCount', {inference: cat})
     })
@@ -230,13 +229,37 @@ export default class InferencesOverview extends React.Component {
     logging.logLoad(activityType, {})
     this.getInferences()
     this.getExample()
+    const interests = (await import(/* webpackChunkName: "data/sensitiveCats" */'../../data/interests/interests.json')).default
+    let comfortableCats = []
+    let uncomfortableCats = []
+    let popularCats = []
+    let unpopularCats = []
+    for (let i in interests) {
+      const interest = interests[i]
+      if (interest.impressions) {
+        if (interest.impressions >= 1000000000) {
+          popularCats.push(i)
+        } else if (interest.impressions <= 1000000000) {
+          unpopularCats.push(i)
+        }
+      }
+      if (interest.comfort) {
+        if (interest.comfort >= 1) {
+          comfortableCats.push(i)
+        } else if (interest.comfort <= -1) {
+          uncomfortableCats.push(i)
+        }
+      }
+    }
+    console.log( comfortableCats, uncomfortableCats, popularCats, unpopularCats )
+    this.setState({ comfortableCats, uncomfortableCats, popularCats, unpopularCats })
   }
 
   render () {
     let { inferences, selectedInference, numInferences } = this.state
     let { exampleSite, exampleInference, exampleTracker } = this.state
-    const ok = inferences && inferences.length > 0
-    const nodata = inferences && inferences.length === 0
+    const ok = numInferences > 0
+    const nodata = numInferences === 0
 
     const popularityTooltipText = (
       <div style={{width: 160}}>
@@ -244,32 +267,34 @@ export default class InferencesOverview extends React.Component {
       </div>
     )
 
-    const popularityTooltip = (
+    const popularityTooltip = (<span>
+      Popularity
       <Tooltip
         tip={popularityTooltipText}
         variant='inverse'
         placement='end'
       >
-        Popularity&nbsp;<IconInfo />
+        &nbsp;<IconInfo />
       </Tooltip>
-    )
+    </span>)
 
     const sensitivityTooltipText = (
       <div style={{width: 160}}>
-        Our research has found that there are certain interests that users are more comfortable with, and others that are more sensitive.
-        Toggle between these filters to show only interests that are more or less sensitive.
+        Our research has found that people are more or less comfortable with some interests being inferred about them.
+        Toggle between these filters to show only interests that other users are more or less comfortable with.
       </div>
     )
 
-    const sensitivityTooltip = (
+    const sensitivityTooltip = (<span>
+      Comfort
       <Tooltip
         tip={sensitivityTooltipText}
         variant='inverse'
         placement='end'
       >
-        Sensitivity&nbsp;<IconInfo />
+        &nbsp;<IconInfo />
       </Tooltip>
-    )
+    </span>)
 
     const recencyTooltipText = (
       <div style={{width: 160}}>
@@ -277,15 +302,16 @@ export default class InferencesOverview extends React.Component {
       </div>
     )
 
-    const recencyTooltip = (
+    const recencyTooltip = (<span>
+      Recency
       <Tooltip
         tip={recencyTooltipText}
         variant='inverse'
         placement='end'
       >
-        Recency&nbsp;<IconInfo />
+        &nbsp;<IconInfo />
       </Tooltip>
-    )
+    </span>)
 
     const filters = (
       <TTPanel
@@ -294,7 +320,7 @@ export default class InferencesOverview extends React.Component {
         margin='medium 0 0 0'
       >
         <Heading level='h3' margin='0 0 small 0'>Filters</Heading>
-        <div style={{marginRight: -200}}>
+        <div style={{marginRight: -200, overflow: 'hidden'}}>
           <RadioInputGroup
             name='date-filter'
             value={this.state.dateSelection}
@@ -332,8 +358,9 @@ export default class InferencesOverview extends React.Component {
             size='small'
           >
             <RadioInput label='All' value='all-sensitive' context='off' />
-            <RadioInput label='Less' value='less-sensitive' context='off' />
-            <RadioInput label='More' value='more-sensitive' context='off' />
+            {/* yes, this is what we want, less comfortable === more sensitive */}
+            <RadioInput label='Less' value='more-sensitive' context='off' />
+            <RadioInput label='More' value='less-sensitive' context='off' />
           </RadioInputGroup>
         </div>
       </TTPanel>
@@ -358,7 +385,7 @@ export default class InferencesOverview extends React.Component {
             </TTPanel>
           </GridCol>
         </GridRow>
-        {ok && <GridRow>
+        {<GridRow>
           <GridCol width={7}>
             <TTPanel padding='0 0 0 0'>
               <SizeMe>
