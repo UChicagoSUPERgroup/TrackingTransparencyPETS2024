@@ -356,9 +356,9 @@ export class Home extends React.Component {
             </Button>
           </PopoverTrigger>
           <PopoverContent>
-            <View padding="medium" display="block" as="form">
+            <View padding="medium" display="block" as="form" width={400}>
               {this.renderAppropCloseButton(1)}
-              <Text>You see an ad about dog clothes because you <br/>previously visited a blog about traveling with dogs. <br/>A third-party tracker on that blog guessed that <br/>you have an interest in dogs.</Text>
+              <Text>You might see an ad about dog clothes if you previously visited a blog about traveling with dogs. A third-party tracker on that blog could have guessed that you have an interest in dogs.</Text>
             </View>
           </PopoverContent>
         </Popover>
@@ -377,9 +377,9 @@ export class Home extends React.Component {
             </Button>
           </PopoverTrigger>
           <PopoverContent>
-            <View padding="medium" display="block" as="form">
+            <View padding="medium" display="block" as="form" width={400}>
               {this.renderAppropCloseButton(2)}
-              <Text>You want to know more about apples, <br/>the fruit, so you search for "apple". However, <br/>because you often search for technical topics, <br/>you see results for Apple, the company.</Text>
+              <Text>You want to know more about apples, the fruit, so you might search for "apple". However, if you often search for technical topics, you might see results for Apple, the tech company.</Text>
             </View>
           </PopoverContent>
         </Popover>
@@ -398,9 +398,9 @@ export class Home extends React.Component {
             </Button>
           </PopoverTrigger>
           <PopoverContent>
-            <View padding="medium" display="block" as="form">
+            <View padding="medium" display="block" as="form" width={400}>
               {this.renderAppropCloseButton(3)}
-              <Text>You see an ad for a horror movie, <br/>even though you don't like horror <br/>movies. However, you recently searched <br/>for sweaters and an advertiser decided <br/>that sweater fans should see this ad.</Text>
+              <Text>An advertiser might have decided to show ads for horror movies to people interested in sweaters. You recently searched for sweaters and jackets, so you see an ad for a horror movie even though you don't like horror movies.</Text>
             </View>
           </PopoverContent>
         </Popover>
