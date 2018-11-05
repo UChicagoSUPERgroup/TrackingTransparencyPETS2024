@@ -62,8 +62,8 @@ export default class InferenceDetailPage extends React.Component {
     let comfort = getComfortString(interestInfo)
 
     const introText = <Text>
-      {popularity && <p>Among other users, <strong>{this.inference}</strong> is a <strong>{popularity}</strong> interest for trackers to guess people are interested in.</p>}
-      {comfort && <p>Other users are often <strong>{comfort}</strong> with having their interest in this topic being used to personalize their web experience.</p>}
+      {popularity && <p><strong>{this.inference}</strong> is a <strong>{popularity}</strong> interest for trackers to guess people are interested in.</p>}
+      {comfort && <p>Other people are often <strong>{comfort}</strong> with having their interest in this topic being used to personalize their web experience.</p>}
       </Text>
 
     return (
