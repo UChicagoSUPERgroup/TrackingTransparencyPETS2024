@@ -73,7 +73,10 @@ export default class TrackerSummary extends React.Component {
             {!hideInferenceContent && <MetricsListItem label='Interests' value={inferences.length} />}
           </MetricsList>
           <Text>
-            <p>Our algorithms have determined that <strong>{tracker}</strong> was present on <strong>{numPages} pages</strong> across <strong>{topSites.length} sites</strong> that you visited. From those tracking encounters, they may have guessed that you are interested in <strong>{inferences.length} topics</strong>.</p>
+            <p>
+              <span>Our algorithms have determined that <strong>{tracker}</strong> was present on <strong>{numPages} pages</strong> across <strong>{topSites.length} sites</strong> that you visited.</span>
+              {!hideInferenceContent && <span>From those tracking encounters, they may have guessed that you are interested in <strong>{inferences.length} topics</strong>.</span>}
+            </p>
           </Text>
         </div>
       )

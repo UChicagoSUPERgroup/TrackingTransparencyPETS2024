@@ -4,13 +4,8 @@ import ReactDOM from 'react-dom'
 import theme from '@instructure/ui-themes/lib/canvas'
 
 import { themeOverrides } from '../colors'
+import Options from './OptionsUI'
 
-import {
-  SettingsPage
-} from '../dashboard/loadable'
+theme.use({ overrides: themeOverrides })
 
-theme.use({
-  overrides: themeOverrides
-})
-
-ReactDOM.render(<SettingsPage />, document.getElementById('root'))
+ReactDOM.render(<Options />, document.getElementById('root'))

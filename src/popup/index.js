@@ -49,6 +49,9 @@ class Popup extends React.Component {
     this.openDashboard = this.openDashboard.bind(this)
     this.loadID = this.loadID.bind(this)
     this.onClickSurvey2 = this.onClickSurvey2.bind(this)
+    this.onClickUninstall = this.onClickUninstall.bind(this)
+    this.renderSurvey2 = this.renderSurvey2.bind(this)
+    this.renderUninstall = this.renderUninstall.bind(this)
   }
 
   async getData () {
@@ -64,6 +67,12 @@ class Popup extends React.Component {
 
     const tabs = await browser.tabs.query({active: true, currentWindow: true})
     const tab = tabs[0]
+    if (tab.url === 'https://super.cs.uchicago.edu/trackingtransparency/survey2.html') {
+      this.setState({ showSurvey2: true })
+    }
+    if (tab.url === 'https://super.cs.uchicago.edu/trackingtransparency/uninstall.html') {
+      this.setState({ showUninstall: true })
+    }
     // get tab data with trackers and stuff here
     const tabData = await background.getTabData(tab.id)
 
@@ -124,11 +133,12 @@ class Popup extends React.Component {
     and sendPopupData will not run
     */
     await this.getData()
-    const store = await browser.storage.local.get(['options', 'usageStatCondition'])
+    const store = await browser.storage.local.get(['options', 'usageStatCondition', 'startTS'])
     const options = store.options
     const usageStatCondition = store.usageStatCondition === true || store.usageStatCondition === 'true'
+    const startTS = store.startTS
     const okToLoad = true
-    this.setState({ ...options, okToLoad, usageStatCondition })
+    this.setState({ ...options, okToLoad, usageStatCondition, startTS })
 
     logging.logPopupActions('open popup', 'extension icon')
 
@@ -144,16 +154,53 @@ class Popup extends React.Component {
 
   onClickSurvey2 () {
     let id = this.state.id
+    let condition = id.slice(0,1)
     const survey2link = {
       active: true,
-      url: 'https://umdsurvey.umd.edu/jfe/form/SV_552e1c5EZKv3yMR?id=' + id
+      url: 'https://umdsurvey.umd.edu/jfe/form/SV_552e1c5EZKv3yMR?id=' + id + '&cndt=' + condition
     }
     browser.tabs.create(survey2link)
   }
 
+  async onClickUninstall() {
+    logging.logPopupActions('click uninstall button', 'popup uninstall button')
+    const uninstalling = browser.management.uninstallSelf({
+      showConfirmDialog: true
+    })
+    uninstalling.then(null, () => {
+      logging.logPopupActions('uninstall failed', 'popup uninstall button')
+    })
+  }
+
+  renderSurvey2 () {
+    return (
+      <div>
+        <Alert variant='success'>
+          Survey 2 is now ready. When you are ready to take it, click the button below. The survey will take about 20 minutes, and after completion you will receive a $7.00 bonus through MTurk.<br/><br/>
+          <Button variant='success' onClick={this.onClickSurvey2}>
+            <Text>Take Survey 2</Text>
+          </Button>
+        </Alert>
+      </div>
+    )
+  }
+
+  renderUninstall () {
+    return (
+      <div style={{width: 450}}>
+        <Alert variant='error'>
+          Thank you for participating in our study. Click the button below to uninstall the extension.<br/><br/>
+          <Button variant='danger' onClick={this.onClickUninstall}>
+            <Text>Uninstall</Text>
+          </Button>
+        </Alert>
+      </div>
+    )
+  }
+
   render () {
     const {
-      okToLoad, selectedIndex,
+      okToLoad, selectedIndex, showUninstall, showSurvey2,
       numTrackers, numInferences, numPages, pageTitle, topTracker, topTrackerCount, tabData,
       showTrackerContent, showInferenceContent, showHistoryContent, showDashboard
     } = this.state
@@ -170,13 +217,11 @@ class Popup extends React.Component {
         )
     }
 
+    const logo = <img src='/icons/logo.svg' height='24px' />
+
     return (<div style={{width: 450}}>
-      <Alert variant='info'>
-        Thank you for keeping our extension installed. Survey 2 is now ready.<br/><br/>
-        <Button variant='primary' onClick={this.onClickSurvey2}>
-          <Text>Take Survey 2</Text>
-        </Button>
-      </Alert>
+      {showUninstall && this.renderUninstall()}
+      {showSurvey2 && this.renderSurvey2()}
 
       <TabList
         variant='minimal'
@@ -230,7 +275,7 @@ class Popup extends React.Component {
       </div> */}
       {showDashboard &&
       <View as='div' textAlign='center'>
-        <Button onClick={this.openDashboard} margin='small'>Show me more info about my web browsing</Button>
+        <Button onClick={this.openDashboard} variant='primary' margin='small'>Open {EXT.NAME} dashboard</Button>
       </View>
       }
     </div>)

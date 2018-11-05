@@ -16,7 +16,7 @@ export async function hasTrackerBlocker () {
   if (blockers.length > 0) {
     return true
   }
-  if (browser.privacy.trackingProtectionMode) {
+  if (browser.privacy.websites.trackingProtectionMode) {
     const t = await browser.privacy.websites.trackingProtectionMode.get({})
     if (t === 'always') {
       return true

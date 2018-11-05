@@ -57,5 +57,7 @@
         "38": "icons/logo38.png",
         "48": "icons/logo48.png"
     },
-    "incognito": "not_allowed"
+    "options_ui": {
+      "page": "dist/options.html"
+    }
 }
