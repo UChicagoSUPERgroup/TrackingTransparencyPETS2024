@@ -22,6 +22,7 @@ import { themeOverrides } from '../colors'
 import instrumentation from '../background/instrumentation';
 import loggingDefault from '../options/loggingDefault'
 import { generateID, saveID } from '../options/userstudy'
+import tt from '../helpers'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCheckSquare, faSquare } from '@fortawesome/free-solid-svg-icons'
@@ -69,6 +70,7 @@ class WelcomePage extends React.Component {
     const id = this.state.id
     await loggingDefault.setLoggingDefault()
     await instrumentation.firstInstall()
+    await tt.sleep(100)
     window.location.href = 'https://umdsurvey.umd.edu/jfe/form/SV_6ywfM4gHdHX8UJv?id=' + id
   }
 

@@ -19,7 +19,7 @@ export async function hasTrackerBlocker () {
   }
   if (browser.privacy.websites.trackingProtectionMode) {
     const t = await browser.privacy.websites.trackingProtectionMode.get({})
-    if (t === 'always') {
+    if (t.value === 'always') {
       return true
     }
   }
