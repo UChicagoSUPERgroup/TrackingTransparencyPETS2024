@@ -99,15 +99,17 @@ export default class Options extends React.Component {
     return (
       <div>
         {alert && <Text><strong>{alert}</strong></Text>}
-        <Heading level='h2' margin='medium 0 medium 0'>Display options</Heading>
-        <Checkbox
-          value='showOverlay'
-          label='Show in-page overlay'
-          checked={this.state.showOverlay}
-          onChange={this.checkboxChangeHandler}
-          variant='toggle'
-          layout='inline'
-        />
+        {id && id.split('-')[0] === '4' && <div>
+          <Heading level='h2' margin='medium 0 medium 0'>Display options</Heading>
+          <Checkbox
+            value='showOverlay'
+            label='Show in-page overlay'
+            checked={this.state.showOverlay}
+            onChange={this.checkboxChangeHandler}
+            variant='toggle'
+            layout='inline'
+          />
+        </div>}
         <Heading level='h2' margin='medium 0 medium 0'>Danger zone</Heading>
         {this.resetInfo()}
         {this.optOutInfo()}
