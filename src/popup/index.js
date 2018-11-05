@@ -50,7 +50,7 @@ class Popup extends React.Component {
     this.loadID = this.loadID.bind(this)
     this.onClickSurvey2 = this.onClickSurvey2.bind(this)
     this.onClickUninstall = this.onClickUninstall.bind(this)
-    this.maybeSurvey2 = this.maybeSurvey2.bind(this)
+    this.renderSurvey2 = this.renderSurvey2.bind(this)
     this.renderUninstall = this.renderUninstall.bind(this)
   }
 
@@ -172,28 +172,17 @@ class Popup extends React.Component {
     })
   }
 
-  maybeSurvey2 () {
-    const { startTS, showSurvey2 } = this.state
-    if (!startTS) {
-      return null
-    }
-
-    const now = Date.now()
-    const day = 24 * 60 * 60 * 1000
-    const timePassed = now > startTS + 7 * day
-
-    if (timePassed || showSurvey2) {
-      return (
-        <div>
-          <Alert variant='success'>
-            Survey 2 is now ready. When you are ready to take it, click the button below. The survey will take about 20 minutes, and after completion you will receive a $7.00 bonus through MTurk.<br/><br/>
-            <Button variant='success' onClick={this.onClickSurvey2}>
-              <Text>Take Survey 2</Text>
-            </Button>
-          </Alert>
-        </div>
-      )
-    }
+  renderSurvey2 () {
+    return (
+      <div>
+        <Alert variant='success'>
+          Survey 2 is now ready. When you are ready to take it, click the button below. The survey will take about 20 minutes, and after completion you will receive a $7.00 bonus through MTurk.<br/><br/>
+          <Button variant='success' onClick={this.onClickSurvey2}>
+            <Text>Take Survey 2</Text>
+          </Button>
+        </Alert>
+      </div>
+    )
   }
 
   renderUninstall () {
@@ -211,7 +200,7 @@ class Popup extends React.Component {
 
   render () {
     const {
-      okToLoad, selectedIndex, showUninstall,
+      okToLoad, selectedIndex, showUninstall, showSurvey2,
       numTrackers, numInferences, numPages, pageTitle, topTracker, topTrackerCount, tabData,
       showTrackerContent, showInferenceContent, showHistoryContent, showDashboard
     } = this.state
@@ -232,7 +221,7 @@ class Popup extends React.Component {
 
     return (<div style={{width: 450}}>
       {showUninstall && this.renderUninstall()}
-      {this.maybeSurvey2()}
+      {showSurvey2 && this.renderSurvey2()}
 
       <TabList
         variant='minimal'
