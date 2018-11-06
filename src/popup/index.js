@@ -237,7 +237,7 @@ class Popup extends React.Component {
               <p>You are on "{pageTitle}".</p>
               }
               {showInferenceContent && inference &&
-              <p>Our algorithms have determined that this page is likely about <strong>{inference}</strong>.</p>
+              <p>This page may be about <strong>{inference}</strong>.</p>
               }
               {showTrackerContent && trackers &&
               <p>There {areTrackers} <strong>{trackers.length} {pluralTrackers}</strong> on this page.&nbsp;
@@ -248,9 +248,9 @@ class Popup extends React.Component {
           </View>
           {showMetrics && <View as='div' borderWidth='0 0 small 0' padding='medium 0 medium 0'>
             <MetricsList theme={{lineHeight: 2}}>
-              {showTrackerContent && <MetricsListItem value={numTrackers} label={<span><FontAwesomeIcon icon='eye' /> Trackers you've seen</span>} />}
-              {showHistoryContent && <MetricsListItem value={numPages} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages you've visited</span>} />}
-              {showInferenceContent && <MetricsListItem value={numInferences} label={<span><FontAwesomeIcon icon='thumbs-up' /> Your interests</span>} />}
+              {showTrackerContent && <MetricsListItem value={numTrackers} label={<span><FontAwesomeIcon icon='eye' /> Trackers encountered</span>} />}
+              {showHistoryContent && <MetricsListItem value={numPages} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages visited</span>} />}
+              {showInferenceContent && <MetricsListItem value={numInferences} label={<span><FontAwesomeIcon icon='thumbs-up' /> Potential interests</span>} />}
             </MetricsList>
           </View>}
         </TabPanel>

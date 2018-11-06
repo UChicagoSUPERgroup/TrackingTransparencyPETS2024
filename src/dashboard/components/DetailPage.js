@@ -179,14 +179,14 @@ export default class DetailPage extends React.Component {
       return (
         <div>
           <Heading level='h2'>Based on your browsing, what would <em>{title}</em> think your interests are?</Heading>
-           <Text><br/>Using a machine to assign categories to pages you visit, {title} could have guessed that you were interested in <strong>{numInferences} {topicPlurality}</strong>.</Text>
+           <Text><br/>Using a machine to assign categories to pages you visit, {title} may have guessed that you are interested in <strong>{numInferences} {topicPlurality}</strong>.</Text>
         </div>
       )
     } else if (pageType=="site") {
       return (
         <div>
           <Heading level='h2'>Based on your visits to <em>{title}</em>, what would a tracker think your interests are?</Heading>
-          <Text><br/>Using a machine to assign categories to pages you visit, trackers on {title} could have guessed that you were interested in <strong>{numInferences} {topicPlurality}</strong>.</Text>
+          <Text><br/>Using a machine to assign categories to pages you visit, trackers on {title} may have guessed that you are interested in <strong>{numInferences} {topicPlurality}</strong>.</Text>
         </div>
       )
     }

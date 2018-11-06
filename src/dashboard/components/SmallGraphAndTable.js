@@ -45,16 +45,16 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
   switch (pageType) {
     case "tracker":
       head = <Heading level='h2'>On which sites did <em>{title}</em> track you?</Heading>
-      text = <Text><br/>{title} may have been tracking you on <strong>{data.length} {sitePlurality}</strong>.</Text>
+      text = <Text><br/>{title} has tracked you on <strong>{data.length} {sitePlurality}</strong>.</Text>
       break
     case "site":
       head = <Heading level='h2'>Which trackers tracked you on <em>{title}</em>?</Heading>
-      text = <Text><br/>On {title}, you may have been tracked by <strong>{data.length} {trackerPlurality}</strong>.</Text>
+      text = <Text><br/>On {title}, you have been tracked by <strong>{data.length} {trackerPlurality}</strong>.</Text>
       break
     case "inference":
       if (c1Header=="Sites") {
         head = <Heading level='h2'>Which sites were about <em>{title}</em>?</Heading>
-        text = <Text><br/>You visited <strong>{data.length} {sitePlurality}</strong> that may have been about {title}, which trackers may have guessed is an interest of yours.</Text>
+        text = <Text><br/>You visited <strong>{data.length} {sitePlurality}</strong> that may have been about {title}. Therefore, trackers may have guessed this is relevant to you.</Text>
       } else if (c1Header=="Trackers"){
         head = <Heading level='h2'>Which trackers might think you are interested in <em>{title}</em>?</Heading>
         text = <Text><br/><strong>{data.length} {trackerPlurality}</strong> may have guessed that you are interested in {title}.</Text>

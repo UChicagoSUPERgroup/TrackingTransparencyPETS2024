@@ -370,16 +370,16 @@ export default class InferencesOverview extends React.Component {
       <Grid startAt='medium'>
         <GridRow>
           <GridCol>
-            <Heading level='h1'><FontAwesomeIcon icon='thumbs-up' /><strong>&nbsp; What do they think you like?</strong></Heading>
+            <Heading level='h1'><FontAwesomeIcon icon='thumbs-up' /><strong>&nbsp; What interests might they think you have?</strong></Heading>
           </GridCol>
         </GridRow>
         <GridRow>
           <GridCol>
             <TTPanel>
               <Text>
-                <p>Trackers collect information about the pages you visit, and use this information in order to make guesses about topics you might like. We call these topics <em>interests</em>. These interests are then used to show you targeted ads, to do web analytics, and more. Our algorithms have identified <strong>{numInferences} topics</strong> that trackers might have guessed you are interested in.</p>
-                {exampleSite && <p>You recently visited <Link href={'#/sites/'+exampleSite}>{exampleSite}</Link>, which our algorithms think is about {exampleInference}. The tracker, <Link href={'#/trackers/'+exampleTracker}>{exampleTracker}</Link>, was tracking your browsing activity and may have guessed that you are interested in {exampleInference}.</p>}
-                {ok && <p>This chart shows some topics that trackers think you might be interested in, based on your browsing activity. Click a slice of the chart to see more details.</p>}
+                <p>Trackers collect information about the pages you visit and use this information to identify topics, or <em>interests</em>, that might be relevant to you. These interests are then used to target ads to you and personalize what you see online. Companies don't usually reveal how they determine your potential interests. Based on the pages you visited, {EXT.NAME}'s simulations have identified <strong>{numInferences} topics</strong> trackers might think are relevant to you.</p>
+                {exampleSite && <p>For example, you recently visited <Link href={'#/sites/'+exampleSite}>{exampleSite}</Link>, which {EXT.NAME} has determined may be about {exampleInference}.</p>}
+                {ok && <p>The chart below shows the interests suggested by your browsing activity. Click a slice of the chart to see more details.</p>}
                 {nodata && <p>Return to this page after viewing a few sites to see what may have been inferred about your interests.</p>}
               </Text>
             </TTPanel>
