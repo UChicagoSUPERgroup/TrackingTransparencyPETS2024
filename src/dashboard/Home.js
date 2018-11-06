@@ -243,14 +243,14 @@ export class Home extends React.Component {
           </GridRow>
           <GridRow>
             <GridCol width={3} textAlign='center'>
-              <p>When you browse online, your online activity can be tracked by analytics and ad companies.<br/><br/>We call these companies <em>trackers</em>.</p>
+              <p>When you browse online, your online activity can be tracked by ad networks and analytics companies.<br/><br/>We call these <em>trackers</em>.</p>
             </GridCol>
             <GridCol width={3} textAlign='center'>
               <p>These companies track your browsing to make guesses about what topics you might be interested in. <br/><br/>We call these topics <em>interests</em>.</p>
             </GridCol>
             <GridCol width={3} textAlign='center'>
               <div></div>
-              <p>The interests that trackers think you have can change your experiences online.</p>
+              <p>Companies can personalize your online experience based on these interests.<br /><em>Click on the circles above to learn more.</em></p>
             </GridCol>
           </GridRow>
 
@@ -482,9 +482,9 @@ export class Home extends React.Component {
           {!hideHistoryContent && <GridCol width={6}>
             <TTPanel>
               <MetricsList theme={{lineHeight: 2}}>
-                {!hideTrackerContent && <MetricsListItem value={numTrackers} label={<span><FontAwesomeIcon icon='eye' /> Trackers you've seen</span>}/>}
-                <MetricsListItem value={numPages} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages you've visited</span>}/>
-                {!hideInferenceContent && <MetricsListItem value={numInferences} label={<span><FontAwesomeIcon icon='thumbs-up' /> Your interests</span>} />}
+                {!hideTrackerContent && <MetricsListItem value={numTrackers} label={<span><FontAwesomeIcon icon='eye' /> Trackers encountered</span>}/>}
+                <MetricsListItem value={numPages} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages visited</span>}/>
+                {!hideInferenceContent && <MetricsListItem value={numInferences} label={<span><FontAwesomeIcon icon='thumbs-up' /> Potential interests</span>} />}
               </MetricsList>
             </TTPanel>
 

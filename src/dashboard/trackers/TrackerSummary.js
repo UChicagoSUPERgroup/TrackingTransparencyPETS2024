@@ -74,8 +74,8 @@ export default class TrackerSummary extends React.Component {
           </MetricsList>
           <Text>
             <p>
-              <span>Our algorithms have determined that <strong>{tracker}</strong> was present on <strong>{numPages} pages</strong> across <strong>{topSites.length} sites</strong> that you visited.</span>
-              {!hideInferenceContent && <span>From those tracking encounters, they may have guessed that you are interested in <strong>{inferences.length} topics</strong>.</span>}
+              <span><strong>{tracker}</strong> was present on <strong>{numPages} pages</strong> across <strong>{topSites.length} sites</strong> that you visited since installing {EXT.NAME}.</span>
+              {!hideInferenceContent && <span> From those tracking encounters, they may have guessed that you are interested in <strong>{inferences.length} topics</strong>.</span>}
             </p>
           </Text>
         </div>

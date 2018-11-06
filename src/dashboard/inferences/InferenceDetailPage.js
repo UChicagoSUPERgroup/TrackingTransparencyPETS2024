@@ -62,7 +62,7 @@ export default class InferenceDetailPage extends React.Component {
     let comfort = getComfortString(interestInfo)
 
     const introText = <Text>
-      {popularity && <p><strong>{this.inference}</strong> is a <strong>{popularity}</strong> interest for trackers to guess people are interested in.</p>}
+      {popularity && <p><strong>{this.inference}</strong> is a <strong>{popularity}</strong> interest.</p>}
       {comfort && <p>Other people are often <strong>{comfort}</strong> with having their interest in this topic being used to personalize their web experience.</p>}
       </Text>
 
@@ -80,7 +80,7 @@ export default class InferenceDetailPage extends React.Component {
         pageTableTitle={'What pages have you visited about ' + this.inference + '?'}
         pageTableSubtitle={'Pages that may have been about ' + this.inference}
         timeChartTitle={'When have you visited pages about ' + this.inference + '?'}
-        timeChartSubtitle={'This graph shows the number of pages you visited over time that are likely about ' + this.inference + '.'}
+        timeChartSubtitle={'This graph shows the number of pages you visited over time that may be about ' + this.inference + '.'}
       />
     )
   }

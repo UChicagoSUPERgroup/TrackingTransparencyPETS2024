@@ -13,7 +13,7 @@ const urlComponentMapping = {
   trackers: 'Trackers',
   activity: 'Activity',
   lightbeam: 'Network',
-  info: 'About',
+  about: 'About',
   settings: 'Settings',
   takeaction: 'Take Action',
   debug: 'Debug',

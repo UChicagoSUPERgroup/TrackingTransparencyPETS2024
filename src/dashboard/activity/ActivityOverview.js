@@ -94,11 +94,10 @@ export default class ActivityOverview extends React.Component {
         <TTPanel margin='medium 0 medium 0'>
           <Text>
             <p>
-                Trackers are able to track your browsing activity across many different sites and could create a profile of your interests, based on when you browsed online.
+              <span>Trackers are able to track your browsing activity across many sites and profile your interests.</span>
+              {ok && <span>
+                The scatterplot shows how many pages you visited for each hour of the last week. The bigger the point, the more likely you were tracked. Click on a point to learn more about the tracking that took place.</span>}
             </p>
-            {ok && <p>
-                The scatterplot shows how many pages you visited for each hour of the last week. The bigger the point, the more likely you were tracked. Click on a point to learn more about the tracking that took place.
-            </p>}
             {nodata && <p>Come back after visiting a few pages to see your activity.</p>}
           </Text>
         </TTPanel>
