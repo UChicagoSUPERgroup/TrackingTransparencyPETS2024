@@ -668,11 +668,11 @@ async function lightbeam (args) {
   const domains = (await getDomains({startTime: args.afterDate}))
 
   await Promise.all(domains.map(async (domain) => {
-    const trackers = (await getTrackersByDomain({domain: domain, afterDate: args.afterDate}))
-      .map(x => {
-        const company = x.name
-        return trackerData[company].domain
-      })
+    const q = (await getTrackersByDomain({domain: domain, afterDate: args.afterDate}))
+    const trackers = q.map(x => {
+      const company = x.name
+      return trackerData[company].site
+    })
 
     if (websites[domain]) {
       websites[domain].firstParty = true
