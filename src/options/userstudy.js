@@ -8,6 +8,8 @@ async function getOptions () {
   return options
 }
 
+const dev = (process.env.NODE_ENV === 'development')
+
 export async function generateID (cond) {
   /* eslint-disable no-undef */
   let condition
@@ -22,7 +24,12 @@ export async function generateID (cond) {
     condition = Math.ceil(Math.random() * 6)
   }
   const rand = Math.random().toString(16).substr(2,12)
-  const id = condition.toString() + '-' + v + br + '-' + rand
+  let id
+  if (dev) {
+    id = 'dev-' + condition.toString() + '-' + v + br + '-' + rand
+  } else {
+    id = condition.toString() + '-' + v + br + '-' + rand
+  }
   return id
   /* eslint-enable no-undef */
 }
