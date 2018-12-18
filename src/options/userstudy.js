@@ -26,7 +26,7 @@ export async function generateID (cond) {
   const rand = Math.random().toString(16).substr(2,12)
   let id
   if (dev) {
-    id = 'dev-' + condition.toString() + '-' + v + br + '-' + rand
+    id = condition.toString() + '-' + v + br + '-' + rand + '-dev'
   } else {
     id = condition.toString() + '-' + v + br + '-' + rand
   }
