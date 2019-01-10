@@ -15,7 +15,6 @@ import IconSettings from '@instructure/ui-icons/lib/Solid/IconSettings'
 
 import TTBreadcrumbs from './components/TTBreadcrumbs'
 import {Home, WaitingDataHome} from './Home'
-import logging from './dashboardLogging'
 
 import {
   Trackers,
@@ -129,7 +128,7 @@ The code for logclick logs ALL the click in every single page.
             {/* <NavLink to="/takeaction"  title="Take Action"/> */}
           </Nav>
           <Nav pullRight>
-            {!tt.production && <NavLink to='/debug' title='Debug' />}
+            {!EXT.DEBUG && <NavLink to='/debug' title='Debug' />}
             <NavLink to='/about' title='About' />
             <NavLink to='/settings' title={settings} />
           </Nav>

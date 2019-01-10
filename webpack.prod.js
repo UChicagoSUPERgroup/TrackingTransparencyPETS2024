@@ -24,9 +24,10 @@ module.exports = merge(common, {
       // })
     ]
   },
-  // plugins: [
-  //   new webpack.DefinePlugin({
-  //     USERSTUDY_CONDITION: 6
-  //   })
-  // ]
+  plugins: [
+    new webpack.DefinePlugin({
+      USERSTUDY_CONDITION: 6,
+      'EXT.DEBUG': true
+    })
+  ]
 })
