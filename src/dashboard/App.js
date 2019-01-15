@@ -107,7 +107,7 @@ class App extends Component {
             {/* <NavLink to="/takeaction"  title="Take Action"/> */}
           </Nav>
           <Nav pullRight>
-            {!EXT.DEBUG && <NavLink to='/debug' title='Debug' />}
+            {EXT.DEBUG && <NavLink to='/debug' title='Debug' />}
             <NavLink to='/about' title='About' />
             <NavLink to='/settings' title={settings} />
           </Nav>
