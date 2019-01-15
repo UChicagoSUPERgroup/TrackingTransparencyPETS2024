@@ -28,7 +28,6 @@ import {
   // TakeActionPage
 } from './loadable'
 
-import tt from '../helpers'
 import { themeOverrides } from '../colors'
 
 import '../styles/common.css'
@@ -67,38 +66,18 @@ class App extends Component {
     this.state = {
       okToLoad: false
     }
-
-    // this.logLoad = this.logLoad.bind(this);
-    // this.logLeave = this.logLeave.bind(this);
-    // this.logClick = this.logClick.bind(this);
   }
 
-  /** ************ BEGIN Instrumentation code *******************
-The code for logclick logs ALL the click in every single page.
-*************/
-
   async componentWillUnmount () {
-    // window.removeEventListener("beforeunload", this.logLeave)
-    // window.removeEventListener("unload", this.logLeave)
-    // browser.tabs.onRemoved.removeListener(this.logLeave)
-    window.removeEventListener('click', logging.logDashboardClick)
+    
   }
 
   async componentDidMount () {
     const options = (await browser.storage.local.get('options')).options
     const okToLoad = true
     this.setState({ ...options, okToLoad })
-    logging.logStartDashboardPage()
-    window.addEventListener('click', logging.logDashboardClick, true)
-
-    // window.addEventListener("unload", this.logLeave, true);
-    // browser.tabs.onRemoved.addListener(this.logLeave)
-    // window.addEventListener("beforeunload", this.logLeave, true);
-    // window.addEventListener("click", this.logClick, true);
-    // window.onbeforeunload = function(){alert('finally');}
   }
 
-  /** ************ END Instrumentation code ********************************/
 
   render () {
     const { okToLoad } = this.state

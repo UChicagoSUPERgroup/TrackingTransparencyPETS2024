@@ -1,9 +1,10 @@
-import { queryDatabase } from './worker_manager';
-import { hasTrackerBlocker } from './adblockChecking'
-import loggingDefault from '../options/loggingDefault'
+// import { queryDatabase } from './worker_manager';
+// import { hasTrackerBlocker } from './adblockChecking'
+// import loggingDefault from '../options/loggingDefault'
 
 /// ///////// -- first set the uuid and the usage flag if they are not set
 async function setUserParams () {
+  /*
   // check if the value is set
   let userParams = await browser.storage.local.get({
     usageStatCondition: 'false',
@@ -81,11 +82,13 @@ async function setUserParams () {
 }
 
 async function getUserParams () {
+  /*
   let userParams = await browser.storage.local.get({
     usageStatCondition: 'no more tears',
     userId: 'no more tears',
     startTS: 0
   });
+  */
   // console.log('User parameters: ', userParams.usageStatCondition, userParams.userId, userParams.startTS)
 }
 
@@ -113,13 +116,16 @@ async function hashit (data) {
 }
 
 async function hashit_salt (data) {
+  /*
   let salt = await browser.storage.local.get({salt: 'salt'});
   const hash = await sha256(String(data) + String(salt.salt));
   return hash;
+  */
 }
 
 // now write function to send database
 async function sendDb () {
+  /*
   let userParams = await browser.storage.local.get({
     usageStatCondition: 'no monster',
     userId: 'no monster',
@@ -157,11 +163,13 @@ async function sendDb () {
   // xhr.setRequestHeader("Content-Type", "application/json")
   xhr.send(data);
   // return true
+  */
 }
 
 // now write fucntion to send activity data to server
 
 function logData (activityType, timestamp, userId, startTS, activityData) {
+  /*
   var data = new FormData();
   data.append('activityType', activityType);
   data.append('timestamp', timestamp);
@@ -177,11 +185,13 @@ function logData (activityType, timestamp, userId, startTS, activityData) {
   xhr.open('post', 'https://super.cs.uchicago.edu/trackingtransparency/activitylog.php', true);
   // xhr.setRequestHeader("Content-Type", "application/json")
   xhr.send(data);
+  */
 }
 
 /// function to detect if the window/tabs are closed
 
 async function logLeave (tabId, removeInfo) {
+  /*
   // console.log('In the log leave page ', tabId, removeInfo);
   // logData('hehe', 0, 0, 0, {});
   let userParams = await browser.storage.local.get({
@@ -209,6 +219,7 @@ async function logLeave (tabId, removeInfo) {
     logData(activityType, timestamp, userId, startTS, activityData);
   }
   await browser.storage.local.remove([x]);
+  */
 }
 
 async function firstInstall () {
@@ -216,23 +227,23 @@ async function firstInstall () {
   // let sendUsage=true; //flag to send the usage data
   // the usage flag in the userstudy.js named as usageStatCondition
   // console.log('Now at first install');
-  await setUserParams();
+  // await setUserParams();
 
   // just send the db once when installed, it would be mostly empty
-  await sendDb();
+  // await sendDb();
 }
 
 function setup () {
   /** *********** Detecting if tab or window is closed ************/
-  browser.tabs.onRemoved.addListener(logLeave)
+  // browser.tabs.onRemoved.addListener(logLeave)
 
   // for running in debugger and in external functions
   window.sendDb = sendDb;
   window.setUserParams = setUserParams;
   window.logData = logData;
   window.getUserParams = getUserParams;
-  window.hashit = hashit
-  window.hashit_salt = hashit_salt
 }
+window.hashit = hashit
+window.hashit_salt = hashit_salt
 
 export default {firstInstall, setup, hashit, hashit_salt, sendDb}

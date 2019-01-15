@@ -4,10 +4,10 @@ import tldjs from 'tldjs';
 
 import {trackersWorker, databaseWorker, inferencingWorker, queryDatabase} from './worker_manager';
 import overlayManager from './overlay_manager';
-import instrumentation from './instrumentation';
-import adblockChecking from './adblockChecking'
+// import instrumentation from './instrumentation';
+// import adblockChecking from './adblockChecking'
 import { getOption } from '../helpers';
-import loggingDefault from '../options/loggingDefault'
+// import loggingDefault from '../options/loggingDefault'
 
 let tabData = {};
 
@@ -33,10 +33,10 @@ browser.runtime.onInstalled.addListener(onInstall)
 //loggingDefault.setLoggingDefault();
 
 // set up instrumentation
-instrumentation.setup()
+// instrumentation.setup()
 
-async function hashit(data){return instrumentation.hashit(data)}
-async function hashit_salt(data){return instrumentation.hashit_salt(data)}
+// async function hashit(data){return instrumentation.hashit(data)}
+// async function hashit_salt(data){return instrumentation.hashit_salt(data)}
 
 /* WEB REQUEST/TAB LISTENERS */
 /* ========================= */
@@ -453,48 +453,48 @@ function runtimeOnMessage (message, sender, sendResponse) {
   }
 }
 
-async function maybeDashboardNudge () {
-  const store = await browser.storage.local.get(['startTS', 'lastNudgeShown'])
-  const startTS = store.startTS || undefined
-  const lastNudgeShown = store.lastNudgeShown || 0
-  if (!startTS) {
-    return
-  }
-  const now = Date.now()
-  const day = 24 * 60 * 60 * 1000
-  // const day = 20000
-  if (now > startTS + 4 * day && now < startTS + 5 * day) {
-    // day 4
-    if (lastNudgeShown < 4) {
-      await dashboardNudgeNotification()
-      browser.browserAction.setBadgeText({text: '*'})
-      browser.storage.local.set({'lastNudgeShown': 4})
-    }
-  } else if (now > startTS + 5 * day && now < startTS + 6 * day) {
-    // day 5
-    if (lastNudgeShown < 5) {
-      await dashboardNudgeNotification()
-      browser.browserAction.setBadgeText({text: '*'})
-      browser.storage.local.set({'lastNudgeShown': 5})
-    }
-  } else if (now > startTS + 6 * day && now < startTS + 7 * day) {
-    // day 6
-    if (lastNudgeShown < 6) {
-      await dashboardNudgeNotification()
-      browser.browserAction.setBadgeText({text: '*'})
-      browser.storage.local.set({'lastNudgeShown': 6})
-    }
-  }
-}
+// async function maybeDashboardNudge () {
+//   const store = await browser.storage.local.get(['startTS', 'lastNudgeShown'])
+//   const startTS = store.startTS || undefined
+//   const lastNudgeShown = store.lastNudgeShown || 0
+//   if (!startTS) {
+//     return
+//   }
+//   const now = Date.now()
+//   const day = 24 * 60 * 60 * 1000
+//   // const day = 20000
+//   if (now > startTS + 4 * day && now < startTS + 5 * day) {
+//     // day 4
+//     if (lastNudgeShown < 4) {
+//       await dashboardNudgeNotification()
+//       browser.browserAction.setBadgeText({text: '*'})
+//       browser.storage.local.set({'lastNudgeShown': 4})
+//     }
+//   } else if (now > startTS + 5 * day && now < startTS + 6 * day) {
+//     // day 5
+//     if (lastNudgeShown < 5) {
+//       await dashboardNudgeNotification()
+//       browser.browserAction.setBadgeText({text: '*'})
+//       browser.storage.local.set({'lastNudgeShown': 5})
+//     }
+//   } else if (now > startTS + 6 * day && now < startTS + 7 * day) {
+//     // day 6
+//     if (lastNudgeShown < 6) {
+//       await dashboardNudgeNotification()
+//       browser.browserAction.setBadgeText({text: '*'})
+//       browser.storage.local.set({'lastNudgeShown': 6})
+//     }
+//   }
+// }
 
-async function dashboardNudgeNotification () {
-  await browser.notifications.create({
-    type: 'basic',
-    title: EXT.NAME,
-    message: 'Click to learn more about your web browsing!',
-    iconUrl: '/icons/logo.svg'
-  })
-}
+// async function dashboardNudgeNotification () {
+//   await browser.notifications.create({
+//     type: 'basic',
+//     title: EXT.NAME,
+//     message: 'Click to learn more about your web browsing!',
+//     iconUrl: '/icons/logo.svg'
+//   })
+// }
 
 async function openDashboard () {
   const dashboardData = {
@@ -504,15 +504,15 @@ async function openDashboard () {
   await browser.tabs.create(dashboardData)
 }
 
-browser.notifications.onClicked.addListener(openDashboard)
+// browser.notifications.onClicked.addListener(openDashboard)
 
-browser.alarms.create('lfDb', {delayInMinutes: 10, periodInMinutes: 60})
-browser.alarms.create('dashboard-nudge', {delayInMinutes: 1, periodInMinutes: 10})
+// browser.alarms.create('lfDb', {delayInMinutes: 10, periodInMinutes: 60})
+// browser.alarms.create('dashboard-nudge', {delayInMinutes: 1, periodInMinutes: 10})
 
-browser.alarms.onAlarm.addListener(async (alarm) => {
-  if (alarm.name === 'lfdb') {
-    await instrumentation.sendDb();
-  } else if (alarm.name === 'dashboard-nudge') {
-    maybeDashboardNudge()
-  }
-})
+// browser.alarms.onAlarm.addListener(async (alarm) => {
+//   if (alarm.name === 'lfdb') {
+//     await instrumentation.sendDb();
+//   } else if (alarm.name === 'dashboard-nudge') {
+//     maybeDashboardNudge()
+//   }
+// })
