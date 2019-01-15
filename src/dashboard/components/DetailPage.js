@@ -20,7 +20,6 @@ import SmallGraphAndTable from '../components/SmallGraphAndTable'
 import TTPanel from '../components/TTPanel'
 import TTPanel2 from '../components/TTPanel2'
 import WordCloud from '../components/WordCloud'
-//import {hashit, hashit_salt} from '../../background/instrumentation';
 
 import * as moment from 'moment'
 
@@ -59,7 +58,7 @@ export default class DetailPage extends React.Component {
       // console.log('this is alright ', pageType);
       hashedTitle = await background.hashit_salt(this.props.title)
     }else{
-      hashedTitle = await background.hashit(this.props.title)
+      hashedTitle = this.props.title
     }
     // console.log(hashedTitle);
     let sendDict = {
@@ -80,9 +79,9 @@ export default class DetailPage extends React.Component {
         let numInferences = temp.length
         let hashedInferences=[]
         for (let i = 0; i < temp.length; i++) {
-         //let value = await background.hashit(domains[i]['inference'])
+         //let value = domains[i]['inference']
          let value = temp[i]
-         value['name'] = await background.hashit(value['name'])//hash it
+         value['name'] = value['name']
          hashedInferences.push(value)
        }
        //sendDict['numInferences']=numInferences;
@@ -94,7 +93,7 @@ export default class DetailPage extends React.Component {
         let numTrackers = temp.length
         let hashedTrackers=[]
         for (let i = 0; i < temp.length; i++) {
-         //let value = await background.hashit(domains[i]['inference'])
+         //let value = domains[i]['inference']
          let value = temp[i]
          hashedTrackers.push(value)
        }
@@ -106,7 +105,7 @@ export default class DetailPage extends React.Component {
         let numDomains = temp.length
         let hashedDomains=[]
         for (let i = 0; i < temp.length; i++) {
-         //let value = await background.hashit(domains[i]['inference'])
+         //let value = domains[i]['inference']
          let value = temp[i]
          hashedDomains.push(value)
        }

@@ -42,7 +42,6 @@ class Popup extends React.Component {
       numTrackers: '…',
       numPages: '…',
       numInferences: '…',
-      usageStatCondition: undefined,
       id: ""
     }
     // this.sendPopupData = this.sendPopupData.bind(this);
@@ -133,12 +132,11 @@ class Popup extends React.Component {
     and sendPopupData will not run
     */
     await this.getData()
-    const store = await browser.storage.local.get(['options', 'usageStatCondition', 'startTS'])
+    const store = await browser.storage.local.get(['options', 'startTS'])
     const options = store.options
-    const usageStatCondition = store.usageStatCondition === true || store.usageStatCondition === 'true'
     const startTS = store.startTS
     const okToLoad = true
-    this.setState({ ...options, okToLoad, usageStatCondition, startTS })
+    this.setState({ ...options, okToLoad, startTS })
 
     logging.logPopupActions('open popup', 'extension icon')
 
@@ -208,14 +206,6 @@ class Popup extends React.Component {
 
     const showMetrics = showDashboard && (showTrackerContent || showHistoryContent || showInferenceContent)
     // this.sendPopupData(numTrackers, numInferences, numPages, pageTitle, trackers, topTracker, topTrackerCount);
-
-    if (this.state.usageStatCondition === false) {
-        return (
-        <View as='div' textAlign='center'>
-          <Button onClick={this.openWelcome} margin='small'>Resume {EXT.NAME} setup</Button>
-        </View>
-        )
-    }
 
     const logo = <img src='/icons/logo.svg' height='24px' />
     const pluralTrackers = (trackers && trackers.length === 1) ? 'tracker' : 'trackers'

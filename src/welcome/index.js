@@ -19,8 +19,6 @@ import Alert from '@instructure/ui-alerts/lib/components/Alert'
 
 import logging from '../dashboard/dashboardLogging'
 import { themeOverrides } from '../colors'
-import instrumentation from '../background/instrumentation';
-import loggingDefault from '../options/loggingDefault'
 import { generateID, saveID } from '../options/userstudy'
 import tt from '../helpers'
 
@@ -68,9 +66,6 @@ class WelcomePage extends React.Component {
 
   async onSave () {
     const id = this.state.id
-    await loggingDefault.setLoggingDefault()
-    await instrumentation.firstInstall()
-    await tt.sleep(100)
     window.location.href = 'https://umdsurvey.umd.edu/jfe/form/SV_6ywfM4gHdHX8UJv?id=' + id
   }
 
