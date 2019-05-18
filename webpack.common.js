@@ -80,7 +80,7 @@ module.exports = {
     }
   },
   plugins: [
-    new CleanWebpackPlugin(['extension/dist']),
+    new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       'EXT.VERSION': JSON.stringify(require('./package.json').version),
       'EXT.NAME': JSON.stringify(EXT_NAME)
