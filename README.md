@@ -12,13 +12,6 @@ A browser extension to provide transparency about online tracking and the infere
 <!-- TODO: include screenshot -->
 <!-- ![screenshot](extension/icons/trackers.gif) -->
 
-# Table of Contents
-
-- [About](#about)
-- [Running](#running)
-- [License](#license)
-- [Links](#links)
-
 # About
 
 A browser extension to provide information about online tracking.
@@ -26,15 +19,14 @@ A browser extension to provide information about online tracking.
 # Running
 
 - Install dependencies (run once and when any dependencies are changed):
-  - OS X: `npm install`
-  - Linux/Windows `npm install --no-optional`
+  -`$ npm install`
 
-- Build the code: `npm run build` 
-- (Optional for development) Build using `npm run build:watch`. This runs Webpack in watch mode and automatically reruns whenever you change any files. Recommended to leave this running in a background terminal.
+- Build the code: `$ npm run build` 
+    - (Optional for development) Build using `$ npm run build:watch`. This runs Webpack in watch mode and automatically reruns whenever you change any files. Recommended to leave this running in a background terminal.
 
 ### Chrome
 
-Recommended: run `npm run start:chromium` to start up a temporary Chromium instance in with the extension installed, and pre-seeded data.
+Recommended: run `$ npm run start:chromium` to start up a temporary Chromium instance in with the extension installed, and pre-seeded data.
 
 Otherwise, to install to your normal chrome profile, do:
 
