@@ -66,7 +66,7 @@ browser.tabs.onRemoved.addListener(clearTabData);
 
 /* listeners to signal content scripts */
 browser.webNavigation.onCompleted.addListener(onPageLoadFinish);
-browser.webNavigation.onHistoryStateUpdated.addListener(onPageLoadFinish);
+browser.webNavigation.onHistoryStateUpdated.addListener(onPageLoadFinish); // for pages that do fancy javascript to change urls
 
 /** Sends a message with information about each outgoing
  * web request to trackers worker.
@@ -308,6 +308,8 @@ async function updateTrackers (tabId) {
 }
 
 async function onPageLoadFinish (details) {
+
+  // signal content script to make an inference
   if (details.frameId === 0) {
     // not an iframe
     const tabId = details.tabId
@@ -319,6 +321,7 @@ async function onPageLoadFinish (details) {
       console.log(e)
     }
 
+    // extra stuff for overlay (ghostery condition)
     const data = await getTabData(tabId)
     const showOverlay = await getOption('showOverlay')
     if (showOverlay === true) {
@@ -433,6 +436,7 @@ function runtimeOnMessage (message, sender, sendResponse) {
       if (!tabData[sender.tab.id]) break;
       pageId = tabData[sender.tab.id].pageId;
 
+      // send page text off to inferencing web worker
       inferencingWorker.postMessage({
         type: 'content_script_to_inferencing',
         article: message.article,
