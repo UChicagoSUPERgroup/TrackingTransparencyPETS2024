@@ -113,7 +113,7 @@ export default class TrackerOverview extends React.Component {
     this.state = {
       trackers: [],
       graphCount: 25,
-			numTrackers: '…'
+      numTrackers: '…'
     }
     // this.logLoad = this.logLoad.bind(this);
     this.updateGraphCount = this.updateGraphCount.bind(this)
@@ -196,7 +196,7 @@ export default class TrackerOverview extends React.Component {
       ...d,
       color: (hovered && d.y === hovered.y) ? 1 : 0
     }))
-    //const background = await browser.runtime.getBackgroundPage()
+    // const background = await browser.runtime.getBackgroundPage()
     return (
       <TTPanel>
         <FlexibleWidthXYPlot
@@ -235,8 +235,8 @@ export default class TrackerOverview extends React.Component {
             }}
             onValueClick={(datapoint) => {
               this.setState({selectedTracker: datapoint})
-                let activityType = 'selected a tracker on trackers page for more info'
-                logging.logLoad(activityType, {'tracker_clicked':datapoint["y"], 'tracker_pages':datapoint["x"]})
+              let activityType = 'selected a tracker on trackers page for more info'
+              logging.logLoad(activityType, {'tracker_clicked': datapoint['y'], 'tracker_pages': datapoint['x']})
             }}
           />
           <CustomAxisLabel title='Percent of pages' xAxis />
@@ -292,7 +292,7 @@ export default class TrackerOverview extends React.Component {
       <Grid>
         <GridRow>
           <GridCol>
-            <Heading level='h1'><FontAwesomeIcon icon='eye'/><strong>&nbsp;  Who is tracking you?</strong></Heading>
+            <Heading level='h1'><FontAwesomeIcon icon='eye' /><strong>&nbsp;  Who is tracking you?</strong></Heading>
           </GridCol>
         </GridRow>
         <GridRow>

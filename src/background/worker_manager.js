@@ -19,7 +19,6 @@ const inferencingDatabaseChannel = new MessageChannel();
 inferencingWorker.postMessage({type: 'database_worker_port', port: inferencingDatabaseChannel.port1}, [inferencingDatabaseChannel.port1]);
 databaseWorker.postMessage({type: 'inferencing_worker_port', port: inferencingDatabaseChannel.port2}, [inferencingDatabaseChannel.port2]);
 
-
 /* DATABASE WORKER */
 databaseWorker.onmessage = onDatabaseWorkerMessage;
 window.queryDatabase = queryDatabase;
@@ -31,11 +30,10 @@ window.queryDatabaseRecursive = queryDatabaseRecursive;
  * @param  {Object} m
  * @param  {Object} m.data - Content of the message
  */
-function onDatabaseWorkerMessage(m) {
+function onDatabaseWorkerMessage (m) {
   // console.log('Message received from database worker', m);
 
   if (m.data.type === 'database_query_response') {
-
     let p;
     if (m.data.id) {
       p = pendingDatabaseQueries[m.data.id];
@@ -55,7 +53,6 @@ function onDatabaseWorkerMessage(m) {
       throw new Error('Unable to resolve promise for database query response. Message was', m);
     }
     p.resolve(m.data);
-
   }
 }
 
@@ -69,7 +66,7 @@ let pendingDatabaseQueries = {};
  * @param  {Object} args - arguments object passed to database worker
  * @return {Object} database query response
  */
-export async function queryDatabase(query, args) {
+export async function queryDatabase (query, args) {
   let queryPromise = new Promise((resolve, reject) => {
     pendingDatabaseQueries[queryId] = {resolve: resolve, reject: reject};
   });
@@ -85,7 +82,7 @@ export async function queryDatabase(query, args) {
   try {
     let res = await queryPromise;
     return res.response;
-  } catch(e) {
+  } catch (e) {
     throw new Error(e);
   }
 }
@@ -98,7 +95,7 @@ export async function queryDatabase(query, args) {
  * @param  {string} args.inference - inference
  * @return {Object} database query response
  */
-export async function queryDatabaseRecursive(query, args) {
+export async function queryDatabaseRecursive (query, args) {
   if (!args.inference) {
     return queryDatabase(query, args);
   }
@@ -128,51 +125,49 @@ export async function queryDatabaseRecursive(query, args) {
 
   let mergedRes;
   let tempObj;
-  switch(query) {
-  case 'getTrackersByInference':
-    tempObj = {};
-    for (let res of results) {
-      for (let tracker of res) {
-        const tn = tracker.name
-        const tc = tracker.count
-        if (tempObj[tn]) {
-          tempObj[tn] += tc
-        } else {
-          tempObj[tn] = tc;
+  switch (query) {
+    case 'getTrackersByInference':
+      tempObj = {};
+      for (let res of results) {
+        for (let tracker of res) {
+          const tn = tracker.name
+          const tc = tracker.count
+          if (tempObj[tn]) {
+            tempObj[tn] += tc
+          } else {
+            tempObj[tn] = tc;
+          }
         }
       }
-    }
-    mergedRes = Object.keys(tempObj).map(key => ({name: key, count: tempObj[key]}));
-    mergedRes.sort((a, b) => (b.count - a.count));
-    break;
-  case 'getDomainsByInference':
-    tempObj = {};
-    for (let res of results) {
-      for (let domain of res) {
-        const tn = domain.name
-        const tc = domain.count
-        if (tempObj[tn]) {
-          tempObj[tn] += tc
-        } else {
-          tempObj[tn] = tc
+      mergedRes = Object.keys(tempObj).map(key => ({name: key, count: tempObj[key]}));
+      mergedRes.sort((a, b) => (b.count - a.count));
+      break;
+    case 'getDomainsByInference':
+      tempObj = {};
+      for (let res of results) {
+        for (let domain of res) {
+          const tn = domain.name
+          const tc = domain.count
+          if (tempObj[tn]) {
+            tempObj[tn] += tc
+          } else {
+            tempObj[tn] = tc
+          }
         }
       }
-    }
-    mergedRes = Object.keys(tempObj).map(key => ({name: key, count: tempObj[key]}));
-    mergedRes.sort((a, b) => (b.count - a.count));
-    break;
-  case 'getPagesByInference':
-    mergedRes = Array.prototype.concat.apply([], results);
-    break;
-  default:
-    console.warn('Not sure how to put together separate queries. Results may be unexpected.')
-    mergedRes = Array.prototype.concat.apply([], results);
+      mergedRes = Object.keys(tempObj).map(key => ({name: key, count: tempObj[key]}));
+      mergedRes.sort((a, b) => (b.count - a.count));
+      break;
+    case 'getPagesByInference':
+      mergedRes = Array.prototype.concat.apply([], results);
+      break;
+    default:
+      console.warn('Not sure how to put together separate queries. Results may be unexpected.')
+      mergedRes = Array.prototype.concat.apply([], results);
   }
 
   return mergedRes;
-
 }
-
 
 /**
  * given a category name in the Google ad-interest categories, and an object for the entire tree,
@@ -185,7 +180,7 @@ export async function queryDatabaseRecursive(query, args) {
  * @returns {Object[]} branches of tree for each child
  *
  */
-function findChildren(cat, root) {
+function findChildren (cat, root) {
   for (let c of root.children) {
     if (c.name === cat) {
       return c.children ? c.children : [];
@@ -207,7 +202,7 @@ function findChildren(cat, root) {
  * @param  {Object[]} children - subtrees of category tree
  * @returns {string[]} - list of nodes in all subtrees input
  */
-function collapseChildren(children) {
+function collapseChildren (children) {
   let ret = [];
   for (let c of children) {
     ret.push(c.name);

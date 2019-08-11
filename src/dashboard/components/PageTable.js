@@ -10,7 +10,6 @@ export default class PageTable extends React.Component {
   constructor (props) {
     super(props)
 
-
     this.state = {
       title: props.title,
       data: this.sortData(props.data, props.sortAscending)

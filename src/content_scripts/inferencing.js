@@ -1,7 +1,7 @@
 
 /* INFERENCING */
 
-export default function makeInference() {
+export default function makeInference () {
   // extract text from page (see below)
   const text = extractTextFromNode(document.body);
   // console.log(text);
@@ -15,7 +15,7 @@ export default function makeInference() {
   browser.runtime.sendMessage({ type: 'parsed_page', article: text });
 }
 
-function extractTextFromNode(node) {
+function extractTextFromNode (node) {
   // node.tagName is in ALL CAPS
   if (node.tagName === 'FOOTER' || node.tagName === 'SCRIPT') {
     return '';
@@ -27,4 +27,3 @@ function extractTextFromNode(node) {
   }
   return res;
 }
-

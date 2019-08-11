@@ -54,10 +54,10 @@ export default class DetailPage extends React.Component {
     // LOGGING
     let pageType = this.props.pageType
     let hashedTitle = 'not hashed yet'
-    if (pageType==="site"){
+    if (pageType === 'site') {
       // console.log('this is alright ', pageType);
       hashedTitle = await background.hashit_salt(this.props.title)
-    }else{
+    } else {
       hashedTitle = this.props.title
     }
     // console.log(hashedTitle);
@@ -67,27 +67,27 @@ export default class DetailPage extends React.Component {
     }
     let temp = []
     temp = this.state.metrics
-    let summaryStat={}
+    let summaryStat = {}
     for (let i = 0; i < temp.length; i++) {
-        let value = temp[i]
-        summaryStat[value['name']]=value['value']
-   }
-   sendDict['summary']=summaryStat
-
-    if (this.state.showInferences){
-        temp = this.state.inferences
-        let numInferences = temp.length
-        let hashedInferences=[]
-        for (let i = 0; i < temp.length; i++) {
-         //let value = domains[i]['inference']
-         let value = temp[i]
-         value['name'] = value['name']
-         hashedInferences.push(value)
-       }
-       //sendDict['numInferences']=numInferences;
-       sendDict['hashedInferences']=JSON.stringify(hashedInferences);
+      let value = temp[i]
+      summaryStat[value['name']] = value['value']
     }
-/*
+    sendDict['summary'] = summaryStat
+
+    if (this.state.showInferences) {
+      temp = this.state.inferences
+      let numInferences = temp.length
+      let hashedInferences = []
+      for (let i = 0; i < temp.length; i++) {
+        // let value = domains[i]['inference']
+        let value = temp[i]
+        value['name'] = value['name']
+        hashedInferences.push(value)
+      }
+      // sendDict['numInferences']=numInferences;
+      sendDict['hashedInferences'] = JSON.stringify(hashedInferences);
+    }
+    /*
     if (this.state.showTrackers){
         temp = this.state.trackers
         let numTrackers = temp.length
@@ -166,26 +166,26 @@ export default class DetailPage extends React.Component {
       )
     } else {
       return (
-        <div></div>
+        <div />
       )
     }
   }
 
   wordcloudDescription (pageType, title, numInferences) {
-    var topicPlurality = (numInferences == 1 ? "topic" : "topics")
+    var topicPlurality = (numInferences == 1 ? 'topic' : 'topics')
 
-    if (pageType=="tracker") {
+    if (pageType == 'tracker') {
       return (
         <div>
           <Heading level='h2'>Based on your browsing, what would <em>{title}</em> think your interests are?</Heading>
-           <Text><br/>Using a machine to assign categories to pages you visit, {title} may have guessed that you are interested in <strong>{numInferences} {topicPlurality}</strong>.</Text>
+          <Text><br />Using a machine to assign categories to pages you visit, {title} may have guessed that you are interested in <strong>{numInferences} {topicPlurality}</strong>.</Text>
         </div>
       )
-    } else if (pageType=="site") {
+    } else if (pageType == 'site') {
       return (
         <div>
           <Heading level='h2'>Based on your visits to <em>{title}</em>, what would a tracker think your interests are?</Heading>
-          <Text><br/>Using a machine to assign categories to pages you visit, trackers on {title} may have guessed that you are interested in <strong>{numInferences} {topicPlurality}</strong>.</Text>
+          <Text><br />Using a machine to assign categories to pages you visit, trackers on {title} may have guessed that you are interested in <strong>{numInferences} {topicPlurality}</strong>.</Text>
         </div>
       )
     }
@@ -195,7 +195,7 @@ export default class DetailPage extends React.Component {
     if (inferences.length > 5) {
       return (
         <div>
-          <Text><em>Click on a link in the wordcloud to learn more about each interest.</em><br/><br/></Text>
+          <Text><em>Click on a link in the wordcloud to learn more about each interest.</em><br /><br /></Text>
           <SizeMe>
             {({ size }) => (
               <WordCloud
@@ -209,7 +209,7 @@ export default class DetailPage extends React.Component {
       )
     } else { // not enough data points, just show bulleted list
       return (
-        <div style={{"marginTop":"1.5em"}}>
+        <div style={{'marginTop': '1.5em'}}>
           <List>
             {inferences.map(function (inference) {
               let key = inference.name

@@ -43,7 +43,7 @@ const inferenceTopList = (data) => {
   if (!data) {
     return (
       <div>
-        <Heading level="h3">Your Top Trackers<hr/></Heading>
+        <Heading level='h3'>Your Top Trackers<hr /></Heading>
         <Spinner title='Loading…' size='small' />
       </div>
     )
@@ -51,14 +51,14 @@ const inferenceTopList = (data) => {
   if (data.length === 0) {
     return (
       <div>
-        <Heading level="h3">Your Top Interests<hr/></Heading>
+        <Heading level='h3'>Your Top Interests<hr /></Heading>
         <Text>Visit some pages to see if trackers are guessing your interests.</Text>
       </div>
     )
   }
   return (
     <div>
-      <Heading level="h3">Your Top Interests<hr/></Heading>
+      <Heading level='h3'>Your Top Interests<hr /></Heading>
       <span>
         {data.map((p, i, arr) => {
           const last = (i === (arr.length - 1))
@@ -66,10 +66,10 @@ const inferenceTopList = (data) => {
           const inferenceLink = <Link href={'#interests/' + inference}>{inference}</Link>
           return (
             <div>
-              <span><strong>{i+1}</strong></span>
+              <span><strong>{i + 1}</strong></span>
               <span key={inference}>
-                <Tag text={inferenceLink} size="large" margin="x-small x-small x-small x-small" />
-                <br/>
+                <Tag text={inferenceLink} size='large' margin='x-small x-small x-small x-small' />
+                <br />
               </span>
             </div>
           )
@@ -83,7 +83,7 @@ const trackerList = (data) => {
   if (!data) {
     return (
       <div>
-        <Heading level="h3">Your Top Trackers<hr/></Heading>
+        <Heading level='h3'>Your Top Trackers<hr /></Heading>
         <Spinner title='Loading…' size='small' />
       </div>
     )
@@ -91,24 +91,24 @@ const trackerList = (data) => {
   if (data.length === 0) {
     return (
       <div>
-        <Heading level="h3">Your Top Trackers<hr/></Heading>
+        <Heading level='h3'>Your Top Trackers<hr /></Heading>
         <Text>Visit some pages to see if trackers are tracking your browsing.</Text>
       </div>
     )
   }
   return (
     <div>
-      <Heading level="h3">Your Top Trackers<hr/></Heading>
+      <Heading level='h3'>Your Top Trackers<hr /></Heading>
       <span>
         {data.map((p, i, arr) => {
           const last = (i === (arr.length - 1))
           const trackerLink = <Link href={'#trackers/' + p.tracker}>{p.tracker}</Link>
           return (
             <div>
-              <span><strong>{i+1}</strong></span>
+              <span><strong>{i + 1}</strong></span>
               <span key={p.tracker}>
-                <Tag text={trackerLink} size="large" margin="x-small x-small x-small x-small" />
-                <br/>
+                <Tag text={trackerLink} size='large' margin='x-small x-small x-small x-small' />
+                <br />
               </span>
             </div>
           )
@@ -194,21 +194,21 @@ export class Home extends React.Component {
 
   renderAppropCloseButton (which) {
     var fn
-    if (which==1) {
+    if (which == 1) {
       fn = this.hidePopover1
-    } else if (which==2) {
+    } else if (which == 2) {
       fn = this.hidePopover2
-    } else if (which==3) {
+    } else if (which == 3) {
       fn = this.hidePopover3
     } else {
-      return new Error("close button to show not found")
+      return new Error('close button to show not found')
     }
 
     return (
       <CloseButton
-        placement="end"
-        offset="x-small"
-        variant="icon"
+        placement='end'
+        offset='x-small'
+        variant='icon'
         onClick={fn}
       >
         Close
@@ -219,7 +219,7 @@ export class Home extends React.Component {
   arrowPanel () {
     return (
       <TTPanel>
-        <Heading level="h3">What are <em>trackers</em> and <em>interests?</em><hr/></Heading>
+        <Heading level='h3'>What are <em>trackers</em> and <em>interests?</em><hr /></Heading>
         <Grid vAlign='middle' hAlign='space-between' colSpacing='none' rowSpacing='none'>
           <GridRow>
             <GridCol textAlign='center' width={3}>
@@ -235,7 +235,7 @@ export class Home extends React.Component {
               <FontAwesomeIcon icon='arrow-right' size='2x' />
             </GridCol>
             <GridCol textAlign='center' width={3}>
-              <div></div>
+              <div />
               {this.exampleCluster()}
 
               {/* <FontAwesomeIcon icon='ad' size='6x' /> */}
@@ -243,13 +243,13 @@ export class Home extends React.Component {
           </GridRow>
           <GridRow>
             <GridCol width={3} textAlign='center'>
-              <p>When you browse online, your online activity can be tracked by ad networks and analytics companies.<br/><br/>We call these <em>trackers</em>.</p>
+              <p>When you browse online, your online activity can be tracked by ad networks and analytics companies.<br /><br />We call these <em>trackers</em>.</p>
             </GridCol>
             <GridCol width={3} textAlign='center'>
-              <p>These companies track your browsing to make guesses about what topics you might be interested in. <br/><br/>We call these topics <em>interests</em>.</p>
+              <p>These companies track your browsing to make guesses about what topics you might be interested in. <br /><br />We call these topics <em>interests</em>.</p>
             </GridCol>
             <GridCol width={3} textAlign='center'>
-              <div></div>
+              <div />
               <p>Companies can personalize your online experience based on these interests.<br /><em>Click on the circles above to learn more.</em></p>
             </GridCol>
           </GridRow>
@@ -259,49 +259,49 @@ export class Home extends React.Component {
     )
   }
 
-  examplePanel() {
+  examplePanel () {
     return (
       <TTPanel margin='medium 0 0 0'>
-        <Heading level="h3">Give me some examples.<hr/></Heading>
+        <Heading level='h3'>Give me some examples.<hr /></Heading>
         <Grid vAlign='middle' hAlign='space-between' colSpacing='none' rowSpacing='none'>
           <GridRow>
             <GridCol>
               <View
-                as="div"
-                display="inline-block"
-                margin="large"
-                textAlign="center"
-                borderRadius="medium"
-                maxWidth="200px"
-                shadow="resting"
+                as='div'
+                display='inline-block'
+                margin='large'
+                textAlign='center'
+                borderRadius='medium'
+                maxWidth='200px'
+                shadow='resting'
               >
-                <p style={{margin:"10px"}}><FontAwesomeIcon icon='paw' size='2x' /><br/>You see an ad about dog clothes because you previously visited a blog about traveling with dogs. A third-party tracker on that blog guessed that you have an interest in dogs.</p>
+                <p style={{margin: '10px'}}><FontAwesomeIcon icon='paw' size='2x' /><br />You see an ad about dog clothes because you previously visited a blog about traveling with dogs. A third-party tracker on that blog guessed that you have an interest in dogs.</p>
               </View>
             </GridCol>
             <GridCol>
               <View
-                as="div"
-                display="inline-block"
-                margin="large"
-                textAlign="center"
-                borderRadius="medium"
-                maxWidth="200px"
-                shadow="resting"
+                as='div'
+                display='inline-block'
+                margin='large'
+                textAlign='center'
+                borderRadius='medium'
+                maxWidth='200px'
+                shadow='resting'
               >
-                <p style={{margin:"10px"}}><FontAwesomeIcon icon='search' size='2x' /><br/>You want to know more about apples, the fruit, so you search for "apple". However, because you often search for technical topics, you see results for Apple, the company.</p>
+                <p style={{margin: '10px'}}><FontAwesomeIcon icon='search' size='2x' /><br />You want to know more about apples, the fruit, so you search for "apple". However, because you often search for technical topics, you see results for Apple, the company.</p>
               </View>
             </GridCol>
             <GridCol>
               <View
-                as="div"
-                display="inline-block"
-                margin="large"
-                textAlign="center"
-                borderRadius="medium"
-                maxWidth="200px"
-                shadow="resting"
+                as='div'
+                display='inline-block'
+                margin='large'
+                textAlign='center'
+                borderRadius='medium'
+                maxWidth='200px'
+                shadow='resting'
               >
-                <p style={{margin:"10px"}}><FontAwesomeIcon icon='question' size='2x' /><br/>You see an ad for a horror movie, even though you don't like horror movies. However, you recently searched for sweaters and an advertiser decided that sweater fans should see this ad.</p>
+                <p style={{margin: '10px'}}><FontAwesomeIcon icon='question' size='2x' /><br />You see an ad for a horror movie, even though you don't like horror movies. However, you recently searched for sweaters and an advertiser decided that sweater fans should see this ad.</p>
               </View>
             </GridCol>
           </GridRow>
@@ -311,52 +311,52 @@ export class Home extends React.Component {
     )
   }
 
-  meanForYouPanel() {
+  meanForYouPanel () {
     return (
-        <TTPanel margin='medium 0 0 0'>
-        <Heading level="h3">What does this mean for you?<hr/></Heading>
-          <Grid>
-            <GridRow>
-              <GridCol>
-                <Text>
-                  <Heading level='h4'><FontAwesomeIcon icon='user' color="#616530"/> PERSONALIZED SERVICES</Heading>
-                  <p>Web companies can use data about you and your interests to personalize your web experience, such as by tailoring search results and social feeds, or making suggestions for web sites or places to visit.</p>
-                  <Heading level='h4'><FontAwesomeIcon icon='paw' color="#616530"/> RELEVANT ADS</Heading>
-                  <p> Web companies can make a profile of your interests based on the web pages that you visit. Then, they use this profile to show you advertisements that may be related to your interests.</p>
-                </Text>
-              </GridCol>
-              <GridCol>
-                <Text>
-                  <Heading level='h4'><FontAwesomeIcon icon='exclamation-triangle' color="#9A5324"/> UNEXPECTED TARGETED ADVERTISING</Heading>
-                  <p>When advertisers do targeted advertising, they can use your interests in unexpected ways. For example, an advertiser could show you banana ads because they think people who like dogs will also like bananas.</p>
-                  <Heading level='h4'><FontAwesomeIcon icon='exclamation-triangle' color="#9A5324"/> INCORRECT GUESSES ABOUT YOUR INTERESTS</Heading>
-                  <p>A third-party tracker could also guess incorrectly about your interests. If you often visit sites about a topic, such as for work, trackers might guess you are interested in that topic, even if you actually aren't.</p>
-                </Text>
-              </GridCol>
-            </GridRow>
-          </Grid>
+      <TTPanel margin='medium 0 0 0'>
+        <Heading level='h3'>What does this mean for you?<hr /></Heading>
+        <Grid>
+          <GridRow>
+            <GridCol>
+              <Text>
+                <Heading level='h4'><FontAwesomeIcon icon='user' color='#616530' /> PERSONALIZED SERVICES</Heading>
+                <p>Web companies can use data about you and your interests to personalize your web experience, such as by tailoring search results and social feeds, or making suggestions for web sites or places to visit.</p>
+                <Heading level='h4'><FontAwesomeIcon icon='paw' color='#616530' /> RELEVANT ADS</Heading>
+                <p> Web companies can make a profile of your interests based on the web pages that you visit. Then, they use this profile to show you advertisements that may be related to your interests.</p>
+              </Text>
+            </GridCol>
+            <GridCol>
+              <Text>
+                <Heading level='h4'><FontAwesomeIcon icon='exclamation-triangle' color='#9A5324' /> UNEXPECTED TARGETED ADVERTISING</Heading>
+                <p>When advertisers do targeted advertising, they can use your interests in unexpected ways. For example, an advertiser could show you banana ads because they think people who like dogs will also like bananas.</p>
+                <Heading level='h4'><FontAwesomeIcon icon='exclamation-triangle' color='#9A5324' /> INCORRECT GUESSES ABOUT YOUR INTERESTS</Heading>
+                <p>A third-party tracker could also guess incorrectly about your interests. If you often visit sites about a topic, such as for work, trackers might guess you are interested in that topic, even if you actually aren't.</p>
+              </Text>
+            </GridCol>
+          </GridRow>
+        </Grid>
       </TTPanel>
     )
   }
 
-  exampleCluster() {
+  exampleCluster () {
     return (
       <View>
         <Popover
-          on="click"
+          on='click'
           show={this.state.showPopover1}
           onDismiss={this.hidePopover1}
-          label="Popover Example"
-          offsetY="16px"
+          label='Popover Example'
+          offsetY='16px'
           mountNode={() => document.getElementById('main')}
         >
           <PopoverTrigger>
-            <Button variant="circle-primary" onClick={this.showPopover1} margin="small" size="large">
+            <Button variant='circle-primary' onClick={this.showPopover1} margin='small' size='large'>
               <FontAwesomeIcon icon='paw' />
             </Button>
           </PopoverTrigger>
           <PopoverContent>
-            <View padding="medium" display="block" as="form" width={400}>
+            <View padding='medium' display='block' as='form' width={400}>
               {this.renderAppropCloseButton(1)}
               <Text>You might see an ad about dog clothes if you previously visited a blog about traveling with dogs. A third-party tracker on that blog could have guessed that you have an interest in dogs.</Text>
             </View>
@@ -364,20 +364,20 @@ export class Home extends React.Component {
         </Popover>
 
         <Popover
-          on="click"
+          on='click'
           show={this.state.showPopover2}
           onDismiss={this.hidePopover2}
-          label="Popover Example"
-          offsetY="16px"
+          label='Popover Example'
+          offsetY='16px'
           mountNode={() => document.getElementById('main')}
         >
           <PopoverTrigger>
-            <Button variant="circle-primary" onClick={this.showPopover2} margin="small" size="large">
+            <Button variant='circle-primary' onClick={this.showPopover2} margin='small' size='large'>
               <FontAwesomeIcon icon='search' />
             </Button>
           </PopoverTrigger>
           <PopoverContent>
-            <View padding="medium" display="block" as="form" width={400}>
+            <View padding='medium' display='block' as='form' width={400}>
               {this.renderAppropCloseButton(2)}
               <Text>You want to know more about apples, the fruit, so you might search for "apple". However, if you often search for technical topics, you might see results for Apple, the tech company.</Text>
             </View>
@@ -385,20 +385,20 @@ export class Home extends React.Component {
         </Popover>
 
         <Popover
-          on="click"
+          on='click'
           show={this.state.showPopover3}
           onDismiss={this.hidePopover3}
-          label="Popover Example"
-          offsetY="16px"
+          label='Popover Example'
+          offsetY='16px'
           mountNode={() => document.getElementById('main')}
         >
           <PopoverTrigger>
-            <Button variant="circle-primary" onClick={this.showPopover3} margin="small" size="large">
+            <Button variant='circle-primary' onClick={this.showPopover3} margin='small' size='large'>
               <FontAwesomeIcon icon='question' />
             </Button>
           </PopoverTrigger>
           <PopoverContent>
-            <View padding="medium" display="block" as="form" width={400}>
+            <View padding='medium' display='block' as='form' width={400}>
               {this.renderAppropCloseButton(3)}
               <Text>An advertiser might have decided to show ads for horror movies to people interested in sweaters. You recently searched for sweaters and jackets, so you see an ad for a horror movie even though you don't like horror movies.</Text>
             </View>
@@ -408,12 +408,12 @@ export class Home extends React.Component {
     )
   }
 
-  renderLightbeamButton() {
+  renderLightbeamButton () {
     return (
       <GridRow>
         <GridCol>
           <TTPanel>
-            <Button variant="primary" href='#/lightbeam'>
+            <Button variant='primary' href='#/lightbeam'>
               See the trackers in your browsing
             </Button>
           </TTPanel>
@@ -482,8 +482,8 @@ export class Home extends React.Component {
           {!hideHistoryContent && <GridCol width={6}>
             <TTPanel>
               <MetricsList theme={{lineHeight: 2}}>
-                {!hideTrackerContent && <MetricsListItem value={numTrackers} label={<span><FontAwesomeIcon icon='eye' /> Trackers encountered</span>}/>}
-                <MetricsListItem value={numPages} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages visited</span>}/>
+                {!hideTrackerContent && <MetricsListItem value={numTrackers} label={<span><FontAwesomeIcon icon='eye' /> Trackers encountered</span>} />}
+                <MetricsListItem value={numPages} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages visited</span>} />
                 {!hideInferenceContent && <MetricsListItem value={numInferences} label={<span><FontAwesomeIcon icon='thumbs-up' /> Potential interests</span>} />}
               </MetricsList>
             </TTPanel>

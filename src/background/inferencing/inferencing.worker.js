@@ -13,22 +13,21 @@ import cutOneFile from 'file-loader?name=data/cut_one_dictjson!../../data/infere
 
 let databaseWorkerPort;
 
-onmessage = function(m) {
+onmessage = function (m) {
   switch (m.data.type) {
-  case 'database_worker_port':
-    databaseWorkerPort = m.data.port;
-    break;
-    
-  case 'content_script_to_inferencing':
-    inferencingMessageListener(m.data.article, m.data.mainFrameReqId, m.data.tabId);
-    break;
+    case 'database_worker_port':
+      databaseWorkerPort = m.data.port;
+      break;
+
+    case 'content_script_to_inferencing':
+      inferencingMessageListener(m.data.article, m.data.mainFrameReqId, m.data.tabId);
+      break;
   }
 };
 
 const tree = buildCategoryTree(keywordsFile, word2IndexFile, cutOneFile);
 
-
-function stem(text, all_words, words2idx_dict) {
+function stem (text, all_words, words2idx_dict) {
   var stemmer = new Snowball('English');
   var cur_word = null;
   let tokens = [];
@@ -43,9 +42,7 @@ function stem(text, all_words, words2idx_dict) {
   return [tokens, text.length];
 }
 
-
-async function inferencingMessageListener(text, mainFrameReqId, tabId) {
-  
+async function inferencingMessageListener (text, mainFrameReqId, tabId) {
   let result_category = null;
   let conf_score = 0;
   const tr_struc = await tree;
@@ -54,9 +51,8 @@ async function inferencingMessageListener(text, mainFrameReqId, tabId) {
   const allExistWords = tr_struc[2];
   const cutOneDict = tr_struc[3];
 
-
   text = text.toLowerCase();
-  let stemmed = stem(text.split(" "), allExistWords, word2idx);
+  let stemmed = stem(text.split(' '), allExistWords, word2idx);
   text = stemmed[0];
   let totalLength = stemmed[1];
 

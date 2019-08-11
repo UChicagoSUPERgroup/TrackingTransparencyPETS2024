@@ -5,12 +5,12 @@ import Spinner from '@instructure/ui-elements/lib/components/Spinner'
 
 const Loading = props => {
   if (props.error) {
-		return <div>Error! <button onClick={ props.retry }>Retry</button></div>;
-	} else if (props.pastDelay) {
+    return <div>Error! <button onClick={props.retry}>Retry</button></div>;
+  } else if (props.pastDelay) {
     return <Spinner title='Page loading' size='medium' />
-	} else {
-		return null;
-	}
+  } else {
+    return null;
+  }
 }
 export default Loading
 

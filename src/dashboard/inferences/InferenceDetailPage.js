@@ -18,7 +18,7 @@ export default class InferenceDetailPage extends React.Component {
   async componentDidMount () {
     const queryObj = {inference: this.inference}
     const background = await browser.runtime.getBackgroundPage()
-    this.DetailPage =  (await import(/* webpackChunkName: "dashboard/DetailPage" */'../components/DetailPage')).default
+    this.DetailPage = (await import(/* webpackChunkName: "dashboard/DetailPage" */'../components/DetailPage')).default
 
     const trackersP = background.queryDatabaseRecursive('getTrackersByInference', queryObj)
     const domainsP = background.queryDatabaseRecursive('getDomainsByInference', queryObj)
@@ -64,7 +64,7 @@ export default class InferenceDetailPage extends React.Component {
     const introText = <Text>
       {popularity && <p><strong>{this.inference}</strong> is a <strong>{popularity}</strong> interest.</p>}
       {comfort && <p>Other people are often <strong>{comfort}</strong> with having their interest in this topic being used to personalize their web experience.</p>}
-      </Text>
+    </Text>
 
     return (
       <this.DetailPage

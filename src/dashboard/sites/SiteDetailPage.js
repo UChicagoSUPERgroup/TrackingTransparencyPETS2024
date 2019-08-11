@@ -5,7 +5,6 @@ import Spinner from '@instructure/ui-elements/lib/components/Spinner'
 
 import colors from '../../colors'
 
-
 export default class SiteDetailPage extends React.Component {
   constructor (props) {
     super(props)
@@ -19,7 +18,7 @@ export default class SiteDetailPage extends React.Component {
 
     const queryObj = {domain: this.site}
     const background = await browser.runtime.getBackgroundPage()
-    this.DetailPage =  (await import(/* webpackChunkName: "dashboard/DetailPage" */'../components/DetailPage')).default
+    this.DetailPage = (await import(/* webpackChunkName: "dashboard/DetailPage" */'../components/DetailPage')).default
 
     const inferencesP = !hideInferenceContent ? background.queryDatabase('getInferencesByDomain', queryObj) : null
     const trackersP = !hideTrackerContent ? background.queryDatabase('getTrackersByDomain', queryObj) : null

@@ -42,7 +42,7 @@ class Popup extends React.Component {
       numTrackers: '…',
       numPages: '…',
       numInferences: '…',
-      id: ""
+      id: ''
     }
     // this.sendPopupData = this.sendPopupData.bind(this);
     this.openDashboard = this.openDashboard.bind(this)
@@ -121,7 +121,7 @@ class Popup extends React.Component {
   async openWelcome () {
     const data = {
       active: true,
-      url: '../dist/welcome.html',
+      url: '../dist/welcome.html'
     }
     await browser.tabs.create(data)
   }
@@ -147,12 +147,12 @@ class Popup extends React.Component {
   async loadID () {
     const store = await browser.storage.local.get('mturkcode')
     const extensionID = store.mturkcode
-    this.setState({ id : extensionID })
+    this.setState({ id: extensionID })
   }
 
   onClickSurvey2 () {
     let id = this.state.id
-    let condition = id.slice(0,1)
+    let condition = id.slice(0, 1)
     const survey2link = {
       active: true,
       url: 'https://umdsurvey.umd.edu/jfe/form/SV_552e1c5EZKv3yMR?id=' + id + '&cndt=' + condition
@@ -160,7 +160,7 @@ class Popup extends React.Component {
     browser.tabs.create(survey2link)
   }
 
-  async onClickUninstall() {
+  async onClickUninstall () {
     logging.logPopupActions('click uninstall button', 'popup uninstall button')
     const uninstalling = browser.management.uninstallSelf({
       showConfirmDialog: true
@@ -174,7 +174,7 @@ class Popup extends React.Component {
     return (
       <div>
         <Alert variant='success'>
-          Survey 2 is now ready. When you are ready to take it, click the button below. The survey will take about 20 minutes, and after completion you will receive a $7.00 bonus through MTurk.<br/><br/>
+          Survey 2 is now ready. When you are ready to take it, click the button below. The survey will take about 20 minutes, and after completion you will receive a $7.00 bonus through MTurk.<br /><br />
           <Button variant='success' onClick={this.onClickSurvey2}>
             <Text>Take Survey 2</Text>
           </Button>
@@ -187,7 +187,7 @@ class Popup extends React.Component {
     return (
       <div style={{width: 450}}>
         <Alert variant='error'>
-          Thank you for participating in our study. Click the button below to uninstall the extension.<br/><br/>
+          Thank you for participating in our study. Click the button below to uninstall the extension.<br /><br />
           <Button variant='danger' onClick={this.onClickUninstall}>
             <Text>Uninstall</Text>
           </Button>

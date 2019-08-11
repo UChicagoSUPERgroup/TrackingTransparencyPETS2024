@@ -5,7 +5,7 @@ import tt from '../../helpers';
  */
 
 class Category {
-  constructor(name, keywords=[], children=[]) {
+  constructor (name, keywords = [], children = []) {
     this.name = name;
     this.keywords = keywords;
     this.children = children;
@@ -17,9 +17,9 @@ class Category {
   found node. Assumes category exists and is unique.
 */
 
-function findAndAddChild(name, child, tree) {
+function findAndAddChild (name, child, tree) {
   if (tree === undefined) {
-    return;
+
   } else if (tree.name === name) {
     tree.children.push(child);
   } else {

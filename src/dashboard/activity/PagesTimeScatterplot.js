@@ -89,7 +89,7 @@ export default class PagesTimeScatterplot extends React.Component {
             onValueClick={(datapoint, event) => {
               this.props.update(datapoint)
               let activityType = 'click on the bubble chart on activity page'
-              logging.logLoad(activityType, {'datapoint':datapoint})
+              logging.logLoad(activityType, {'datapoint': datapoint})
             }}
             onNearestXY={(datapoint, {index}) => {
               this.setState({index: [index, datapoint]})

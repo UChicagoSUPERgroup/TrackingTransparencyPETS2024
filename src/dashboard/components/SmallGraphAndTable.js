@@ -32,32 +32,32 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
   }))
 
   var trackerPlurality = // for sites pages, need to describe num trackers
-    ((pageType=="site" || c1Header=="site") && data.length==1
-    ? "tracker"
-    : "trackers")
+    ((pageType == 'site' || c1Header == 'site') && data.length == 1
+      ? 'tracker'
+      : 'trackers')
 
   var sitePlurality = // for tracker pages, need to describe num sites
-    ((pageType=="tracker" || c1Header=="tracker") && data.length==1
-    ? "site"
-    : "sites")
+    ((pageType == 'tracker' || c1Header == 'tracker') && data.length == 1
+      ? 'site'
+      : 'sites')
 
   var head, text
   switch (pageType) {
-    case "tracker":
+    case 'tracker':
       head = <Heading level='h2'>On which sites did <em>{title}</em> track you?</Heading>
-      text = <Text><br/>{title} has tracked you on <strong>{data.length} {sitePlurality}</strong>.</Text>
+      text = <Text><br />{title} has tracked you on <strong>{data.length} {sitePlurality}</strong>.</Text>
       break
-    case "site":
+    case 'site':
       head = <Heading level='h2'>Which trackers tracked you on <em>{title}</em>?</Heading>
-      text = <Text><br/>On {title}, you have been tracked by <strong>{data.length} {trackerPlurality}</strong>.</Text>
+      text = <Text><br />On {title}, you have been tracked by <strong>{data.length} {trackerPlurality}</strong>.</Text>
       break
-    case "inference":
-      if (c1Header=="Sites") {
+    case 'inference':
+      if (c1Header == 'Sites') {
         head = <Heading level='h2'>Which sites were about <em>{title}</em>?</Heading>
-        text = <Text><br/>You visited <strong>{data.length} {sitePlurality}</strong> that may have been about {title}. Therefore, trackers may have guessed this is relevant to you.</Text>
-      } else if (c1Header=="Trackers"){
+        text = <Text><br />You visited <strong>{data.length} {sitePlurality}</strong> that may have been about {title}. Therefore, trackers may have guessed this is relevant to you.</Text>
+      } else if (c1Header == 'Trackers') {
         head = <Heading level='h2'>Which trackers might think you are interested in <em>{title}</em>?</Heading>
-        text = <Text><br/><strong>{data.length} {trackerPlurality}</strong> may have guessed that you are interested in {title}.</Text>
+        text = <Text><br /><strong>{data.length} {trackerPlurality}</strong> may have guessed that you are interested in {title}.</Text>
       }
       break
   }
@@ -98,12 +98,12 @@ export default function SmallGraphAndTable ({ name, data, c1Header, urlStem, des
       <View>
         {head}
         {text}
-        <div style={{"marginTop":"1.5em"}}>
+        <div style={{'marginTop': '1.5em'}}>
           <List>
             {data.map(function (datum) {
               let key = datum.name
               return (<ListItem key={key}>
-                <Link href={'#/'+ c1Header + '/' + key}>
+                <Link href={'#/' + c1Header + '/' + key}>
                   {key}
                 </Link>
               </ListItem>)
@@ -199,7 +199,7 @@ class SmallGraph extends React.Component {
           }}
           onValueClick={(datapoint) => {
             // this.setState({selectedTracker: datapoint})
-            window.location.href = '#/'+lower+'/'+hovered.y
+            window.location.href = '#/' + lower + '/' + hovered.y
           }}
         />
         <CustomAxisLabel yAxis title={yTitle} />
@@ -213,7 +213,7 @@ const SmallTable = ({ data, c1Header, c2Header, c2Accessor, urlStem }) => {
   return (
     <ReactTable
       // data={data.reverse()}
-      data={data.sort((a,b) => b.count - a.count)}
+      data={data.sort((a, b) => b.count - a.count)}
       columns={[
         {Header: c1Header,
           accessor: 'name',

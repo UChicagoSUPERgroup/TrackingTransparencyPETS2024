@@ -14,7 +14,7 @@ const SpecialButton = ({ title, children, onClick }) => (
     summary={title}
     toggleLabel={title}
   >
-    <View display="block" padding="small">
+    <View display='block' padding='small'>
       <Text>{children}</Text>
       <Button variant='danger' onClick={onClick}>{title}</Button>
     </View>
@@ -59,12 +59,12 @@ export default class Options extends React.Component {
     this.loadOptions()
   }
 
-  async resetOnClick() {
+  async resetOnClick () {
     const background = await browser.runtime.getBackgroundPage()
     await background.resetAllData()
   }
 
-  optOutOnClick() {
+  optOutOnClick () {
     const { id } = this.state
     fetch('https://super.cs.uchicago.edu/trackingtransparency/removedata.php?userId=' + id)
       .then(browser.management.uninstallSelf({ showConfirmDialog: true }))

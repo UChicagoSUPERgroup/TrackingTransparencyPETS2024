@@ -18,7 +18,7 @@ import {primaryDbPromise} from './setup';
  * @param {string} info.path - page's path
  * @param {string} info.protocol - page's protocol (e.g. http)
  */
-export async function storePage(info) {
+export async function storePage (info) {
   const ttDb = await primaryDbPromise;
   const pageItem = ttDb.getSchema().table('Pages');
 
@@ -39,7 +39,7 @@ export async function storePage(info) {
  * @param {Object} pageId - identifier for page that trackers come from
  * @param {Object[]} trackers - array of objects with information about each tracker
  */
-export async function storeTrackerArray(pageId, trackers) {
+export async function storeTrackerArray (pageId, trackers) {
   const ttDb = await primaryDbPromise;
   const trackerItem = ttDb.getSchema().table('Trackers');
   const rows = [];
@@ -65,7 +65,7 @@ export async function storeTrackerArray(pageId, trackers) {
  * @param {Number} info.threshold - unused
  *
  */
-export async function storeInference(info) {
+export async function storeInference (info) {
   const ttDb = await primaryDbPromise;
   const inferenceItem = ttDb.getSchema().table('Inferences');
 
@@ -78,12 +78,11 @@ export async function storeInference(info) {
   ttDb.insertOrReplace().into(inferenceItem).values([inference]).exec();
 }
 
-export async function importData(dataString) {
+export async function importData (dataString) {
   const ttDb = await primaryDbPromise;
   const pageItem = ttDb.getSchema().table('Pages');
   const trackerItem = ttDb.getSchema().table('Trackers');
   const inferenceItem = ttDb.getSchema().table('Inferences');
-
 
   const data = JSON.parse(dataString);
 
@@ -93,14 +92,12 @@ export async function importData(dataString) {
   }
 
   data.pages.forEach(page => {
-
     if (!page.hostname) {
       let domain = tldjs.getDomain(page.domain);
-      domain = domain ? domain : page.domain; // in case above line returns null
+      domain = domain || page.domain; // in case above line returns null
 
       page.hostname = page.domain;
       page.domain = domain;
-
     }
 
     const pageData = pageItem.createRow({
@@ -115,7 +112,6 @@ export async function importData(dataString) {
   })
 
   data.trackers.forEach(tracker => {
-
     const row = trackerItem.createRow({
       'tracker': tracker.tracker,
       'pageId': tracker.pageId
@@ -125,7 +121,6 @@ export async function importData(dataString) {
   })
 
   data.inferences.forEach(inference => {
-
     const row = inferenceItem.createRow({
       'inference': inference.inference,
       'inferenceCategory': inference.inferenceCategory,
@@ -135,5 +130,4 @@ export async function importData(dataString) {
 
     return ttDb.insertOrReplace().into(inferenceItem).values([row]).exec();
   })
-
 }

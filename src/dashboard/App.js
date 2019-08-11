@@ -69,7 +69,7 @@ class App extends Component {
   }
 
   async componentWillUnmount () {
-    
+
   }
 
   async componentDidMount () {
@@ -77,7 +77,6 @@ class App extends Component {
     const okToLoad = true
     this.setState({ ...options, okToLoad })
   }
-
 
   render () {
     const { okToLoad } = this.state

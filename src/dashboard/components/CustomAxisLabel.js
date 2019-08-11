@@ -24,7 +24,6 @@ const CustomAxisLabel = (props/*: {
     ? `translate(${xLabelOffset.x}, ${xLabelOffset.y})`
     : `translate(${yLabelOffset.x}, ${yLabelOffset.y}) rotate(-90)`
 
-
   return (
     <g
       transform={transform}

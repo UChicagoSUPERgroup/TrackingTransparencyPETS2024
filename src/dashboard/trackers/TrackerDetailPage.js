@@ -20,7 +20,7 @@ export default class TrackerDetailPage extends React.Component {
 
     const queryObj = {tracker: this.tracker}
     const background = await browser.runtime.getBackgroundPage()
-    this.DetailPage =  (await import(/* webpackChunkName: "dashboard/DetailPage" */'../components/DetailPage')).default
+    this.DetailPage = (await import(/* webpackChunkName: "dashboard/DetailPage" */'../components/DetailPage')).default
 
     const inferencesP = !hideInferenceContent ? background.queryDatabase('getInferencesByTracker', queryObj) : null
     const domainsP = background.queryDatabase('getDomainsByTracker', queryObj)

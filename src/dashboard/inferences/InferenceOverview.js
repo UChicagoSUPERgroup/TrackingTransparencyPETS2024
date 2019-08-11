@@ -34,9 +34,9 @@ export default class InferencesOverview extends React.Component {
       popularitySelection: 'all-popular',
       dateSelection: 'all-dates',
       numInferences: null,
-      exampleSite: "",
-      exampleInference: "",
-      exampleTracker: ""
+      exampleSite: '',
+      exampleInference: '',
+      exampleTracker: ''
     }
 
     this.handleSunburstSelection = this.handleSunburstSelection.bind(this)
@@ -61,7 +61,7 @@ export default class InferencesOverview extends React.Component {
     })
   }
 
-  async getExample() {
+  async getExample () {
     let args = {count: 1}
     const background = await browser.runtime.getBackgroundPage()
     const example = await background.queryDatabase('getPagesByTime', args)
@@ -251,7 +251,7 @@ export default class InferencesOverview extends React.Component {
         }
       }
     }
-    console.log( comfortableCats, uncomfortableCats, popularCats, unpopularCats )
+    console.log(comfortableCats, uncomfortableCats, popularCats, unpopularCats)
     this.setState({ comfortableCats, uncomfortableCats, popularCats, unpopularCats })
   }
 
@@ -378,7 +378,7 @@ export default class InferencesOverview extends React.Component {
             <TTPanel>
               <Text>
                 <p>Trackers collect information about the pages you visit and use this information to identify topics, or <em>interests</em>, that might be relevant to you. These interests are then used to target ads to you and personalize what you see online. Companies don't usually reveal how they determine your potential interests. Based on the pages you visited, {EXT.NAME}'s simulations have identified <strong>{numInferences} topics</strong> trackers might think are relevant to you.</p>
-                {exampleSite && <p>For example, you recently visited <Link href={'#/sites/'+exampleSite}>{exampleSite}</Link>, which {EXT.NAME} has determined may be about {exampleInference}.</p>}
+                {exampleSite && <p>For example, you recently visited <Link href={'#/sites/' + exampleSite}>{exampleSite}</Link>, which {EXT.NAME} has determined may be about {exampleInference}.</p>}
                 {ok && <p>The chart below shows the interests suggested by your browsing activity. Click a slice of the chart to see more details.</p>}
                 {nodata && <p>Return to this page after viewing a few sites to see what may have been inferred about your interests.</p>}
               </Text>

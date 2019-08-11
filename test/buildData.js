@@ -1,4 +1,4 @@
-/* 
+/*
  * script to help with manual testing
  *
  * loads chromium using puppeteer

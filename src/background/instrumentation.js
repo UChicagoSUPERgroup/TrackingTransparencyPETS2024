@@ -109,10 +109,10 @@ async function sha256 (message) {
 
 // currently hash just returns normal data
 async function hashit (data) {
-  //now not hashing the trackers and interests
+  // now not hashing the trackers and interests
   return data
-  //const hash = await sha256(String(data));
-  //return hash
+  // const hash = await sha256(String(data));
+  // return hash
 }
 
 async function hashit_salt (data) {

@@ -131,7 +131,7 @@ export default class UserstudyOptionsUI extends React.Component {
           />
         </FormFieldGroup>
         <br />
-        {/*<RadioInputGroup
+        {/* <RadioInputGroup
           name='popupVariant'
           description='Popup variant'
           value={this.state.popupVariant}
@@ -142,7 +142,7 @@ export default class UserstudyOptionsUI extends React.Component {
           <RadioInput label='Default' value='default' />
           <RadioInput label='Static' value='static' context='off' />
           <RadioInput label='Ghostery' value='ghostery' context='off' />
-        </RadioInputGroup>*/}
+        </RadioInputGroup> */}
         <RadioInputGroup
           name='userstudyCondition'
           description='User study condition'

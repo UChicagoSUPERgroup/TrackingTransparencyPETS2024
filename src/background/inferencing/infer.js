@@ -3,37 +3,33 @@
  */
 import tt from '../../helpers';
 
-function score_help(w, keywords, l, set_keywords) {
+function score_help (w, keywords, l, set_keywords) {
   if (set_keywords.has(w)) {
-      var k = keywords.indexOf(w);
-      k = (k + 1) / l;
-        return 1 / k;
-  }
-  else {
+    var k = keywords.indexOf(w);
+    k = (k + 1) / l;
+    return 1 / k;
+  } else {
     return 0;
   }
 }
 
+function scoreCategory (category, words, totalLength) {
+  var keywords = category.keywords;
+  var keywords_length = keywords.length;
+  var match_set = new Set(keywords);
 
-function scoreCategory(category, words, totalLength) {
-    var keywords = category.keywords;
-    var keywords_length = keywords.length;
-    var match_set = new Set(keywords);
-
-    var sum = 0;
-    for (var i = 0; i < keywords_length; i++) {
-      var score = score_help(words[i], keywords, keywords_length, match_set);
-      sum += score;
-    }
-    return sum / totalLength;
+  var sum = 0;
+  for (var i = 0; i < keywords_length; i++) {
+    var score = score_help(words[i], keywords, keywords_length, match_set);
+    sum += score;
+  }
+  return sum / totalLength;
 }
-
-
 
 /* find child category with highest score and return it with its score
  * if it has a higher score than the parent. If not, return null.
  */
-function findBestChild(category, words, parentScore, totalLength) {
+function findBestChild (category, words, parentScore, totalLength) {
   var highestScore = 0;
   var bestChild, curScore, child;
 
@@ -57,11 +53,11 @@ function findBestChild(category, words, parentScore, totalLength) {
 /* recursively find best category given an array of words from given
  * Category tree.
  */
-function findBestCategory(root, words, rootScore, totalLength) {
+function findBestCategory (root, words, rootScore, totalLength) {
   var result, bestChild, bestChildScore;
 
   if (!root) {
-    return;
+
   } else if (root.children === []) {
     return [root, rootScore];
   } else { // root exists and has children
@@ -85,5 +81,4 @@ export default function (text, tree, totalLength) {
   const cat = (findBestCategory(tree, tokens, 0, totalLength));
   // console.log(cat);
   return cat;
-
 }

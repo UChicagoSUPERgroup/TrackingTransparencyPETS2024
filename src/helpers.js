@@ -9,7 +9,7 @@ const production = (process.env.NODE_ENV === 'production');
  *
  * @param  {string} path to file
  */
-function readTextFile(file) {
+function readTextFile (file) {
   return new Promise((resolve) => {
     let rawFile = new XMLHttpRequest();
     rawFile.open('GET', file, false);
@@ -22,7 +22,7 @@ function readTextFile(file) {
  * @param  {string} object
  * @returns {Object}
  */
-function deserialize(object) {
+function deserialize (object) {
   return typeof object === 'string' ? JSON.parse(object) : object
 }
 /**
@@ -30,10 +30,9 @@ function deserialize(object) {
  *
  * @param  {number} ms - milliseconds to sleep for
  */
-function sleep(ms) {
+function sleep (ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
 
 export async function getOption (key) {
   const store = (await browser.storage.local.get('options')) || {}

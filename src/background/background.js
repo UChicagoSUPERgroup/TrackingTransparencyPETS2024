@@ -29,8 +29,8 @@ browser.runtime.onInstalled.addListener(onInstall)
 
 // set up default for logging, currently it is true.
 
-//console.log('Here I am');
-//loggingDefault.setLoggingDefault();
+// console.log('Here I am');
+// loggingDefault.setLoggingDefault();
 
 // set up instrumentation
 // instrumentation.setup()
@@ -99,7 +99,6 @@ function isMainFramePage (details) {
 function onBeforeNavigate (details) {
   const { tabId, url } = details
   if (!isMainFramePage(details)) return
-
 
   /* if we have data from a previous load, send it to trackers
    * worker and clear out tabData here */
@@ -308,7 +307,6 @@ async function updateTrackers (tabId) {
 }
 
 async function onPageLoadFinish (details) {
-
   // signal content script to make an inference
   if (details.frameId === 0) {
     // not an iframe

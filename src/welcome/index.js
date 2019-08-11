@@ -12,7 +12,6 @@ import View from '@instructure/ui-layout/lib/components/View'
 import Button from '@instructure/ui-buttons/lib/components/Button'
 import Alert from '@instructure/ui-alerts/lib/components/Alert'
 
-
 // import Table from '@instructure/ui-elements/lib/components/Table'
 // import Checkbox from '@instructure/ui-forms/lib/components/Checkbox'
 // import ScreenReaderContent from '@instructure/ui-a11y/lib/components/ScreenReaderContent'
@@ -25,7 +24,7 @@ import tt from '../helpers'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCheckSquare, faSquare } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-library.add( faCheckSquare, faSquare )
+library.add(faCheckSquare, faSquare)
 
 theme.use({ overrides: themeOverrides })
 
@@ -145,7 +144,7 @@ class WelcomePage extends React.Component {
           <Heading margin='large 0 medium 0' border='bottom'>About this extension</Heading>
           <Text>
             <p>{EXT.NAME} is a software tool that visualizes aspects of your web browsing. To access this extension, click on the icon in the corner of the upper right of your browser window. </p>
-            <img src='/icons/extension-toolbar.png' width="700px" style={{border: '1px solid black'}} />
+            <img src='/icons/extension-toolbar.png' width='700px' style={{border: '1px solid black'}} />
             <p>The extension icon will appear in the upper right corner for Chrome as well as Firefox users. </p>
             {this.renderOverlayInfo()}
           </Text>
@@ -196,7 +195,7 @@ class WelcomePage extends React.Component {
           <Text>
             <p>To enable its visualizations, the extension will store data on your computer about your web browsing.</p>
             <p>Personally-identifiable information will <em>not</em> leave your computer and will <em>not</em> be shared with the researchers.</p>
-             {/* The software will, however, collect for the researchers certain anonymized metrics, including:</p>
+            {/* The software will, however, collect for the researchers certain anonymized metrics, including:</p>
             <ul>
               <li>descriptions of the topics of webpages you visit (e.g., “entertainment” or “computer hardware”)</li>
               <li>the number of different websites you visit, but not which specific websites</li>

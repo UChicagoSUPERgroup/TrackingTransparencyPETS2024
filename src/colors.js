@@ -43,7 +43,7 @@ const baseColors = {
   slate: lighten(ucColors.dkGray, 5),
   tiara: ucColors.ltGray,
   porcelain: lighten(ucColors.ltGray, 10),
-  white: '#FFFFFF',
+  white: '#FFFFFF'
 
 }
 
