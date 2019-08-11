@@ -20,4 +20,6 @@ async function runtimeOnMessage (m) {
   return true
 }
 
+// set listener for messages from background script
 chrome.runtime.onMessage.addListener(runtimeOnMessage)
+// this works better as chrome.runtime and not browser.runtime (bug in mozilla webextension-polyfill, may be fixed)

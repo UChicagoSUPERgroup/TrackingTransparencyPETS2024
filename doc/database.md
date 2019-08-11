@@ -6,8 +6,8 @@ On each main frame page visit, we create a unique identifier for that visit, whi
 
 Table: Database table for pages
 
-**Page ID**  **Domain**             **Path**  **Title**    **Time**
------------  --------------------   --------  ------------ ---------------------
+**Page ID**  **Domain**             **Path**  **Title**    **Time**              **TODO ADD NEW COLUMNS**
+-----------  --------------------   --------  ------------ --------------------- ------------------------
 `1499275955` `www.dictionary.com`   `/`       `Dictionary` `2017-07-05 17:32:35`
 
 For each tracker detected (described in section 2.2.3), we create a new row in the trackers table with a record of the tracker, as in Table 2:
@@ -18,6 +18,8 @@ Table: Database table for trackers
 ------------ ----------------------
 `1499275955`  `doubleclick.net`
 `1499275955`  `google-analytics.com`
+`1499275955`  `yahoo.com`
+
 
 When we are able to infer ad-interest categories from page content, we plan on storing the data in a database table as in Table 3. We are currently using simulated inferences to allow us to build the full functionality of the extension, while we continue to work towards determining a way to infer a page's ad interest category from the page content.
 
