@@ -63,9 +63,6 @@ export default class InfoPage extends React.Component {
                   The data that {EXT.NAME} collects about you is stored in your local browser. Personally identifiable data about you is never sent to another server, so not even the researchers and developers of {EXT.NAME} have access to personally identifiable information.
                 </p>
                 <p>
-            To show you the data that other companies could gather about your browsing behavior, our extension logs your behavior, page visits, and an inferred topic of your visited pages in a local database on your computer. The extension also sends anonymized statistics so we can understand how people are using the extension. The specific websites you visit and your browsing history never leave your computer and are not shared in any way. The statistics collected will only be accessed by the research team. We may publish aggregate statistics and findings from the reported data, but will never sell your data.
-                </p>
-                <p>
                   To learn more, please read our <a href='https://super.cs.uchicago.edu/trackingtransparency/privacy.html' target='_blank' rel='noopener noreferrer'>privacy policy</a>.
                 </p>
               </Text>
@@ -84,11 +81,11 @@ export default class InfoPage extends React.Component {
             </TTPanel>
           </GridCol>
         </GridRow>
-        <GridRow>
+        {/* <GridRow>
           <GridCol>
             <Text><p><em>User ID: {id}</em></p></Text>
           </GridCol>
-        </GridRow>
+        </GridRow> */}
       </Grid>
     )
   }

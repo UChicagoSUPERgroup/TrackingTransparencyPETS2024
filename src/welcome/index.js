@@ -149,7 +149,7 @@ class WelcomePage extends React.Component {
             <p>The extension icon will appear in the upper right corner for Chrome as well as Firefox users. </p>
             {this.renderOverlayInfo()}
           </Text>
-          <Heading margin='large 0 medium 0' border='bottom'>Our study</Heading>
+          {/* <Heading margin='large 0 medium 0' border='bottom'>Our study</Heading>
           <Text>
             <p>There are two parts to this study.</p>
             <Grid hAlign="space-around">
@@ -191,7 +191,7 @@ class WelcomePage extends React.Component {
                 </GridCol>
               </GridRow>
             </Grid>
-          </Text>
+          </Text> */}
           <Heading margin='large 0 medium 0' border='bottom'>Data collection</Heading>
           <Text>
             <p>To enable its visualizations, the extension will store data on your computer about your web browsing.</p>

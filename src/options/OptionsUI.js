@@ -78,7 +78,7 @@ export default class Options extends React.Component {
         onClick={this.resetOnClick}
         title='Reset all data'
       >
-        <p>If you wish to reset all data currently being stored by {EXT.NAME}, click the button below. This will reset the data locally stored on your computer but the extension will remain installed and you will remain enrolled in the study.</p>
+        <p>If you wish to reset all data currently being stored by {EXT.NAME}, click the button below. This will reset the data locally stored on your computer but the extension will remain installed.</p>
       </SpecialButton>
     )
   }
@@ -112,10 +112,10 @@ export default class Options extends React.Component {
         </div>}
         <Heading level='h2' margin='medium 0 medium 0'>Danger zone</Heading>
         {this.resetInfo()}
-        {this.optOutInfo()}
-        <Text>
+        {/* {this.optOutInfo()} */}
+        {/* <Text>
           <p><strong>User ID: {id}</strong></p>
-        </Text>
+        </Text> */}
       </div>
     )
   }
