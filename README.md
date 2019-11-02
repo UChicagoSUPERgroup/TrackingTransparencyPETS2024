@@ -3,10 +3,6 @@
 <img src="https://super.cs.uchicago.edu/trackingtransparency/logos/window-rect.svg" alt="Tracking Transparency" width="600">
 
 
-![License](https://img.shields.io/github/license/UChicagoSUPERgroup/trackingtransparency.svg)
-![Chrome Web Store](https://img.shields.io/chrome-web-store/v/jeoddidpffcjecfojbjpjnjnbjeenhai.svg)
-![Mozilla Add-on](https://img.shields.io/amo/v/trackingtransparency.svg)
-
 A browser extension to provide transparency about online tracking and the inferences companies make about your browsing in order to target advertisements and personalize your web experience.
 
 The extension and its effects on user understanding of web tracking were evaluated in the following publication: Weinshel et al. "Oh, the Places You've Been! User Reactions to Longitudinal Transparency About Third-Party Web Tracking and Inferencing." In Proceedings of CCS, 2019.
@@ -59,9 +55,3 @@ Run `npm run start:firefox` to start up a temporary Firefox profile with the ext
 Run `npm dist`. This runs webpack in production mode, minfies the files, and packs the code in a zip file in the `web-ext-artifacts/` folder. This can be installed in developer mode with the same procedure as above.
 
 The built extension will not install easily in permanent non-developer mode - it will need to be uploaded to the browser's respective store and approved.
-
-# License
-
-???
-
-# Links
