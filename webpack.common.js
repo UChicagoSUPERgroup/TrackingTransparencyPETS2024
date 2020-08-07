@@ -94,29 +94,34 @@ module.exports = {
     // fix importing some dependencies that assume filesystem etc.
     new webpack.IgnorePlugin(/jsdom$/),
     new HtmlWebpackPlugin({
+      cache: false,
       filename: 'background.html',
       chunks: ['background'],
       template: 'src/template.html'
     }),
     new HtmlWebpackPlugin({
+      cache: false,
       filename: 'dashboard.html',
       chunks: ['dashboard'],
       template: 'src/template.html',
       title: EXT_NAME
     }),
     new HtmlWebpackPlugin({
+      cache: false,
       filename: 'popup.html',
       chunks: ['popup'],
       template: 'src/template.html',
       title: EXT_NAME
     }),
     new HtmlWebpackPlugin({
+      cache: false,
       filename: 'options.html',
       chunks: ['options'],
       template: 'src/template.html',
       title: 'Options'
     }),
     new HtmlWebpackPlugin({
+      cache: false,
       filename: 'welcome.html',
       chunks: ['welcome'],
       template: 'src/template.html',
