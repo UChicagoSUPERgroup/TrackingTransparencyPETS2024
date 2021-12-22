@@ -96,6 +96,7 @@
     "node-self": "^1.0.0-c",
     "onnxjs": "^0.1.8",
     "papaparse": "^5.3.1",
+    "patch-package": "^6.4.7",
     "predictage": "^4.0.1",
     "predictgender": "^4.0.0",
     "prop-types": "^15.6.2",

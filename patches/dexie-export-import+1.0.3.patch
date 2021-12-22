@@ -1,0 +1,26 @@
+diff --git a/node_modules/dexie-export-import/dist/dexie-export-import.js b/node_modules/dexie-export-import/dist/dexie-export-import.js
+index 7701529..a1f128f 100644
+--- a/node_modules/dexie-export-import/dist/dexie-export-import.js
++++ b/node_modules/dexie-export-import/dist/dexie-export-import.js
+@@ -581,7 +581,7 @@
+       clarinet.CParser           = CParser;
+       clarinet.CStream           = CStream;
+       clarinet.createStream      = createStream;
+-      clarinet.MAX_BUFFER_LENGTH = 10 * 1024 * 1024;
++      clarinet.MAX_BUFFER_LENGTH = 1024 * 1024 * 1024;
+       clarinet.DEBUG             = (env.CDEBUG==='debug');
+       clarinet.INFO              = (env.CDEBUG==='debug' || env.CDEBUG==='info');
+       clarinet.EVENTS            =
+diff --git a/node_modules/dexie-export-import/dist/dexie-export-import.mjs b/node_modules/dexie-export-import/dist/dexie-export-import.mjs
+index 05ab6a3..35bc55f 100644
+--- a/node_modules/dexie-export-import/dist/dexie-export-import.mjs
++++ b/node_modules/dexie-export-import/dist/dexie-export-import.mjs
+@@ -573,7 +573,7 @@ var clarinet_1 = createCommonjsModule(function (module, exports) {
+   clarinet.CParser           = CParser;
+   clarinet.CStream           = CStream;
+   clarinet.createStream      = createStream;
+-  clarinet.MAX_BUFFER_LENGTH = 10 * 1024 * 1024;
++  clarinet.MAX_BUFFER_LENGTH = 1024 * 1024 * 1024;
+   clarinet.DEBUG             = (env.CDEBUG==='debug');
+   clarinet.INFO              = (env.CDEBUG==='debug' || env.CDEBUG==='info');
+   clarinet.EVENTS            =
