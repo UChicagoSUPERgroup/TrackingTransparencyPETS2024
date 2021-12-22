@@ -14,6 +14,9 @@ import MetricsListItem from '@instructure/ui-elements/lib/components/MetricsList
 import View from '@instructure/ui-layout/lib/components/View'
 import Alert from '@instructure/ui-alerts/lib/components/Alert'
 
+import { Box } from "grommet";
+import {Spinner as Spinner_grommet} from 'grommet';
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -39,9 +42,9 @@ class Popup extends React.Component {
     this.state = {
       tabData: {},
       trackerData: {},
-      numTrackers: '…',
-      numPages: '…',
-      numInferences: '…',
+      numTrackers: <Box margin={{left: "60px"}}> <Spinner_grommet /> </Box>,
+      numPages: <Box margin={{left: "35px"}}> <Spinner_grommet /> </Box>,
+      numInferences: <Box margin={{left: "50px"}}> <Spinner_grommet /> </Box>,
       id: ''
     }
     // this.sendPopupData = this.sendPopupData.bind(this);
@@ -200,7 +203,7 @@ class Popup extends React.Component {
     const {
       okToLoad, selectedIndex, showUninstall, showSurvey2,
       numTrackers, numInferences, numPages, pageTitle, topTracker, topTrackerCount, tabData,
-      showTrackerContent, showInferenceContent, showHistoryContent, showDashboard
+      showTrackerContent, showInferenceContent, showHistoryContent, showDashboard, 
     } = this.state
     const { trackers, inference } = tabData || {}
 
@@ -233,7 +236,8 @@ class Popup extends React.Component {
               <p>There {areTrackers} <strong>{trackers.length} {pluralTrackers}</strong> on this page.&nbsp;
                 {trackers.length > 0 && <Link onClick={() => this.setState({ selectedIndex: 1 })}>See all ⟩</Link>}</p>
               }
-              {(!pageTitle || (!showInferenceContent && !showTrackerContent)) && <p>The {EXT.NAME} plugin provides transparency about online privacy.</p>}
+              {(!pageTitle || (!showInferenceContent && !showTrackerContent)) && isNaN(this.state.numTrackers) && <p>Loading {EXT.NAME} ...</p>}
+              {(!pageTitle || (!showInferenceContent && !showTrackerContent)) && !isNaN(this.state.numTrackers) && <p>The {EXT.NAME} plugin provides transparency about online privacy.</p>}
             </Text>
           </View>
           {showMetrics && <View as='div' borderWidth='0 0 small 0' padding='medium 0 medium 0'>
@@ -265,9 +269,9 @@ class Popup extends React.Component {
         </Text>
 
       </div> */}
-      {showDashboard &&
+      {showDashboard && !isNaN(this.state.numTrackers) &&
       <View as='div' textAlign='center'>
-        <Button onClick={this.openDashboard} variant='primary' margin='small'>Open {EXT.NAME} dashboard</Button>
+        <Button onClick={this.openDashboard} variant='primary' margin='small'>Open {EXT.NAME} Dashboard</Button>
       </View>
       }
     </div>)

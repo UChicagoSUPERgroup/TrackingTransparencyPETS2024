@@ -52,6 +52,6 @@ Run `npm run start:firefox` to start up a temporary Firefox profile with the ext
 
 # Building for Production
 
-Run `npm dist`. This runs webpack in production mode, minfies the files, and packs the code in a zip file in the `web-ext-artifacts/` folder. This can be installed in developer mode with the same procedure as above.
+Run `npm run dist`. This runs webpack in production mode, minfies the files, and packs the code in a zip file in the `web-ext-artifacts/` folder. This can be installed in developer mode with the same procedure as above.
 
 The built extension will not install easily in permanent non-developer mode - it will need to be uploaded to the browser's respective store and approved.

@@ -43,9 +43,23 @@ async function onMessage (m) {
     case 'store_page':
       store.storePage(m.data.info);
       break;
+
+    case 'update_page':
+      store.updatePage(m.data.info);
+      break
+
     case 'store_tracker_array':
       store.storeTrackerArray(m.data.pageId, m.data.trackers);
       break;
+
+    case 'store_ad':
+      store.storeAd(m.data.info);
+      break;
+
+    case 'store_google_inference':
+      store.storeGoogleInference(m.data.info);
+      break;
+
     case 'store_inference':
       store.storeInference(m.data.info);
       break;

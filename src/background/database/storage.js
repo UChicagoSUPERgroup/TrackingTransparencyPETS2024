@@ -22,16 +22,117 @@ export async function storePage (info) {
   const ttDb = await primaryDbPromise;
   const pageItem = ttDb.getSchema().table('Pages');
 
+  const activity_starter = [{'start': info.pageId}]
+
   const page = pageItem.createRow({
     'id': info.pageId,
     'title': info.title,
     'domain': info.domain,
     'hostname': info.hostname,
     'path': info.path,
-    'protocol': info.protocol
+    'protocol': info.protocol,
+    'activity_events': activity_starter
   });
   ttDb.insertOrReplace().into(pageItem).values([page]).exec();
 }
+
+
+/**
+ * updates page visit times (exiting page)
+ *
+ * @param {Object} info - info about the page
+ * @param {Number} info.pageId - page's unique identifer
+ * @param {Number} info.activity_events - page's {type [focus event, exit event], value [timestamp]}
+ */
+export async function updatePage (info) {
+  const ttDb = await primaryDbPromise;
+  const pageItem = ttDb.getSchema().table('Pages');
+
+
+  // const old = await ttDb.select(pageItem.activity_event).
+  //   from(pageItem).
+  //   where(lf.op.and(
+  //       pageItem.pageId.eq(info.pageId))).
+  //   exec();
+
+  let query = ttDb.select()
+    .from(pageItem)
+    .where(lf.op.and(
+      pageItem.id.eq(info.pageId)
+    ))
+  let qRes = await query.exec()
+  // qRes is empty when focus event fires on new page, because page does not have existing activity_events yet
+  if (qRes.length !== 0) {
+    let edited_activity_events = qRes[0].activity_events
+    edited_activity_events.push(info.activity_event)
+
+    const page = pageItem.createRow({
+      'id': qRes[0].id,
+      'title': qRes[0].title,
+      'domain': qRes[0].domain,
+      'hostname': qRes[0].hostname,
+      'path': qRes[0].path,
+      'protocol': qRes[0].protocol,
+      'activity_events': edited_activity_events
+    });
+    ttDb.insertOrReplace().into(pageItem).values([page]).exec();
+
+  }
+
+}
+
+/**
+ * stores new ad seen on page
+ *
+ * @param {Object} info - info about the ad
+ * @param {Number} info.pageId - page's unique identifer, as timestamp
+ * @param {String} info.url - ad's identifier, rendered as image
+ * @param {String} info.initiator - the server responsible for sending this ad
+ */
+export async function storeAd (info) {
+  const ttDb = await primaryDbPromise;
+  const adItem = ttDb.getSchema().table('Ads');
+
+  // TODO: this assumes we are not repeating ads
+  const ad = adItem.createRow({
+    'url': info.url,
+    'url_explanation': info.url_explanation,
+    'url_landing_page_long': info.url_landing_page_long,
+    'url_landing_page_short': info.url_landing_page_short,
+    'dom': info.dom,
+    'gender': info.gender,
+    'genderLexical': info.genderLexical,
+    'explanation': info.explanation,
+    'initiator': info.initiator,
+    'inference': info.inference,
+    'inferenceCategory': info.inferenceCategory, // sanity check bruce's model
+    'inferencePath': info.inferencePath, // sanity check bruce's model
+    'threshold': info.threshold,
+    'domain': info.domain,
+    'pageId': info.pageId
+  });
+  // console.log(info.explanation)
+  ttDb.insertOrReplace().into(adItem).values([ad]).exec();
+}
+
+/**
+ * stores google inference list 
+ *
+ * @param {Object} info - info about the current google inferences
+ * @param {Number} info.pageId - page's unique identifer, as timestamp
+ */
+export async function storeGoogleInference (info) {
+  const ttDb = await primaryDbPromise;
+  const googleInferenceItem = ttDb.getSchema().table('GoogleInference');
+
+  const inference = googleInferenceItem.createRow({
+    'inferences': info.inferences,
+    'pageId': info.pageId
+  });
+  // console.log(inference)
+  ttDb.insertOrReplace().into(googleInferenceItem).values([inference]).exec();
+}
+
 
 /**
  * stores records of trackers for given page
@@ -61,6 +162,8 @@ export async function storeTrackerArray (pageId, trackers) {
  * @param {Object} info - info about the page
  * @param {Number} info.pageId - page's unique identifer
  * @param {string} info.inference - inference made
+ * @param {string} info.gender - inference made on gender
+ * @param {Number} info.genderLexical - inference made on gender using Lexical score
  * @param {string} info.inferenceCategory - unused
  * @param {Number} info.threshold - unused
  *
@@ -69,12 +172,26 @@ export async function storeInference (info) {
   const ttDb = await primaryDbPromise;
   const inferenceItem = ttDb.getSchema().table('Inferences');
 
+  let wordCloud_option; 
+  if (info.wordCloud !== undefined && info.wordCloud !== null) {
+    wordCloud_option = info.wordCloud
+  } else {
+    wordCloud_option = ''
+  }
+
+  console.log("happycat" + [info.inferencePath])
+
   const inference = inferenceItem.createRow({
     'inference': info.inference,
+    'wordCloud': wordCloud_option,
+    'gender': info.gender,
+    'genderLexical': info.genderLexical,
     'inferenceCategory': info.inferenceCategory,
+    'inferencePath': info.inferencePath, // sanity check bruce's model
     'threshold': info.threshold,
     'pageId': info.pageId
   });
+  // console.log(inference)
   ttDb.insertOrReplace().into(inferenceItem).values([inference]).exec();
 }
 

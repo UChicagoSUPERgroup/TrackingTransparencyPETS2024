@@ -1,0 +1,26 @@
+/* myComponent.css */
+
+.myBubbleUI {
+	width: 100%;
+	max-width: 1000px;
+	height: 500px;
+	border-radius: 50px;
+}
+
+.child {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	background-color: black;
+
+}
+
+.childComponent {
+  width: 100%; /* width expands to fit bubble */
+  height: 100%; /* width expands to fit bubble */
+  border-radius: 50%; /* rounded border forms a circle */
+  background-color: burlywood;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

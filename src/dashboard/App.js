@@ -12,9 +12,21 @@ import NavItem from 'react-bootstrap/lib/NavItem'
 
 import theme from '@instructure/ui-themes/lib/canvas'
 import IconSettings from '@instructure/ui-icons/lib/Solid/IconSettings'
+import IconBlueprint from '@instructure/ui-icons/lib/Solid/IconBlueprint'
 
 import TTBreadcrumbs from './components/TTBreadcrumbs'
 import {Home, WaitingDataHome} from './Home'
+
+import {Button as Button_grommet} from 'grommet';
+import { 
+  Shield,
+} from 'grommet-icons';
+import {
+  Box,
+  Layer,
+  Tip,
+} from 'grommet';
+import {Text as Text_grommet} from 'grommet';
 
 import {
   Trackers,
@@ -24,7 +36,12 @@ import {
   DebugPage,
   InfoPage,
   SettingsPage,
-  LightbeamWrapper
+  ProfilePage,
+  TakeActionPage,
+  LightbeamWrapper,
+  Creepy,
+  TrackerTimes,
+  CreepySearches
   // TakeActionPage
 } from './loadable'
 
@@ -38,13 +55,15 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faEye, faThumbsUp, faAd, faArrowRight, faPaw, faUser,
   faWindowMaximize, faClock, faExclamationTriangle,
-  faExternalLinkAlt, faSearch, faUsers, faQuestion
+  faExternalLinkAlt, faSearch, faUsers, faQuestion,
+  faBrain, faLightbulb, faExclamation, 
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
   faEye, faThumbsUp, faAd, faArrowRight, faPaw, faUser,
   faWindowMaximize, faClock, faExclamationTriangle,
-  faExternalLinkAlt, faSearch, faUsers, faQuestion
+  faExternalLinkAlt, faSearch, faUsers, faQuestion,
+  faBrain, faLightbulb, faExclamation, 
 )
 
 theme.use({
@@ -60,26 +79,35 @@ const NavLink = ({to, title}) => (
   </LinkContainer>
 )
 
+
 class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      okToLoad: false
+      okToLoad: false,
     }
   }
+
+
 
   async componentWillUnmount () {
 
   }
 
   async componentDidMount () {
+    
     const options = (await browser.storage.local.get('options')).options
     const okToLoad = true
     this.setState({ ...options, okToLoad })
+
   }
 
+            // {!hideHistoryContent && <NavLink to='/creepy' title='Bedtime' />}
+            // {!hideHistoryContent && <NavLink to='/trackertimes' title='Trackers by Time' />}
+            // {!hideHistoryContent && <NavLink to='/creepysearches' title='Search Insights' />}
+
   render () {
-    const { okToLoad } = this.state
+    const { okToLoad, show } = this.state
     const settings = (<IconSettings />)
 
     // some of these are "show..." and others are "hide..."
@@ -88,6 +116,8 @@ class App extends Component {
     const hideInferenceContent = this.state.showInferenceContent === false
     const hideHistoryContent = this.state.showHistoryContent === false
     const showLightbeam = this.state.showLightbeam === true
+    const showProfile = this.state.showProfile === true
+    const showTakeAction = this.state.showTakeAction === true
 
     const TTNavbar = () => {
       return (
@@ -103,6 +133,8 @@ class App extends Component {
             {!hideHistoryContent && <NavLink to='/sites' title='Sites' />}
             {!hideHistoryContent && <NavLink to='/activity' title='Activity' />}
             {showLightbeam && <NavLink to='/lightbeam' title='Network' />}
+            {showProfile && <NavLink to='/profile' title='Profile' />}
+            {showTakeAction && <NavLink to='/takeAction' title='Take Action' />}
             {/* <NavLink to="/takeaction"  title="Take Action"/> */}
           </Nav>
           <Nav pullRight>
@@ -114,6 +146,17 @@ class App extends Component {
       )
     }
 
+
+    const button_style = {
+      position:'fixed',
+      bottom:'40%', 
+      // right:'50%',
+      display: 'flex',
+      left:'10px',
+      zIndex:5,
+    }
+
+
     return (
       <HashRouter>
         <div>
@@ -122,6 +165,36 @@ class App extends Component {
           {okToLoad && <div className='container containerInner'>
             <Route path='/*' render={({ match }) => <TTBreadcrumbs url={match.url} />} />
 
+        <Box>
+
+      <Tip
+        plain
+        content={
+          <Box
+            background='light-1' 
+            round='medium'
+            pad="small"
+            margin="small"
+            gap="small"
+            width={{ max: 'medium' }}
+            responsive={false}
+          >
+            <Text_grommet weight="bold" color="status-error">Take Action</Text_grommet>
+            <Text_grommet size="small">
+              Click me to get some privacy protection!
+            </Text_grommet>
+          </Box>
+        }
+
+        dropProps={{ align:  { top: "bottom" } }} 
+      >
+
+        <p style={button_style}><Button_grommet color="status-error" hoverIndicator={true} primary icon={<Shield size="large" />} label="" href='#/takeAction' onClick={() => {  }}  /><br/><br/></p>
+        </Tip>
+        </Box>
+
+            
+
             <div>
               <Route exact path='/' render={props => (
                 <Home {...props}
@@ -129,6 +202,8 @@ class App extends Component {
                   hideInferenceContent={hideInferenceContent}
                   hideTrackerContent={hideTrackerContent}
                   showLightbeam={showLightbeam}
+                  showProfile={showProfile}
+                  showTakeAction={showTakeAction}
                 />
               )} />
 
@@ -162,7 +237,32 @@ class App extends Component {
                 />
               )} />
 
+              <Route path='/creepy' render={props => (
+                <Creepy {...props}
+                  hideInferenceContent={hideInferenceContent}
+                  hideTrackerContent={hideTrackerContent}
+                />
+              )} />
+
+              <Route path='/trackertimes' render={props => (
+                <TrackerTimes {...props}
+                  hideInferenceContent={hideInferenceContent}
+                  hideTrackerContent={hideTrackerContent}
+                />
+              )} />
+
+              <Route path='/creepysearches' render={props => (
+                <CreepySearches {...props}
+                  hideInferenceContent={hideInferenceContent}
+                  hideTrackerContent={hideTrackerContent}
+                />
+              )} />
+
+
               {showLightbeam && <Route path='/lightbeam' component={LightbeamWrapper} />}
+              {showProfile && <Route path='/profile' component={ProfilePage} />}
+              {showTakeAction && <Route path='/takeAction' component={TakeActionPage} />}
+
               {/* <Route path="/takeaction" component={TakeActionPage}/> */}
             </div>
 
@@ -177,6 +277,7 @@ class App extends Component {
           </div>}
 
         </div>
+
       </HashRouter>
     )
   }

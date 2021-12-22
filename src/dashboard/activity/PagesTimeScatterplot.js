@@ -45,6 +45,7 @@ export default class PagesTimeScatterplot extends React.Component {
 
   render () {
     const {times, grouping, index} = this.state
+    console.log("pagesTimeTimeTime ==>" + times)
     const {dateLabel, timeLabelSimple, timeLabelAdjusted,
       dayOfWeekLabel, dayOfWeekLabelAdjusted, stringLabel} = las
 
@@ -57,6 +58,7 @@ export default class PagesTimeScatterplot extends React.Component {
       let day = (new Date(Date.now())).getDay()
       for (let elem in grouped) {
         let xy = elem.split(',')
+        console.log(xy)
         if (parseInt(xy[0]) <= day) {
           data.push({
             x: parseInt(xy[1]),
@@ -71,7 +73,7 @@ export default class PagesTimeScatterplot extends React.Component {
           })
         }
       }
-      // console.log(data);
+      console.log(data);
       data = data.map((d, i) => ({...d, color: i === index[0] ? 1 : 0}))
     }
 

@@ -27,10 +27,19 @@ export default class TrackerDetailPage extends React.Component {
     const pagesP = background.queryDatabase('getPagesByTracker', queryObj)
     const trackerDataP = import(/* webpackChunkName: "data/trackerData" */'../../data/trackers/companyData.json')
 
-    const [inferences, domains, pages, trackerData] =
-      await Promise.all([inferencesP, domainsP, pagesP, trackerDataP])
+    // companyData updated is here using browser.storage.local
+    let trackerDataP_v2 = browser.storage.local.get('companyData');
 
-    const trackerInfo = trackerData.default[this.tracker]
+    const [inferences, domains, pages, trackerData] =
+      await Promise.all([inferencesP, domainsP, pagesP, trackerDataP_v2])
+
+    console.log(trackerData)
+    console.log(this.tracker)
+
+    const trackerInfo = trackerData[this.tracker]
+
+
+
 
     const metrics = [
       {

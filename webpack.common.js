@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ChromeExtensionReloader  = require('webpack-chrome-extension-reloader'); // hot reloading
 
 const EXT_NAME = 'Tracking Transparency'
 
@@ -24,7 +25,12 @@ module.exports = {
     options: './src/options/index.js',
     welcome: './src/welcome/index.js',
 
-    lightbeam: './src/lightbeam/lightbeam.js'
+    lightbeam: './src/lightbeam/lightbeam.js',
+
+    tester2: './src/content_scripts/tester2.js',
+    feeler: './src/content_scripts/feeler.js',
+    instrumentation: './src/background/instrumentation.js'
+
   },
   output: {
     // This copies each source entry into the extension dist folder named
@@ -54,6 +60,20 @@ module.exports = {
         loader: 'file-loader?name=fonts/[name].[ext]'
       },
       {
+        // allow .mp4 video
+        test: /\.mp4$/,
+        use: 'file-loader?name=videos/[name].[ext]',
+      },
+      {
+        // allow images
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
+      {
         // allow importing css files
         test: /\.css$/,
         use: [
@@ -62,6 +82,17 @@ module.exports = {
           },
           'css-loader'
         ]
+      },
+      {
+        // allow importing onnx mode file, Aug 22, 2021
+        test: /\.onnx$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+          outputPath: 'module',
+        },
+
+        
       }
     ]
   },
@@ -72,14 +103,29 @@ module.exports = {
     ]
   },
   optimization: {
-    splitChunks: {
-      chunks: 'initial',
-      cacheGroups: {
-        default: false
-      }
-    }
+    // splitChunks: {
+    //   chunks: 'initial',
+    //   cacheGroups: {
+    //     default: false
+    //   }
+    // }
   },
   plugins: [
+    new ChromeExtensionReloader({
+        reloadPage: true, // not consistent
+        entries: { // entries used for the content/background scripts
+          contentScript: 'content', // Use the entry names, not the file name or the path
+          background: 'background', 
+          popup: 'popup',
+          dashboard: 'dashboard',
+          options: 'options',
+          welcome: 'welcome',
+          lightbeam: 'lightbeam',
+          tester2: 'tester2',
+          feeler: 'feeler',
+          instrumentation: 'instrumentation',
+        }
+      }),
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       'EXT.VERSION': JSON.stringify(require('./package.json').version),
@@ -94,12 +140,14 @@ module.exports = {
     // fix importing some dependencies that assume filesystem etc.
     new webpack.IgnorePlugin(/jsdom$/),
     new HtmlWebpackPlugin({
+      // inject: false,
       cache: false,
       filename: 'background.html',
       chunks: ['background'],
       template: 'src/template.html'
     }),
     new HtmlWebpackPlugin({
+      // inject: false,
       cache: false,
       filename: 'dashboard.html',
       chunks: ['dashboard'],
@@ -107,6 +155,7 @@ module.exports = {
       title: EXT_NAME
     }),
     new HtmlWebpackPlugin({
+      // inject: false,
       cache: false,
       filename: 'popup.html',
       chunks: ['popup'],
@@ -114,6 +163,7 @@ module.exports = {
       title: EXT_NAME
     }),
     new HtmlWebpackPlugin({
+      // inject: false,
       cache: false,
       filename: 'options.html',
       chunks: ['options'],
@@ -121,6 +171,7 @@ module.exports = {
       title: 'Options'
     }),
     new HtmlWebpackPlugin({
+      // inject: false,
       cache: false,
       filename: 'welcome.html',
       chunks: ['welcome'],
@@ -136,5 +187,10 @@ module.exports = {
     tls: 'empty',
     child_process: 'empty',
     jsdom: 'empty'
-  }
+  },
+
+  devtool: 'cheap-module-source-map'
+
+
+
 }

@@ -115,6 +115,7 @@ export default class TrackerOverview extends React.Component {
       graphCount: 25,
       numTrackers: '…'
     }
+
     // this.logLoad = this.logLoad.bind(this);
     this.updateGraphCount = this.updateGraphCount.bind(this)
   }

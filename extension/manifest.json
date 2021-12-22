@@ -1,7 +1,10 @@
 {
     "manifest_version": 2,
+    // "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "content_security_policy": "script-src 'self' http://xxxx 'unsafe-inline' 'unsafe-eval'",
+
     "name": "Tracking Transparency",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "applications": {
         "gecko": {
             "id": "trackingtransparency@super.cs.uchicago.edu",
@@ -21,6 +24,7 @@
         "privacy",
         "webRequest",
         "webNavigation",
+        "activeTab",
         "<all_urls>"
         ],
     "browser_action": {
@@ -41,9 +45,12 @@
             "exclude_matches": ["*://*/_/chrome/newtab*"],
             "js": [
                 "lib/browser-polyfill.js",
-                "dist/content.js"
+                "dist/content.js",
+                "dist/tester2.js",
+                "dist/feeler.js"
+
             ],
-            "run_at": "document_idle",
+            "run_at": "document_end",
             "all_frames": false
         }
     ],

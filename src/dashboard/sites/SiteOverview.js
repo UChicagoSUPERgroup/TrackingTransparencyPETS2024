@@ -66,6 +66,7 @@ const NoTrackerTable = (data) => {
 
 const ManyTrackersTable = (data) => {
   let numEntries = data ? data.length : 0
+  console.log(data)
   return (
     <ReactTable
       data={data}

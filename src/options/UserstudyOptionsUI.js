@@ -20,6 +20,8 @@ export default class UserstudyOptionsUI extends React.Component {
       showInferenceContent: true,
       showHistoryContent: true,
       // popupVariant: 'default',
+      showProfile: false,
+      showTakeAction: false,
       userstudyCondtion: 'everything'
     }
 
@@ -101,6 +103,22 @@ export default class UserstudyOptionsUI extends React.Component {
             value='showLightbeam'
             label='Show Lightbeam'
             checked={this.state.showLightbeam}
+            onChange={this.checkboxChangeHandler}
+            variant='toggle'
+            layout='inline'
+          />
+          <Checkbox
+            value='showProfile'
+            label='Show Profile'
+            checked={this.state.showProfile}
+            onChange={this.checkboxChangeHandler}
+            variant='toggle'
+            layout='inline'
+          />
+          <Checkbox
+            value='showTakeAction'
+            label='Show Take Action'
+            checked={this.state.showTakeAction}
             onChange={this.checkboxChangeHandler}
             variant='toggle'
             layout='inline'

@@ -101,6 +101,8 @@ export async function setUserstudyCondition (condition) {
       options.showTrackerContent = true
       options.showInferenceContent = true
       options.showHistoryContent = true
+      options.showProfile = true
+      options.showTakeAction = true
       // options.popupVariant = 'default'
       break
   }
