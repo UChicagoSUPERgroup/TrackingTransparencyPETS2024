@@ -16,7 +16,6 @@
     "start:firefox": "web-ext run -s extension/ -u 'about:addons' -u 'about:debugging' -u 'https://super.cs.uchicago.edu/'",
     "test": "tape test/test.js | tap-spec",
     "version": "file-version-bump",
-    "postinstall": "patch-package",
     "watch": "npm run build:watch"
   },
   "devDependencies": {

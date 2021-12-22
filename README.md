@@ -18,6 +18,10 @@ A browser extension to provide information about online tracking.
 
 - Install dependencies (run once and when any dependencies are changed):
   -`$ npm install`
+- Increase buffer size for inference model 
+  - in `node_modules/dexie-export-import/dist/dexie-export-import.js`  AND `node_modules/dexie-export-import/dist/dexie-export-import.mjs` make the following change: 
+    - clarinet.MAX_BUFFER_LENGTH = 10 * 1024 * 1024; ==> clarinet.MAX_BUFFER_LENGTH = 1024 * 1024 * 1024; 
+  
 
 - Build the code: `$ npm run build` 
     - (Optional for development) Build using `$ npm run build:watch`. This runs Webpack in watch mode and automatically reruns whenever you change any files. Recommended to leave this running in a background terminal.
