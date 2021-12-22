@@ -286,9 +286,6 @@ const sensitive_bubbles_v2 = (data) => {
       </Box>
     );
   } else {
-
-    console.log("pandas" + JSON.stringify(data));
-    console.log(data["outer"].length);
     // fix some settings if not enough data
     let container_size = Math.max(data["outer"].length * 50, 500);
     let margin_top = null;
@@ -481,7 +478,6 @@ const sensitive_bubbles_v2 = (data) => {
   keepit
 */
 const sensitive_info_pie = (slice, data) => {
-  console.log("lester", slice, data);
 
   let numEntries = data ? data.length : 0;
   let actual_data = data ? data['all '].outer_all.length : 0;
@@ -761,8 +757,6 @@ const visual_activity = (data) => {
     });
 
     let chart_type = "areaspline";
-    // console.log("nightnight" + JSON.stringify(data) + data.length)
-
     for (let obj of data) {
       let entry = obj["data"];
       if (entry.length == 1) {
@@ -991,11 +985,6 @@ const heatMap_newer = (slice, allData) => {
 
     //
   } else {
-    // the allData object has time slices built in
-    console.log("here");
-    console.log(allData);
-    console.log(slice);
-    console.log(Object.values(allData).length);
 
     // for each slice
     // bin the date to hour
@@ -1014,9 +1003,6 @@ const heatMap_newer = (slice, allData) => {
     if (slice == "all") {
       data_to_render = allData.all;
     }
-
-    console.log(data_to_render);
-    console.log(data_to_render.length);
 
     // get top time in this slice
     let tops = [];
@@ -1039,26 +1025,7 @@ const heatMap_newer = (slice, allData) => {
         }
       }
     }
-    // const sorted = Object.entries(all_activity_in_slice).sort(([,a],[,b]) => a-b).reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
-    // let favorite_interest = sorted[Object.keys(sorted)[Object.keys(sorted).length - 1]]
-    // let engagement = String(fancyTimeFormat(sorted[favorite_interest]))
-    // console.log("brown" + JSON.stringify(sorted))
-    // let top_interest = _.max(Object.keys(all_activity_in_slice), o => obj[o]);
-    // let top_interest_in_this_slice = top_interest
-    // let top_engagement_in_this_slice = String(fancyTimeFormat(all_activity_in_slice[top_interest]));
-    // tops.push(top_time)
 
-    // let option1 = []
-    // try {
-    //   let info = data_to_render.map(entry => entry.interest_overview).reduce(set_combine, new Object(), 0 , 0 )
-    //   let top = info[Object.keys(info)[0]];
-    //   let top_interest = top[0]
-    //   let top_time = fancyTimeFormat(top[1])
-    //   option1.push(top_interest, top_time)
-
-    // } catch (e) {
-    //   option1.push('--', '--')
-    // }
     let custom_bins = new Array();
     var histGenerator = d3
       .histogram()
@@ -1340,10 +1307,6 @@ const heatMap_newer_radial = (slice, allData) => {
     //
   } else {
     // the allData object has time slices built in
-    console.log("here");
-    console.log(allData);
-    console.log("check this:" + allData.all.length);
-    console.log(slice);
 
     // for each slice
     // bin the date to hour
@@ -1363,8 +1326,6 @@ const heatMap_newer_radial = (slice, allData) => {
       data_to_render = allData.all;
     }
 
-    console.log(data_to_render);
-    console.log(data_to_render.length);
 
     // get top time in this slice
     // get custom bins from this slice
@@ -1380,7 +1341,6 @@ const heatMap_newer_radial = (slice, allData) => {
         top_time = slice[2];
       }
       for (let activity of slice[3].grouped_interests) {
-        console.log(activity);
 
         if (activity[0] in all_activity_in_slice) {
           let current = all_activity_in_slice[activity[0]];
@@ -1390,7 +1350,6 @@ const heatMap_newer_radial = (slice, allData) => {
         }
       }
     }
-    console.log("dogsnice" + JSON.stringify(all_activity_in_slice));
     let custom_bins = new Array();
     var histGenerator = d3
       .histogram()
@@ -1423,32 +1382,11 @@ const heatMap_newer_radial = (slice, allData) => {
       count += 1;
     }
 
-    // let low = {min: bins[0].x0, max: bins[0].x1, color: '#00d27a', label: 'little engagement\n\n(' + msToTime(bins[0].x0) + "-" + msToTime(bins[0].x1) + ")"}
-    // let medium = {min: bins[1].x0, max: bins[1].x1, color: '#f5803e', label: 'mid-range engagement\n\n(' + msToTime(bins[1].x0) + "-" + msToTime(bins[1].x1) + ")"}
-    // let high = {min: bins[2].x0, max: bins[2].x1, color: '#e63757', label: 'heavy engagement\n\n(' + msToTime(bins[2].x0) + "-" + msToTime(bins[2].x1) + ")"}
-
-    // let low = {min: bins[0].x0, max: bins[0].x1, color: '#f4f0bb', label: 'little engagement'}
-    // let medium = {min: bins[1].x0, max: bins[1].x1, color: '#87c38f', label: 'mid-range engagement'}
-    // let high = {min: bins[2].x0, max: bins[2].x1, color: '#da2c38', label: 'heavy engagement'}
-    // let overflow = {min: bins[3].x0, max: bins[3].x1, color: '#da2c38', label: 'highest engagement'}
-
-    // custom_bins.push(low)
-    // custom_bins.push(medium)
-    // custom_bins.push(high)
-    // custom_bins.push(overflow)
-    console.log(bins.length);
-    console.log("check these bins" + JSON.stringify(custom_bins));
-    console.log(JSON.stringify(bins));
-
-    // prettier-ignore
-    // const this_data = [[0, 0, 50, {"this": "- that"}], [0, 1, 1], [0, 2, 0], [0, 3, 0], [0, 4, 0], [0, 5, 0], [0, 6, 0], [0, 7, 0], [0, 8, 0], [0, 9, 0], [0, 10, 0], [0, 11, 2], [0, 12, 4], [0, 13, 1], [0, 14, 1], [0, 15, 3], [0, 16, 4], [0, 17, 6], [0, 18, 4], [0, 19, 4], [0, 20, 3], [0, 21, 3], [0, 22, 2], [0, 23, 5], [1, 0, 7], [1, 1, 0], [1, 2, 0], [1, 3, 0], [1, 4, 0], [1, 5, 0], [1, 6, 0], [1, 7, 0], [1, 8, 0], [1, 9, 0], [1, 10, 5], [1, 11, 2], [1, 12, 2], [1, 13, 6], [1, 14, 9], [1, 15, 11], [1, 16, 6], [1, 17, 7], [1, 18, 8], [1, 19, 12], [1, 20, 5], [1, 21, 5], [1, 22, 7], [1, 23, 2], [2, 0, 1], [2, 1, 1], [2, 2, 0], [2, 3, 0], [2, 4, 0], [2, 5, 0], [2, 6, 0], [2, 7, 0], [2, 8, 0], [2, 9, 0], [2, 10, 3], [2, 11, 2], [2, 12, 1], [2, 13, 9], [2, 14, 8], [2, 15, 10], [2, 16, 6], [2, 17, 5], [2, 18, 5], [2, 19, 5], [2, 20, 7], [2, 21, 4], [2, 22, 2], [2, 23, 4], [3, 0, 7], [3, 1, 3], [3, 2, 0], [3, 3, 0], [3, 4, 0], [3, 5, 0], [3, 6, 0], [3, 7, 0], [3, 8, 1], [3, 9, 0], [3, 10, 5], [3, 11, 4], [3, 12, 7], [3, 13, 14], [3, 14, 13], [3, 15, 12], [3, 16, 9], [3, 17, 5], [3, 18, 5], [3, 19, 10], [3, 20, 6], [3, 21, 4], [3, 22, 4], [3, 23, 1], [4, 0, 1], [4, 1, 3], [4, 2, 0], [4, 3, 0], [4, 4, 0], [4, 5, 1], [4, 6, 0], [4, 7, 0], [4, 8, 0], [4, 9, 2], [4, 10, 4], [4, 11, 4], [4, 12, 2], [4, 13, 4], [4, 14, 4], [4, 15, 14], [4, 16, 12], [4, 17, 1], [4, 18, 8], [4, 19, 5], [4, 20, 3], [4, 21, 7], [4, 22, 3], [4, 23, 0], [5, 0, 2], [5, 1, 1], [5, 2, 0], [5, 3, 3], [5, 4, 0], [5, 5, 0], [5, 6, 0], [5, 7, 0], [5, 8, 2], [5, 9, 0], [5, 10, 4], [5, 11, 1], [5, 12, 5], [5, 13, 10], [5, 14, 5], [5, 15, 7], [5, 16, 11], [5, 17, 6], [5, 18, 0], [5, 19, 5], [5, 20, 3], [5, 21, 4], [5, 22, 2], [5, 23, 0], [6, 0, 1], [6, 1, 0], [6, 2, 0], [6, 3, 0], [6, 4, 0], [6, 5, 0], [6, 6, 0], [6, 7, 0], [6, 8, 0], [6, 9, 0], [6, 10, 1], [6, 11, 0], [6, 12, 2], [6, 13, 1], [6, 14, 3], [6, 15, 4], [6, 16, 0], [6, 17, 0], [6, 18, 0], [6, 19, 0], [6, 20, 1], [6, 21, 2], [6, 22, 2], [6, 23, 6]]
-
     const this_data = data_to_render
     .map(function (item) {
     return [item[1], item[0], item[2] || '-', item[3] || "-", item[2] || '-',];
 });
 
-    console.log(this_data);
 
     // prettier-ignore
     const hours = ['12a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a', '10a', '11a', '12p', '1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p', '9p', '10p', '11p'];
@@ -1592,10 +1530,6 @@ const heatMap_overview = (slice, allData) => {
       );
     } else {
       // the allData object has time slices built in
-      console.log("here");
-      console.log(allData);
-      console.log(slice);
-
       // for each slice
       // bin the date to hour
       // // <day of week> <hour> <value> <tooltip>
@@ -1614,8 +1548,6 @@ const heatMap_overview = (slice, allData) => {
         data_to_render = allData.all;
       }
 
-      console.log(data_to_render);
-      console.log(data_to_render.length);
 
       // get top time in this slice
       let tops = [];
@@ -1649,8 +1581,6 @@ const heatMap_overview = (slice, allData) => {
       let top_time = millisToReadable(
         all_activity_in_slice[top_interest_revised]
       );
-      console.log("dogsnice" + JSON.stringify(all_activity_in_slice));
-      console.log(top_time);
 
       try {
         // let info = data_to_render.map(entry => entry.interest_overview).reduce(set_combine, new Object(), 0 , 0 )
@@ -1700,8 +1630,6 @@ const googleAdsSettings3_deepest = (data) => {
   } else {
     const height_size = dataLength * 150;
 
-    console.log("black" + JSON.stringify(data["tree"]["children"]));
-
     let last = Object.keys(data["depths"]).map((i) => Number(i));
     let deepest = Math.max(...last);
     let deepest_interest = data["depths"][String(deepest)];
@@ -1749,8 +1677,6 @@ const ads_overview_breakDown = (data) => {
       .sort((a, b) => (a.count > b.count ? 1 : -1))
       .reverse();
     to_render = to_render.slice(0, at_most);
-    console.log("whatis", result);
-    console.log("is it", to_render);
 
     return (
       <List_grommet
@@ -1788,15 +1714,6 @@ const googleAdsSettings3_deepest_totals = (data) => {
   } else {
     // const height_size = dataLength * 150
 
-    // console.log("black" + JSON.stringify(data['tree']['children']))
-    // console.log(dataLength)
-
-    console.log("yellow");
-    console.log(data);
-
-    // let last = Object.keys(data["depths"]).map(i=>Number(i))
-    // let deepest = Math.max(...last)
-    // let deepest_interest = data["depths"][String(deepest)]
 
     return (
       <Box
@@ -1845,15 +1762,6 @@ const ads_overview_totalCount_count = (data) => {
   } else {
     // const height_size = dataLength * 150
 
-    // console.log("black" + JSON.stringify(data['tree']['children']))
-    // console.log(dataLength)
-
-    console.log("yellow");
-    console.log(data);
-
-    // let last = Object.keys(data["depths"]).map(i=>Number(i))
-    // let deepest = Math.max(...last)
-    // let deepest_interest = data["depths"][String(deepest)]
 
     return (
       <Box
@@ -1900,17 +1808,7 @@ const ads_overview_totalCount_cost = (data) => {
       </Box>
     );
   } else {
-    // const height_size = dataLength * 150
 
-    // console.log("black" + JSON.stringify(data['tree']['children']))
-    // console.log(dataLength)
-
-    console.log("yellow");
-    console.log(data);
-
-    // let last = Object.keys(data["depths"]).map(i=>Number(i))
-    // let deepest = Math.max(...last)
-    // let deepest_interest = data["depths"][String(deepest)]
 
     return (
       <Box alignSelf="center" align="center">
@@ -1989,7 +1887,6 @@ const googleAdsSettings3_deepest_bars = (data, depth) => {
       </Box>
     );
   } else {
-    console.log("green" + JSON.stringify(data));
     let max_y = 0;
     let min_y = 1000000;
     for (let obj of data) {
@@ -2006,8 +1903,6 @@ const googleAdsSettings3_deepest_bars = (data, depth) => {
     let last = Object.keys(depth["depths"]).map((i) => Number(i));
     let deepest = Math.max(...last);
     let deepest_length = depth["depths"][String(deepest)].length;
-
-    console.log("blue" + deepest_length + min_y);
 
     const options = {
       chart: {
@@ -2213,25 +2108,7 @@ const googleAdsSettings3_deepest_bars2 = (data, depth) => {
       </Box>
     );
   } else {
-    // console.log("green" + JSON.stringify(data))
-    // let max_y = 0;
-    // let min_y = 1000000;
-    // for (let obj of data) {
-    //   let this_max_y = obj.data.reduce((a,b)=>a.y>b.y?a:b).y
-    //   let this_min_y = obj.data.reduce((a,b)=>a.y<b.y?a:b).y
-    //   if (this_max_y > max_y) {
-    //     max_y = this_max_y
-    //   }
-    //   if (this_min_y < min_y) {
-    //     min_y = this_min_y
-    //   }
-    // }
 
-    // let last = Object.keys(depth["depths"]).map(i=>Number(i))
-    // let deepest = Math.max(...last)
-    // let deepest_length = depth["depths"][String(deepest)].length
-
-    // console.log("blue" + deepest_length + min_y)
 
     const options = {
       exporting: {
@@ -2492,8 +2369,6 @@ const googleAdsSettings3 = (data) => {
   } else {
     const height_size = dataLength * 150;
 
-    console.log("black" + JSON.stringify(data));
-
     const optionsss = {
       title: {
         text: "",
@@ -2569,7 +2444,6 @@ const bedTimes_version2 = (data) => {
       </Box>
     );
   } else {
-    console.log("pizzaisnice" + JSON.stringify(data));
 
     // if time less than 5AM, add 24 hours to it
     // https://jsfiddle.net/BlackLabel/5e6sfcuq/
@@ -2630,7 +2504,6 @@ const bedTimes_version2 = (data) => {
       }
     }
 
-    console.log("pizzaisnice" + JSON.stringify(data));
     // parse all data and if a fifth index exists then it is a peak time and we need to log the averages
     let peak_inferences = [];
     let average_of_peaks;
@@ -2641,12 +2514,9 @@ const bedTimes_version2 = (data) => {
       try {
         peak_time = time_entry[5]["peak"];
         peak_inferences.push(time_entry[4]["inference"]);
-        console.log(peak_inferences);
-        console.log(peak_time);
       } catch (e) {
         peak_time = "undefined";
       }
-      console.log("lestttt", peak_time);
       if (peak_time !== "undefined") {
         average_of_peaks = time_entry[5]["peak"];
         let minutes = String(average_of_peaks).split(".")[1];
@@ -2655,10 +2525,8 @@ const bedTimes_version2 = (data) => {
         );
         // let actual_minutes = String(((minutes/10) * 60)).slice(0, 2)
         if (actual_minutes < 10) {
-          console.log("the actual minutes");
           actual_minutes = "0" + actual_minutes;
         }
-        console.log("the actual minutes" + actual_minutes);
         let hours = String(average_of_peaks).split(".")[0];
         if (parseInt(hours) % 24 <= 5 && parseInt(hours) % 24 > 0) {
           average_pretty_print =
@@ -2672,7 +2540,6 @@ const bedTimes_version2 = (data) => {
     }
 
     if (peak_inferences.length != 0) {
-      console.log("hereherehere" + JSON.stringify(peak_inferences));
       let inference_counts = _.countBy(peak_inferences, (inference) => {
         return inference;
       });
@@ -2714,7 +2581,6 @@ const bedTimes_version2 = (data) => {
       },
     });
 
-    console.log("pizzaisnice" + average_of_peaks, average_pretty_print);
     var days = [
       "Sunday",
       "Monday",
@@ -3264,16 +3130,13 @@ const demographics_version2 = (demograhpics, contact) => {
     } else if (demo_dataLength % 1 == 0) {
       size = demo_dataLength + 1;
     }
-    console.log(demo_dataLength);
     let myArr = new Int16Array(size).map((curr, index) => (curr = index + 1));
-    console.log(myArr);
     let myMatrix = myArr.reduce(
       (rows, key, index) =>
         (index % 3 == 0 ? rows.push([key]) : rows[rows.length - 1].push(key)) &&
         rows,
       []
     );
-    console.log(myMatrix);
     let grid_string_array = [];
     let header = { name: "head", start: [0, 0], end: [2, 0] };
     grid_string_array.push(header);
@@ -3299,10 +3162,6 @@ const demographics_version2 = (demograhpics, contact) => {
     let render_string = "";
     let entry;
 
-    console.log(JSON.stringify(render_emails));
-    console.log(JSON.stringify(grid_string_array));
-    console.log(JSON.stringify(grid_fitting));
-
     let grid_entries = [];
 
     let counter = 1;
@@ -3323,12 +3182,7 @@ const demographics_version2 = (demograhpics, contact) => {
         slide_direction = { left: "right" }; // slide to the right
         animation_direction = "slideRight";
       }
-      // console.log(counter)
-      // console.log(counter % 3)
-      // console.log(slide_direction)
-      // console.log(animation_direction)
 
-      console.log("watch " + JSON.stringify(email_mapping) + "---" + source);
 
       //////////////////////////////////////////////////////////////////////////////////////////////////////////// multiple emails check
       let icon_add_in;
@@ -4750,9 +4604,6 @@ const demographics_version2 = (demograhpics, contact) => {
     //   { name: 'side7', start: [2, 2], end: [2, 2] },
     // ]
 
-    console.log(grid_entries);
-    console.log(grid_entries.length);
-
     return (
       <Grid_grommet
         areas={grid_string_array}
@@ -4815,14 +4666,6 @@ const advertiser_ads_version2 = (
     let data;
     data = data_all[type];
 
-    // {data.map(entry => (
-    //   entry.pages.map(page_data => (console.log(page_data.domain + "and also pizzacat" + page_data.inference + " visited on " + moment(page_data.id).format("dddd, MMMM Do YYYY, h:mm a"))))
-    // ))}
-
-    // let formatted = new Array()
-
-    console.log(data.length);
-
     const frame_style = {
       width: "100%",
       height: "40em",
@@ -4867,8 +4710,6 @@ const advertiser_ads_version2 = (
       let ad_domain_fuzzy_seen_in_history;
 
       let mapping = {};
-
-      console.log(this_entry);
 
       let count_of_all = 0;
 
@@ -4923,10 +4764,6 @@ const advertiser_ads_version2 = (
         // mapping['ad_domain_fuzzy_seen_in_history'] = count_of_all + 1
       }
 
-      console.log(this_entry.ad_explanation);
-
-      console.log("lisa" + count_of_all);
-      console.log(this_entry);
 
       // let blocks = demographics['children']
       // get the matrix
@@ -4951,9 +4788,9 @@ const advertiser_ads_version2 = (
       if (count_of_all == 6) {
         size = count_of_all + 0;
       }
-      console.log(count_of_all);
+
       let myArr = new Int16Array(size).map((curr, index) => (curr = index + 1));
-      console.log(myArr);
+
       let myMatrix = myArr.reduce(
         (rows, key, index) =>
           (index % 3 == 0
@@ -4961,7 +4798,7 @@ const advertiser_ads_version2 = (
             : rows[rows.length - 1].push(key)) && rows,
         []
       );
-      console.log(myMatrix);
+
       let grid_string_array = [];
       let header = { name: "head", start: [0, 0], end: [2, 0] };
       grid_string_array.push(header);
@@ -4986,9 +4823,6 @@ const advertiser_ads_version2 = (
         row_count += 1;
       }
       let render_string = "";
-
-      console.log(JSON.stringify(grid_string_array));
-      console.log(JSON.stringify(grid_fitting));
 
       let grid_entries = [];
       let at_most = 3;
@@ -5137,9 +4971,6 @@ const advertiser_ads_version2 = (
       }
       //////////////////////////////////////////////////////////////////////////////////////////////////////////// history matches
       if (this_entry.ad_domain_exactly_seen_in_history.length != 0) {
-        console.log(
-          "arry" + JSON.stringify(this_entry.ad_domain_exactly_seen_in_history)
-        );
 
         let keepers = null;
         let seen_it = [];
@@ -5466,12 +5297,6 @@ export class ProfilePage extends React.Component {
 
   updateGraphCount (event) {
     const num = event.target.value
-    console.log(num)
-
-    // let new_slice = sliceData(this.state.allData, num)
-
-    // console.log("new sliced data " + new_slice)
-
 
     this.setState({
       // allData: this.state.allData,
@@ -5481,7 +5306,6 @@ export class ProfilePage extends React.Component {
 
   updateAd_type (event) {
     const new_type = event.target.value
-    console.log(new_type)
 
     this.setState({
       ad_type: new_type,
@@ -5497,7 +5321,6 @@ export class ProfilePage extends React.Component {
 
   updatePieCount (event) {
     const new_type = event.target.value
-    console.log(new_type)
 
     this.setState({
       pieCount: new_type,
