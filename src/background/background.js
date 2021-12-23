@@ -766,7 +766,7 @@ function runtimeOnMessage (message, sender, sendResponse) {
         break;
       }
       if (!tabData[sender.tab.id]) {
-        alert("ignore because dead pageId")
+        console.log("ignore because dead pageId")
         break;
       }
 
