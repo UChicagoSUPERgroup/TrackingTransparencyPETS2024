@@ -76,9 +76,10 @@ sudo npm install
   - node-gyp may do some rebuilding or throw some errors, this should be OK
 - you will see warnings about deprecated packages 
 
-4. Increase buffer size for inference model 
+4. Increase buffer size for inference model
 
-> [!ALERT]   > necessary step for extension inferencing to work! You will be able to load the model at this step, but unless you increase the buffer length as stated below the inference model will not work and the extension will throw errors.
+
+> :ALERT: This is a necessary step for extension inferencing to work! You will be able to load the model at this step, but unless you increase the buffer length as stated below the inference model will not work and the extension will throw errors.
 
 ---
 
