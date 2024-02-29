@@ -1,6 +1,6 @@
 # Tracking Transparency
 
-<img src="extension/icons/logo.svg" alt="logo" style="zoom:50%;" />
+<img src="extension/icons/logo.svg" data-canonical-src="extension/icons/logo.svg" width="200" height="400" />
 
 # About
 
