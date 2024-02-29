@@ -79,9 +79,9 @@ sudo npm install
 4. Increase buffer size for inference model
 
 
-> :ALERT: This is a necessary step for extension inferencing to work! You will be able to load the model at this step, but unless you increase the buffer length as stated below the inference model will not work and the extension will throw errors.
+> :warning: **Note**: This is a necessary step for extension inferencing to work! You will be able to load the model at this step, but unless you increase the buffer length as stated below the inference model will not work and the extension will throw errors..
 
----
+
 
 - in `node_modules/dexie-export-import/dist/dexie-export-import.js`  make the following change: 
   - clarinet.MAX_BUFFER_LENGTH = 10 * 1024 * 1024; ==> clarinet.MAX_BUFFER_LENGTH = 1024 * 1024 * 1024; 
