@@ -27,6 +27,7 @@ The Tracking Transaprency extesion has played a primary role in the following pa
 [TOC]
 
 > :warning: **Apple silicone**: Apple silicone affects the extension in Chrome, we are working on a patch! You hould still be able to build and run the repo as a developer, but interacting with the extension in Chrome using Apple silicone might be slow.
+
 > :warning: **MANIFEST V2**: This extension operates on manifest v2; Google is set to restrict extensions to manifest v3 in June 2024.
 
 
