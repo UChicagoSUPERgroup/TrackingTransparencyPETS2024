@@ -58,7 +58,7 @@ cd TrackingTransparencyPETS2024
 
 - you should not see `package-lock.json` only `package.json` 
 
-2. use the correct *node* (14.17.2) and *npm* (6.14.13) and *python* (3.10)
+2. use the correct *node* (14.17.2) and *npm* (6.14.13) and *python* (tested on 3.7.12)
 
 ```bash
 nvm use 14.17.2
