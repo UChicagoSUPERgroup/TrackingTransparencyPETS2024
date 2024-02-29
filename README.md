@@ -21,11 +21,6 @@ The Tracking Transaprency extesion has played a primary role in the following pa
 | What Does It Mean to Be Creepy? Responses to Visualizations of Personal Browsing Activity, Online Tracking, and Targeted Ads (link pending) | PETS  | 2024 |
 
 
-
-
-
-{%- # TOC start (generated with https://github.com/derlin/bitdowntoc) -%}
-
 - [Install](#install)
       + [Extension (Chrome)](#extension-chrome)
       + [Other browsers ](#other-browsers)
@@ -38,7 +33,6 @@ The Tracking Transaprency extesion has played a primary role in the following pa
 - [Database structure ](#database-structure)
    * [Example data](#example-data)
 
-{%- # TOC end -%}
 
 > :warning: **Apple silicone**: Apple silicone affects the extension in Chrome, we are working on a patch! You hould still be able to build and run the repo as a developer, but interacting with the extension in Chrome using Apple silicone might be slow.
 
