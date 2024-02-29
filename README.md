@@ -24,7 +24,21 @@ The Tracking Transaprency extesion has played a primary role in the following pa
 
 
 
-[TOC]
+{%- # TOC start (generated with https://github.com/derlin/bitdowntoc) -%}
+
+- [Install](#install)
+      + [Extension (Chrome)](#extension-chrome)
+      + [Other browsers ](#other-browsers)
+         - [Opera ](#opera)
+         - [Brave ](#brave)
+         - [Firefox (under development!)](#firefox-under-development)
+- [Building for Production](#building-for-production)
+- [Dashboard ](#dashboard)
+- [Architecture](#architecture)
+- [Database structure ](#database-structure)
+   * [Example data](#example-data)
+
+{%- # TOC end -%}
 
 > :warning: **Apple silicone**: Apple silicone affects the extension in Chrome, we are working on a patch! You hould still be able to build and run the repo as a developer, but interacting with the extension in Chrome using Apple silicone might be slow.
 
@@ -486,4 +500,3 @@ We use six tables. Some of the information in the tables is experimental!
 	]
 }
 ```
-
