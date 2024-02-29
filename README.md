@@ -20,6 +20,7 @@ The Tracking Transaprency extesion has played a primary role in the following pa
 | Analysis of Google Ads Settings Over Time: Updated, Individualized, Accurate, and Filtered ([link](https://doi.org/10.1145/3603216.3624968)) | WPES  | 2023 |
 | What Does It Mean to Be Creepy? Responses to Visualizations of Personal Browsing Activity, Online Tracking, and Targeted Ads (link pending) | PETS  | 2024 |
 
+# ToC
 
 - [Install](#install)
       + [Extension (Chrome)](#extension-chrome)
