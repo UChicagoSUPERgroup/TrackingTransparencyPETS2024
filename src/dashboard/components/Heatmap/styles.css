@@ -1,0 +1,6 @@
+.Heatmap__Legend_axis path,
+.Heatmap__Legend_axis tick,
+.Heatmap__Legend_axis line {
+    fill: none;
+    stroke: none;
+}

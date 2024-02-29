@@ -1,0 +1,17 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.chart__bubble {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+.chart__bubble .bubble {
+  fill: #a4a4a477;
+}
+
+.chart__bubble .leaf {
+  fill: #e20074;
+}
