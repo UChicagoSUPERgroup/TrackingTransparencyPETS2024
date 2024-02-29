@@ -18,11 +18,29 @@ import Tooltip from '@instructure/ui-overlays/lib/components/Tooltip'
 import CloseButton from '@instructure/ui-buttons/lib/components/CloseButton'
 import Spinner from '@instructure/ui-elements/lib/components/Spinner'
 
+import logging from "./dashboardLogging";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import TTPanel from './components/TTPanel'
 
-const inferenceRecentList = (data) => {
+const inferenceRecentList = (data, condition_info) => {
+  
+  if (condition_info.showInferenceContent == false) {
+    return (
+      <List
+        size='small'
+      >
+        {data.map(function (dataValue) {
+          let key = dataValue['DISTINCT(inference)']
+          return (<ListItem key={key}>
+            {key}
+          </ListItem>)
+        })}
+      </List>
+    )
+  }
+
   return (
     <List
       size='small'
@@ -39,7 +57,7 @@ const inferenceRecentList = (data) => {
   )
 }
 
-const inferenceTopList = (data) => {
+const inferenceTopList = (data, condition_info) => {
   if (!data) {
     return (
       <div>
@@ -56,6 +74,33 @@ const inferenceTopList = (data) => {
       </div>
     )
   }
+
+  if (condition_info.showInferenceContent == false) {
+    return (
+      <div>
+        <Heading level='h3'>Your Top Interests<hr /></Heading>
+        <span>
+          {data.map((p, i, arr) => {
+            const last = (i === (arr.length - 1))
+            const inference = p['inference']
+            const inferenceLink = inference
+            return (
+              <div>
+                <span><strong>{i + 1}</strong></span>
+                <span key={inference}>
+                  <Tag text={inferenceLink} size='large' margin='x-small x-small x-small x-small' />
+                  <br />
+                </span>
+              </div>
+            )
+          })}
+        </span>
+      </div>
+    )
+  }
+
+  console.log(data)
+
   return (
     <div>
       <Heading level='h3'>Your Top Interests<hr /></Heading>
@@ -79,7 +124,7 @@ const inferenceTopList = (data) => {
   )
 }
 
-const trackerList = (data) => {
+const trackerList = (data, condition_info) => {
   if (!data) {
     return (
       <div>
@@ -96,6 +141,30 @@ const trackerList = (data) => {
       </div>
     )
   }
+
+  if (condition_info.showTrackerContent == false) {
+    return (
+      <div>
+        <Heading level='h3'>Your Top Trackers<hr /></Heading>
+        <span>
+          {data.map((p, i, arr) => {
+            const last = (i === (arr.length - 1))
+            const trackerLink = p.tracker
+            return (
+              <div>
+                <span><strong>{i + 1}</strong></span>
+                <span key={p.tracker}>
+                  <Tag text={trackerLink} size='large' margin='x-small x-small x-small x-small' />
+                  <br />
+                </span>
+              </div>
+            )
+          })}
+        </span>
+      </div>
+    )
+  }
+
   return (
     <div>
       <Heading level='h3'>Your Top Trackers<hr /></Heading>
@@ -118,7 +187,22 @@ const trackerList = (data) => {
   )
 }
 
-const domainList = (data) => {
+const domainList = (data, condition_info) => {
+  
+  if (condition_info.showHistoryContent == false) {
+    return (
+      <List
+        size='small'
+      >
+        {data.map(val => {
+          return (<ListItem key={val}>
+            {val}
+          </ListItem>)
+        })}
+      </List>
+    )
+  }
+
   return (
     <List
       size='small'
@@ -450,8 +534,27 @@ export class Home extends React.Component {
   }
 
   async componentDidMount () {
+
     this.getData()
     // this.logLoad(); //will directly load it in App.js
+
+    import(/* webpackChunkName: "vendors/lodash" */'lodash')
+      .then(_ => {
+        this.setState({ _: _ })
+      })
+      let recent = this.state.recent
+
+      let pages = []
+      if (recent) {
+        for (let i = 0; i < recent.length; i++) {
+          let value = await background.hashit_salt(domains[i]['Pages']['domain'])
+          pages.push(value)
+        }
+      }
+      let activityType = 'load dashboard home page'
+      let sendDict = {'numDomainsShown': pages.length}
+      logging.logLoad(activityType, sendDict)
+
   }
 
   render () {
@@ -469,27 +572,30 @@ export class Home extends React.Component {
           </GridCol>
         </GridRow>
         <GridRow>
-          {!hideTrackerContent && <GridCol width={3}>
+          {/*we should always show the top trackers visualization in condition 1 and 2*/}
+          {{/*!hideTrackerContent*/} && <GridCol width={3}>
             <TTPanel>
-              {trackerList(topTrackers)}
+              {trackerList(topTrackers, this.props)}
             </TTPanel>
           </GridCol>}
-          {!hideInferenceContent && <GridCol width={3}>
+          {/*we should always show the inferences visualization in condition 1 and 2*/}
+          {{/*!hideInferenceContent*/} && <GridCol width={3}>
             <TTPanel>
-              {inferenceTopList(topInferences)}
+              {inferenceTopList(topInferences, this.props)}
             </TTPanel>
           </GridCol>}
-          {!hideHistoryContent && <GridCol width={6}>
+          {/*we should always show the stat counts visualization in condition 1 and 2*/}
+          {{/*!hideHistoryContent*/} && <GridCol width={6}>
             <TTPanel>
               <MetricsList theme={{lineHeight: 2}}>
-                {!hideTrackerContent && <MetricsListItem value={numTrackers} label={<span><FontAwesomeIcon icon='eye' /> Trackers encountered</span>} />}
+                {{/*!hideTrackerContent*/} && <MetricsListItem value={numTrackers} label={<span><FontAwesomeIcon icon='eye' /> Trackers encountered</span>} />}
                 <MetricsListItem value={numPages} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages visited</span>} />
-                {!hideInferenceContent && <MetricsListItem value={numInferences} label={<span><FontAwesomeIcon icon='thumbs-up' /> Potential interests</span>} />}
+                {{/*!hideInferenceContent*/} && <MetricsListItem value={numInferences} label={<span><FontAwesomeIcon icon='thumbs-up' /> Potential interests</span>} />}
               </MetricsList>
             </TTPanel>
 
             {(numPages > 0 || numTrackers > 0) && <TTPanel margin='medium 0 0 0'>
-              {!hideInferenceContent && numInferences > 0 &&
+              {{/*!hideInferenceContent*/} && numInferences > 0 &&
                 <View
                   display='inline-block'
                   margin='small small small small'
@@ -500,7 +606,7 @@ export class Home extends React.Component {
                   >
                     <Text weight='bold'>Recent Interests</Text>
                   </View>
-                  {recentInferences ? inferenceRecentList(recentInferences) : 'Loading…'}
+                  {recentInferences ? inferenceRecentList(recentInferences, this.props) : 'Loading…'}
                 </View>
               }
               {numPages > 0 && <View
@@ -513,7 +619,7 @@ export class Home extends React.Component {
                 >
                   <Text weight='bold'>Recent Sites</Text>
                 </View>
-                {recentDomains ? domainList(recentDomains) : 'Loading…'}
+                {recentDomains ? domainList(recentDomains, this.props) : 'Loading…'}
               </View>}
             </TTPanel>}
           </GridCol>}

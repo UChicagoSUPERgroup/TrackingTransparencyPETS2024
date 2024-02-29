@@ -14,19 +14,30 @@ export async function generateID (cond) {
   /* eslint-disable no-undef */
   let condition
   const v = EXT.VERSION.replace(/\./g, '')
-  const isFirefox = navigator.userAgent.toLowerCase().includes('firefox')
+  const isFirefox = navigator.userAgent.toLowerCase().includes('firefox') 
   const br = isFirefox ? 'f' : 'c'
+  // USERSTUDY_CONDITION is set in webpack.dev.js
+  // should utilize randomizer in userstudy mode
+  // console.log(cond)
+  // console.log(USERSTUDY_CONDITION)
   if (cond) {
     condition = cond
+    // alert("CONDITION already set")
   } else if (typeof USERSTUDY_CONDITION !== 'undefined') {
+    // alert("CONDITION !== undefined")
     condition = USERSTUDY_CONDITION
   } else {
-    condition = Math.ceil(Math.random() * 6)
+    // alert("CONDITION being set randomly")
+    // 1.0 version, set condition randomly here (but not much control)
+    // condition = Math.ceil(Math.random() * 3)
+    condition = 6 // 2.0 sets condition randomly via qualtrics 
+    // console.log(condition)
   }
+  console.log(condition)
   const rand = Math.random().toString(16).substr(2, 12)
   let id
   if (dev) {
-    id = condition.toString() + '-' + v + br + '-' + rand + '-dev'
+    id = condition.toString() + '-' + v + br + '-' + rand + '-dev-3.0'
   } else {
     id = condition.toString() + '-' + v + br + '-' + rand
   }
@@ -37,11 +48,13 @@ export async function generateID (cond) {
 export async function saveID (id) {
   // console.log(id)
   const cond = +(id.toString()[0]) // first digit of id
-  const conditions = ['staticExplanations', 'historyOnly', 'lightbeam', 'ghostery', 'noInferences', 'everything']
+  // const conditions = ['staticExplanations', 'historyOnly', 'lightbeam', 'ghostery', 'noInferences', 'everything'] // 1.0
+  const conditions = ['static_1.0','everything_1.0','profile_2.0','pending_survey','pending_survey','pending_survey',] // 2.0
   const condStr = conditions[cond - 1]
   // console.log(cond, condStr)
   await setUserstudyCondition(condStr)
   await browser.storage.local.set({ mturkcode: id })
+  await browser.storage.local.set({ userId: id })
 }
 
 export async function setUserstudyCondition (condition) {
@@ -94,17 +107,52 @@ export async function setUserstudyCondition (condition) {
       options.showHistoryContent = true
       // options.popupVariant = 'default'
       break
-    case 'everything':
+    // 2.0 conditions
+    case 'static_1.0':
+      options.showDashboard = true
+      options.showOverlay = false
+      options.showLightbeam = false
+      options.showTrackerContent = false
+      options.showInferenceContent = false
+      options.showHistoryContent = false
+      options.showProfile = false
+      options.showTakeAction = true
+      // options.popupVariant = 'default'
+      break
+    case 'everything_1.0':
       options.showDashboard = true
       options.showOverlay = false
       options.showLightbeam = false
       options.showTrackerContent = true
       options.showInferenceContent = true
       options.showHistoryContent = true
+      options.showProfile = false
+      options.showTakeAction = true
+      // options.popupVariant = 'default'
+      break
+    case 'profile_2.0':
+      options.showDashboard = true
+      options.showOverlay = false
+      options.showLightbeam = false
+      options.showTrackerContent = false
+      options.showInferenceContent = false
+      options.showHistoryContent = false
       options.showProfile = true
       options.showTakeAction = true
       // options.popupVariant = 'default'
       break
+    case 'pending_survey':
+      options.showDashboard = false
+      options.showOverlay = false
+      options.showLightbeam = false
+      options.showTrackerContent = false
+      options.showInferenceContent = false
+      options.showHistoryContent = false
+      options.showProfile = false
+      options.showTakeAction = false
+      // options.popupVariant = 'default'
+      break
+
   }
 
   await setOptions(options)

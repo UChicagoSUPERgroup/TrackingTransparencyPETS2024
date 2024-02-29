@@ -1,40 +1,48 @@
 async function logLoad (activityType, sendDict) {
-  // console.log('In the log load page')
-  const background = await browser.runtime.getBackgroundPage();
-  const tabs = await browser.tabs.query({active: true, currentWindow: true});
-  let parentTabId = tabs[0].openerTabId;
-  let tabId = tabs[0].id;
-  let x = 'clickData_tabId_' + String(tabId);
-  let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain': '', 'tabId': tabId, 'pageId': '', 'numTrackers': 0})});
-  tabData = JSON.parse(tabData[x]);
 
-  // console.log('About page', tabId, tabData);
-  let userParams = await browser.storage.local.get({
-    usageStatCondition: 'false',
-    userId: 'no monster',
-    startTS: 0
-  });
+  ////
+  /////
+  /////// [no telemetry on release]
+  /////
+  ////
+  
+  // // console.log('In the log load page')
 
-  if (JSON.parse(userParams.usageStatCondition)) { // get data when the user load the page.
-    // let activityType='load dashboard about page';
-    let timestamp = Date.now();
-    let userId = userParams.userId;
-    let startTS = userParams.startTS;
-    let activityData = {
-      'tabId': tabId,
-      'parentTabId': parentTabId,
-      'parentDomain': tabData.domain,
-      'parentPageId': tabData.pageId,
-      'parentNumTrackers': tabData.numTrackers
-    }
-    for (let key in sendDict) {
-      if (key == 'tracker_clicked') {
-        sendDict[key] = await background.hashit(sendDict[key])
-      }
-      activityData[key] = sendDict[key]
-    }
-    background.logData(activityType, timestamp, userId, startTS, activityData);
-  }
+  // const background = await browser.runtime.getBackgroundPage();
+  // const tabs = await browser.tabs.query({active: true, currentWindow: true});
+  // let parentTabId = tabs[0].openerTabId;
+  // let tabId = tabs[0].id;
+  // let x = 'clickData_tabId_' + String(tabId);
+  // let tabData = await browser.storage.local.get({[x]: JSON.stringify({'domain': '', 'tabId': tabId, 'pageId': '', 'numTrackers': 0})});
+  // tabData = JSON.parse(tabData[x]);
+
+  // // console.log('About page', tabId, tabData);
+  // let userParams = await browser.storage.local.get({
+  //   usageStatCondition: 'false',
+  //   userId: 'no monster',
+  //   startTS: 0
+  // });
+
+  // if (JSON.parse(userParams.usageStatCondition)) { // get data when the user load the page.
+  //   // let activityType='load dashboard about page';
+  //   let timestamp = Date.now();
+  //   let userId = userParams.userId;
+  //   let startTS = userParams.startTS;
+  //   let activityData = {
+  //     'tabId': tabId,
+  //     'parentTabId': parentTabId,
+  //     'parentDomain': tabData.domain,
+  //     'parentPageId': tabData.pageId,
+  //     'parentNumTrackers': tabData.numTrackers
+  //   }
+  //   for (let key in sendDict) {
+  //     if (key == 'tracker_clicked') {
+  //       sendDict[key] = await background.hashit(sendDict[key])
+  //     }
+  //     activityData[key] = sendDict[key]
+  //   }
+  //   background.logData(activityType, timestamp, userId, startTS, activityData);
+  // }
 }
 
 async function logSunburstSelect (select, value) {
@@ -94,8 +102,19 @@ async function logPopupActions (activityType, clickedElem) {
   const background = await browser.runtime.getBackgroundPage();
   background.sendDb();
   const tabs = await browser.tabs.query({active: true, currentWindow: true});
-  let tabId = tabs[0].id;
-  const tabData = await background.getTabData(tabId);
+  let logId;
+  // console.log(tabs[0])
+  // console.log(tabs[0].id == undefined)
+  if (tabs[0] == undefined) {
+    logId = 'no tab id'
+  } else {
+    logId = tabs[0].id
+  }
+  let tabData;
+  if (logId != 'no tab id') {
+    tabData = await background.getTabData(tabId);
+  }
+  
   // console.log(tabData);
   let domain = '';
   let pageId = '';
@@ -116,12 +135,14 @@ async function logPopupActions (activityType, clickedElem) {
     let timestamp = Date.now()
     let userId = userParams.userId
     let startTS = userParams.startTS
+    let blockers_detail = await getAdblockers()
     let activityData = {
       'clickedElem': clickedElem,
       'domain': domain,
-      'tabId': tabId,
+      'tabId': logId,
       'pageId': pageId,
-      'numTrackers': numTrackers
+      'numTrackers': numTrackers,
+      'blockerDetailLatest': blockers_detail,
     }
     background.logData(activityType, timestamp, userId, startTS, activityData)
   }

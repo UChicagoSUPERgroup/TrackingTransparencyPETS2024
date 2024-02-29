@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { HashRouter, Route } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -20,13 +20,19 @@ import {Home, WaitingDataHome} from './Home'
 import {Button as Button_grommet} from 'grommet';
 import { 
   Shield,
+  Support,
+  Aid,
+  FavoriteFilled,
 } from 'grommet-icons';
 import {
   Box,
   Layer,
   Tip,
 } from 'grommet';
+import { Spinner as Spinner_grommet } from "grommet";
 import {Text as Text_grommet} from 'grommet';
+
+import { CircularProgressbar } from 'react-circular-progressbar';
 
 import {
   Trackers,
@@ -39,10 +45,6 @@ import {
   ProfilePage,
   TakeActionPage,
   LightbeamWrapper,
-  Creepy,
-  TrackerTimes,
-  CreepySearches
-  // TakeActionPage
 } from './loadable'
 
 import { themeOverrides } from '../colors'
@@ -73,6 +75,9 @@ theme.use({
 // clear any popup badge nudge
 browser.browserAction.setBadgeText({text: ''})
 
+// log app close 
+chrome.runtime.connect({ name: "app" });
+
 const NavLink = ({to, title}) => (
   <LinkContainer to={to} className='navbarTolog'>
     <NavItem>{title}</NavItem>
@@ -81,17 +86,19 @@ const NavLink = ({to, title}) => (
 
 
 class App extends Component {
+
   constructor (props) {
     super(props)
     this.state = {
       okToLoad: false,
+      // timer:null
     }
   }
 
 
 
   async componentWillUnmount () {
-
+    // clearTimeout(this.state.timer);
   }
 
   async componentDidMount () {
@@ -99,12 +106,13 @@ class App extends Component {
     const options = (await browser.storage.local.get('options')).options
     const okToLoad = true
     this.setState({ ...options, okToLoad })
+    // this.state.timer = setTimeout(function () {
+    //   alert('Hello, World!')
+    // }, 0);
 
   }
 
-            // {!hideHistoryContent && <NavLink to='/creepy' title='Bedtime' />}
-            // {!hideHistoryContent && <NavLink to='/trackertimes' title='Trackers by Time' />}
-            // {!hideHistoryContent && <NavLink to='/creepysearches' title='Search Insights' />}
+
 
   render () {
     const { okToLoad, show } = this.state
@@ -112,9 +120,13 @@ class App extends Component {
 
     // some of these are "show..." and others are "hide..."
     // because they have different desired defaults
-    const hideTrackerContent = this.state.showTrackerContent === false
-    const hideInferenceContent = this.state.showInferenceContent === false
-    const hideHistoryContent = this.state.showHistoryContent === false
+    // const hideTrackerContent = this.state.showTrackerContent === false
+    // const hideInferenceContent = this.state.showInferenceContent === false
+    // const hideHistoryContent = this.state.showHistoryContent === false
+
+    const showHistoryContent = this.state.showHistoryContent === true
+    const showInferenceContent = this.state.showInferenceContent === true
+    const showTrackerContent = this.state.showTrackerContent === true
     const showLightbeam = this.state.showLightbeam === true
     const showProfile = this.state.showProfile === true
     const showTakeAction = this.state.showTakeAction === true
@@ -128,12 +140,17 @@ class App extends Component {
             </LinkContainer>
           </Navbar.Header>
           <Nav>
-            {!hideInferenceContent && <NavLink to='/interests' title='Interests' />}
-            {!hideTrackerContent && <NavLink to='/trackers' title='Trackers' />}
-            {!hideHistoryContent && <NavLink to='/sites' title='Sites' />}
-            {!hideHistoryContent && <NavLink to='/activity' title='Activity' />}
+            {/*{!hideInferenceContent && <NavLink to='/interests' title='Interests' />}*/}
+            {/*{!hideTrackerContent && <NavLink to='/trackers' title='Trackers' />}*/}
+            {/*{!hideHistoryContent && <NavLink to='/sites' title='Sites' />}*/}
+            {/*{!hideHistoryContent && <NavLink to='/activity' title='Activity' />}*/}
+
+            {showHistoryContent && <NavLink to='/sites' title='Sites' />}
+            {showHistoryContent && <NavLink to='/activity' title='Activity' />}
+            {showInferenceContent && <NavLink to='/interests' title='Interests' />}
+            {showTrackerContent && <NavLink to='/trackers' title='Trackers' />}
             {showLightbeam && <NavLink to='/lightbeam' title='Network' />}
-            {showProfile && <NavLink to='/profile' title='Profile' />}
+            {/*{showProfile && <NavLink to='/profile' title='Profile' />}*/}
             {showTakeAction && <NavLink to='/takeAction' title='Take Action' />}
             {/* <NavLink to="/takeaction"  title="Take Action"/> */}
           </Nav>
@@ -156,8 +173,8 @@ class App extends Component {
       zIndex:5,
     }
 
-
     return (
+
       <HashRouter>
         <div>
           <TTNavbar />
@@ -165,49 +182,79 @@ class App extends Component {
           {okToLoad && <div className='container containerInner'>
             <Route path='/*' render={({ match }) => <TTBreadcrumbs url={match.url} />} />
 
-        <Box>
+          {showTakeAction &&
+          <Box>
+            <Tip
+              plain
+              content={
+                <Box
+                  background='light-1' 
+                  round='medium'
+                  pad="small"
+                  margin="small"
+                  gap="small"
+                  animation={{type: 'slideUp', delay: 0, duration: 1}}
+                  width={{ max: 'medium' }}
+                  responsive={false}
+                >
+                  <Text_grommet weight="bold" color="status-error">Take Action</Text_grommet>
+                  <Text_grommet size="small">
+                    Help me get some privacy protection!
+                  </Text_grommet>
+                </Box>
+              }
 
-      <Tip
-        plain
-        content={
-          <Box
-            background='light-1' 
-            round='medium'
-            pad="small"
-            margin="small"
-            gap="small"
-            width={{ max: 'medium' }}
-            responsive={false}
-          >
-            <Text_grommet weight="bold" color="status-error">Take Action</Text_grommet>
-            <Text_grommet size="small">
-              Click me to get some privacy protection!
-            </Text_grommet>
+              dropProps={{ align:  { top: "bottom" } }} 
+            >
+
+
+              <p style={button_style}><Box animation={{type: 'slideLeft', delay: 0, duration: 900}}><Button_grommet color="status-error" hoverIndicator={true} primary icon={<Aid size="large" />} label="" href='#/takeAction' onClick={() => {  }}  /></Box><br/><br/></p>
+              </Tip>
           </Box>
-        }
-
-        dropProps={{ align:  { top: "bottom" } }} 
-      >
-
-        <p style={button_style}><Button_grommet color="status-error" hoverIndicator={true} primary icon={<Shield size="large" />} label="" href='#/takeAction' onClick={() => {  }}  /><br/><br/></p>
-        </Tip>
-        </Box>
-
+          }
             
 
             <div>
-              <Route exact path='/' render={props => (
-                <Home {...props}
-                  hideHistoryContent={hideHistoryContent}
-                  hideInferenceContent={hideInferenceContent}
-                  hideTrackerContent={hideTrackerContent}
-                  showLightbeam={showLightbeam}
-                  showProfile={showProfile}
-                  showTakeAction={showTakeAction}
-                />
-              )} />
+            {
+            	showProfile && 
 
-              {!hideInferenceContent &&
+	              <Route exact path='/' render={props => (
+	                <ProfilePage {...props}
+	                  // hideHistoryContent={hideHistoryContent}
+	                  // hideInferenceContent={hideInferenceContent}
+	                  // hideTrackerContent={hideTrackerContent}
+	                  showHistoryContent={showHistoryContent}
+	                  showInferenceContent={showInferenceContent}
+	                  showTrackerContent={showTrackerContent}
+	                  showLightbeam={showLightbeam}
+	                  showProfile={false}
+	                  showTakeAction={showTakeAction}
+	                />
+	              )} />
+
+            }
+
+
+            {
+            	!showProfile && 
+
+	              <Route exact path='/' render={props => (
+	                <Home {...props}
+	                  // hideHistoryContent={hideHistoryContent}
+	                  // hideInferenceContent={hideInferenceContent}
+	                  // hideTrackerContent={hideTrackerContent}
+	                  showHistoryContent={showHistoryContent}
+	                  showInferenceContent={showInferenceContent}
+	                  showTrackerContent={showTrackerContent}
+	                  showLightbeam={showLightbeam}
+	                  showProfile={showProfile}
+	                  showTakeAction={showTakeAction}
+	                />
+	              )} />
+
+            }
+
+              {showInferenceContent &&
                 <Route path='/interests' render={props => (
                   /* this page is only shown in full study condition
                       so we do no special handling */
@@ -215,49 +262,27 @@ class App extends Component {
                 )} />
               }
 
-              {!hideTrackerContent &&
+              {showTrackerContent &&
                 <Route path='/trackers' render={props => (
                   <Trackers {...props}
-                    hideInferenceContent={hideInferenceContent}
+                    showInferenceContent={showInferenceContent}
                   />
                 )} />
               }
 
               <Route path='/sites' render={props => (
                 <Sites {...props}
-                  hideInferenceContent={hideInferenceContent}
-                  hideTrackerContent={hideTrackerContent}
+                  showInferenceContent={showInferenceContent}
+                  showTrackerContent={showTrackerContent}
                 />
               )} />
 
               <Route path='/activity' render={props => (
                 <Activity {...props}
-                  hideInferenceContent={hideInferenceContent}
-                  hideTrackerContent={hideTrackerContent}
+                  showInferenceContent={showInferenceContent}
+                  showTrackerContent={showTrackerContent}
                 />
               )} />
-
-              <Route path='/creepy' render={props => (
-                <Creepy {...props}
-                  hideInferenceContent={hideInferenceContent}
-                  hideTrackerContent={hideTrackerContent}
-                />
-              )} />
-
-              <Route path='/trackertimes' render={props => (
-                <TrackerTimes {...props}
-                  hideInferenceContent={hideInferenceContent}
-                  hideTrackerContent={hideTrackerContent}
-                />
-              )} />
-
-              <Route path='/creepysearches' render={props => (
-                <CreepySearches {...props}
-                  hideInferenceContent={hideInferenceContent}
-                  hideTrackerContent={hideTrackerContent}
-                />
-              )} />
-
 
               {showLightbeam && <Route path='/lightbeam' component={LightbeamWrapper} />}
               {showProfile && <Route path='/profile' component={ProfilePage} />}
@@ -269,8 +294,8 @@ class App extends Component {
             <Route path='/debug' component={DebugPage} />
             <Route path='/about' render={props => (
               <InfoPage {...props}
-                hideInferenceContent={hideInferenceContent}
-                hideTrackerContent={hideTrackerContent}
+                showInferenceContent={showInferenceContent}
+                showTrackerContent={showTrackerContent}
               />
             )} />
             <Route path='/settings' component={SettingsPage} />

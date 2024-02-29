@@ -27,8 +27,9 @@ module.exports = {
 
     lightbeam: './src/lightbeam/lightbeam.js',
 
-    tester2: './src/content_scripts/tester2.js',
-    feeler: './src/content_scripts/feeler.js',
+    // tester2: './src/content_scripts/tester2.js',
+    // feeler: './src/content_scripts/feeler.js',
+    adGrab: './src/content_scripts/adGrab.js',
     instrumentation: './src/background/instrumentation.js'
 
   },

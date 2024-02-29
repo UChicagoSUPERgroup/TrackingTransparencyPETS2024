@@ -14,8 +14,14 @@ import MetricsListItem from '@instructure/ui-elements/lib/components/MetricsList
 import View from '@instructure/ui-layout/lib/components/View'
 import Alert from '@instructure/ui-alerts/lib/components/Alert'
 
-import { Box } from "grommet";
+import instrumentation from '../background/instrumentation';
+
+import Pattern from 'url-knife';
+import { saveID } from '../options/userstudy'
+
+import { Box, Anchor } from "grommet";
 import {Spinner as Spinner_grommet} from 'grommet';
+import {Button as Button_grommet} from 'grommet';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -28,6 +34,8 @@ import {
 import logging from '../dashboard/dashboardLogging'
 import tt from '../helpers'
 import { themeOverrides } from '../colors'
+
+let global_successfully_installed_flag = false 
 
 theme.use({ overrides: themeOverrides })
 library.add(
@@ -53,7 +61,8 @@ class Popup extends React.Component {
     this.onClickSurvey2 = this.onClickSurvey2.bind(this)
     this.onClickUninstall = this.onClickUninstall.bind(this)
     this.renderSurvey2 = this.renderSurvey2.bind(this)
-    this.renderUninstall = this.renderUninstall.bind(this)
+    this.renderInstallComplete = this.renderInstallComplete.bind(this)
+    // this.renderUninstall = this.renderUninstall.bind(this)
   }
 
   async getData () {
@@ -72,14 +81,44 @@ class Popup extends React.Component {
     if (tab.url === 'https://super.cs.uchicago.edu/trackingtransparency/survey2.html') {
       this.setState({ showSurvey2: true })
     }
+    
+    if (tab.url.includes('https://umdsurvey.umd.edu/jfe/form/SV_d6luJbwumkBXpGe')) {
+      // USED FOR TESTING! 
+      // 2.0 getting PID   
+      // CONTACT us if you'd like to learn more: trackingtransparency@gmail.com
+      // test for s1 url1: https://umdsurvey.umd.edu/jfe/form/SV_d6luJbwumkBXpGe?PROLIFIC_PID=5a58e59dacc75b00017a3c4evvvvvvvvvvvvvv&STUDY_ID=62193b99fd9e0672450ed50b&SESSION_ID=0fu76eop5iz
+      // test for s2 url2: https://umdsurvey.umd.edu/jfe/form/SV_8nNzMdt9gXCT2T4?PROLIFIC_PID=5a58e59dacc75b00017a3c4evvvvvvvvvvvvvv&STUDY_ID=62193b99fd9e0672450ed50b&SESSION_ID=0fu76eop5iz
+                                                                                             
+      let full_url = tab.url
+      // currently slotted into a random condition (1, 2, or 3) 
+      // this function should take that inforamtion, split off the condition, and keep the PID
+      // the prolific ID is needed to keep track longitudinally 
+      let checker = browser.storage.local.get('mturkcode').then(current_ID => {
+        // update unleses we've already set it
+        if (!current_ID['mturkcode'].includes('-pid-')) {
+          let revised_ID_parsed = Pattern.UrlArea.parseUrl(full_url)
+          let prolific_PID = revised_ID_parsed.onlyParamsJsn.PROLIFIC_PID
+          let revised_condition = revised_ID_parsed.onlyParamsJsn.CONDITION_ID
+          const new_ID = revised_condition + "-pid-" + prolific_PID
+          // sanity check that this worked
+          saveID(new_ID).then(response => { 
+            browser.storage.local.get('mturkcode').then(resp => {
+              this.setState({ showInstallSuccess: true })
+            }) 
+          });
+        } else {
+          console.log("already updated PID!")
+        }
+
+      })
+    }
     if (tab.url === 'https://super.cs.uchicago.edu/trackingtransparency/uninstall.html') {
       this.setState({ showUninstall: true })
     }
-    // get tab data with trackers and stuff here
+
     const tabData = await background.getTabData(tab.id)
 
     if (tabData) {
-      // this.setState({tab: JSON.stringify(tabData)})
 
       let title = tabData.title
       if (title.length >= 30) {
@@ -105,7 +144,6 @@ class Popup extends React.Component {
   }
 
   async openDashboard () {
-    // console.log('I am here 1');
     const tabs = await browser.tabs.query({active: true, currentWindow: true})
     let tabId = tabs[0].id
     const dashboardData = {
@@ -119,6 +157,7 @@ class Popup extends React.Component {
     let activityType = 'click dashboard button on popup'
     let clickedElem = 'dashboard button'
     await logging.logPopupActions(activityType, clickedElem)
+    
   }
 
   async openWelcome () {
@@ -158,7 +197,9 @@ class Popup extends React.Component {
     let condition = id.slice(0, 1)
     const survey2link = {
       active: true,
-      url: 'https://umdsurvey.umd.edu/jfe/form/SV_552e1c5EZKv3yMR?id=' + id + '&cndt=' + condition
+      // study based links: included here for examples
+      // url: 'https://umdsurvey.umd.edu/jfe/form/SV_552e1c5EZKv3yMR?id=' + id + '&cndt=' + condition
+      url: 'https://umdsurvey.umd.edu/jfe/form/SV_8nNzMdt9gXCT2T4?id=' + id + '&cndt=' + condition
     }
     browser.tabs.create(survey2link)
   }
@@ -186,22 +227,36 @@ class Popup extends React.Component {
     )
   }
 
-  renderUninstall () {
+  renderInstallComplete () {
+    global_successfully_installed_flag = true
     return (
-      <div style={{width: 450}}>
-        <Alert variant='error'>
-          Thank you for participating in our study. Click the button below to uninstall the extension.<br /><br />
-          <Button variant='danger' onClick={this.onClickUninstall}>
-            <Text>Uninstall</Text>
-          </Button>
+      <div>
+        <Alert variant='success'>
+          You have successfully installed {EXT.NAME}! Please continue taking the survey in order to successfully complete Part I.<br />
         </Alert>
+        <View as='div' textAlign='center'>
+          <Button onClick={this.openDashboard} variant='primary' margin='small'>Open {EXT.NAME} Dashboard</Button>
+        </View>
       </div>
     )
   }
 
+  // renderUninstall () {
+  //   return (
+  //     <div style={{width: 450}}>
+  //       <Alert variant='error'>
+  //         Thank you for participating in our study. Click the button below to uninstall the extension.<br /><br />
+  //         <Button variant='danger' onClick={this.onClickUninstall}>
+  //           <Text>Uninstall</Text>
+  //         </Button>
+  //       </Alert>
+  //     </div>
+  //   )
+  // }
+
   render () {
     const {
-      okToLoad, selectedIndex, showUninstall, showSurvey2,
+      okToLoad, selectedIndex, showUninstall, showSurvey2, showInstallSuccess,
       numTrackers, numInferences, numPages, pageTitle, topTracker, topTrackerCount, tabData,
       showTrackerContent, showInferenceContent, showHistoryContent, showDashboard, 
     } = this.state
@@ -213,10 +268,14 @@ class Popup extends React.Component {
     const logo = <img src='/icons/logo.svg' height='24px' />
     const pluralTrackers = (trackers && trackers.length === 1) ? 'tracker' : 'trackers'
     const areTrackers = (trackers && trackers.length === 1) ? 'is' : 'are'
+    const viewing_count =  (JSON.parse(localStorage.getItem("views"))) ? JSON.parse(localStorage.getItem("views")) : {"count": 0}
+    let pluralCount = "s"
+    if (viewing_count['count'] === 1) { pluralCount = ""}
 
     return (<div style={{width: 450}}>
-      {showUninstall && this.renderUninstall()}
+      {/*{showUninstall && this.renderUninstall()}*/}
       {showSurvey2 && this.renderSurvey2()}
+      {showInstallSuccess && this.renderInstallComplete()}
 
       <TabList
         variant='minimal'
@@ -224,7 +283,7 @@ class Popup extends React.Component {
         onChange={(e) => this.setState({ selectedIndex: e })}
       >
         <TabPanel title='Summary'>
-          <View as='div' borderWidth='0 0 small 0'>
+          <View as='div' borderWidth='0 0 small 0' >
             <Text>
               {pageTitle && showTrackerContent &&
               <p>You are on "{pageTitle}".</p>
@@ -234,20 +293,36 @@ class Popup extends React.Component {
               }
               {showTrackerContent && trackers &&
               <p>There {areTrackers} <strong>{trackers.length} {pluralTrackers}</strong> on this page.&nbsp;
-                {trackers.length > 0 && <Link onClick={() => this.setState({ selectedIndex: 1 })}>See all ⟩</Link>}</p>
+                {trackers.length > 0 && <Link onClick={() => this.setState({ selectedIndex: 1 })}>See all ⟩</Link>}
+                <br/><br/>{/* As required for the study, you've viewed the extension <strong>{viewing_count['count']} time{pluralCount}</strong> (required to view 3 times on separate days).*/}</p>
+
               }
               {(!pageTitle || (!showInferenceContent && !showTrackerContent)) && isNaN(this.state.numTrackers) && <p>Loading {EXT.NAME} ...</p>}
-              {(!pageTitle || (!showInferenceContent && !showTrackerContent)) && !isNaN(this.state.numTrackers) && <p>The {EXT.NAME} plugin provides transparency about online privacy.</p>}
+              {(!pageTitle || (!showInferenceContent && !showTrackerContent)) && !isNaN(this.state.numTrackers) && <p>The {EXT.NAME} plugin provides transparency about online privacy. {/*<br/><br/> As required for the study, you've viewed the extension <strong>{viewing_count['count']} time{pluralCount}</strong> (required to view 3 times on seperate days).*/}</p>}
             </Text>
           </View>
-          {showMetrics && <View as='div' borderWidth='0 0 small 0' padding='medium 0 medium 0'>
+          {/*we should always show the stat counts visualization in condition 1 and 2 and 3*/}
+          {{/*showMetrics*/} && <View as='div' borderWidth='0 0 small 0' padding='medium 0 medium 0'>
             <MetricsList theme={{lineHeight: 2}}>
-              {showTrackerContent && <MetricsListItem value={numTrackers} label={<span><FontAwesomeIcon icon='eye' /> Trackers encountered</span>} />}
-              {showHistoryContent && <MetricsListItem value={numPages} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages visited</span>} />}
-              {showInferenceContent && <MetricsListItem value={numInferences} label={<span><FontAwesomeIcon icon='thumbs-up' /> Potential interests</span>} />}
+              {/*we should always show the stat counts visualization in condition 1 and 2 and 3*/}
+              {{/*showTrackerContent*/} && <MetricsListItem value={numTrackers} label={<span><FontAwesomeIcon icon='eye' /> Trackers encountered</span>} />}
+              {{/*showHistoryContent*/} && <MetricsListItem value={numPages} label={<span><FontAwesomeIcon icon='window-maximize' /> Pages visited</span>} />}
+              {{/*showInferenceContent*/} && <MetricsListItem value={numInferences} label={<span><FontAwesomeIcon icon='thumbs-up' /> Potential interests</span>} />}
             </MetricsList>
           </View>}
         </TabPanel>
+
+        <TabPanel title='Uninstall'>
+          <View as='div' borderWidth='0 0 small 0'>
+            <Text>
+              Click the following <Button_grommet primary color='status-critical' label="link" gap="xsmall" size="xsmall" onClick={this.onClickUninstall}></Button_grommet> to uninstall the extension.
+              <br/><br/>
+              If the link does not work, you may contact us at <Button_grommet label="trackingtransparency@gmail.com" gap="xsmall" size="xsmall" onClick={() => window.location = 'mailto:trackingtransparency@gmail.com'}></Button_grommet>
+            </Text>
+            <br/><br/>
+          </View>
+        </TabPanel>
+
         {showTrackerContent && trackers && trackers.length > 0 && <TabPanel title='Trackers'>
           <Text><p>There {areTrackers} {trackers && trackers.length} {pluralTrackers} on this page:</p></Text>
           <List>
@@ -274,6 +349,14 @@ class Popup extends React.Component {
         <Button onClick={this.openDashboard} variant='primary' margin='small'>Open {EXT.NAME} Dashboard</Button>
       </View>
       }
+      {/*{!showDashboard && !global_successfully_installed_flag && 
+      <div>
+        <Alert variant='error'>
+          Thank you for participating in our study and downloading the extension. Please return to the survey! This extension will not work until you return to the survey.
+        </Alert>
+      </div>
+      }*/}
+
     </div>)
   }
 }

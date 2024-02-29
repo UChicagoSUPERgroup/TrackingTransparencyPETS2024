@@ -32,8 +32,10 @@ export default class ActivityOverview extends React.Component {
   async componentDidMount () {
     const background = await browser.runtime.getBackgroundPage()
     let tempDate = new Date(Date.now() - (6 * millisecondsInDay))
-    let startDate = new Date(tempDate.getFullYear(),
+    let startDate = new Date(tempDate.getFullYear()-3,
       tempDate.getMonth(), tempDate.getDate())
+    // console.log(startDate)
+    // console.log(typeof(startDate))
     let args = {afterDate: startDate.getTime()}
     const weektimestamps = background.queryDatabase('getTimestamps', args)
     let activityType = 'load dashboard Activity page'
@@ -42,6 +44,9 @@ export default class ActivityOverview extends React.Component {
       const times = ts.map(x => (
         (new Date(x.id))
       ))
+      // console.log("trying to set state here")
+      // console.log(times)
+      // console.log(weektimestamps)
       this.setState({
         weektimestamps: times
       })
@@ -87,6 +92,11 @@ export default class ActivityOverview extends React.Component {
     const { hideInferenceContent, hideTrackerContent } = this.props
     const ok = weektimestamps && weektimestamps.length > 0
     const nodata = weektimestamps && weektimestamps.length === 0
+
+    // console.log(nodata)
+    // console.log(ok)
+    console.log(this.state)
+    console.log(this.props)
 
     return (
       <div>

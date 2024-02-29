@@ -1,5 +1,7 @@
 /** @module queries */
 
+
+
 import lf from 'lovefield'
 import _ from 'lodash'
 import * as moment from 'moment'
@@ -8,14 +10,17 @@ import * as groupByTime from 'group-by-time'
 
 import trackerData from '../../data/trackers/companyData.json'
 import comfortData from '../../data/interests/interests.json'
-import keywordData from '../../data/interests/keywords_mondovo.json'
+// import keywordData from '../../data/interests/keywords_mondovo.json'
+import keywordData2 from '../../data/interests/keywords_mondovo2.json'
 
 import tldjs from 'tldjs';
 
 import {primaryDbPromise, primarySchemaBuilder} from './setup'
+import * as store from './storage';
 
 // check ad DOMs for closeness
 import { stringSimilarity } from "string-similarity-js";
+
 
 
 let ttDb;
@@ -28,6 +33,11 @@ const Trackers = primarySchemaBuilder.getSchema().table('Trackers')
 const Pages = primarySchemaBuilder.getSchema().table('Pages')
 const Ads = primarySchemaBuilder.getSchema().table('Ads')
 const GoogleInferences = primarySchemaBuilder.getSchema().table('GoogleInference')
+const IPAddresses = primarySchemaBuilder.getSchema().table('IPAddress')
+
+const WORD_CLOUD_MAX = 50 //(((optimization, but does not result in large penalty, so keep at 50)))
+let DO_OPTIMIZATIONS = false; 
+// let checker = chrome.storage.local.get('richFeatures').then(ret => {DO_OPTIMIZATIONS = ret})
 
 function makeURL (Page) {
   return Page.protocol + '//' + Page.hostname + Page.path
@@ -43,12 +53,14 @@ async function getAllData () {
   let inferences = ttDb.select().from(Inferences).exec()
   let ads = ttDb.select().from(Ads).exec()
   let googleInferences = ttDb.select().from(GoogleInferences).exec()
+  let ipaddresses = ttDb.select().from(IPAddresses).exec()
   return {
     pages: await pages,
     trackers: await trackers,
     inferences: await inferences,
     ads: await ads,
     googleInferences: await googleInferences,
+    ipaddresses: await ipaddresses,
   }
 }
 
@@ -112,53 +124,54 @@ async function PageIdDataStructure (args) {
   const inferenceQuery = await query.exec()
   for (let i = 0; i < inferenceQuery.length; i++) {
 
-    // get sequence of time events as length of time on page
-    // start 
-    // focus (means stop)
-    // focus (means start)
-    // focus (stop)
-    // focus (start)
-    let result = [];
-    let arr = inferenceQuery[i]['Pages']['activity_events']; // activity as array for each page 
-    arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
+    let overall_page_time = inferenceQuery[i]['Pages']['activity_events'][inferenceQuery[i]['Pages']['activity_events'].length-1].overall_time / 1000
+    // // get sequence of time events as length of time on page
+    // // start 
+    // // focus (means stop)
+    // // focus (means start)
+    // // focus (stop)
+    // // focus (start)
+    // let result = [];
+    // let arr = inferenceQuery[i]['Pages']['activity_events']; // activity as array for each page 
+    // arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
 
-    // start      // add 
-    // stop 
+    // // start      // add 
+    // // stop 
 
-    // start      // add
-    // stop 
-    ///////////////////////
-                  // totals 
+    // // start      // add
+    // // stop 
+    // ///////////////////////
+    //               // totals 
 
-    let overall_page_time = 0
-    for (let p = 0; p < Object.keys(result).length; p++) {
+    // let overall_page_time = 0
+    // for (let p = 0; p < Object.keys(result).length; p++) {
 
-      let single_slice = result[p]
+    //   let single_slice = result[p]
 
-      // the last event has no pair becuase exit or focus repeats (do not consider it)
-      // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
-      if (Object.keys(single_slice).length !== 1) {
+    //   // the last event has no pair becuase exit or focus repeats (do not consider it)
+    //   // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
+    //   if (Object.keys(single_slice).length !== 1) {
 
-        let start; 
-        let end; 
+    //     let start; 
+    //     let end; 
 
-        if (Object.keys(single_slice[0]) == 'start') {
-          start = single_slice[0]['start']
-          end = single_slice[1]['value']
-        }
-        else {
-          start = single_slice[0]['value']
-          end = single_slice[1]['value']
-        }
+    //     if (Object.keys(single_slice[0]) == 'start') {
+    //       start = single_slice[0]['start']
+    //       end = single_slice[1]['value']
+    //     }
+    //     else {
+    //       start = single_slice[0]['value']
+    //       end = single_slice[1]['value']
+    //     }
 
-        // overall_page_time += (end-start) 
-        overall_page_time += (end-start) / 1000
+    //     // overall_page_time += (end-start) 
+    //     overall_page_time += (end-start) / 1000
         
-      }
+    //   }
 
 
 
-    }
+    // }
 
     var time =  new Date(inferenceQuery[i]['Inferences']['pageId']).toLocaleTimeString("en-GB") // British English uses 24-hour time without AM/PM
     var date = new Date(inferenceQuery[i]['Inferences']['pageId']).toLocaleDateString("en-GB").split('/').reverse().join('-'); // British English uses day-month-year order
@@ -286,47 +299,48 @@ async function PageIdDataStructure_revisedHeatmap (args) {
     // focus (means start)
     // focus (stop)
     // focus (start)
-    let result = [];
-    let arr = inferenceQuery[i]['Pages']['activity_events']; // activity as array for each page 
-    arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
+    let overall_page_time = inferenceQuery[i]['Pages']['activity_events'][inferenceQuery[i]['Pages']['activity_events'].length-1].overall_time / 1000
+    // let result = [];
+    // let arr = inferenceQuery[i]['Pages']['activity_events']; // activity as array for each page 
+    // arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
 
-    // start      // add 
-    // stop 
+    // // start      // add 
+    // // stop 
 
-    // start      // add
-    // stop 
-    ///////////////////////
-                  // totals 
+    // // start      // add
+    // // stop 
+    // ///////////////////////
+    //               // totals 
 
-    let overall_page_time = 0
-    for (let p = 0; p < Object.keys(result).length; p++) {
+    // let overall_page_time = 0
+    // for (let p = 0; p < Object.keys(result).length; p++) {
 
-      let single_slice = result[p]
+    //   let single_slice = result[p]
 
-      // the last event has no pair becuase exit or focus repeats (do not consider it)
-      // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
-      if (Object.keys(single_slice).length !== 1) {
+    //   // the last event has no pair becuase exit or focus repeats (do not consider it)
+    //   // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
+    //   if (Object.keys(single_slice).length !== 1) {
 
-        let start; 
-        let end; 
+    //     let start; 
+    //     let end; 
 
-        if (Object.keys(single_slice[0]) == 'start') {
-          start = single_slice[0]['start']
-          end = single_slice[1]['value']
-        }
-        else {
-          start = single_slice[0]['value']
-          end = single_slice[1]['value']
-        }
+    //     if (Object.keys(single_slice[0]) == 'start') {
+    //       start = single_slice[0]['start']
+    //       end = single_slice[1]['value']
+    //     }
+    //     else {
+    //       start = single_slice[0]['value']
+    //       end = single_slice[1]['value']
+    //     }
 
-        // overall_page_time += (end-start) 
-        overall_page_time += (end-start) / 1000
+    //     // overall_page_time += (end-start) 
+    //     overall_page_time += (end-start) / 1000
         
-      }
+    //   }
 
 
 
-    }
+    // }
 
     var time =  new Date(inferenceQuery[i]['Inferences']['pageId']).toLocaleTimeString("en-GB") // British English uses 24-hour time without AM/PM
     var date = new Date(inferenceQuery[i]['Inferences']['pageId']).toLocaleDateString("en-GB").split('/').reverse().join('-'); // British English uses day-month-year order
@@ -451,11 +465,11 @@ async function PageIdDataStructure_revisedHeatmap_version2 (args) {
   let query = ttDb.select(Inferences.inference, Inferences.pageId, Inferences.id, Pages.activity_events, Pages.title, Pages.domain)
     .from(Pages)
     .innerJoin(Inferences, Inferences.pageId.eq(Pages.id))
+    .where(Inferences.inference.neq('none')) // exclude pages where our content classification did not work (not very helpful unless debugging)
 
 
   // re-format time from UNIX to date (YMD) and time (hour,minute,second)
   let time_series_data = new Array()
-
   let time_series_data_today = new Array()
   let time_series_data_last_week = new Array()
   let time_series_data_last_month = new Array()
@@ -471,47 +485,46 @@ async function PageIdDataStructure_revisedHeatmap_version2 (args) {
     // focus (means start)
     // focus (stop)
     // focus (start)
-    let result = [];
-    let arr = inferenceQuery[i]['Pages']['activity_events']; // activity as array for each page 
-    arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
+    let overall_page_time = inferenceQuery[i]['Pages']['activity_events'][inferenceQuery[i]['Pages']['activity_events'].length-1].overall_time 
+    // let result = [];
+    // let arr = inferenceQuery[i]['Pages']['activity_events']; // activity as array for each page 
+    // arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
 
-    // start      // add 
-    // stop 
+    // // start      // add 
+    // // stop 
 
-    // start      // add
-    // stop 
-    ///////////////////////
-                  // totals 
+    // // start      // add
+    // // stop 
+    // ///////////////////////
+    //               // totals 
 
-    let overall_page_time = 0
-    for (let p = 0; p < Object.keys(result).length; p++) {
+    // let overall_page_time = 0
+    // for (let p = 0; p < Object.keys(result).length; p++) {
 
-      let single_slice = result[p]
+    //   let single_slice = result[p]
 
-      // the last event has no pair becuase exit or focus repeats (do not consider it)
-      // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
-      if (Object.keys(single_slice).length !== 1) {
+    //   // the last event has no pair becuase exit or focus repeats (do not consider it)
+    //   // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
+    //   if (Object.keys(single_slice).length !== 1) {
 
-        let start; 
-        let end; 
+    //     let start; 
+    //     let end; 
 
-        if (Object.keys(single_slice[0]) == 'start') {
-          start = single_slice[0]['start']
-          end = single_slice[1]['value']
-        }
-        else {
-          start = single_slice[0]['value']
-          end = single_slice[1]['value']
-        }
+    //     if (Object.keys(single_slice[0]) == 'start') {
+    //       start = single_slice[0]['start']
+    //       end = single_slice[1]['value']
+    //     }
+    //     else {
+    //       start = single_slice[0]['value']
+    //       end = single_slice[1]['value']
+    //     }
 
-        // overall_page_time += (end-start) 
-        overall_page_time += (end-start)
+    //     // overall_page_time += (end-start) 
+    //     overall_page_time += (end-start)
         
-      }
+    //   }
 
-
-
-    }
+    // }
 
     if (overall_page_time != 0) {
       var time =  new Date(inferenceQuery[i]['Inferences']['pageId']).toLocaleTimeString("en-GB") // British English uses 24-hour time without AM/PM
@@ -520,6 +533,7 @@ async function PageIdDataStructure_revisedHeatmap_version2 (args) {
       var time_log = String(time).split(":")[0] + ":" + String(time).split(":")[1]
       
       time_series_data.push({inference: inferenceQuery[i]['Inferences']['inference'], title: inferenceQuery[i]['Pages']['title'], date: date, time_log: date + " " + time_log, count: overall_page_time})
+
 
 
       // get sliced data here 
@@ -545,6 +559,7 @@ async function PageIdDataStructure_revisedHeatmap_version2 (args) {
       if (within_day) {
         time_series_data_today.push({inference: inferenceQuery[i]['Inferences']['inference'], title: inferenceQuery[i]['Pages']['title'], date: date, time_log: date + " " + time_log, count: overall_page_time})
       }
+
     }
 
 
@@ -623,6 +638,12 @@ async function PageIdDataStructure_revisedHeatmap_version2 (args) {
       tooltip.webpage_count = value.webpage_count 
       tooltip.grouped_interests = Object.keys(value.interests).map((key) => [key, value.interests[key]])
       tooltip.grouped_interests.sort((a, b) => (b[1] - a[1])) 
+      // strip out or make more identifiable "none" type
+      for (let entry of tooltip.grouped_interests){
+        if (entry[0] == 'none') {
+        entry[0] = "--no interest found on page--"
+        }
+      }
       to_ret.push([day, hour, count, tooltip])
     }
 
@@ -782,6 +803,7 @@ async function getDomainsNoTrackers (args) {
 async function getInferences (args) {
   let query = ttDb.select(Inferences.inference, lf.fn.count(Inferences.inference))
     .from(Inferences)
+    .where(Inferences.inference.neq('none'))
 
   query = args.afterDate ? query.where(Inferences.pageId.gte(args.afterDate)) : query
 
@@ -789,8 +811,23 @@ async function getInferences (args) {
     .groupBy(Inferences.inference)
     .orderBy(lf.fn.count(Inferences.inference), lf.Order.DESC)
 
+
   query = args.count ? query.limit(args.count) : query
-  return query.exec()
+  let qRes = await query.exec()
+  // let count = 0
+  // for (let obj of qRes) {
+  //   if (obj.inference == 'none') {
+  //     qRes = qRes.slice(count);
+  //   }
+  //   count += 1
+  // }
+
+  qRes = qRes.filter(function(el){
+    return el.inference != "none";
+  });
+
+  return query.exec() // original
+  // return qRes
 }
 
 /**
@@ -882,7 +919,7 @@ async function getInferenceCount (args) {
   return res
 }
 
-/** gets all inferences alongwith their page Id (which is basically timestamp) and domain
+/** gets all inferences along with their page Id (which is basically timestamp) and domain
  *
  * @param  {Object} args - arguments object
  * @param  {number} [args.count] - number of entries to return
@@ -910,6 +947,162 @@ let query = ttDb.select(Inferences.inference, Inferences.pageId, Inferences.id, 
   query = args.count ? query.limit(args.count) : query
   return query.exec()
 }
+
+
+/** globs all information around pageID for smaller datastructure 
+ *
+ * @param  {Object} args - arguments object
+ * @param  {number} [args.count] - number of entries to return
+ * @param  {number} [args.afterDate]
+ */
+
+async function getInferencesDomainsToSend_v2 (args) {
+
+  let query = ttDb.select(Pages.id, Pages.title, Pages.domain, Pages.hostname, Pages.path, Pages.protocol, Inferences.inference, Inferences.inferencePath)
+    .from(Pages, Inferences)
+    .where(lf.op.and(
+      Inferences.pageId.eq(Pages.id),
+    ))
+  let objects = await query.exec()
+  let returnable = {}
+  for (let obj of objects) {
+    let this_pageId = obj['Pages'].id
+    if (!(this_pageId in returnable)){
+      let temp = {} 
+      temp['domain'] = obj['Pages'].domain
+      temp['title'] = obj['Pages'].title
+      temp['path'] = obj['Pages'].path
+      temp['hostname'] = obj['Pages'].hostname 
+      temp['activity_events'] = obj['Pages'].activity_events 
+      temp['inference'] = obj['Inferences'].inference
+      temp['inferencePath'] = obj['Inferences'].inferencePath
+      let args = {'pageId': this_pageId}
+      let trackers = await getTrackersByPageId(args)
+      temp['trackers'] = trackers
+      let ads = await getAdsByPageId(args)
+      temp['ads'] = ads
+      returnable[this_pageId] = temp
+    }
+
+  }
+  let googleInferences = await getGoogleInferences_forStorage()
+  returnable['googleInferences_slice_current'] = googleInferences
+  return returnable 
+}
+
+/** globs all information around pageID for smaller datastructure 
+ *
+ * @param  {Object} args - arguments object
+ * @param  {number} [args.count] - number of entries to return
+ * @param  {number} [args.afterDate]
+ */
+
+async function getInferencesDomainsToSend_v3 (args) {
+  var waiter = await update_search_habits()
+  // console.log("MOVING ON HERE")
+  let item = await getAllData()
+
+  let to_return = {}
+  Object.entries(item).forEach(([key, value]) => {
+    // console.log(key, value);
+    if (key == 'pages') {
+      for (let page of item[key]) {
+        // console.log(page)
+        to_return[page.id] = page
+      }
+    }
+    if (key == 'trackers') {
+      let tracker_list = {}
+      for (let tracker of item[key]) {
+        // console.log(tracker)
+        if (tracker.pageId in tracker_list) {
+          let curr = tracker_list[tracker.pageId]
+          // console.log(curr)
+          curr.push(tracker.tracker)
+        } else {
+          tracker_list[tracker.pageId] = [tracker.tracker]
+        }
+      }
+      Object.entries(tracker_list).forEach(([tracker_pageID, tracker_names]) => {
+        if (tracker_pageID in to_return == false) {
+          to_return[tracker_pageID] = {'trackers':tracker_names}
+        } else {
+          let curr = to_return[tracker_pageID]
+          curr['trackers'] = tracker_names
+          to_return[tracker_pageID] = curr
+        }
+      })
+    }
+
+    if (key == 'inferences') {
+      let inference_list = {}
+      for (let inference of item[key]) {
+        // console.log(inference)
+        if (inference.pageId in inference_list) {
+          let curr = inference_list[inference.pageId]
+          // console.log(curr)
+          curr.push(inference)
+        } else {
+          // don't keep inference if it does not have an associated pageID
+          inference_list[inference.pageId] = [inference]
+        }
+      }
+      Object.entries(inference_list).forEach(([inference_pageID, inference_info]) => {
+        if (inference_pageID in to_return == false) {
+          to_return[inference_pageID] = {'inferences':inference_info}
+        } else {
+          let curr = to_return[inference_pageID]
+          curr['inferences'] = inference_info
+          to_return[inference_pageID] = curr
+        }
+      })
+    }
+
+    if (key == 'ads') {
+      let ads_list = {}
+      for (let ad of item[key]) {
+        // console.log(ad)
+        if (ad.pageId in ads_list) {
+          let curr = ads_list[ad.pageId]
+          // console.log(curr)
+          curr.push(ad)
+        } else {
+          ads_list[ad.pageId] = [ad]
+        }
+      }
+      Object.entries(ads_list).forEach(([ad_pageID, ad_info]) => {
+        if (ad_pageID in to_return == false) {
+          to_return[ad_pageID] = {'ads':ad_info}
+        } else {
+          let curr = to_return[ad_pageID]
+          curr['ads'] = ad_info
+          to_return[ad_pageID] = curr
+        }
+      })
+    }
+
+  });
+
+  // clear out empty, non-page-assocaited items
+  Object.entries(to_return).forEach(([key, value]) => { 
+    if (value.id == undefined) {
+      delete to_return[key];
+    }
+  });
+  
+  let googleInferences = await getGoogleInferences_forStorage()
+  to_return['googleInferences_slice_current'] = googleInferences
+
+  // optimization edit to add search habits to page table made this not necessary 
+  // // we lose titles, so this visual would be lost 
+  // let search_habits = await getTopicsOfInterest()
+  // to_return['search_habits'] = search_habits
+
+
+  return to_return
+}
+
+
 
 /** gets all gender inferences from all pages
  *
@@ -1066,47 +1259,48 @@ async function getInferencesMostSensitive_version2 (args) {
     // focus (means start)
     // focus (stop)
     // focus (start)
-    let result = [];
-    let arr = inferenceQuery[i]['Pages']['activity_events']; // activity as array for each page 
-    arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
+    let overall_page_time = inferenceQuery[i]['Pages']['activity_events'][inferenceQuery[i]['Pages']['activity_events'].length-1].overall_time 
+    // let result = [];
+    // let arr = inferenceQuery[i]['Pages']['activity_events']; // activity as array for each page 
+    // arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
 
-    // start      // add 
-    // stop 
+    // // start      // add 
+    // // stop 
 
-    // start      // add
-    // stop 
-    ///////////////////////
-                  // totals 
+    // // start      // add
+    // // stop 
+    // ///////////////////////
+    //               // totals 
 
-    let overall_page_time = 0
-    for (let p = 0; p < Object.keys(result).length; p++) {
+    // let overall_page_time = 0
+    // for (let p = 0; p < Object.keys(result).length; p++) {
 
-      let single_slice = result[p]
+    //   let single_slice = result[p]
 
-      // the last event has no pair becuase exit or focus repeats (do not consider it)
-      // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
-      if (Object.keys(single_slice).length !== 1) {
+    //   // the last event has no pair becuase exit or focus repeats (do not consider it)
+    //   // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
+    //   if (Object.keys(single_slice).length !== 1) {
 
-        let start; 
-        let end; 
+    //     let start; 
+    //     let end; 
 
-        if (Object.keys(single_slice[0]) == 'start') {
-          start = single_slice[0]['start']
-          end = single_slice[1]['value']
-        }
-        else {
-          start = single_slice[0]['value']
-          end = single_slice[1]['value']
-        }
+    //     if (Object.keys(single_slice[0]) == 'start') {
+    //       start = single_slice[0]['start']
+    //       end = single_slice[1]['value']
+    //     }
+    //     else {
+    //       start = single_slice[0]['value']
+    //       end = single_slice[1]['value']
+    //     }
 
-        // count is milliseconds
-        overall_page_time += (end-start)
+    //     // count is milliseconds
+    //     overall_page_time += (end-start)
         
-      }
+    //   }
 
 
 
-    }
+    // }
     // duplicates exist, ne need to include them
     if (!(inferenceQuery[i]['Inferences']['pageId'] in seen_it_same_inference)) {
       
@@ -1351,6 +1545,7 @@ async function getInferencesMostSensitive_version3 (args) {
   let query = ttDb.select(Inferences.inference, Inferences.pageId, Inferences.id, Inferences.inferencePath, Pages.activity_events, Pages.title, Pages.domain)
     .from(Pages)
     .innerJoin(Inferences, Inferences.pageId.eq(Pages.id))
+    .where(Inferences.inference.neq('none')) // exclude pages where our content classification did not work (not very helpful unless debugging)
 
 
   // re-format time from UNIX to date (YMD) and time (hour,minute,second)
@@ -1374,47 +1569,48 @@ async function getInferencesMostSensitive_version3 (args) {
     // focus (means start)
     // focus (stop)
     // focus (start)
-    let result = [];
-    let arr = inferenceQuery[i]['Pages']['activity_events']; // activity as array for each page 
-    arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
+    let overall_page_time = inferenceQuery[i]['Pages']['activity_events'][inferenceQuery[i]['Pages']['activity_events'].length-1].overall_time 
+    // let result = [];
+    // let arr = inferenceQuery[i]['Pages']['activity_events']; // activity as array for each page 
+    // arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
 
-    // start      // add 
-    // stop 
+    // // start      // add 
+    // // stop 
 
-    // start      // add
-    // stop 
-    ///////////////////////
-                  // totals 
+    // // start      // add
+    // // stop 
+    // ///////////////////////
+    //               // totals 
 
-    let overall_page_time = 0
-    for (let p = 0; p < Object.keys(result).length; p++) {
+    // let overall_page_time = 0
+    // for (let p = 0; p < Object.keys(result).length; p++) {
 
-      let single_slice = result[p]
+    //   let single_slice = result[p]
 
-      // the last event has no pair becuase exit or focus repeats (do not consider it)
-      // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
-      if (Object.keys(single_slice).length !== 1) {
+    //   // the last event has no pair becuase exit or focus repeats (do not consider it)
+    //   // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
+    //   if (Object.keys(single_slice).length !== 1) {
 
-        let start; 
-        let end; 
+    //     let start; 
+    //     let end; 
 
-        if (Object.keys(single_slice[0]) == 'start') {
-          start = single_slice[0]['start']
-          end = single_slice[1]['value']
-        }
-        else {
-          start = single_slice[0]['value']
-          end = single_slice[1]['value']
-        }
+    //     if (Object.keys(single_slice[0]) == 'start') {
+    //       start = single_slice[0]['start']
+    //       end = single_slice[1]['value']
+    //     }
+    //     else {
+    //       start = single_slice[0]['value']
+    //       end = single_slice[1]['value']
+    //     }
 
-        // count is milliseconds
-        overall_page_time += (end-start)
+    //     // count is milliseconds
+    //     overall_page_time += (end-start)
         
-      }
+    //   }
 
 
 
-    }
+    // }
 
     if (overall_page_time != 0) {
 
@@ -1586,6 +1782,10 @@ async function getInferencesMostSensitive_version3 (args) {
 
             } 
             let temp = new Object()
+            let replace_none = "--no interest found on page--"
+            if (type == 'none') {
+              type = replace_none
+            }
             temp["name"] = type 
             temp['y'] = total_percentage
             temp['drilldown'] = type
@@ -1593,6 +1793,9 @@ async function getInferencesMostSensitive_version3 (args) {
 
 
             let temp2 = new Object()
+            if (name == 'none') {
+              type = replace_none
+            }
             temp2['type'] = 'column'
             temp2['name'] = type
             temp2['id'] = type
@@ -1824,47 +2027,48 @@ async function getInferencesMostSensitive_version4 (args) {
     // focus (means start)
     // focus (stop)
     // focus (start)
-    let result = [];
-    let arr = inferenceQuery[i]['Pages']['activity_events']; // activity as array for each page 
-    arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
+    let overall_page_time = inferenceQuery[i]['Pages']['activity_events'][inferenceQuery[i]['Pages']['activity_events'].length-1].overall_time 
+    // let result = [];
+    // let arr = inferenceQuery[i]['Pages']['activity_events']; // activity as array for each page 
+    // arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
 
-    // start      // add 
-    // stop 
+    // // start      // add 
+    // // stop 
 
-    // start      // add
-    // stop 
-    ///////////////////////
-                  // totals 
+    // // start      // add
+    // // stop 
+    // ///////////////////////
+    //               // totals 
 
-    let overall_page_time = 0
-    for (let p = 0; p < Object.keys(result).length; p++) {
+    // let overall_page_time = 0
+    // for (let p = 0; p < Object.keys(result).length; p++) {
 
-      let single_slice = result[p]
+    //   let single_slice = result[p]
 
-      // the last event has no pair becuase exit or focus repeats (do not consider it)
-      // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
-      if (Object.keys(single_slice).length !== 1) {
+    //   // the last event has no pair becuase exit or focus repeats (do not consider it)
+    //   // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
+    //   if (Object.keys(single_slice).length !== 1) {
 
-        let start; 
-        let end; 
+    //     let start; 
+    //     let end; 
 
-        if (Object.keys(single_slice[0]) == 'start') {
-          start = single_slice[0]['start']
-          end = single_slice[1]['value']
-        }
-        else {
-          start = single_slice[0]['value']
-          end = single_slice[1]['value']
-        }
+    //     if (Object.keys(single_slice[0]) == 'start') {
+    //       start = single_slice[0]['start']
+    //       end = single_slice[1]['value']
+    //     }
+    //     else {
+    //       start = single_slice[0]['value']
+    //       end = single_slice[1]['value']
+    //     }
 
-        // count is milliseconds
-        overall_page_time += (end-start)
+    //     // count is milliseconds
+    //     overall_page_time += (end-start)
         
-      }
+    //   }
 
 
 
-    }
+    // }
 
     if (overall_page_time != 0) {
 
@@ -2364,7 +2568,7 @@ async function getInferencesMostSensitive_bubbles (args) {
     }, []);
 
     let sorted = wordcloudData.sort((a, b) => (a.weight > b.weight) ? 1 : -1).reverse()
-    let sliced = sorted.slice(0, 75)
+    let sliced = sorted.slice(0, WORD_CLOUD_MAX)
     return sliced
   }
 
@@ -2437,44 +2641,45 @@ async function getInferencesMostSensitive_bubbles_version2 (args) {
 
       ///////////////////////////////////////////////////////////////////////////////// get timing
       let ms_timing = 0;
-      let result = [];
-      let arr = obj['Pages']['activity_events']; // activity as array for each page 
-      arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
+      let overall_page_time = obj['Pages']['activity_events'][obj['Pages']['activity_events'].length-1].overall_time 
+      // let result = [];
+      // let arr = obj['Pages']['activity_events']; // activity as array for each page 
+      // arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
 
-      // start      // add 
-      // stop 
+      // // start      // add 
+      // // stop 
 
-      // start      // add
-      // stop 
-      ///////////////////////
-                    // totals 
+      // // start      // add
+      // // stop 
+      // ///////////////////////
+      //               // totals 
 
-      let overall_page_time = 0
-      for (let p = 0; p < Object.keys(result).length; p++) {
+      // let overall_page_time = 0
+      // for (let p = 0; p < Object.keys(result).length; p++) {
 
-        let single_slice = result[p]
+      //   let single_slice = result[p]
 
-        // the last event has no pair becuase exit or focus repeats (do not consider it)
-        // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
-        if (Object.keys(single_slice).length !== 1) {
+      //   // the last event has no pair becuase exit or focus repeats (do not consider it)
+      //   // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
+      //   if (Object.keys(single_slice).length !== 1) {
 
-          let start; 
-          let end; 
+      //     let start; 
+      //     let end; 
 
-          if (Object.keys(single_slice[0]) == 'start') {
-            start = single_slice[0]['start']
-            end = single_slice[1]['value']
-          }
-          else {
-            start = single_slice[0]['value']
-            end = single_slice[1]['value']
-          }
+      //     if (Object.keys(single_slice[0]) == 'start') {
+      //       start = single_slice[0]['start']
+      //       end = single_slice[1]['value']
+      //     }
+      //     else {
+      //       start = single_slice[0]['value']
+      //       end = single_slice[1]['value']
+      //     }
 
-          // count is milliseconds
-          overall_page_time += (end-start)
+      //     // count is milliseconds
+      //     overall_page_time += (end-start)
           
-        }
-      }
+      //   }
+      // }
       if (overall_page_time != 0) {
         ms_timing = overall_page_time
       } else {
@@ -2643,7 +2848,7 @@ async function getInferencesMostSensitive_bubbles_version2 (args) {
     }, []);
 
     let sorted = wordcloudData.sort((a, b) => (a.weight > b.weight) ? 1 : -1).reverse()
-    let sliced = sorted.slice(0, 25)
+    let sliced = sorted.slice(0, WORD_CLOUD_MAX)
     return sliced
   }
 
@@ -2698,6 +2903,286 @@ async function getInferencesMostSensitive_bubbles_version2 (args) {
 
 
 
+
+/** gets most sensitive interests for bubbleView, just words
+ *
+ * series = [ {name: <enter>, data: [{name: <enter>, value: <enter> }, {}, {} ...]  }, {}, {}... ]
+ *
+ * @param  {Object} args - arguments object
+ * @returns {Object} list of sensitive interests based on comfort 
+ */
+
+async function getInferencesMostSensitive_bubbles_text (args) {
+
+  let query = ttDb.select(Pages.id, Pages.title, Pages.domain, Pages.activity_events, Inferences.inference, Inferences.inferenceCategory, Inferences.wordCloud)
+    .from(Pages, Inferences)
+    .where(lf.op.and(
+      Inferences.pageId.eq(Pages.id),
+    ))
+  let objects = await query.exec()
+
+  let sensitive_interests = []
+  let seen_it = []
+  let word_cloud = []
+  let series = []
+
+  for (let obj of objects) {
+
+    // if sensitive, it will have wordCloud
+    if (obj['Inferences'].wordCloud !== '') {
+
+      let specific_interest = obj['Inferences'].inferenceCategory
+
+      let args2 = {'pageId': obj['Pages'].id}
+      let tracker_info = await getNumber_andNames_OfTrackers_perPage(args2)
+      // get tackers per page
+      let unique_trackers = new Array()
+      for (let track of tracker_info) {
+        if (unique_trackers.includes(track['tracker']) == false) {
+          unique_trackers.push(track['tracker'])
+        }
+      }
+
+      ///////////////////////////////////////////////////////////////////////////////// get timing
+      let ms_timing = 0;
+      let result = [];
+      let overall_page_time = obj['Pages']['activity_events'][obj['Pages']['activity_events'].length-1].overall_time 
+      // let arr = obj['Pages']['activity_events']; // activity as array for each page 
+      // arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
+
+      // // start      // add 
+      // // stop 
+
+      // // start      // add
+      // // stop 
+      // ///////////////////////
+      //               // totals 
+
+      // let overall_page_time = 0
+      // for (let p = 0; p < Object.keys(result).length; p++) {
+
+      //   let single_slice = result[p]
+
+      //   // the last event has no pair becuase exit or focus repeats (do not consider it)
+      //   // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
+      //   if (Object.keys(single_slice).length !== 1) {
+
+      //     let start; 
+      //     let end; 
+
+      //     if (Object.keys(single_slice[0]) == 'start') {
+      //       start = single_slice[0]['start']
+      //       end = single_slice[1]['value']
+      //     }
+      //     else {
+      //       start = single_slice[0]['value']
+      //       end = single_slice[1]['value']
+      //     }
+
+      //     // count is milliseconds
+      //     overall_page_time += (end-start)
+          
+      //   }
+      // }
+      if (overall_page_time != 0) {
+        ms_timing = overall_page_time
+      } else {
+        ms_timing = 300
+      }
+      ///////////////////////////////////////////////////////////////////////////////// get timing
+
+
+      // need to merge on domains, but know what the titles are 
+      // if seen domain, accumulate information
+      // if new domain, add it to category 
+      if (!seen_it.includes(specific_interest)) {
+        let inner_data = {}
+
+        inner_data["name"] = obj['Pages'].domain
+        inner_data["title"] = [obj['Pages'].title]
+        inner_data["pageId"] = [obj['Pages'].id]
+        inner_data["value"] =  ms_timing
+        inner_data['tracker_info'] = [unique_trackers]
+        inner_data['drilldown'] = specific_interest + "--" + inner_data["name"]
+        inner_data['wordCloud'] = obj['Inferences'].wordCloud
+
+        let outer_data = {}
+        outer_data['data'] = [inner_data]
+        outer_data['name'] = specific_interest
+
+        series.push(outer_data)
+        seen_it.push(specific_interest)
+      } else {
+        // aggregate title, wordCloud, pageId information
+        let count = 0
+        for (let exists of series) {
+          let name = exists.name 
+          if (name == specific_interest) {
+            // this is what we should be updating
+
+
+            // if same domain then aggregate, else add a new data block
+            let domain_under_consideration = obj['Pages'].domain
+            let logged_domain = series[count]["data"][0].name
+            if (domain_under_consideration == logged_domain) {
+              let currPageId = obj['Pages'].id
+              let curr_Ids = series[count]["data"][0].pageId
+              if (!curr_Ids.includes(currPageId)) {
+                let curr_title = series[count]["data"][0].title
+                curr_title.push(obj['Pages'].title)
+                series[count]["data"][0].title = curr_title
+
+                let curr_Ids = series[count]["data"][0].pageId
+                curr_Ids.push(obj['Pages'].id)
+                series[count]["data"][0].pageId = curr_Ids
+
+                let curr_trackers = series[count]["data"][0].tracker_info
+                curr_trackers.push(unique_trackers)
+                series[count]["data"][0].tracker_info = curr_trackers
+
+                let curr_msTime = series[count]["data"][0].value
+                curr_msTime += ms_timing
+                series[count]["data"][0].value = curr_msTime
+
+
+                // aggregate the worldCloud to combine titles
+                let curr_wordCloud = series[count]["data"][0].wordCloud
+                curr_wordCloud += obj['Inferences'].wordCloud
+                series[count]["data"][0].wordCloud = curr_wordCloud
+
+              }
+            } else {
+              // find the name of domain that matches and insert it
+              
+              // check if it already exists, if not add it
+              let this_index = 0 
+              let does_not_exist = true;
+              for (let domain_slice of series[count]["data"]) {
+                let this_domain = domain_slice.name 
+                if (this_domain == obj['Pages'].domain) {
+
+                  does_not_exist = false;
+
+                  // let curr_id = this_domain.pageId
+                  // if (!curr_id.includes(obj['Pages'].id)) {
+                  let curr_title = series[count]["data"][this_index].title
+                  curr_title.push(obj['Pages'].title)
+                  series[count]["data"][this_index].title = curr_title
+
+                  let curr_Ids = series[count]["data"][this_index].pageId
+                  curr_Ids.push(obj['Pages'].id)
+                  series[count]["data"][this_index].pageId = curr_Ids
+
+                  let curr_trackers = series[count]["data"][this_index].tracker_info
+                  curr_trackers.push(unique_trackers)
+                  series[count]["data"][this_index].tracker_info = curr_trackers
+
+                  let curr_msTime = series[count]["data"][this_index].value
+                  curr_msTime += ms_timing
+                  series[count]["data"][this_index].value = curr_msTime
+
+
+                  // aggregate the worldCloud to combine titles
+                  let curr_wordCloud = series[count]["data"][this_index].wordCloud
+                  curr_wordCloud += obj['Inferences'].wordCloud
+                  series[count]["data"][this_index].wordCloud = curr_wordCloud
+
+                  // }
+                }
+                this_index += 1
+              }
+
+              if (does_not_exist) {
+                // add new block to data 
+                let domain_under_consideration = obj['Pages'].domain
+                let logged_domain = series[count]["data"][0].name
+                let inner_data = {}
+                inner_data["name"] = obj['Pages'].domain
+                inner_data["title"] = [obj['Pages'].title]
+                inner_data["pageId"] = [obj['Pages'].id]
+                inner_data["value"] =  ms_timing
+                // inner_data["value"] = comfortData[specific_interest].comfort // Math.pow(Math.abs(comfortData[specific_interest].comfort), 5)
+                inner_data['tracker_info'] = [unique_trackers]
+                inner_data['drilldown'] = specific_interest + "--" + inner_data["name"]
+                inner_data['wordCloud'] = obj['Inferences'].wordCloud
+
+                let current_data_block = series[count]["data"]
+                current_data_block.push(inner_data)
+                series[count]["data"] = current_data_block
+              }
+
+
+            }
+
+
+
+
+            // series[count]["data"].tracker_info.push(unique_trackers)
+            // series[count]["data"].wordCloud += obj['Inferences'].wordCloud
+          }
+          count += 1
+        }
+      }
+
+    }
+
+
+
+  }
+
+  // helper function for wordCloud
+  function parsed_wordCloud(text) {
+    const lines = text.split(/[,. ]+/g);
+    const wordcloudData = lines.reduce((acc, word) => {
+    let el = acc.find(each => each.name === word);
+
+    if (el) {
+      el.weight += 1;
+    } else {
+      el = {
+        name: word,
+        weight: 1,
+        // drilldown: word,
+      };
+
+      acc.push(el);
+    }
+
+    return acc;
+    }, []);
+
+    let sorted = wordcloudData.sort((a, b) => (a.weight > b.weight) ? 1 : -1).reverse()
+    let sliced = sorted.slice(0, WORD_CLOUD_MAX)
+    return sliced
+  }
+
+  let count = 0
+  let inner_layer = []
+  let all_words = ''
+  for (let obj of series) {
+    let title = obj['name']
+    let data_list = obj['data']
+    let index = 0
+    for (let inner of data_list) {
+      if (inner.drilldown) {
+        // let temp = {}
+        // temp['type'] = 'wordcloud'
+        // temp['id'] = inner.drilldown
+        // temp['data'] = parsed_wordCloud(inner.wordCloud)
+        all_words += inner.wordCloud
+      }
+      index += 1
+    }
+    count += 1
+  }
+
+  let to_ret = parsed_wordCloud(all_words)
+
+  return to_ret
+}
+
+
+
 /* ================ */
 /*   COUNTING       */
 /* ================ */
@@ -2706,6 +3191,7 @@ async function getInferencesMostSensitive_bubbles_version2 (args) {
  * get the total number of pages
  *
  * @returns {Integer} number of page visits
+ * TODO: bug -- this counts duplicates
  */
 async function getNumberOfPages () {
   let query = await ttDb.select(lf.fn.count(Pages.id))
@@ -2781,7 +3267,12 @@ async function getNumber_andNames_OfTrackers_perPage (args) {
 async function getNumberOfInferences () {
   let query = await ttDb.select(lf.fn.count(lf.fn.distinct(Inferences.inference)))
     .from(Inferences)
+    .where(lf.op.and(
+      Inferences.inference.neq('none'),
+      Inferences.inference.neq('error - empty'),
+    ))
     .exec()
+  //let excludables = ['error - empty' , 'none']
   return (query[0])['COUNT(DISTINCT(inference))']
 }
 
@@ -2818,8 +3309,11 @@ async function getNumberOfAds () {
  * @param  {number} [args.count] - number of entries to return
  */
 async function getPagesByDomain (args) {
+  // console.log(args)
   if (!args.domain) {
-    throw new Error('Insufficient args provided for query (getPagesByDomain)')
+    // throw new Error('Insufficient args provided for query (getPagesByDomain)')
+    console.log('Insufficient args provided for query (getPagesByDomain)')
+    return
   }
 
   let query = ttDb.select()
@@ -2845,6 +3339,75 @@ async function getPagesByDomain (args) {
   })
   return Promise.all(pages)
 }
+
+/** get titles of pages which do not have mondovo search history matching yet 
+ *
+ */
+async function getPagesByEmptySearchHabits () {
+
+  // get pages which have not been assessed for matches on mondovo yet
+  let query2 = ttDb.select()
+    .from(Pages)
+    .where(Pages.search_habits.isNull())
+
+  let pages = await query2.exec()
+  let array_full = []
+
+  for (let page of pages) {
+    array_full.push(page['title'].toLowerCase().replace(/[+=]/g, ""))
+  }
+
+  let to_ret = []
+  let success = []
+
+  var array_part = Object.keys(keywordData2)
+  let rx = new RegExp(array_part.join('|'))
+  let matches = array_full.filter(w => rx.test(w))
+  let matches_cleaned = [...new Set(matches)];
+  // console.log(matches_cleaned)
+
+  // of the matches, get page titles and create a list of pages to be updated 
+  for (let option of Object.keys(keywordData2)) {
+    for (let match of matches_cleaned) {
+      if (match.includes(option)) {
+        let keyword_category_match = keywordData2[option]
+        // console.log("keyword category   ", keyword_category_match)
+        // console.log("long string keyword match   ",option)
+        // console.log("title of searched pages matched   ",match)
+        for (let page of pages) {
+          if (page['title'].toLowerCase().replace(/[+=]/g, "") == match) {
+
+            if (success.includes(page.id)) {
+              for (let obj of to_ret) {
+                if (obj.pageId == page.id) {
+                  let curr = obj.search_habits 
+                  curr.push([option, keyword_category_match])
+                }
+              }
+            } else {
+              let info = {'search_habits': [[option, keyword_category_match]], 'pageId': page.id, 'title': page.title, 'domain': page.domain, 'hostname': page.hostname, 'path': page.path, 'protocol': page.protocol, 'activity_events': page.activity_events}
+              to_ret.push(info)
+              success.push(page.id)
+            }
+
+          }
+        }
+      }
+    }
+  }
+
+  // mark rest of the pages as viewed before
+  for (let page of pages) {
+    if (!success.includes(page.id)) {
+      let info = {'search_habits': [], 'pageId': page.id, 'title': page.title, 'domain': page.domain, 'hostname': page.hostname, 'path': page.path, 'protocol': page.protocol, 'activity_events': page.activity_events}
+      to_ret.push(info)
+    }
+  }
+
+
+  return to_ret
+}
+
 
 /** get pages by domain, fuzzy matching with .includes()
  *
@@ -2973,6 +3536,12 @@ async function getPagesByTime (args) {
  * @param  {number} [args.count] - number of entries to return
  */
 async function getPagesByTime_bedtime (args) {
+
+  let cut_off_for_optimize_threshold = DO_OPTIMIZATIONS ? 1000000 : 50
+
+  let start = performance.now();
+  let end;
+
   if (!args.startTime) {
     args.startTime = (new Date('January 1 2018')).getTime()
   }
@@ -3004,6 +3573,13 @@ async function getPagesByTime_bedtime (args) {
   //     return b['id'] - a['id']
   //   })
 
+  let optimize_it = false
+  if (withInferences.length >= cut_off_for_optimize_threshold) {
+    optimize_it = true
+  }
+
+  end = performance.now();
+  console.log("intro queries", end-start)
   let ret = []
   let seen_it = []
   let latest_nights = []
@@ -3020,97 +3596,103 @@ async function getPagesByTime_bedtime (args) {
         // ret.push([entry.id, this_entry, {"title": entry.title}, {"domain": entry.domain}, {"inference": entry.inference}])
         ret.push([entry.id, parseFloat(String(this_entry) + "." + String( ((this_minutes / 60) * 10)  )), {"title": entry.title}, {"domain": entry.domain}, {"inference": entry.inference}])
 
-
-        // don't consider any time from today
-        // because of day switch at midnight, consider the last 12 hours to be today
-        // let rightNow = moment().format("YYYY-MM-DD HH:mm:ss");
-        let hours_ago = moment().subtract(12, 'hours').format("YYYY-MM-DD HH:mm:ss");
-        let earlier_time = moment(entry.id).format('YYYY-MM-DD HH:mm:ss')
-        if (moment(earlier_time).isBefore(hours_ago))   {
-
-          // get all of the same day as entry.id
-          // get the latest timestamp in that set 
-          let target_slice = entry.id 
-          let same_day_days = []
-          let next_day_is_early = false;
-          // should be a better datastructure for faster lookup
-          for (let day of withInferences) {
-            // if day.id has same day as target_slice 
-            // and the next day doesn't have any time before 5AM
-            let within_same_day = String(moment(target_slice).format('D')) == String(moment(day.id).format('D'))
-            for (let next_day of withInferences) {
-              let is_next_day = String(moment(target_slice).add(1,'days').format('D')) == String(moment(next_day.id).format('D'))
-              if (is_next_day) {
-                let next_day_hour = String(moment(next_day.id).format('HH'))
-                let next_day_minute = String(moment(next_day.id).format('mm'))
-                if (parseInt(next_day_hour) <= "04" || (next_day_hour == "05" && next_day_minute == '00')) {
-                  next_day_is_early = true;
+        // (((optimize))) 
+        if (optimize_it == false) {
+          // this added a late night averages bar, but was incredibly slow
+          // don't consider any time from today
+          // because of day switch at midnight, consider the last 12 hours to be today
+          // let rightNow = moment().format("YYYY-MM-DD HH:mm:ss");
+          let hours_ago = moment().subtract(12, 'hours').format("YYYY-MM-DD HH:mm:ss");
+          let earlier_time = moment(entry.id).format('YYYY-MM-DD HH:mm:ss')
+          if (moment(earlier_time).isBefore(hours_ago))   {
+          
+            // get all of the same day as entry.id
+            // get the latest timestamp in that set 
+            let target_slice = entry.id 
+            let same_day_days = []
+            let next_day_is_early = false;
+            // should be a better datastructure for faster lookup
+            for (let day of withInferences) {
+              // if day.id has same day as target_slice 
+              // and the next day doesn't have any time before 5AM
+              let within_same_day = String(moment(target_slice).format('D')) == String(moment(day.id).format('D'))
+              for (let next_day of withInferences) {
+                let is_next_day = String(moment(target_slice).add(1,'days').format('D')) == String(moment(next_day.id).format('D'))
+                if (is_next_day) {
+                  let next_day_hour = String(moment(next_day.id).format('HH'))
+                  let next_day_minute = String(moment(next_day.id).format('mm'))
+                  if (parseInt(next_day_hour) <= "04" || (next_day_hour == "05" && next_day_minute == '00')) {
+                    next_day_is_early = true;
+                  }
                 }
               }
+              if (within_same_day && !next_day_is_early) {
+                same_day_days.push(day.id)
+                break;
+              }
             }
-            if (within_same_day && !next_day_is_early) {
-              same_day_days.push(day.id)
-              break;
+            // same_day_days.sort((dateA, dateB) => dateA - dateB)
+            if (same_day_days[0] != null) {
+              if (!logged_late_night.includes(same_day_days[0])) {
+          
+                let hours = String(moment(same_day_days[0]).format('HH'))
+                let minutes = String(moment(same_day_days[0]).format('mm'))
+          
+                let temp_store = new Object()
+                temp_store[same_day_days[0]] =  parseFloat(hours + "." + minutes)
+          
+                latest_nights.push( temp_store )
+                logged_late_night.push(same_day_days[0])
+              } 
             }
-          }
-          // same_day_days.sort((dateA, dateB) => dateA - dateB)
-          if (same_day_days[0] != null) {
-            if (!logged_late_night.includes(same_day_days[0])) {
-
-              let hours = String(moment(same_day_days[0]).format('HH'))
-              let minutes = String(moment(same_day_days[0]).format('mm'))
-
-              let temp_store = new Object()
-              temp_store[same_day_days[0]] =  parseFloat(hours + "." + minutes)
-
-              latest_nights.push( temp_store )
-              logged_late_night.push(same_day_days[0])
-            } 
-          }
-
+          
+          } 
         }
 
         
-      } 
-      if (this_entry <= 5) {
+      }
+      // original was 5AM, but seems too early, and is possible wake up time 
+      if (this_entry <= 4) {
         //keep it and add 24
         ret.push([entry.id, parseFloat(String(this_entry+24) + "." + String( ((this_minutes / 60) * 10)  )), {"title": entry.title}, {"domain": entry.domain}, {"inference": entry.inference}])
       
-        // don't consider any time from today
-        let hours_ago = moment().subtract(12, 'hours').format("YYYY-MM-DD HH:mm:ss");
-        let earlier_time = moment(entry.id).format('YYYY-MM-DD HH:mm:ss')
-        if (moment(earlier_time).isBefore(hours_ago)) {
-          // get all of this day as entry.id within that 5AM slice 
-          // out of all those days with times less than 5
-          // get the one that is closest to 5
-          let target_slice = entry.id 
-          let same_day_days = []
-          for (let day of withInferences) {
-            // if day.id has same day as target_slice 
-            // and the next day doesn't have any time before 5AM
-            let within_same_day = String(moment(target_slice).format('D')) == String(moment(day.id).format('D'))
-            let hours = String(parseInt(moment(day.id).format('HH')))
-            let minutes = String(moment(day.id).format('mm'))
-            let is_early = ( parseInt(hours) <= "04" || (hours == "05" && minutes == '00') )
-            if (within_same_day && is_early) {
-              same_day_days.push(day.id)
-              // break;
+        if (optimize_it == false) {
+          // don't consider any time from today
+          let hours_ago = moment().subtract(12, 'hours').format("YYYY-MM-DD HH:mm:ss");
+          let earlier_time = moment(entry.id).format('YYYY-MM-DD HH:mm:ss')
+          if (moment(earlier_time).isBefore(hours_ago)) {
+            // get all of this day as entry.id within that 5AM slice 
+            // out of all those days with times less than 5
+            // get the one that is closest to 5
+            let target_slice = entry.id 
+            let same_day_days = []
+            for (let day of withInferences) {
+              // if day.id has same day as target_slice 
+              // and the next day doesn't have any time before 5AM
+              let within_same_day = String(moment(target_slice).format('D')) == String(moment(day.id).format('D'))
+              let hours = String(parseInt(moment(day.id).format('HH')))
+              let minutes = String(moment(day.id).format('mm'))
+              let is_early = ( parseInt(hours) <= "04" || (hours == "05" && minutes == '00') )
+              if (within_same_day && is_early) {
+                same_day_days.push(day.id)
+                // break;
+              }
             }
-          }
-          // same_day_days.sort((dateA, dateB) => dateA - dateB)
-          if (same_day_days[0] != null) {
-            if (!logged_late_night.includes(same_day_days[0])) {
-
-              let hours = String(parseInt(moment(same_day_days[0]).format('HH')) + 24)
-              let minutes = String(moment(same_day_days[0]).format('mm'))
-
-              let temp_store = new Object()
-              temp_store[same_day_days[0]] =  parseFloat(hours + "." + minutes)
-
-              latest_nights.push( temp_store )
-              logged_late_night.push(same_day_days[0])
-            } 
-          }
+            // same_day_days.sort((dateA, dateB) => dateA - dateB)
+            if (same_day_days[0] != null) {
+              if (!logged_late_night.includes(same_day_days[0])) {
+          
+                let hours = String(parseInt(moment(same_day_days[0]).format('HH')) + 24)
+                let minutes = String(moment(same_day_days[0]).format('mm'))
+          
+                let temp_store = new Object()
+                temp_store[same_day_days[0]] =  parseFloat(hours + "." + minutes)
+          
+                latest_nights.push( temp_store )
+                logged_late_night.push(same_day_days[0])
+              } 
+            }
+          } 
         }
       }
 
@@ -3118,32 +3700,33 @@ async function getPagesByTime_bedtime (args) {
     }
   }
 
-  let temp_a = []
-  for (let peaks of latest_nights) {
-    temp_a.push(Object.values(peaks)[0])
-  }
+  if (optimize_it == false) {
+    let temp_a = []
+    for (let peaks of latest_nights) {
+      temp_a.push(Object.values(peaks)[0])
+    }
 
-  let latest_nights_average;
-  const average = (array) => array.reduce((a, b) => a + b) / array.length
-  if (temp_a.length >= 1) {
-    latest_nights_average = average(temp_a)
-  }
+    let latest_nights_average;
+    const average = (array) => array.reduce((a, b) => a + b) / array.length
+    if (temp_a.length >= 1) {
+      latest_nights_average = average(temp_a)
+    }
 
-  let test = []
-  for (let specials of latest_nights) {
-    let target = Object.keys(specials)
-    let index = 0
-    for (let alls of ret) {
-      let checker = alls[0]
-      if (String(checker) == target) {
-        let old_object = ret[index]
-        old_object.push({peak: latest_nights_average})
-        ret[index] = old_object
+    let test = []
+    for (let specials of latest_nights) {
+      let target = Object.keys(specials)
+      let index = 0
+      for (let alls of ret) {
+        let checker = alls[0]
+        if (String(checker) == target) {
+          let old_object = ret[index]
+          old_object.push({peak: latest_nights_average})
+          ret[index] = old_object
+        }
+        index += 1
       }
-      index += 1
     }
   }
-
 
   return ret 
   // return ret
@@ -3160,6 +3743,8 @@ async function getPagesByTime_bedtime (args) {
  * @param  {number} [args.count] - number of entries to return
  */
 async function getPagesByTime_bedtime_version2 (args) {
+  // let one = {'one': 'two'}
+  return (one['two']) // this will throw an error
   if (!args.startTime) {
     args.startTime = (new Date('January 1 2018')).getTime()
   }
@@ -3341,9 +3926,6 @@ async function getPagesByTime_bedtime_version2 (args) {
     days.push(temp)
   }
 
-
-
-
   return to_ret
 
   // const rv = args.count ? combined.slice(0, args.count) : combined
@@ -3449,211 +4031,513 @@ async function getTopicSearchPages (args) {
   return query.exec()
 }
 
+/** helper function for making sure we have all page search habits information
+ *
+ * @returns updates all pages in DB without search habit info
+ */
+async function update_search_habits() {
+  // clean up the stragglers that were missed in the every-5 run of this function
+  console.log("[-] attempting search habits title update list")
+  let to_update = await getPagesByEmptySearchHabits()
+
+  for (let item of to_update){
+    // console.log(item)
+    var waiter = await store.updatePage_search_habits(item)
+  }
+  console.log("[+] DONE -- attempting search habits title update list")
+}
+
 /** get pages where title contains topic of interest
  *
  * @param  {Object} args - arguments object
  * @returns {Object[]} pageIds of interesting topics and associated information
  */
 async function getTopicsOfInterest (args) {
-  
-  // get each page, the page inference, and the time spent on the page 
-  let query = ttDb.select(Inferences.inference, Inferences.pageId, Inferences.id, Pages.activity_events, Pages.title, Pages.domain)
-    .from(Pages)
-    .innerJoin(Inferences, Inferences.pageId.eq(Pages.id))
 
+  var waiter = await update_search_habits()
+  let pages_of_interest = await getPagesWithSearchHabits()
+  // console.log("pages of interest", pages_of_interest)
+  if (pages_of_interest.length == 0) {
+    return []
+  }
+  let array_full__2 = []
+  let time_series_data_all__2 = new Array()
+  let total_time__2 = 0
+  for (let page of pages_of_interest) {
 
-  // re-format time from UNIX to date (YMD) and time (hour,minute,second)
-  let time_series_data = new Array()
-  let time_series_data_all = new Array()
+    for (let i = 0; i < pages_of_interest.length; i++) {
+      let result = [];
+      let overall_page_time = pages_of_interest[i]['activity_events'][pages_of_interest[i]['activity_events'].length-1].overall_time 
+      // let arr = pages_of_interest[i]['activity_events']; // activity as array for each page 
+      // arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
+      // // start      // add 
+      // // stop 
 
+      // // start      // add
+      // // stop 
+      // ///////////////////////
+      //               // totals 
 
-  const inferenceQuery = await query.exec()
-  let seen_it = []
-  let total_time = 0
-  let seen_it_same_inference = new Object()
-  for (let i = 0; i < inferenceQuery.length; i++) {
+      // let overall_page_time = 0
+      // for (let p = 0; p < Object.keys(result).length; p++) {
 
-    // get sequence of time events as length of time on page
-    // start 
-    // focus (means stop)
-    // focus (means start)
-    // focus (stop)
-    // focus (start)
-    let result = [];
-    let arr = inferenceQuery[i]['Pages']['activity_events']; // activity as array for each page 
-    arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
+      //   let single_slice = result[p]
 
-    // start      // add 
-    // stop 
+      //   // the last event has no pair becuase exit or focus repeats (do not consider it)
+      //   // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
+      //   if (Object.keys(single_slice).length !== 1) {
 
-    // start      // add
-    // stop 
-    ///////////////////////
-                  // totals 
+      //     let start; 
+      //     let end; 
 
-    let overall_page_time = 0
-    for (let p = 0; p < Object.keys(result).length; p++) {
+      //     if (Object.keys(single_slice[0]) == 'start') {
+      //       start = single_slice[0]['start']
+      //       end = single_slice[1]['value']
+      //     }
+      //     else {
+      //       start = single_slice[0]['value']
+      //       end = single_slice[1]['value']
+      //     }
 
-      let single_slice = result[p]
-
-      // the last event has no pair becuase exit or focus repeats (do not consider it)
-      // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
-      if (Object.keys(single_slice).length !== 1) {
-
-        let start; 
-        let end; 
-
-        if (Object.keys(single_slice[0]) == 'start') {
-          start = single_slice[0]['start']
-          end = single_slice[1]['value']
+      //     // count is milliseconds
+      //     overall_page_time += (end-start)
+          
+      //   }
+      // }
+      if (overall_page_time != 0) {
+        time_series_data_all__2.push({domain: pages_of_interest[i]['domain'], pageId: pages_of_interest[i]['id'], title: pages_of_interest[i]['title'], search_habits: pages_of_interest[i]['search_habits'], count: overall_page_time})
+        total_time__2 += overall_page_time
+        if (!pages_of_interest[i]['title'].includes('http')) {
+          array_full__2.push(pages_of_interest[i]['title'].toLowerCase().replace(/[+=]/g, ""))
         }
-        else {
-          start = single_slice[0]['value']
-          end = single_slice[1]['value']
-        }
+      }
 
-        // count is milliseconds
-        overall_page_time += (end-start)
+    } 
+
+    // let startTime = performance.now()
+    // let endTime;
+  }
+  // console.log("new array full    ", array_full__2)
+  // console.log("new time series data    ",time_series_data_all__2)
+
+  // // new optimize 
+  // // new optimize 
+  // // new optimize 
+  // // new optimize 
+
+
+  // ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
+  // ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
+  // ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
+  // ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
+  // let startTime = performance.now()
+  // let array_full = []
+
+  // // get each page, the page inference, and the time spent on the page 
+  // let query = ttDb.select(Inferences.inference, Inferences.pageId, Inferences.id, Pages.activity_events, Pages.title, Pages.domain)
+  //   .from(Pages)
+  //   .innerJoin(Inferences, Inferences.pageId.eq(Pages.id))
+
+
+
+  // // re-format time from UNIX to date (YMD) and time (hour,minute,second)
+  // let time_series_data = new Array()
+  // let time_series_data_all = new Array()
+
+
+  // const inferenceQuery = await query.exec()
+  // let seen_it = []
+  // let total_time = 0
+  // let seen_it_same_inference = new Object()
+
+  // let endTime = performance.now()
+  // console.log('get query.  ', endTime - startTime)
+
+
+  // // console.log(inferenceQuery)
+  // if (inferenceQuery.length == 0) {
+  //   return inferenceQuery
+  // }
+
+
+  // // get time series data
+  // for (let i = 0; i < inferenceQuery.length; i++) {
+
+  //   // get sequence of time events as length of time on page
+  //   // start 
+  //   // focus (means stop)
+  //   // focus (means start)
+  //   // focus (stop)
+  //   // focus (start)
+  //   let result = [];
+  //   let arr = inferenceQuery[i]['Pages']['activity_events']; // activity as array for each page 
+  //   arr.forEach((x,y,z) => !(y % 2) ? result.push(z.slice(y, y + 2)) : '');
+
+  //   // start      // add 
+  //   // stop 
+
+  //   // start      // add
+  //   // stop 
+  //   ///////////////////////
+  //                 // totals 
+
+  //   let overall_page_time = 0
+  //   for (let p = 0; p < Object.keys(result).length; p++) {
+
+  //     let single_slice = result[p]
+
+  //     // the last event has no pair becuase exit or focus repeats (do not consider it)
+  //     // this will also catch the situation where a page is currently being visited and has no history, which should be ignored
+  //     if (Object.keys(single_slice).length !== 1) {
+
+  //       let start; 
+  //       let end; 
+
+  //       if (Object.keys(single_slice[0]) == 'start') {
+  //         start = single_slice[0]['start']
+  //         end = single_slice[1]['value']
+  //       }
+  //       else {
+  //         start = single_slice[0]['value']
+  //         end = single_slice[1]['value']
+  //       }
+
+  //       // count is milliseconds
+  //       overall_page_time += (end-start)
         
-      }
+  //     }
 
 
 
-    }
-    // duplicates exist, ne need to include them
-    if (!(inferenceQuery[i]['Inferences']['pageId'] in seen_it_same_inference)) {
+  //   }
+  //   // duplicates exist, no need to include them
+  //   if (!(inferenceQuery[i]['Inferences']['pageId'] in seen_it_same_inference) && overall_page_time != 0) {
       
-      // get full path and comfort if exists
-      let specific_interest = inferenceQuery[i]['Inferences']['inference']
-      let str;
-      let comfort;
-      try {
-        comfort = comfortData[specific_interest].comfort
-        let temp = {}
-        str = ''
-        let string_size = (comfortData[specific_interest].path.length) -1
-        let counter = 0
-        for (let item of comfortData[specific_interest].path) {
-          if (counter !== string_size) {
-            let to_log = String(item) + " ⟶ "
-            str += to_log
-          } else {
-            let to_log = String(item) 
-            str += to_log
-          }
-          counter += 1
-        }
-      } catch (e) {
-        if (specific_interest.includes("Sensitive Subjects") || specific_interest.includes("Adult")) {
-          comfort = -3
-        }
-        else {
-          comfort = 0
-        }
-        str = specific_interest
-      }
+  //     // get full path and comfort if exists
+  //     let specific_interest = inferenceQuery[i]['Inferences']['inference']
+  //     let str;
+  //     let comfort;
+  //     try {
+  //       comfort = comfortData[specific_interest].comfort
+  //       let temp = {}
+  //       str = ''
+  //       let string_size = (comfortData[specific_interest].path.length) -1
+  //       let counter = 0
+  //       for (let item of comfortData[specific_interest].path) {
+  //         if (counter !== string_size) {
+  //           let to_log = String(item) + " ⟶ "
+  //           str += to_log
+  //         } else {
+  //           let to_log = String(item) 
+  //           str += to_log
+  //         }
+  //         counter += 1
+  //       }
+  //     } catch (e) {
+  //       if (specific_interest.includes("Sensitive Subjects") || specific_interest.includes("Adult")) {
+  //         comfort = -3
+  //       }
+  //       else {
+  //         comfort = 0
+  //       }
+  //       str = specific_interest
+  //     }
 
-      time_series_data_all.push({inference: str, comfort: comfort, domain: inferenceQuery[i]['Pages']['domain'], pageId: inferenceQuery[i]['Inferences']['pageId'], title: inferenceQuery[i]['Pages']['title'], count: overall_page_time})
-      total_time += overall_page_time
-      seen_it_same_inference[inferenceQuery[i]['Inferences']['pageId']] = inferenceQuery[i]['Inferences']['inference']
-
-    }
+  //     time_series_data_all.push({inference: str, comfort: comfort, domain: inferenceQuery[i]['Pages']['domain'], pageId: inferenceQuery[i]['Inferences']['pageId'], title: inferenceQuery[i]['Pages']['title'], count: overall_page_time})
+  //     total_time += overall_page_time
+  //     seen_it_same_inference[inferenceQuery[i]['Inferences']['pageId']] = inferenceQuery[i]['Inferences']['inference']
+  //     if (!inferenceQuery[i]['Pages']['title'].includes('http')) {
+  //       array_full.push(inferenceQuery[i]['Pages']['title'].toLowerCase().replace(/[+=]/g, ""))
+  //     }
+      
+  //   }
     
+  // }
 
-  }
 
-  // let get_keyword_matches = []
+  // console.log("old array full    ", array_full)
+  // console.log("old time series data    ",time_series_data_all)
 
-  let job_words = ["job"]
-  let relationship_words = ['relationship','partner','dating','boyfriend','girlfriend','love','soulmate']
+  // endTime = performance.now()
+  // console.log('get all time series data.  ', endTime - startTime)
+  // ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
+  // ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
+  // ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
+  // ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
 
-  let sanity = []
-  let keepers = []
 
-  for (let entry of time_series_data_all) {
 
-    for (let option of Object.keys(keywordData)) {
 
-      if (option != "Most Searched Words on Google") {
 
-        let list = keywordData[option]
-        let hit_category = []
-        let exists_inference = false
-        let exists_title = false
-        let hit_keywords = []
-        for (let keyword of list) {
-          // leads to too many matches
-          // if (entry['inference'].toLowerCase().includes(keyword.toLowerCase())) {
-          //   exists_inference = true 
-          //   if (!hit_category.includes(option)) {
-          //     hit_category.push(option)
-          //   }
-          //   hit_keywords.push(keyword)
-          // }
-          if (entry['title'].toLowerCase().includes(keyword.toLowerCase())) {
-            exists_title= true 
-            // if (!hit_category.includes(option)) {
-            //   hit_category.push(option)
-            // }   
-            hit_category.push(option)       
-            hit_keywords.push(keyword)
-          }
-        }
 
-        // let exists_inference = list.some(word => entry['inference'].toLowerCase().includes(word))
-        // let exists_title = list.some(word => entry['title'].toLowerCase().includes(word))
-        if (exists_title) {
-          // let temp = entry 
-          // temp['hit_category'] = option
-          // temp['hit_keywords'] = hit_keywords
-          // get_keyword_matches.push(entry)
+  // // new optimize
+  // // new optimize
+  // // new optimize
+  // // new optimize
+  // let specialCheck_start = performance.now()
+  // var array_part = Object.keys(keywordData2)
+  // // console.log(array_part)
+  // let keepers2 = []
+  // let seen_it_entries = {}
+  // for (let entry of time_series_data_all) {
+  //   let temp2 = {}
+  //   temp2['hit_category'] = entry.search_habits[0] 
+  //   temp2['hit_keywords'] = entry.search_habits[1] 
+  //   temp2['domain'] = entry.domain 
+  //   temp2['pageId'] = entry.pageId 
+  //   temp2['title'] = entry.title
+  //   temp2['count'] = entry.count
+  //   keepers2.push(temp2)
+  //   if (entry.pageId in seen_it_entries) {
+  //     let curr = seen_it_entries[entry.pageId]
+  //     curr.push(keyword_category_match)
+  //   } else {
+  //     seen_it_entries[entry.pageId] = [entry.search_habits[0]]
+  //   }
+  // }
 
-          let temp2 = {}
-          temp2['hit_category'] = option 
-          temp2['hit_keywords'] = hit_keywords
-          temp2['inference'] = entry.inference 
-          temp2['comfort'] = entry.comfort 
-          temp2['domain'] = entry.domain 
-          temp2['pageId'] = entry.pageId 
-          temp2['title'] = entry.title
-          temp2['count'] = entry.count
-          keepers.push(temp2)
-        }
 
+
+
+  ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
+  ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
+  ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
+  ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  /
+
+
+
+  // console.log("new array full    ", array_full__2)
+  // console.log("new time series data    ",time_series_data_all__2)
+  // console.log("-----------------------------------")
+  // console.log(time_series_data_all__2)
+  // console.log("-----------------------------------")
+  let keepers2__2 = []
+  let seen_page_id = {}
+  for (let entry of time_series_data_all__2) {
+    // console.log("new entry loop   ", entry)
+    let general_type_category = new Set()
+    for (let pack of entry.search_habits[0]) {
+      for (let category_matcher of pack) {
+        // console.log(category_matcher)
+        general_type_category.add(category_matcher[1])
       }
     }
+    for (let cat of general_type_category) {
 
+      // console.log("***")
+      // console.log(seen_page_id)
+      // console.log(entry.pageId)
+      // console.log(seen_page_id)
+      // console.log(Object.keys(seen_page_id))
+      // console.log(entry.pageId in Object.keys(seen_page_id))
+      // console.log("have you seen this page ID before:", Object.keys(seen_page_id).includes(entry.pageId))
 
-    // // job search 
-    // let job_exists_inference = job_words.some(word => entry['inference'].toLowerCase().includes(word))
-    // let job_exists_title = job_words.some(word => entry['title'].toLowerCase().includes(word))
-    // if (job_exists_inference || job_exists_title) {
-    //   let temp = new Object()
-    //   temp = entry 
-    //   temp['type'] = "job-search"
-    //   ret.push(entry)
-    // }
+      // only keey unique category and pageId
+      // first time i'm seeing this page
+      if (String(entry.pageId) in seen_page_id == false) {
+        // console.log("new cat", cat)
+        // console.log(entry.domain)
+        // console.log(entry.title)
+        // console.log(entry.pageId)
 
-    // let relationship_exists_inference = relationship_words.some(word => entry['inference'].toLowerCase().includes(word))
-    // let relationship_exists_title = relationship_words.some(word => entry['title'].toLowerCase().includes(word))
-    // if (relationship_exists_inference || relationship_exists_title) {
-    //   let temp = new Object()
-    //   temp = entry 
-    //   temp['type'] = "relationship-search"
-    //   ret.push(entry)
-    // }
+        let temp2__2 = {}
+        temp2__2['hit_category'] = cat 
+        temp2__2['domain'] = entry.domain 
+        temp2__2['pageId'] = entry.pageId 
+        temp2__2['title'] = entry.title
+        temp2__2['count'] = entry.count
+        keepers2__2.push(temp2__2)
+        seen_page_id[String(entry.pageId)] = [cat]
+      } else {
+        // console.log("seen this pageId, but checking the list of items associated with pageID")
+        let curr = seen_page_id[String(entry.pageId)]
+        if (curr.includes(cat)) {
+          //do nothing
+        } else {
+          let temp2__2 = {}
+          temp2__2['hit_category'] = cat 
+          temp2__2['domain'] = entry.domain 
+          temp2__2['pageId'] = entry.pageId 
+          temp2__2['title'] = entry.title
+          temp2__2['count'] = entry.count
+          keepers2__2.push(temp2__2)
+          curr.push(cat)
+          seen_page_id[String(entry.pageId)] = curr
+        }
+      }
 
+      
+
+    }
   }
+
+  // console.log(keepers2__2)
+
+
+
+  // // add column to pages which is mondovo match 
+  // // every fifth page visit, update the pages on whether there is a match 
+  // let rx = new RegExp(array_part.join('|'))
+  // let matches = array_full.filter(w => rx.test(w))
+  // let matches_cleaned = [...new Set(matches)];
+  // console.log(matches_cleaned)
+
+  // // let matches_cleaned2 = await getPagesTitlesOnlyUniqueWithSearchHabits() // (((optimization)))
+  // // console.log(matches_cleaned2)
+
+  // // console.log(matches_cleaned)
+  // let keepers2 = []
+  // let seen_it_entries = {}
+  // for (let option of Object.keys(keywordData2)) {
+  //   for (let match of matches_cleaned) {
+  //     if (match.includes(option)) {
+  //       let keyword_category_match = keywordData2[option]
+  //       for (let entry of time_series_data_all) {
+  //         if (entry.title.toLowerCase() == match) {
+  //           let do_it_anyways = false
+  //           if (entry.pageId in seen_it_entries) {
+  //             let curr = seen_it_entries[entry.pageId]
+  //             if (curr.includes(keyword_category_match)) {
+  //               do_it_anyways = false 
+  //             } else {
+  //               do_it_anyways = true
+  //             }
+  //           } else {
+  //             do_it_anyways = true
+  //           }
+  //           if (do_it_anyways) {
+  //             let temp2 = {}
+  //             temp2['hit_category'] = keyword_category_match 
+  //             temp2['hit_keywords'] = option
+  //             temp2['inference'] = entry.inference 
+  //             temp2['comfort'] = entry.comfort 
+  //             temp2['domain'] = entry.domain 
+  //             temp2['pageId'] = entry.pageId 
+  //             temp2['title'] = entry.title
+  //             temp2['count'] = entry.count
+  //             keepers2.push(temp2)
+  //             if (entry.pageId in seen_it_entries) {
+  //               let curr = seen_it_entries[entry.pageId]
+  //               curr.push(keyword_category_match)
+  //             } else {
+  //               seen_it_entries[entry.pageId] = [keyword_category_match]
+  //             }
+  //           }
+  //         }
+  //       } 
+  //     }
+  //   }
+  // }
+  // ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
+  // ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
+  // ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
+  // ////////////////////////////////////////////////////////// / / / / / / ///     // / / / /    / /   //  / 
+
+
+  // console.log("OLD-->", keepers2)
+  // console.log("NEW-->", keepers2__2)
+  // let specialCheck_end = performance.now()
+  // console.log('special check  ', specialCheck_end - specialCheck_start)
+  // // console.log(matches_cleaned)
+
+  // //------------------------------------------------------------------------------------- (((optimize)))
+  // ////////////////////////////////////// using full list previously created, look at each entry and do a mondovo lookup each time 
+  // // get keywords from mondovo scrape  
+  // let job_words = ["job"]
+  // let relationship_words = ['relationship','partner','dating','boyfriend','girlfriend','love','soulmate']
+
+  // let sanity = []
+  // let keepers = []
+
+  // for (let entry of time_series_data_all) {
+
+  //   // // optimize (((doesn't work becuase we need substring matching)))
+  //   // let hit_category = []
+  //   // let hit_keywords = []
+  //   // if (entry['title'].toLowerCase() in keywordData2) { 
+  //   //   hit_category.push(keywordData2[entry['title'].toLowerCase()] )       
+  //   //   hit_keywords.push(entry['title'].toLowerCase())
+  //   //   let temp2 = {}
+  //   //   temp2['hit_category'] = keywordData2[entry['title'].toLowerCase()]
+  //   //   temp2['hit_keywords'] = hit_keywords
+  //   //   temp2['inference'] = entry.inference 
+  //   //   temp2['comfort'] = entry.comfort 
+  //   //   temp2['domain'] = entry.domain 
+  //   //   temp2['pageId'] = entry.pageId 
+  //   //   temp2['title'] = entry.title
+  //   //   temp2['count'] = entry.count
+  //   //   keepers.push(temp2)
+  //   // }
+
+  //   for (let option of Object.keys(keywordData)) {
+
+  //     if (option != "Most Searched Words on Google") {
+
+  //       let list = keywordData[option]
+  //       let hit_category = []
+  //       let exists_inference = false
+  //       let exists_title = false
+  //       let hit_keywords = []
+  //       for (let keyword of list) {
+  //         // leads to too many matches
+  //         // if (entry['inference'].toLowerCase().includes(keyword.toLowerCase())) {
+  //         //   exists_inference = true 
+  //         //   if (!hit_category.includes(option)) {
+  //         //     hit_category.push(option)
+  //         //   }
+  //         //   hit_keywords.push(keyword)
+  //         // }
+
+  //         if (entry['title'].toLowerCase().indexOf(keyword.toLowerCase()) !== -1) {
+  //         // if (entry['title'].toLowerCase().includes(keyword.toLowerCase())) {
+  //           exists_title= true 
+  //           // if (!hit_category.includes(option)) {
+  //           //   hit_category.push(option)
+  //           // }   
+  //           hit_category.push(option)       
+  //           hit_keywords.push(keyword)
+  //         }
+  //       }
+
+  //       // let exists_inference = list.some(word => entry['inference'].toLowerCase().includes(word))
+  //       // let exists_title = list.some(word => entry['title'].toLowerCase().includes(word))
+  //       if (exists_title) {
+  //         // let temp = entry 
+  //         // temp['hit_category'] = option
+  //         // temp['hit_keywords'] = hit_keywords
+  //         // get_keyword_matches.push(entry)
+
+  //         let temp2 = {}
+  //         temp2['hit_category'] = option 
+  //         temp2['hit_keywords'] = hit_keywords
+  //         temp2['inference'] = entry.inference 
+  //         temp2['comfort'] = entry.comfort 
+  //         temp2['domain'] = entry.domain 
+  //         temp2['pageId'] = entry.pageId 
+  //         temp2['title'] = entry.title
+  //         temp2['count'] = entry.count
+  //         keepers.push(temp2)
+  //       }
+
+  //     }
+  //   }
+
+  // }
+  // //------------------------------------------------------------------------------------- (((optimize)))
+
+
+  let keepers2 = keepers2__2
+
+  // endTime = performance.now()
+  // console.log('check substrings against monodovo  ', endTime - startTime)
 
   // group the matches on keywords according to categories (which may be multiple, so double counting on different cats is ok)
-  let grouped = keepers.reduce(function (r, a) {
+  let grouped = keepers2.reduce(function (r, a) {
       r[a.hit_category] = r[a.hit_category] || [];
       r[a.hit_category].push(a);
       return r;
   }, Object.create(null));
 
-
-  
 
   // get category and time aggregate of category
   let time_grouped = []
@@ -3710,6 +4594,9 @@ async function getTopicsOfInterest (args) {
     days_between = Math.abs(first.diff(second, 'days')) 
   }
 
+  // endTime = performance.now()
+  // console.log('misc. after monodovo  ', endTime - startTime)
+
 
   let ret = []
   for (let i = 0; i <= days_between; i ++) {
@@ -3740,7 +4627,7 @@ async function getTopicsOfInterest (args) {
           let title = []; 
           let count_time;
           for (let e of list_of_entries_under_type) {
-            console.log(e)
+            // console.log(e)
             count += e.count
             cat = e.hit_category
             hit_keywords.push(e.hit_keywords)
@@ -3801,6 +4688,9 @@ async function getTopicsOfInterest (args) {
 
   }
 
+  // endTime = performance.now()
+  // console.log('highcharts organization  ', endTime - startTime)
+
   return (to_ret)
 }
 
@@ -3822,6 +4712,54 @@ async function getPageVisitCountByTracker (args) {
     .exec()
   return query[0].Pages['COUNT(domain)']
 }
+
+/**
+ * pages with valid search habit info
+ *
+ * @returns {Object[]} pages with search habit info else nothing
+ */
+async function getPagesWithSearchHabits () {
+  let query = ttDb.select(Pages.id, Pages.title, Pages.domain, Pages.hostname, Pages.path, Pages.protocol, Pages.search_habits, Pages.activity_events)
+    .from(Pages)
+    .where(Pages.search_habits.isNotNull())
+  let pages = await query.exec()
+  let to_ret = []
+  for (let page of pages) {
+    // console.log(page)
+    // console.log(page.search_habits)
+    // console.log(page.search_habits.length)
+    // console.log(page.search_habits[0].length)
+    // console.log(page.search_habits[0][0].length)
+    if (page.search_habits[0][0].length != 0) {
+      to_ret.push(page)
+    }
+  }
+  return to_ret
+}
+
+/**
+ * pages with valid search habit info
+ *
+ * @returns {Object[]} pages with search habit info else nothing
+ */
+async function getPagesTitlesOnlyUniqueWithSearchHabits () {
+  
+  let title_set = new Set()
+
+  let query = ttDb.select(Pages.id, Pages.title, Pages.domain, Pages.hostname, Pages.path, Pages.protocol, Pages.search_habits)
+    .from(Pages)
+    .where(Pages.search_habits.isNotNull())
+
+  let pages = await query.exec()
+
+  let applicable_titles = new Set()
+  for (let page of pages){
+    applicable_titles.add(page.title)
+  }
+
+  return Array.from(applicable_titles)
+}
+
 
 /* ================ */
 /*   TRACKERS       */
@@ -3924,6 +4862,34 @@ async function getTrackersByInference (args) {
     name: x.Trackers['tracker'],
     count: x.Trackers['COUNT(tracker)']
   }))
+}
+
+/** get trackers by pageId
+ *
+ * @param  {Object} args - arguments object
+ * @param  {string} args.inference - inference
+ * @param  {number} [args.count] - number of entries to return
+ * @returns {Object} query result
+ */
+async function getTrackersByPageId (args) {
+  if (!args.pageId) {
+    throw new Error('Insufficient args provided for query (getTrackersByPageId)')
+  }
+  let query = ttDb.select(Trackers.tracker, Trackers.pageId)
+    .from(Trackers)
+    .where(lf.op.and(
+      Trackers.pageId.eq(args.pageId),
+    ))
+
+  const res = await query.exec()
+  let unique_trackers = []
+  for (let obj of res) {
+    let tracker = obj.tracker
+    if (!unique_trackers.includes(tracker)) {
+      unique_trackers.push(tracker)
+    }
+  }
+  return unique_trackers
 }
 
 /** get timestamps of all page visits
@@ -4117,6 +5083,40 @@ async function getAdURLs (args) {
 }
 
 
+/** get ads by pageId
+ *
+ * @param  {Object} args - arguments object
+ * @param  {string} args.inference - inference
+ * @param  {number} [args.count] - number of entries to return
+ * @returns {Object} query result
+ */
+async function getAdsByPageId (args) {
+  if (!args.pageId) {
+    throw new Error('Insufficient args provided for query (getTrackersByPageId)')
+  }
+  let query = ttDb.select()
+    .from(Ads)
+    .where(lf.op.and(
+      Ads.pageId.eq(args.pageId),
+    ))
+
+  const res = await query.exec()
+  let only_needed = []
+  for (let obj of res) {
+    let keeps = {}
+    keeps['ad_seen_on'] = obj.domain 
+    keeps['url_landing_page_long'] = obj.url_landing_page_long
+    keeps['url_landing_page_short'] = obj.url_landing_page_short
+    keeps['inference'] = obj.inference 
+    keeps['inferencePath'] = obj.inferencePath
+    keeps['provided_explanation'] = obj.explanation
+    keeps['provided_explanation_url'] = obj.url_explanation
+    only_needed.push(keeps)
+  }
+  return only_needed
+}
+
+
 
 /**
  * gets all ad DOMs from all pages visited
@@ -4235,70 +5235,94 @@ async function getAdDOMs_version2(args) {
   // ad domain matches in previous pages domains 
   // explanation says anything useful 
 
+  let count_of_grabbed = 0 //(((optimize)))
+  let count_of_grabbed_cats = new Set()
+
   const adsQuery = await query.exec()
   for (i = 0; i < adsQuery.length; i++) {
 
     // all_ads.add( "<!DOCTYPE html> <html> <body> <div style='zoom: 0.60; -moz-transform: scale(.60);'>" + adsQuery[i].dom + "<div> </body> </html>")
     let pages_for_inference = []
     let google_inferences_matches = []
-    if (adsQuery[i].inference != "none") {
-      pages_for_inference = await getPagesByInference({inference: adsQuery[i].inference})
-      google_inferences_matches = await getGoogleInferences_byInference({word: adsQuery[i].inference})
-    }
-    
-    let exact_domain_in_history = []
-    let domain_fuzzy = ''
-    let fuzzy_domain_in_history = []
-    if (adsQuery[i].url_landing_page_short != '') {
-      exact_domain_in_history = await getPagesByDomain({domain: tldjs.getDomain(adsQuery[i].url_landing_page_short)})
-      domain_fuzzy = tldjs.getDomain(adsQuery[i].url_landing_page_short)
-      fuzzy_domain_in_history = await getPagesByDomain_fuzzy({domain: domain_fuzzy})
-    }
-
-    let ad_cat_renaming;
-    if (adsQuery[i].inference == "none") {
-      ad_cat_renaming = "uncategorized"
+    let comfortable = comfortData[adsQuery[i].inference]
+    if (comfortable != undefined) {
+      comfortable = comfortable.comfort 
     } else {
-      ad_cat_renaming = adsQuery[i].inference
+      comfortable = '3'
+    }
+    // console.log(adsQuery[i].inference)
+    // console.log("this is comfort", comfortData[adsQuery[i].inference])
+    // console.log("this is comfort checker", comfortable)
+
+
+    if (comfortable <= -2 || count_of_grabbed < DO_OPTIMIZATIONS ? 1000000 : 15) { //(((optimize)))
+
+      if (adsQuery[i].inference != "none") {
+        pages_for_inference = await getPagesByInference({inference: adsQuery[i].inference})
+        google_inferences_matches = await getGoogleInferences_byInference({word: adsQuery[i].inference})
+      }
+      
+      let exact_domain_in_history = []
+      let domain_fuzzy = ''
+      let fuzzy_domain_in_history = []
+      if (adsQuery[i].url_landing_page_short != '') {
+        let domain_to_get = tldjs.getDomain(adsQuery[i].url_landing_page_short)
+        if (domain_to_get != undefined) {
+          exact_domain_in_history = await getPagesByDomain({domain: domain_to_get})
+          fuzzy_domain_in_history = await getPagesByDomain_fuzzy({domain: domain_to_get})
+        }
+      }
+
+      let ad_cat_renaming;
+      if (adsQuery[i].inference == "none") {
+        ad_cat_renaming = "uncategorized"
+      } else {
+        ad_cat_renaming = adsQuery[i].inference
+      }
+
+
+      let temp = {}
+      temp.you_were_visiting = adsQuery[i].domain
+      temp.on = adsQuery[i].pageId
+      // breaks some ads
+      // temp.dom = "<!DOCTYPE html> <html> <body> <div style='zoom: 0.75; -moz-transform: scale(0.75); -moz-transform-origin: 0 0; position: absolute; left: 50px; top: 50px'>" + adsQuery[i].dom + "<div> </body> </html>"
+      temp.dom = adsQuery[i].dom 
+      temp.ad_category = ad_cat_renaming
+      temp.ad_category_matches_other_pages = pages_for_inference
+      temp.ad_category_matches_google_interests =  google_inferences_matches
+      temp.ad_domain_raw = adsQuery[i].url_landing_page_short
+      temp.ad_domain_mod = domain_fuzzy
+      temp.ad_explanation = adsQuery[i].explanation
+      temp.ad_domain_exactly_seen_in_history = exact_domain_in_history
+      temp.ad_domain_fuzzy_seen_in_history = fuzzy_domain_in_history
+
+      // get number of hits
+      let count = 0
+      if (temp.ad_category != 'none') { count += 1 }
+      if (temp.ad_category_matches_other_pages.length != 0) { count += 1 }
+      if (temp.ad_category_matches_google_interests.length != 0) { count += 1 }
+      if (temp.ad_domain_raw != '') { count += 1 }
+      if (temp.ad_domain_mod != '') { count += 1 }
+      if (temp.ad_domain_fuzzy_seen_in_history.length != 0) {count += 1}
+      if (temp.ad_domain_exactly_seen_in_history.length != 0) { count += 1 }
+      if (temp.ad_explanation != null) {
+        if (temp.ad_explanation[0] != 'none provided by advertiser') { count += 1 }
+      }
+      temp.hits = count
+
+      // all_ads_extra.add({you_were_visiting: adsQuery[i].domain, inference: adsQuery[i].inference, pages: pages_for_inference, dom: "<!DOCTYPE html> <html> <body> <div style='zoom: 0.60; -moz-transform: scale(.60);'>" + adsQuery[i].dom + "<div> </body> </html>"})
+      
+      to_ret.push(temp)
+      count_of_grabbed_cats.add(temp.ad_category)
+      count_of_grabbed = count_of_grabbed_cats.size //(((otpimization)))
+
     }
 
-
-    let temp = {}
-    temp.you_were_visiting = adsQuery[i].domain
-    temp.on = adsQuery[i].pageId
-    // breaks some ads
-    // temp.dom = "<!DOCTYPE html> <html> <body> <div style='zoom: 0.75; -moz-transform: scale(0.75); -moz-transform-origin: 0 0; position: absolute; left: 50px; top: 50px'>" + adsQuery[i].dom + "<div> </body> </html>"
-    temp.dom = adsQuery[i].dom 
-    temp.ad_category = ad_cat_renaming
-    temp.ad_category_matches_other_pages = pages_for_inference
-    temp.ad_category_matches_google_interests =  google_inferences_matches
-    temp.ad_domain_raw = adsQuery[i].url_landing_page_short
-    temp.ad_domain_mod = domain_fuzzy
-    temp.ad_explanation = adsQuery[i].explanation
-    temp.ad_domain_exactly_seen_in_history = exact_domain_in_history
-    temp.ad_domain_fuzzy_seen_in_history = fuzzy_domain_in_history
-
-    // get number of hits
-    let count = 0
-    if (temp.ad_category != 'none') { count += 1 }
-    if (temp.ad_category_matches_other_pages.length != 0) { count += 1 }
-    if (temp.ad_category_matches_google_interests.length != 0) { count += 1 }
-    if (temp.ad_domain_raw != '') { count += 1 }
-    if (temp.ad_domain_mod != '') { count += 1 }
-    if (temp.ad_domain_fuzzy_seen_in_history.length != 0) {count += 1}
-    if (temp.ad_domain_exactly_seen_in_history.length != 0) { count += 1 }
-    if (temp.ad_explanation != null) {
-      if (temp.ad_explanation[0] != 'none provided by advertiser') { count += 1 }
-    }
-    temp.hits = count
-
-    // all_ads_extra.add({you_were_visiting: adsQuery[i].domain, inference: adsQuery[i].inference, pages: pages_for_inference, dom: "<!DOCTYPE html> <html> <body> <div style='zoom: 0.60; -moz-transform: scale(.60);'>" + adsQuery[i].dom + "<div> </body> </html>"})
     
-    to_ret.push(temp)
   }
 
   // all ads might be overwhelming
-  let at_most = 10
+  let at_most =  DO_OPTIMIZATIONS ? 1000000 : 4 // will result in number-1 results // 11 was older version //(((optimize)))
 
   let keepers = []
   let count_per_group = {}
@@ -4330,52 +5354,37 @@ async function getAdDOMs_version2(args) {
     }
   }
 
+  // console.log(to_ret_categorized)
+  // console.log(comfortData)
 
-
-  // for (let ad of to_ret) {
-
-  //   // only select likely uncomfortable interests
-  //   if ((comfortData[ad.ad_category] != null && comfortData[ad.ad_category].comfort <= 0) || ad.ad_category.includes("Sensitive Subjects") || ad.ad_category.includes("Adult")) {
-  //     // add to group within category
-  //     if (count_per_group[ad.ad_category]) {
-  //       count_per_group[ad.ad_category] += 1
-  //     } else {
-  //       count_per_group[ad.ad_category] = 1
-  //     }
-
-  //     if (count_per_group[ad.ad_category] < at_most) {
-  //       if (Object.keys(to_ret_categorized).includes(ad.ad_category)) {
-  //         let curr = to_ret_categorized[ad.ad_category]
-  //         curr.push(ad)
-  //         to_ret_categorized[ad.ad_category] = curr
-  //       } else {
-  //         to_ret_categorized[ad.ad_category] = [ad]
-  //       }
-  //     }
-
-  //   }
-  //   if (count_all < at_most) {
-  //     count_all += 1
-  //     if (Object.keys(to_ret_categorized).includes("All Ads")) {
-  //       let curr = to_ret_categorized["All Ads"]
-  //       curr.push(ad)
-  //       to_ret_categorized["All Ads"] = curr
-  //     } else {
-  //       to_ret_categorized["All Ads"] = [ad]
-  //     }
-  //   }
-    
-  // }
-  // // only keep the top n (at_most)
-  // if (keepers.length < at_most) {
-  //   let sorted = to_ret.sort((a, b) => a.hits > b.hits ? 1 : -1).reverse();
-  //   let needed_number = (at_most - keepers.length)
-  //   let to_add_in = sorted.slice(0, needed_number)
-  //   for (let item of to_add_in) {
-  //     keepers.push(item)
-  //   }
-  // }
-
+  ////sort by comfort before returning 
+  const sortObjectByKeys = (object) => Object.fromEntries(
+    Object.entries(object).sort(([k1], [k2]) => {
+      // console.log(k1)
+      // console.log(k2)
+      // console.log(k1 in comfortData)
+      // console.log(k2 in comfortData)
+      let first; 
+      if (k1 in comfortData == false) {
+        first = 3
+      } else {
+        first = comfortData[k1].comfort
+      }
+      let second;
+      if (k2 in comfortData == false) {
+        second = 3 
+      } else {
+        second = comfortData[k2].comfort
+      }
+      // console.log(first)
+      // console.log(second)
+      // console.log(first < second ? -1 : 1)
+      return (first < second ? -1 : 1)
+      // comfortData[k1].comfort < comfortData[k2].comfort ? -1 : 1
+    })
+  )
+  to_ret_categorized = sortObjectByKeys(to_ret_categorized)
+  // console.log(to_ret_categorized)
 
   return to_ret_categorized
 }
@@ -4397,6 +5406,7 @@ async function getAdDOMs_overview(args) {
 
   let to_ret = {}
   let totals = 0
+  let creeps = {}
 
   // ad category: count 
 
@@ -4412,18 +5422,129 @@ async function getAdDOMs_overview(args) {
       category = adsQuery[i].inference
     }
 
-    if (Object.keys(to_ret).includes(category)) {
+    if (Object.keys(to_ret).includes(category) && category != "-uncategorized-") {
       to_ret[category] += 1
     } 
     else {
-      to_ret[category] = 1
+      if (category != "-uncategorized-") {
+        to_ret[category] = 1
+        if (category in comfortData) {
+          creeps[category] = comfortData[category].comfort
+        }
+      }
     }
     totals += 1
     
   }
 
+  creeps = Object.entries(creeps)
+    .sort(([,a],[,b]) => a-b)
+    .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
+  for( let entry of Object.keys(creeps)) {
+    creeps[entry] = to_ret[entry]
+  }
+  return {breakdown: to_ret, totals: totals, creeps: creeps}
+}
 
-  return {breakdown: to_ret, totals: totals}
+
+/**
+ * gets bar chart for categories of ads served
+ *
+ * @param {any} args
+ * @returns {Object[]} titles of pages visited
+ */
+async function getAdDOMs_bars(args) {
+  let query = ttDb.select().from(Ads)
+
+  const adsQuery = await query.exec()
+  // console.log(adsQuery)
+
+  let test = [["one", 1], ["two", 2]]
+  let seen_it = false
+  let checker_seen_it = test.forEach((data) => {if (data[0] == "three") {seen_it = true}});
+  // console.log(seen_it)
+
+
+  let to_ret = {}
+  let drilldown = {}
+  let totals = 0
+
+  // ad category: count 
+
+  for (let i = 0; i < adsQuery.length; i++) {
+
+    let category = ''
+
+    category = adsQuery[i].inference
+    
+
+    if (Object.keys(to_ret).includes(category) && category != "none") {
+      to_ret[category] += 1
+        
+      let curr = drilldown[category]
+      let served_while_visiting = adsQuery[i].domain
+      let seen_it = false
+      let index;
+      for (let i = 0; i < curr.length; i++) {
+        if (drilldown[category][i][0] == served_while_visiting) {
+          seen_it = true
+          index = i
+        }
+      }
+      if (seen_it) {
+        drilldown[category][index][1] += 1
+      } else {
+        drilldown[category].push([served_while_visiting, 1])
+      }
+    } 
+    else {
+      // console.log('first time seeing')
+      if (category != "none") {
+        to_ret[category] = 1
+        let served_while_visiting = adsQuery[i].domain
+        drilldown[category] = [[served_while_visiting, 1]]
+
+      }
+      
+    }
+    totals += 1
+
+  }
+
+  // console.log(to_ret)
+  // console.log(drilldown)
+
+  let series_for_chart = []
+  Object.keys(to_ret).forEach((key, index) => {
+      let extra_info = drilldown[key]
+      let temp = {name: key, y: to_ret[key], extra: extra_info}
+      series_for_chart.push(temp)
+  });
+
+  // let drilldown_for_chart = []
+  // Object.keys(drilldown).forEach((key, index) => {
+  //     console.log(key)
+  //     console.log(drilldown[key])
+  //     let temp = {name: key, id: key, data: drilldown[key]}
+  //     drilldown_for_chart.push(temp)
+  // });
+
+  /* drilldown.forEach(item => {
+    console.log(item)
+    //let key = Object.keys(item)
+    //let value = Object.values(item)
+    //let temp = {name: key, id: key, data: value}
+    //series.push(temp)
+  }) */
+
+
+
+  // console.log(series_for_chart)
+  // console.log(drilldown_for_chart)
+  // console.log(to_ret)
+
+  let final_ret = {series_for_chart: series_for_chart}
+  return final_ret
 }
 
 /**
@@ -4601,6 +5722,183 @@ async function getGoogleInferencesDifferences (args) {
   return Array.from(difference_list)
 }
 
+/**
+ * gets days and counts from google inferences for collection purposes
+ *
+ * @param {any} args
+ * @returns {Object[]} array of set difference
+ */
+async function getGoogleInferences_forStorage (args) {
+  let query = ttDb.select().from(GoogleInferences).orderBy(GoogleInferences.pageId)
+
+  let all_inferences = new Array()
+  const inferencesQuery = await query.exec()
+  for (let i = 0; i < inferencesQuery.length; i++) {
+    let inference_group = inferencesQuery[i].inferences
+    let temp = {}
+    temp.date = inferencesQuery[i].pageId
+    // temp.y = inference_group.length
+    for (let entry of inferencesQuery[i].inferences) {
+      if (entry.type == 'my_email') {
+        temp.account = entry.value
+      }
+    }
+    temp.inferences_to_compare = inferencesQuery[i].inferences
+    all_inferences.push(temp) 
+  }
+
+  // get groups of accounts
+  let ObjMap ={};
+  let count = 1;
+  all_inferences.forEach(element => {
+    var makeKey = element.account;
+    if(!ObjMap[makeKey]) {
+      ObjMap[makeKey] = [];
+    }
+
+    ObjMap[makeKey].push({
+      date: element.date,
+      // y: element.y,
+      account: element.account,
+      inferences: element.inferences_to_compare,
+    });
+    count += 1
+  });
+
+  // get differences, toss rest
+  // https://stackoverflow.com/questions/21987909/how-to-get-the-difference-between-two-arrays-of-objects-in-javascript
+  const isSameUser = (a, b) => a.value == b.value;
+  const onlyInLeft = (left, right, compareFunction) => 
+    left.filter(leftValue =>
+      !right.some(rightValue => 
+        compareFunction(leftValue, rightValue)));
+   
+  // let sanity = []
+  let outer_index = 0
+  for (let objName of Object.keys(ObjMap)) {
+    let all_in_group = ObjMap[objName]
+    let index = 0
+    let prev;
+    for (let slice of all_in_group) {
+      let curr = slice.inferences
+      if (index != 0) {
+        let onlyInOne = onlyInLeft(curr, prev, isSameUser)
+
+        // if (onlyInOne.length != 0) {
+        let curr_obj = ObjMap[objName][index]
+        curr_obj['diff'] = onlyInOne
+        curr_obj['this_time'] = curr_obj.date 
+        if (curr_obj['diff'].length != 0) {
+          let time_now = curr_obj.date 
+          let reach_back = moment(time_now).subtract(5, 'minute').unix(); // date object reach back window
+          let reach_forward = moment(time_now).add(30, 'second').unix(); // date object reach forward window
+          let pages_visited = await getPagesByTime ({startTime: parseInt(reach_back + "000"), endTime: parseInt(reach_forward + "000")})
+          let keepers = []
+          for (let t of pages_visited) {
+            if (!keepers.includes(t.title)) {
+              keepers.push(t.title + " [" + String(t.inference) + ", " + String(t.domain) + "]")
+            }
+          }
+          curr_obj['pages_visited'] = keepers
+        }else {
+          curr_obj['prev_time'] = ""
+        }
+
+        
+        ObjMap[objName][index] = curr_obj
+        // todo for efficiency -- drop curr_obj.interests because no reason to keep it
+        // sanity.push(onlyInOne)
+        // sanity.push("BREAK")
+        // curr_value.diff = res
+        // ObjMap[Object.keys(ObjMap)[outer_index]].data[index] = curr_value
+        // }
+        prev = curr
+      } else {
+        prev = slice.inferences
+        // set to empty so tooltip doesn't break
+        let curr_obj = ObjMap[objName][index]
+        curr_obj['diff'] = []
+        ObjMap[objName][index] = curr_obj
+      }
+      index += 1
+
+
+    }
+    outer_index += 1
+  }
+
+  // // drop all the inferences, no need to keep all this data around anymore, just differences
+  // outer_index = 0
+  // for (let objName of Object.keys(ObjMap)) {
+  //   let all_in_group = ObjMap[objName]
+  //   let index = 0
+  //   let prev;
+  //   for (let slice of all_in_group) {
+  //     let curr = slice.inferences
+  //     ObjMap[Object.keys(ObjMap)[outer_index]][index]['inferences'] = []
+  //     index += 1
+  //   }
+  // }
+
+
+  // resetting the x axis for the chart
+  let to_ret = []
+  let idx = 0
+  for (let objName of Object.keys(ObjMap)) {
+    let temp = {}
+    temp.name = objName
+    temp.data = ObjMap[objName]
+    let point_start;
+    try {
+      let prev = Object.keys(ObjMap)[idx - 1]
+      let last_count = ObjMap[prev].length
+      point_start = last_count + 1
+    } catch (e) {
+      point_start = 0
+    }
+    temp.pointStart = point_start
+    
+    to_ret.push(temp)
+    idx += 1
+  }
+
+
+  if (all_inferences.length == 0) {
+    return "No grabs yet, try re-scraping google after some website activity!"
+  }
+
+  // let temp = groupByTime(all_inferences, 'x', 'day')
+
+  // scrup emails and names and add back in first item 
+
+  // add back in first set of inferences for each user 
+  // all_inferences[0]['inferences_to_compare']
+  let done_for_this_account = []
+  for (let final_object of to_ret){
+    let this_account = final_object.name 
+    if (final_object.data[0].inferences.length == 0) {
+      for (let i = 0; i < inferencesQuery.length; i++) {
+        let inference_group = inferencesQuery[i].inferences
+        let all = []
+        let to_add_flag = false 
+        for (let entry of inference_group) {
+          all.push(entry)
+          if (entry.type == 'my_email' && entry.value == final_object.data[0].account && !done_for_this_account.includes(final_object.data[0].account)) {
+            to_add_flag = true 
+          }
+        }
+        if (to_add_flag = true) {
+          final_object.data[0].inferences = all
+          done_for_this_account.push(final_object.data[0].account)
+        }
+
+      }
+    }
+  }
+
+
+  return to_ret
+}
 
 /**
  * gets days and counts from google inferences
@@ -4676,7 +5974,7 @@ async function getGoogleInferences_overview (args) {
           let keepers = []
           for (let t of pages_visited) {
             if (!keepers.includes(t.title)) {
-              keepers.push(t.title)
+              keepers.push(t.title + " [" + String(t.inference) + ", " + String(t.domain) + "]")
             }
           }
           curr_obj['pages_visited'] = keepers
@@ -4707,18 +6005,20 @@ async function getGoogleInferences_overview (args) {
     outer_index += 1
   }
 
-  // drop all the inferences, no need to keep all this data around anymore, just differences
-  outer_index = 0
-  for (let objName of Object.keys(ObjMap)) {
-    let all_in_group = ObjMap[objName]
-    let index = 0
-    let prev;
-    for (let slice of all_in_group) {
-      let curr = slice.inferences
-      ObjMap[Object.keys(ObjMap)[outer_index]][index]['inferences'] = []
-      index += 1
-    }
-  }
+  // // drop all the inferences, no need to keep all this data around anymore, just differences
+  // TODO -- bring this optimization back in, check siging in and out and in of multiple accounts, bug caused sending to break
+  // this is a repeat codeBlock, and appears in one other function 
+  // outer_index = 0
+  // for (let objName of Object.keys(ObjMap)) {
+  //   let all_in_group = ObjMap[objName]
+  //   let index = 0
+  //   let prev;
+  //   for (let slice of all_in_group) {
+  //     let curr = slice.inferences
+  //     ObjMap[Object.keys(ObjMap)[outer_index]][index]['inferences'] = []
+  //     index += 1
+  //   }
+  // }
 
 
   // resetting the x axis for the chart
@@ -4753,6 +6053,24 @@ async function getGoogleInferences_overview (args) {
 }
 
 
+// /**
+//  * checks if google demographic data is present
+//  *
+//  * @param {any} args
+//  * @returns {Object[]} bool 
+//  */
+// async function valid_google_demographics (args) {
+
+//   let query = ttDb.select().from(GoogleInferences)
+//   let answer = await query.exec()
+//   if (Object.values(answer)[0]['inferences'].length > 0) {
+//     return true
+//   } else {
+//     return false
+//   }
+
+// }
+
 /**
  * creates tree view from google inferences data
  * specifically looks only at demographics
@@ -4779,10 +6097,22 @@ async function getGoogleInferencesTree_demographic (args) {
       }
     }
 
+    let known_types = ["years old", "Male", "Female", "Language", "Company Size", "Education Status", "Household Income", "Job Industry", "Marital Status", "Parental Status", "Sensitivity:", "Homeownership Status"]
 
     for (let p = 0; p < inference_group.length; p ++) {
-      
-      if (inference_group[p].type == "demographic") {
+      // console.log(inference_group[p].value)
+      // console.log(inference_group[p].value.includes("video from") == false)
+      // console.log(inference_group[p].value.includes("videos from") == false)
+                                                  ///////////////////////////// demographic video patch
+                                                  // heavy patch on known demographics only (else errrors)
+      let is_known_type = false 
+      for (let known of known_types) {
+        if (inference_group[p].value.includes(known)) {
+          is_known_type = true
+          break;
+        }
+      }
+      if (inference_group[p].type == "demographic" && (inference_group[p].value.includes("video from") != true && inference_group[p].value.includes("videos from") != true) && is_known_type == true) {
 
         // todo == append the email onto the matching attribute
 
@@ -4817,7 +6147,7 @@ async function getGoogleInferencesTree_demographic (args) {
             // seen_it2[inference_group[p].value] = [origin]
           }
         } else {
-          let inner = {name: inference_group[p].value, origin: [origin]}
+          let inner = {name: inference_group[p].value, origin: [origin], pageId: inferencesQuery[i].pageId}
           all_demographic.push(inner)
           seen_it2[inference_group[p].value] = [origin]
         }
@@ -4839,6 +6169,24 @@ async function getGoogleInferencesTree_demographic (args) {
   }
 
   all_demographic = all_demographic.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+
+  // sort sensitivity by timestamp to show timeline (old to new) in changes 
+  let index = 0
+  let len = Object.keys(all_demographic).length;
+  for (let obj of all_demographic) {
+    if (obj.name.includes("Sensitivity") && (index + 1 != len)) {
+      let curr_index = index 
+      let next_index = index + 1 
+      let curr_obj = all_demographic[curr_index]
+      let next_obj = all_demographic[next_index]
+      if (curr_obj.pageId > next_obj.pageId) {
+        all_demographic[curr_index] = next_obj
+        all_demographic[next_index] = curr_obj
+      }
+      
+    }
+    index+=1
+  }
   let _tree_ = {name:"You Are", children: all_demographic};
 
   return _tree_
@@ -4948,7 +6296,6 @@ async function getGoogleInferencesTree_interests (args) {
   for (let i = 0; i < inferencesQuery.length; i++) {
     let inference_group = inferencesQuery[i].inferences
     for (let p = 0; p < inference_group.length; p ++) {
-      
       if (inference_group[p].type == "interest") {
         // let inner = {name: inference_group[p].value}
         // all_interest.push(inner)
@@ -4975,7 +6322,6 @@ async function getGoogleInferencesTree_interests (args) {
       }
 
       if (inference_group[p].type == "interest - company") {
-
 
         // if (seen_it.includes(inference_group[p].value)) {
         //   console.log("duplicate value from multiple-google-grabs")
@@ -5006,6 +6352,32 @@ async function getGoogleInferencesTree_interests (args) {
         }
 
       }
+
+      // demographic video patch
+      if ((inference_group[p].value.includes("video from")|| inference_group[p].value.includes("videos from")) && inference_group[p].type == 'demographic') {
+        let company_value = "/These Videos" + "/" + inference_group[p].value
+
+        if (seen_it.includes(company_value)) {
+          // console.log("duplicate value from multiple-google-grabs")
+        } else {
+          const splitter = company_value.split("/");
+          let depth = splitter.length - 1
+          if (depth in at_depth) {
+            let curr = at_depth[depth]
+            if (!curr.includes(company_value)) {
+              curr.push(company_value)
+              at_depth[depth] = curr
+            }
+          } else {
+            at_depth[depth] = [company_value]
+          }
+          all_interest.push(splitter.splice(1,splitter.length))
+          total_counts += 1
+          seen_it.push(company_value)
+        }
+      }
+
+
     }
     
   }
@@ -5077,9 +6449,49 @@ async function getGoogleInferences_byInference (args) {
 
 
 
+/* ====================== */
+/*   IP Addresses         */
+/* ====================== */
 
+/**
+ * returns all IP address information
+ *
+ * @param {any} args
+ * @returns {Object[]} IP objects
+ */
+async function getAllIP_info(args) {
 
+  let query = ttDb.select().from(IPAddresses)
 
+  const IPsQuery = await query.exec()
+
+  return IPsQuery
+}
+
+/**
+ * returns set of IP addresses assocaited with user
+ *
+ * @param {any} args
+ * @returns {Object[]} list of observed IPs
+ */
+async function getAllIPs(args) {
+
+  let query = ttDb.select().from(IPAddresses)
+
+  let seen_it = new Array()
+  let to_ret = new Array()
+
+  const IPsQuery = await query.exec()
+  for (let i = 0; i < IPsQuery.length; i++) {
+    if (seen_it.includes(IPsQuery[i].ip)) {
+    } else {
+      const ip = IPsQuery[i].ip;
+      seen_it.push(ip)
+      to_ret.push(ip)
+    }
+  }
+  return to_ret
+}
 
 
 /* ========= */
@@ -5093,6 +6505,7 @@ const QUERIES = {
   getDomainsByTrackerCount, // sites overview page
   getDomainsNoTrackers, // sites overview page
   getPagesByDomain, // domain detail page
+  getPagesByEmptySearchHabits, /* profile page, attempts to pre-compute mondovo matching */
   getSearchPages, // return search pages
   getTopicPages, // return pages matching topics
   getTopicSearchPages, // return search pages matching topics
@@ -5102,9 +6515,12 @@ const QUERIES = {
   getInferencesByTime,
   getInferencesByTracker, // used in dashboard
   getInferenceCount, // inference overview page
-  getInferencesDomainsToSend, // this is to send data to server contaiing pageIds and inferences and domain names
+  getInferencesDomainsToSend, // this is to send data to server containing pageIds and inferences and domain names
+  getInferencesDomainsToSend_v2, /* revision to include new data (ads, google inferences) */
+  getInferencesDomainsToSend_v3, /* fixing bug identified in v2 */
   getInferencesMostSensitive_version3, /* profile page, pie chart of interests and time per interest */
   getInferencesMostSensitive_bubbles_version2, /* profile page, bubbleChart of sensitive website visits */
+  getInferencesMostSensitive_bubbles_text, /* profile page, bubbleChart below allWords */
   getNumberOfDomains, // used in dashboard
   getNumberOfInferences, // used in popup, dashboard
   getNumberOfPages, // used in popup, dashboard
@@ -5114,18 +6530,28 @@ const QUERIES = {
   getPagesByInference, // inference detail page
   getPagesByTracker, // tracker detail page
   getPageVisitCountByTracker, // used in popup
+  getPagesWithSearchHabits, /* profile page, used to get search habits data from pages */
+  getPagesTitlesOnlyUniqueWithSearchHabits, /* profile page, used as shortcut optimization for substring matching large mondovo against titles */
   getTimestamps, // used in dashboard
   getTrackers, // used in dasboard
   getTrackersByDomain,
   getTrackersByInference,
   getTrackersByTime, // creepy trackers by time page
+  getTrackersByPageId, /* instrumentation, aggregate statistics */
   getAdDOMs_version2, /* profile page, DOMs to render for adView */
+  getAdDOMs_bars, /* profile page, bar chart of ad categories */
   getAdDOMs_overview, /* profile page, stats on ads served */
+  getAdsByPageId, /* instrumentation, aggregate statistics */
   getAllGoogleInferences, /* profile page, data from google adsSettings page */
+  getGoogleInferences_forStorage, /* revision to include new data (ads, google inferences) */
   getGoogleInferences_overview, /* profile page, stats on google adsSettings page */
   getGoogleInferencesTree_demographic, /* profile page, demographics from google adsSettings */
   getGoogleInferencesTree_interests, /* profile page, parsed out interests from google adsSettings */
   getGoogleInferencesTree_nameData, /* profile page, name data from google adsSettings */
+  getAllIPs, /* profile page, IP addresses associated with user */
+  getAllIP_info, /* profile page, IP info all */
+
+  // valid_google_demographics, /* profile page, checking on data else spinner should be given (((optimize))) */
 
   // unused
   getInferencesGender, // used in featureTeaser
@@ -5137,7 +6563,7 @@ const QUERIES = {
   getNumberOfAds, // used in featureTeaser
   getNumberOfPages_perTitle, // used in featureTeaser
   getTimesOfPages_perTitle, // used in featureTeaser
-  getPagesByTime_bedtime_version2, // used in featureTeaser
+  getPagesByTime_bedtime_version2, // used in featureTeaser // set to tester
   getAllAds, // used in featureTeaser
   getAdURLs, // used in featureTeaser
   getAdDOMs, // used in featureTeaser

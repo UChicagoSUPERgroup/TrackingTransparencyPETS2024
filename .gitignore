@@ -43,3 +43,6 @@ docs
 extension/source
 extension/ConsentForm.pdf
 web-ext-artifacts
+
+# tester on ads
+long-term-ads/*

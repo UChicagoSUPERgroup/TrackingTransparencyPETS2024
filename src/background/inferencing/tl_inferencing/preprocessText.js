@@ -27,8 +27,13 @@ function split_words(s) {
 }
 
 function rm_stopwords(s_words) {
+    if (s_words == null) {
+        console.log("s_words is empty")
+        return ''
+    }
     let final_words = [];
-    for (const word of s_words) {   // ES6 for-of statement
+    // console.log(s_words)
+    for (let word of s_words) {   // ES6 for-of statement
         if (nltk_stopwords.includes(word)) {
             continue;
         }

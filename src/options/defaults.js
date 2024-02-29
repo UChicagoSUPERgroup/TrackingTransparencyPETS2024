@@ -10,6 +10,7 @@ async function getOptions () {
   return options
 }
 
+// // turn off later
 // export default async function setDefaultOptions () {
 //   const options = await setUserstudyCondition('everything')
 //   console.log(options)

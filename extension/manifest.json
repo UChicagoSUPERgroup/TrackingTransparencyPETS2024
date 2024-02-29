@@ -1,10 +1,9 @@
 {
     "manifest_version": 2,
-    // "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-    "content_security_policy": "script-src 'self' http://xxxx 'unsafe-inline' 'unsafe-eval'",
+    "content_security_policy": "script-src 'self' http://xxxx 'unsafe-inline' 'unsafe-eval' data: https://json.geoiplookup.io/",
 
     "name": "Tracking Transparency",
-    "version": "2.0.0",
+    "version": "2.0.19",
     "applications": {
         "gecko": {
             "id": "trackingtransparency@super.cs.uchicago.edu",
@@ -12,13 +11,12 @@
         }
     },
     "description": "Helps you visualize your web activity and understand online advertising and tracking.",
-    "author": "University of Chicago SUPERgroup",
+    "author": "University of Maryland (SP2) and University of Chicago (SUPERgroup)",
     "permissions": [
         "storage",
         "unlimitedStorage",
         "downloads",
         "tabs",
-        "alarms",
         "management",
         "notifications",
         "privacy",
@@ -46,8 +44,7 @@
             "js": [
                 "lib/browser-polyfill.js",
                 "dist/content.js",
-                "dist/tester2.js",
-                "dist/feeler.js"
+                "dist/adGrab.js"
 
             ],
             "run_at": "document_end",
@@ -66,5 +63,10 @@
     },
     "options_ui": {
       "page": "dist/options.html"
+    },
+    
+    "externally_connectable": {
+      "matches": ["https://umdsurvey.umd.edu/jfe/form/SV_d6luJbwumkBXpGe*", "https://umdsurvey.umd.edu/jfe/form/SV_8nNzMdt9gXCT2T4*"]
     }
+
 }

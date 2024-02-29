@@ -7,7 +7,8 @@ module.exports = merge(common, {
   devtool: 'inline-source-map',
   plugins: [
     new webpack.DefinePlugin({
-      USERSTUDY_CONDITION: 6,
+      USERSTUDY_CONDITION: 6, // always condition everything
+      // USERSTUDY_CONDITION: 'undefined',
       'EXT.DEBUG': true
     })
   ]

@@ -97,7 +97,7 @@ function processWebRequests (pageId, firstPartyHost, webRequests, updatedTracker
       trackersByPageId[pageId].add(match.name);
     }
   }
-  console.log(trackersByPageId[pageId])
+  // console.log(trackersByPageId[pageId])
   return Array.from(trackersByPageId[pageId]);
 }
 
@@ -123,7 +123,7 @@ onmessage = function (m) {
 
     case 'push_webrequests':
       trackers = processWebRequests(m.data.pageId, m.data.firstPartyHost, m.data.webRequests, m.data.updatedTrackerData);
-      console.log("newPage tracker update")
+      // console.log("newPage tracker update")
       self.postMessage({
         id: m.data.id,
         type: 'trackers',

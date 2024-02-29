@@ -4,7 +4,7 @@ import buildCategoryTree from './build';
 import infer_tfidf from './infer';
 import tt from '../../helpers';
 
-// bruce
+// newML
 import {clean_text} from "./tl_inferencing/preprocessText";
 import { predict } from './tl_inferencing/tf';
 
@@ -59,25 +59,38 @@ function stem (text, all_words, words2idx_dict) {
 // we just need to get the inference and log it with the new ad table
 async function inferencingMessageListener__forad (text, pageId, domain, url, initiator, url_explanation, url_landing_page_long, url_landing_page_short, explanation, dom) {
 
+  // console.log("//////////////////// inferencing checker", text, pageId, domain, url, initiator, url_explanation, url_landing_page_long, url_landing_page_short, explanation, dom)
 
-  ////////////////////////////////////////  bruce start
+  ////////////////////////////////////////  newML start
   let text_cleaned = clean_text(text)
-  console.log("text_cleaned:", text_cleaned);
+  // console.log("text_cleaned:", text_cleaned);
   let newer_result_category = await predict(text_cleaned);
-  let category_all = newer_result_category.split("/").filter(i => i)
-  let category_last = category_all[category_all.length-1]
-  let cat_as_array = []
-  for (let obj of category_all) {
-    cat_as_array.push(obj)
+  let category_all = await newer_result_category
+  console.log(category_all)
+  let category_last;
+  let cat_as_array;
+  if (category_all != "") {
+    if (category_all != undefined) {
+      category_all = category_all.split("/").filter(i => i)
+      category_last = category_all[category_all.length-1]
+      cat_as_array = []
+      for (let obj of category_all) {
+        cat_as_array.push(obj)
+      }
+    }
   }
-  if (newer_result_category == '') {
+  else {
+    console.log("category_all was in error")
     category_last = "none"
     cat_as_array = ["none"]
   }
-  // console.log("bb8 " + text_cleaned)
-  // console.log("bb9 " + newer_result_category)
-  // console.log("bb10 " + category_all)
-  ////////////////////////////////////////  bruce end
+
+  // console.log(category_last)
+  // console.log(cat_as_array)
+  // console.log(category_all)
+  // console.log(category_all.length == 0)
+  // console.log(category_all == '')
+  ////////////////////////////////////////  newML end
 
   // console.log("infernce new for ad specifically")
   // console.log(dom)
@@ -94,11 +107,6 @@ async function inferencingMessageListener__forad (text, pageId, domain, url, ini
   let stemmed = stem(text.split(' '), allExistWords, word2idx);
   text = stemmed[0];
   let totalLength = stemmed[1];
-
-
-
-
-
 
   ////////////////////////////////////////
   var output = pg(text);
@@ -120,12 +128,9 @@ async function inferencingMessageListener__forad (text, pageId, domain, url, ini
   conf_score = category[1];
 
 
-
-
-
   let inferenceInfo = {
     inference: category_last, //result_category,
-    inferenceCategory: category_last, // sanity check bruce's model
+    inferenceCategory: category_last, // sanity check newML's model
     inferencePath: cat_as_array, // keep full path
     threshold: conf_score,
     pageId: pageId,
@@ -141,7 +146,8 @@ async function inferencingMessageListener__forad (text, pageId, domain, url, ini
     genderLexical: gender_lex[0],
   };
 
-  console.log(inferenceInfo)
+  // console.log(inferenceInfo)
+  // console.log(pageId)
   console.log("=============================> sending ad to database - " + url_landing_page_long);
   databaseWorkerPort.postMessage({
     type: 'store_ad',
@@ -154,24 +160,37 @@ async function inferencingMessageListener__forad (text, pageId, domain, url, ini
 
 async function inferencingMessageListener (text, mainFrameReqId, tabId) {
 
-  ////////////////////////////////////////  bruce start
+  let prolific_bug_flag = false
+  if (text.includes("We want to make Prolific better for you, but we can't do that without knowing how you use our site.")) {
+    prolific_bug_flag = true
+  }
+
+  // console.log(text)
+
+  ////////////////////////////////////////  newML start
   let text_cleaned = clean_text(text)
+  // console.log("text_cleaned:", text_cleaned);
   let newer_result_category = await predict(text_cleaned);
-  let category_all = newer_result_category.split("/").filter(i => i)
-  let category_last = category_all[category_all.length-1]
-  let cat_as_array = []
-  for (let obj of category_all) {
-    cat_as_array.push(obj)
+  let category_all = await newer_result_category
+  // console.log(category_all)
+  let category_last;
+  let cat_as_array;
+  // console.log("*******************", category_all)
+  if (category_all != "") {
+    if (category_all != undefined) {
+      category_all = category_all.split("/").filter(i => i)
+      category_last = category_all[category_all.length-1]
+      cat_as_array = []
+      for (let obj of category_all) {
+        cat_as_array.push(obj)
+      }
+    }
   }
-  if (newer_result_category == '') {
-    category_last = "Uncategorized"
-    cat_as_array = ["Uncategorized"]
+  else {
+    category_last = "none"
+    cat_as_array = ["none"]
   }
-  // console.log("bb8 " + text_cleaned)
-  // console.log("bb9 " + newer_result_category)
-  // console.log("bb10 " + category_all)
-  // console.log("bb11 " + typeof(category_all))
-  ////////////////////////////////////////  bruce end
+  ////////////////////////////////////////  newML end
 
 
   let result_category = null;
@@ -199,7 +218,7 @@ async function inferencingMessageListener (text, mainFrameReqId, tabId) {
   ////////////////////////////////////////
 
   text = text.toLowerCase();
-  // console.log(text)
+  // console.log("comes from inferencing worker as non-ad inference", "\n", text)
   let plain_text = text
   let stemmed = stem(text.split(' '), allExistWords, word2idx);
   text = stemmed[0];
@@ -211,9 +230,10 @@ async function inferencingMessageListener (text, mainFrameReqId, tabId) {
 
 
   ////////////////////////////////////////
+  let COMFORT_SETTING = -2.0
   let wordCloud_option = ''
-  if (plain_text) {
-    if ((Object.keys(comfortData).includes(category_last) && comfortData[category_last].comfort < -1) || newer_result_category.toLowerCase().includes("sensitive subjects") || newer_result_category.toLowerCase().includes("adult")) {
+  if (plain_text && newer_result_category != undefined) {
+    if ((Object.keys(comfortData).includes(category_last) && comfortData[category_last].comfort <= COMFORT_SETTING) || newer_result_category.toLowerCase().includes("sensitive subjects") || newer_result_category.toLowerCase().includes("adult")) {
       wordCloud_option += text_cleaned
     }
 
@@ -237,10 +257,18 @@ async function inferencingMessageListener (text, mainFrameReqId, tabId) {
   ////////////////////////////////////////
 
   // console.log('Inference:', result_category);
+  // prolific bug, patch on model error 
+  // prolific was categorized as marraige, which is wrong and easily seen because survey redirects to prolific 
+  // this is a patch
+  if (prolific_bug_flag == true && category_last == "Marriage") {
+    // console.log("BUG CAUGHT")
+    category_last = cat_as_array[0]
+    cat_as_array = [cat_as_array[0]]
+  } 
 
   let inferenceInfo = {
     inference: category_last, //result_category,
-    inferenceCategory: category_last, // sanity check bruce's model
+    inferenceCategory: category_last, // sanity check newML's model
     inferencePath: cat_as_array, // keep full path
     wordCloud: wordCloud_option,
     threshold: conf_score,
@@ -250,15 +278,19 @@ async function inferencingMessageListener (text, mainFrameReqId, tabId) {
     tabId: tabId
   };
 
-  console.log("=============================>  sending inference to database");
-  databaseWorkerPort.postMessage({
-    type: 'store_inference',
-    info: inferenceInfo
-  });
+  console.log("=============================>  sending inference to database:", category_last); 
+  // skip undeinfed here, if in ads, keep it
+  if (category_last != undefined) { 
+    databaseWorkerPort.postMessage({
+      type: 'store_inference',
+      info: inferenceInfo
+    });
 
-  postMessage({
-    type: 'page_inference',
-    info: inferenceInfo
-  });
+    postMessage({
+      type: 'page_inference',
+      info: inferenceInfo
+    });
+  }
+
   // storeInference(inferenceInfo);
 }

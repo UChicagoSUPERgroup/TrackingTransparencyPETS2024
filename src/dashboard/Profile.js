@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ReactTable from "react-table";
 import ReactDOM from "react-dom";
 
@@ -21,13 +21,15 @@ import RadioInputGroup from "@instructure/ui-forms/lib/components/RadioInputGrou
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { HashLink } from 'react-router-hash-link';
+// import ScrollableAnchor from 'react-scrollable-anchor'
+
 import Iframe from "react-iframe";
 import * as moment from "moment";
 
 import _ from "lodash";
 
 import { InView } from "react-intersection-observer";
-
 
 import {
   Tip,
@@ -52,25 +54,36 @@ import {
 } from "grommet";
 import {
   AidOption,
+  Aed,
   Alert,
   Atm,
+  AddCircle,
   BlockQuote,
   Bug,
   Briefcase,
   Cafeteria,
+  ChapterAdd,
   Configure,
   Currency,
   Clear,
+  Checkmark,
   Cli,
   CircleInformation,
   CircleQuestion,
   Compliance,
   ContactInfo,
+  Cursor,
   Domain,
+  Dislike,
+  Element,
   Google,
   History,
   Hide,
   Info,
+  Location,
+  Like,
+  LinkNext,
+  LinkPrevious,
   Magic,
   Money,
   More,
@@ -84,6 +97,8 @@ import {
   Globe,
   Send,
   Shield,
+  Subtract,
+  SubtractCircle,
   User,
   UserFemale,
   UserWorker,
@@ -103,6 +118,7 @@ import { Image as Image_grommet } from "grommet";
 import { Spinner as Spinner_grommet } from "grommet";
 import { Carousel as Carousel_grommet } from "grommet";
 import { Button as Button_grommet } from "grommet";
+import { Video as Video_grommet } from "grommet";
 import { Link as Link_grommet } from "grommet-icons";
 
 import Spinner from "@instructure/ui-elements/lib/components/Spinner";
@@ -126,11 +142,12 @@ const borderRadius = require("highcharts-border-radius");
 
 import ReactECharts from "echarts-for-react";
 
-import Profile from "./video_profile_1.mp4";
+import Profile_non_sensitive from "./video_profile_3.mp4";
+import Profile_sensitive from "./video_profile_2.mp4";
+import Profile_thumbnail from "./image_profile_3.png"
 import ReactPlayer from "react-player";
 
-// helper functions
-
+// helper function
 function add(accumulator, a) {
   return accumulator + a;
 }
@@ -142,6 +159,54 @@ function getGoogleInferences() {
     function (window) {}
   );
 }
+
+// unused concept (a neutarl or opinionated version of profile dashboard page)
+let VERSION = "neutral"
+
+let profile_video;
+let profile_image;
+let header_color; 
+let demographic_text; 
+let google_interests_text; 
+let google_interests_over_time_text;
+let engagement_text;
+let time_pie_text; 
+let search_habits_text;
+let bedtime_text; 
+let sensitive_bubbles_text; 
+let ads_overview_text; 
+let ads_breakdown_text; 
+
+if (VERSION == 'non-neutral') {
+  profile_video = Profile_sensitive
+  profile_image = Profile_thumbnail
+  header_color = 'accent-2';
+  demographic_text = <Box align='center'><Text_grommet size='xlarge' color='status-critical'>Who you are</Text_grommet><Text_grommet>(aka trackers know who you are)</Text_grommet></Box>
+  google_interests_text = <Box align='center'><Text_grommet size='xlarge' color='status-critical'>How to target you</Text_grommet><Text_grommet>(your interests)</Text_grommet></Box>
+  google_interests_over_time_text = <Box align='center'><Text_grommet size='xlarge' color='status-critical'>Real-time reactions</Text_grommet><Text_grommet>(updates to interests)</Text_grommet></Box>
+  engagement_text = <Box align='center'><Text_grommet size='xlarge' color='status-critical'>When to target you</Text_grommet><Text_grommet>(when you're most engaged)</Text_grommet></Box>
+  time_pie_text = <Box align='center'><Text_grommet size='xlarge' color='status-critical'>Oh, you spend a lot of time...</Text_grommet></Box>
+  search_habits_text = <Box align='center'><Text_grommet size='xlarge' color='status-critical'>You searched for what?!</Text_grommet><Text_grommet>(good to know, thanks)</Text_grommet></Box>
+  bedtime_text = <Box align='center'><Text_grommet size='xlarge' color='status-critical'>What you do late at night</Text_grommet><Text_grommet>(and when you go to bed)</Text_grommet></Box>
+  sensitive_bubbles_text = <Box align='center'><Text_grommet size='xlarge' color='status-critical'>oof, that's sensitive 🤨</Text_grommet><Text_grommet>(but thanks for sharing it anyways)</Text_grommet></Box>
+  ads_overview_text = <Box align='center'><Text_grommet size='xlarge' color='status-critical'>Ad success stories</Text_grommet><Text_grommet>(overview)</Text_grommet></Box>
+  ads_breakdown_text = <Box align='center'><Text_grommet size='xlarge' color='status-critical'>Ad success stories</Text_grommet><Text_grommet>(details)</Text_grommet></Box>
+} else {
+  profile_video = Profile_non_sensitive
+  profile_image = Profile_thumbnail
+  header_color = 'dark-2';
+  demographic_text = 'Your demographics';
+  google_interests_text = "Your inferred interests";
+  google_interests_over_time_text = "Your interests over time";
+  engagement_text = "When you're engaged";
+  time_pie_text = <Box align='center'><Text_grommet>How you spend your time</Text_grommet><Text_grommet size='small' >(clickable slices)</Text_grommet></Box>;
+  search_habits_text = "Search habits"
+  bedtime_text = "When you go to sleep";
+  sensitive_bubbles_text = <Box align='center'><Text_grommet>Possible sensitive interests</Text_grommet><Text_grommet size='small' >(clickable bubbles)</Text_grommet></Box>;
+  ads_overview_text = "Ads you've been served (overview)";
+  ads_breakdown_text = "Ad explanations";
+}
+
 
 // timing
 // credit to https://codesandbox.io/s/milliseconds-to-human-readable-text-with-momentjs-in-react-0pgmq?file=/src/index.js
@@ -235,8 +300,6 @@ const millisToReadable = (millis) => {
       result += ` ${seconds} second`;
     }
   }
-  // we don't really need to see ms
-  // result += ` ${milliseconds} ms`;
 
   return result;
 };
@@ -244,27 +307,68 @@ const millisToReadable = (millis) => {
 const store_state_global = (data) => {
   let numEntries = data ? data.length : 0;
   if (numEntries != 0) {
-    localStorage.setItem("viewing", "doit");
-    return "success";
+    // localStorage.setItem("viewing", "doit");
+
+    if (data.visibility == true) {
+      // log viewing of this
+      let activityType = 'viewing---' + String(data.widget)
+      let extraData = {'domainsTableLinkDomainsPage_Clicked': data.entry}
+
+      if (activityType) {
+        let sendDict = {'extraData': JSON.stringify(extraData)}
+        logging.logLoad(activityType, sendDict)
+      }
+    }
+    return 
   } else {
-    return "failure";
+    return 
   }
 };
 
 /*
   keepit
 */
-const video_explain = () => {
+const video_explain = (version, thumbnail, heat_map_newer_newer) => {
+
+  let auto_play_yes_or_not = true; 
+  // console.log(heat_map_newer_newer)
+  if (heat_map_newer_newer != undefined) {
+    if (heat_map_newer_newer.all != undefined) {
+      if (heat_map_newer_newer.all[0] != undefined) {
+        if (heat_map_newer_newer.all[0][3] != undefined) {
+          if (heat_map_newer_newer.all[0][3]['webpage_count'] != undefined) {
+            if (heat_map_newer_newer.all[0][3]['webpage_count'] > 300) {
+              auto_play_yes_or_not = false
+            }
+          }
+        }
+      }
+    }
+  }
+
+
   return (
-    <ReactPlayer
-      playing={true}
-      loop={true}
-      url={[{ src: Profile, type: "video/webm" }]}
-      width="100%"
-      height="100%"
-    />
+
+      <Video_grommet controls={true} fit="contain" pad='none' margin='none' loop={true} autoPlay={auto_play_yes_or_not} >
+        <source key="video" src={version} type="video/mp4" />
+      </Video_grommet>
   );
+
+  //// older version 
+  // return (
+  //   <Box width="xlarge" height="600px" alignSelf='center'>
+  //     <ReactPlayer
+  //       playing={true}
+  //       loop={true}
+  //       light={thumbnail}
+  //       url={[{ src: version, type: "video/webm" }]}
+  //       width="100%"
+  //       height="110%"
+  //     />
+  //   </Box>
+  // );
 };
+
 
 /*
   keepit
@@ -300,20 +404,24 @@ const sensitive_bubbles_v2 = (data) => {
         useHTML: true,
         text: "", //text: `Trackers learn your <i>potentially</i> sensitive interests`
       },
-      subtitle: {
-        useHTML: true,
-        style: {
-          font: '16px Verdana, sans-serif',
-          color: 'lightgray'
-        },
-        text:
-          document.ontouchstart === undefined
-            ? "<i>click on an inner circle to see how a tracker views it</i>"
-            : "<i>tap on an inner circle to see how a tracker views it</i>",
-      },
+      // subtitle: {
+      //   useHTML: true,
+      //   style: {
+      //     font: '16px Verdana, sans-serif',
+      //     color: 'lightgray'
+      //   },
+      //   text:
+      //     document.ontouchstart === undefined
+      //       ? "<i>click on an inner circle to see how a tracker views it</i>"
+      //       : "<i>tap on an inner circle to see how a tracker views it</i>",
+      // },
       legend: {
         enabled: true,
         layout: "vertical",
+        itemStyle: {
+           font: '15pt Trebuchet MS, Verdana, sans-serif',
+           color: 'red'
+        },
         verticalAlign: 'top',
         labelFormatter: function () {
           return this.name;
@@ -350,10 +458,6 @@ const sensitive_bubbles_v2 = (data) => {
         //   }
         // },
       },
-      // tooltip: {
-      //     useHTML: true,
-      //     pointFormat: '<b>{point.name}</b> <br/><br/> <b>Trackers</b>:<br/>{point.tracker_info}'
-      // },
 
       tooltip: {
         useHTML: true,
@@ -365,7 +469,6 @@ const sensitive_bubbles_v2 = (data) => {
 
           var serie = this.series;
           //NOTE: may cause efficiency issue when we got lots of points, data in series
-          //should be change from [x, y] to {"x": x, "y": y, "index": index}
           var index = this.series.data.indexOf(this.point);
           var this_entry = serie.options.data[index];
           // var title = Object.values(this_entry[2])
@@ -378,7 +481,11 @@ const sensitive_bubbles_v2 = (data) => {
           // ret += "Website: " + domain + '<br/>'
           let ret = "";
           let seen_it = [];
-          if (this_entry.title) {
+
+          // console.log("error", JSON.stringify(this_entry))
+          // console.log((typeof(this_entry) == 'undefined'))
+
+          if (typeof(this_entry) !== 'undefined') {
             ret +=
               "<b>" +
               '<span style="color:' +
@@ -408,11 +515,16 @@ const sensitive_bubbles_v2 = (data) => {
             // else {
             //   ret += String(this_entry.y.toFixed(0)) + "%" + " of your activity is " + this_entry.name
             // }
-            ret += "<b>" + this_entry.name + "</b>";
+            // console.log(ret)
+            // ret += "<b>" + this_entry.name + "</b>";
+            ret += serie.name
+            // console.log(ret)
           }
 
           let seen_it_trackers = [];
-          if (this_entry.tracker_info[0].length != 0) {
+
+
+          if (typeof(this_entry) !== 'undefined' && this_entry.tracker_info[0].length != 0)  {
             ret += "<b>" + "Trackers Found" + "</b><br/>";
             for (let trackers of this_entry.tracker_info) {
               for (let t of trackers) {
@@ -424,7 +536,8 @@ const sensitive_bubbles_v2 = (data) => {
             }
             ret = ret.slice(0, ret.length - 2); // remove comma plus space at end
           } else {
-            ret += "<b>" + "No trackers found!" + "</b>";
+            // ret += "<b>" + "No trackers found!" + "</b>";
+            ret += ''
           }
 
           return ret;
@@ -468,6 +581,61 @@ const sensitive_bubbles_v2 = (data) => {
       drilldown: {
         series: data.inner,
       },
+    };
+
+    return <HighchartsReact highcharts={Highcharts} options={options} />;
+  }
+};
+
+
+/*
+  keepit
+*/
+const sensitive_bubbles_wordCloud = (data) => {
+  let numEntries = data ? data.length : 0;
+
+  if (numEntries == 0) {
+    return (
+      <Box align="center" pad="large">
+        {" "}
+        <Spinner_grommet
+          border={[
+            { side: "all", color: "transparent", size: "medium" },
+            { side: "horizontal", color: "brand", size: "medium" },
+          ]}
+        />{" "}
+      </Box>
+    );
+  } else {
+    // fix some settings if not enough data
+
+
+    const options = {
+      title: {
+        useHTML: true,
+        text: "", //text: `Trackers learn your <i>potentially</i> sensitive interests`
+      },
+
+      credits: {
+        enabled: false,
+      },
+      tooltip: {
+          formatter: function(){
+              var ret = 'Trackers might think you are interested in <b>' + String(this.key) + '</b>! Click on a bubble above to learn more.'
+              // var ret =  'this word was found on one of the websites listed in the bubbles above! Click on a bubble to learn more.';
+              return ret;
+          }
+      },
+      series: [{
+          colors: ['#FFAAAA', '#D46A6A', '#AA3939', '#801515', '#550000'],
+          rotation: {
+              from: -30,
+              to: 30,
+              orientations: 5
+          },
+          type: 'wordcloud',
+          data: data
+      }],
     };
 
     return <HighchartsReact highcharts={Highcharts} options={options} />;
@@ -568,6 +736,7 @@ const sensitive_info_pie = (slice, data) => {
         useHTML: true,
         text: "", // text: `Trackers learn how you spend your time`,
       },
+      /////// left as comment to show you how to change this easily
       // subtitle: {
       //     useHTML: true,
       //     text: `<span style="font-size:20px">😂 Oof that's a little personal, but thanks for sharing it with trackers anyways 😂</span><br/>`,
@@ -583,7 +752,7 @@ const sensitive_info_pie = (slice, data) => {
       //       : "pinch the chart to zoom in",
       // },
       chart: {
-        // zoomType: "xy",
+        // zoomType: "xy", // introduce bug
         marginTop: 50,
         height: 500,
         events: {
@@ -651,11 +820,6 @@ const sensitive_info_pie = (slice, data) => {
           },
         },
       },
-
-      // tooltip: {
-      //     headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-      //     pointFormat: '<span style="color:{point.color}">{point.name}</span>'
-      // },
       tooltip: {
         useHTML: true,
         outside: true,
@@ -665,18 +829,8 @@ const sensitive_info_pie = (slice, data) => {
           // return '<b>'+ this.point.name +'</b>: '+ this.point.y ;
 
           var serie = this.series;
-          //NOTE: may cause efficiency issue when we got lots of points, data in series
-          //should be change from [x, y] to {"x": x, "y": y, "index": index}
           var index = this.series.data.indexOf(this.point);
           var this_entry = serie.options.data[index];
-          // var title = Object.values(this_entry[2])
-          // var domain = Object.values(this_entry[3])
-          // var inference = Object.values(this_entry[4])
-          // var ret = '<b>' + String(moment(this.x).format("dddd, MMMM Do YYYY, h:mm:ss a")) + '</b>' + '<br/>'
-          // ret += '<br/>'
-          // ret += "Late night interest: " + inference + '<br/>'
-          // ret += "Webpage: " + title + '<br/>'
-          // ret += "Website: " + domain + '<br/>'
           let ret = "";
           let seen_it = [];
           if (this_entry.title) {
@@ -690,25 +844,15 @@ const sensitive_info_pie = (slice, data) => {
             }
             ret += "</ul>";
           } else {
-            // ret += JSON.stringify(this_entry)
-            // if (this_entry.name !== "non-sensitive") {
-            //   ret += String(this_entry.y.toFixed(0)) + "%" + " of your activity relates to this potentially sensitive topic " + "<b>" + this_entry.name + "</b>"
-            // }
-            // else {
-            //   ret += String(this_entry.y.toFixed(0)) + "%" + " of your activity is " + this_entry.name
-            // }
             ret += "<b>" + this_entry.name + "</b>";
           }
           return ret;
         },
       },
-      // tooltip: {
-      //     headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-      //     pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
-      // },
       series: [
         {
           name: "Online Engagement",
+          getExtremesFromAll: true,
           type: "pie",
           colorByPoint: true,
           data: data_to_render.outer_all,
@@ -877,10 +1021,6 @@ const visual_activity = (data) => {
         },
       },
 
-      // tooltip: {
-      //     headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-      //     pointFormat: '<span style="color:{point.color}">{point.name}</span>'
-      // },
       tooltip: {
         useHTML: true,
         outside: true,
@@ -890,18 +1030,9 @@ const visual_activity = (data) => {
           // return '<b>'+ this.point.name +'</b>: '+ this.point.y ;
 
           var serie = this.series;
-          //NOTE: may cause efficiency issue when we got lots of points, data in series
-          //should be change from [x, y] to {"x": x, "y": y, "index": index}
           var index = this.series.data.indexOf(this.point);
           var this_entry = serie.options.data[index];
           var title = Object.values(this_entry[7]);
-          // var domain = Object.values(this_entry[3])
-          // var inference = Object.values(this_entry[4])
-          // var ret = '<b>' + String(moment(this.x).format("dddd, MMMM Do YYYY, h:mm:ss a")) + '</b>' + '<br/>'
-          // ret += '<br/>'
-          // ret += "Late night interest: " + inference + '<br/>'
-          // ret += "Webpage: " + title + '<br/>'
-          // ret += "Website: " + domain + '<br/>'
           let ret = "";
           let seen_it = [];
           if (title) {
@@ -923,22 +1054,12 @@ const visual_activity = (data) => {
             }
             ret += "</ul>";
           } else {
-            // ret += JSON.stringify(this_entry)
-            // if (this_entry.name !== "non-sensitive") {
-            //   ret += String(this_entry.y.toFixed(0)) + "%" + " of your activity relates to this potentially sensitive topic " + "<b>" + this_entry.name + "</b>"
-            // }
-            // else {
-            //   ret += String(this_entry.y.toFixed(0)) + "%" + " of your activity is " + this_entry.name
-            // }
+
             ret += "<b>" + serie + "</b>";
           }
           return ret;
         },
       },
-      // tooltip: {
-      //     headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-      //     pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
-      // },
       series: data,
     };
 
@@ -983,12 +1104,8 @@ const heatMap_newer = (slice, allData) => {
       </Box>
     );
 
-    //
   } else {
 
-    // for each slice
-    // bin the date to hour
-    // // <day of week> <hour> <value> <tooltip>
 
     let data_to_render;
     if (slice == "today") {
@@ -1033,7 +1150,9 @@ const heatMap_newer = (slice, allData) => {
       .thresholds(7); // number of thresholds
     var bins = histGenerator(all_times);
     var rainbow = new Rainbow();
-    rainbow.setNumberRange(1, bins.length);
+    if (bins.length != 1) {
+      rainbow.setNumberRange(1, bins.length);
+    }
     rainbow.setSpectrum("yellow", "red");
 
     let count = 0;
@@ -1160,8 +1279,6 @@ const heatMap_newer = (slice, allData) => {
       23: " late at night",
       24: " at midnight",
     };
-    // prettier-ignore
-    // const this_data = [[0, 0, 50, {"this": "- that"}], [0, 1, 1], [0, 2, 0], [0, 3, 0], [0, 4, 0], [0, 5, 0], [0, 6, 0], [0, 7, 0], [0, 8, 0], [0, 9, 0], [0, 10, 0], [0, 11, 2], [0, 12, 4], [0, 13, 1], [0, 14, 1], [0, 15, 3], [0, 16, 4], [0, 17, 6], [0, 18, 4], [0, 19, 4], [0, 20, 3], [0, 21, 3], [0, 22, 2], [0, 23, 5], [1, 0, 7], [1, 1, 0], [1, 2, 0], [1, 3, 0], [1, 4, 0], [1, 5, 0], [1, 6, 0], [1, 7, 0], [1, 8, 0], [1, 9, 0], [1, 10, 5], [1, 11, 2], [1, 12, 2], [1, 13, 6], [1, 14, 9], [1, 15, 11], [1, 16, 6], [1, 17, 7], [1, 18, 8], [1, 19, 12], [1, 20, 5], [1, 21, 5], [1, 22, 7], [1, 23, 2], [2, 0, 1], [2, 1, 1], [2, 2, 0], [2, 3, 0], [2, 4, 0], [2, 5, 0], [2, 6, 0], [2, 7, 0], [2, 8, 0], [2, 9, 0], [2, 10, 3], [2, 11, 2], [2, 12, 1], [2, 13, 9], [2, 14, 8], [2, 15, 10], [2, 16, 6], [2, 17, 5], [2, 18, 5], [2, 19, 5], [2, 20, 7], [2, 21, 4], [2, 22, 2], [2, 23, 4], [3, 0, 7], [3, 1, 3], [3, 2, 0], [3, 3, 0], [3, 4, 0], [3, 5, 0], [3, 6, 0], [3, 7, 0], [3, 8, 1], [3, 9, 0], [3, 10, 5], [3, 11, 4], [3, 12, 7], [3, 13, 14], [3, 14, 13], [3, 15, 12], [3, 16, 9], [3, 17, 5], [3, 18, 5], [3, 19, 10], [3, 20, 6], [3, 21, 4], [3, 22, 4], [3, 23, 1], [4, 0, 1], [4, 1, 3], [4, 2, 0], [4, 3, 0], [4, 4, 0], [4, 5, 1], [4, 6, 0], [4, 7, 0], [4, 8, 0], [4, 9, 2], [4, 10, 4], [4, 11, 4], [4, 12, 2], [4, 13, 4], [4, 14, 4], [4, 15, 14], [4, 16, 12], [4, 17, 1], [4, 18, 8], [4, 19, 5], [4, 20, 3], [4, 21, 7], [4, 22, 3], [4, 23, 0], [5, 0, 2], [5, 1, 1], [5, 2, 0], [5, 3, 3], [5, 4, 0], [5, 5, 0], [5, 6, 0], [5, 7, 0], [5, 8, 2], [5, 9, 0], [5, 10, 4], [5, 11, 1], [5, 12, 5], [5, 13, 10], [5, 14, 5], [5, 15, 7], [5, 16, 11], [5, 17, 6], [5, 18, 0], [5, 19, 5], [5, 20, 3], [5, 21, 4], [5, 22, 2], [5, 23, 0], [6, 0, 1], [6, 1, 0], [6, 2, 0], [6, 3, 0], [6, 4, 0], [6, 5, 0], [6, 6, 0], [6, 7, 0], [6, 8, 0], [6, 9, 0], [6, 10, 1], [6, 11, 0], [6, 12, 2], [6, 13, 1], [6, 14, 3], [6, 15, 4], [6, 16, 0], [6, 17, 0], [6, 18, 0], [6, 19, 0], [6, 20, 1], [6, 21, 2], [6, 22, 2], [6, 23, 6]]
 
     const this_data = data_to_render
     .map(function (item) {
@@ -1306,11 +1423,6 @@ const heatMap_newer_radial = (slice, allData) => {
 
     //
   } else {
-    // the allData object has time slices built in
-
-    // for each slice
-    // bin the date to hour
-    // // <day of week> <hour> <value> <tooltip>
 
     let data_to_render;
     if (slice == "today") {
@@ -1428,90 +1540,84 @@ const heatMap_newer_radial = (slice, allData) => {
       23: " late at night",
       24: " at midnight",
     };
-    // prettier-ignore
-    // const data = [[0, 0, 5], [0, 1, 1], [0, 2, 0], [0, 3, 0], [0, 4, 0], [0, 5, 0], [0, 6, 0], [0, 7, 0], [0, 8, 0], [0, 9, 0], [0, 10, 0], [0, 11, 2], [0, 12, 4], [0, 13, 1], [0, 14, 1], [0, 15, 3], [0, 16, 4], [0, 17, 6], [0, 18, 4], [0, 19, 4], [0, 20, 3], [0, 21, 3], [0, 22, 2], [0, 23, 5], [1, 0, 7], [1, 1, 0], [1, 2, 0], [1, 3, 0], [1, 4, 0], [1, 5, 0], [1, 6, 0], [1, 7, 0], [1, 8, 0], [1, 9, 0], [1, 10, 5], [1, 11, 2], [1, 12, 2], [1, 13, 6], [1, 14, 9], [1, 15, 11], [1, 16, 6], [1, 17, 7], [1, 18, 8], [1, 19, 12], [1, 20, 5], [1, 21, 5], [1, 22, 7], [1, 23, 2], [2, 0, 1], [2, 1, 1], [2, 2, 0], [2, 3, 0], [2, 4, 0], [2, 5, 0], [2, 6, 0], [2, 7, 0], [2, 8, 0], [2, 9, 0], [2, 10, 3], [2, 11, 2], [2, 12, 1], [2, 13, 9], [2, 14, 8], [2, 15, 10], [2, 16, 6], [2, 17, 5], [2, 18, 5], [2, 19, 5], [2, 20, 7], [2, 21, 4], [2, 22, 2], [2, 23, 4], [3, 0, 7], [3, 1, 3], [3, 2, 0], [3, 3, 0], [3, 4, 0], [3, 5, 0], [3, 6, 0], [3, 7, 0], [3, 8, 1], [3, 9, 0], [3, 10, 5], [3, 11, 4], [3, 12, 7], [3, 13, 14], [3, 14, 13], [3, 15, 12], [3, 16, 9], [3, 17, 5], [3, 18, 5], [3, 19, 10], [3, 20, 6], [3, 21, 4], [3, 22, 4], [3, 23, 1], [4, 0, 1], [4, 1, 3], [4, 2, 0], [4, 3, 0], [4, 4, 0], [4, 5, 1], [4, 6, 0], [4, 7, 0], [4, 8, 0], [4, 9, 2], [4, 10, 4], [4, 11, 4], [4, 12, 2], [4, 13, 4], [4, 14, 4], [4, 15, 14], [4, 16, 12], [4, 17, 1], [4, 18, 8], [4, 19, 5], [4, 20, 3], [4, 21, 7], [4, 22, 3], [4, 23, 0], [5, 0, 2], [5, 1, 1], [5, 2, 0], [5, 3, 3], [5, 4, 0], [5, 5, 0], [5, 6, 0], [5, 7, 0], [5, 8, 2], [5, 9, 0], [5, 10, 4], [5, 11, 1], [5, 12, 5], [5, 13, 10], [5, 14, 5], [5, 15, 7], [5, 16, 11], [5, 17, 6], [5, 18, 0], [5, 19, 5], [5, 20, 3], [5, 21, 4], [5, 22, 2], [5, 23, 0], [6, 0, 1], [6, 1, 0], [6, 2, 0], [6, 3, 0], [6, 4, 0], [6, 5, 0], [6, 6, 0], [6, 7, 0], [6, 8, 0], [6, 9, 0], [6, 10, 1], [6, 11, 0], [6, 12, 2], [6, 13, 1], [6, 14, 3], [6, 15, 4], [6, 16, 0], [6, 17, 0], [6, 18, 0], [6, 19, 0], [6, 20, 1], [6, 21, 2], [6, 22, 2], [6, 23, 6]];
-    // const maxValue = data.reduce(function (max, item) {
-    //   return Math.max(max, item[2]);
-    // }, -Infinity);
-    const option = {
-  // legend: {
-  //   data: ['Punch Card']
-  // },
-  polar: {},
-  tooltip: {
-    position: 'bottom',
-    confine: true,
-    formatter: function (params) {
 
-    return `${"<b>" + number_to_display[params.data[0]] + number_to_display_times[params.data[1]] + "</b>"}
-            ${params.data[3].grouped_interests.map(n=>"<br/>- " + n[0] + ": " + String(millisToReadable(n[1]) ))   }`;
-    }
-    
-  },
-  visualMap: {
-    type: 'piecewise', //continous piecewise
-    min: 0,
-    max: top_time,
-    top: 'middle',
-    dimension: 2,
-    calculable: false,
-    pieces: custom_bins,
-  },
-  angleAxis: {
-    type: 'category',
-    data: hours,
-    boundaryGap: true,
-    splitLine: {
-      show: true,
-      lineStyle: {
-        color: '#ddd',
-        type: 'dashed'
-      }
-    },
-    axisLine: {
-      show: false
-    }
-  },
-  radiusAxis: {
-    type: "category",
-    data:days,
-    axisLabel: {
-      interval: 0,
-      rotate: 0 // 30 If the label names are too long you can manage this by rotating the label.
-    },
-    z: 100
-  },
-  series: [
-    {
-      name: 'Targeting Times',
-      type: 'custom',
-      coordinateSystem: 'polar',
-      itemStyle: {
-        color: '#d14a61'
+    const option = {
+
+      polar: {},
+      tooltip: {
+        position: 'bottom',
+        confine: true,
+        formatter: function (params) {
+
+        return `${"<b>" + number_to_display[params.data[0]] + number_to_display_times[params.data[1]] + "</b>"}
+                ${params.data[3].grouped_interests.map(n=>"<br/>- " + n[0] + ": " + String(millisToReadable(n[1]) ))   }`;
+        }
+        
       },
-      renderItem: function (params, api) {
-        var values = [api.value(0), api.value(1)];
-        var coord = api.coord(values);
-        var size = api.size([1, 1], values);
-        return {
-          type: 'sector',
-          shape: {
-            cx: params.coordSys.cx,
-            cy: params.coordSys.cy,
-            r0: coord[2] - size[0] / 2,
-            r: coord[2] + size[0] / 2,
-            startAngle: -(coord[3] + size[1] / 2),
-            endAngle: -(coord[3] - size[1] / 2)
+      visualMap: {
+        type: 'piecewise', //continous piecewise
+        min: 0,
+        max: top_time,
+        top: 'middle',
+        dimension: 2,
+        calculable: false,
+        pieces: custom_bins,
+      },
+      angleAxis: {
+        type: 'category',
+        data: hours,
+        boundaryGap: true,
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: '#ddd',
+            type: 'dashed'
+          }
+        },
+        axisLine: {
+          show: false
+        }
+      },
+      radiusAxis: {
+        type: "category",
+        data:days,
+        axisLabel: {
+          interval: 0,
+          rotate: 0 // 30 If the label names are too long you can manage this by rotating the label.
+        },
+        z: 100
+      },
+      series: [
+        {
+          name: 'Targeting Times',
+          type: 'custom',
+          coordinateSystem: 'polar',
+          itemStyle: {
+            color: '#d14a61'
           },
-          style: api.style({
-            fill: api.visual('color')
-          })
-        };
-      },
-      data: data_to_render
-    }
-  ]
-};
+          renderItem: function (params, api) {
+            var values = [api.value(0), api.value(1)];
+            var coord = api.coord(values);
+            var size = api.size([1, 1], values);
+            return {
+              type: 'sector',
+              shape: {
+                cx: params.coordSys.cx,
+                cy: params.coordSys.cy,
+                r0: coord[2] - size[0] / 2,
+                r: coord[2] + size[0] / 2,
+                startAngle: -(coord[3] + size[1] / 2),
+                endAngle: -(coord[3] - size[1] / 2)
+              },
+              style: api.style({
+                fill: api.visual('color')
+              })
+            };
+          },
+          data: data_to_render
+        }
+      ]
+    };
 
     return <ReactECharts option={option} />;
   }
@@ -1554,11 +1660,7 @@ const heatMap_overview = (slice, allData) => {
       let top_activity = "";
       let all_activity_in_slice = new Object();
       for (let slice of data_to_render) {
-        // if (slice[2] > top_time) {
-        //   top_time = slice[2]
-        // }
         for (let activity of slice[3].grouped_interests) {
-          // console.log(activity)
 
           if (activity[0] in all_activity_in_slice) {
             let current = all_activity_in_slice[activity[0]];
@@ -1577,16 +1679,11 @@ const heatMap_overview = (slice, allData) => {
           top_interest_revised = key;
         }
       }
-      // let top_interest = Object.keys(all_activity_in_slice)[0];
       let top_time = millisToReadable(
         all_activity_in_slice[top_interest_revised]
       );
 
       try {
-        // let info = data_to_render.map(entry => entry.interest_overview).reduce(set_combine, new Object(), 0 , 0 )
-        // let top = info[Object.keys(info)[0]];
-        // let top_interest = top[0]
-        // let top_time = msToTime(top[1])
 
         return (
           <p>
@@ -1672,13 +1769,25 @@ const ads_overview_breakDown = (data) => {
     for (let entry of result) {
       to_render.push({ category: entry[0], count: entry[1] });
     }
-    let at_most = 10;
+    let at_most = 5;
     to_render = to_render
       .sort((a, b) => (a.count > b.count ? 1 : -1))
       .reverse();
     to_render = to_render.slice(0, at_most);
 
+    // above is most common, below is most creepy 
+
+    var result_creep = Object.entries(data["creeps"]);
+    let to_render_creep = [];
+    for (let entry of result_creep) {
+      to_render_creep.push({ category: entry[0], count: entry[1] });
+    }
+    let at_most_creep = 5;
+    to_render_creep = to_render_creep.slice(0, at_most);
+
     return (
+      <Box>
+      <Text_grommet>(Top Five Most Common Categories)</Text_grommet>
       <List_grommet
         primaryKey={(item) => (
           <Text_grommet size="13px">{item.category}</Text_grommet>
@@ -1687,7 +1796,19 @@ const ads_overview_breakDown = (data) => {
           <Text_grommet size="11px">{item.count}</Text_grommet>
         )}
         data={to_render}
+      /> 
+      <br/>
+      <Text_grommet>(Top Five Most Sensitive Categories)</Text_grommet>
+      <List_grommet
+        primaryKey={(item) => (
+          <Text_grommet size="13px">{item.category}</Text_grommet>
+        )}
+        secondaryKey={(item) => (
+          <Text_grommet size="11px">{item.count}</Text_grommet>
+        )}
+        data={to_render_creep}
       />
+      </Box>
     );
   }
 };
@@ -1781,7 +1902,7 @@ const ads_overview_totalCount_count = (data) => {
           margin="medium"
           size="small"
         >
-          Total count of ads targeted to you
+          {/*Total count of ads targeted to you*/}
         </Text_grommet>
       </Box>
     );
@@ -1790,6 +1911,118 @@ const ads_overview_totalCount_count = (data) => {
 
 /*
   keepit
+*/
+const ads_overview_category_bars = (data) => {
+
+  let numEntries = data ? data.length : 0;
+  let dataLength = data ? Object.values(data.series_for_chart).length != 0 : 0;
+
+  if (numEntries == 0 || dataLength == 0) {
+    return (
+      <Box align="center" pad="large">
+        {" "}
+        <Spinner_grommet
+          border={[
+            { side: "all", color: "transparent", size: "medium" },
+            { side: "horizontal", color: "brand", size: "medium" },
+          ]}
+        />{" "}
+      </Box>
+    );
+  } else {
+
+
+    const options = {
+      title: {
+        useHTML: true,
+        text: "", //text: `Trackers learn your <i>potentially</i> sensitive interests`
+      },
+      chart: {
+        type: "column",
+        backgroundColor: false,
+        // renderTo: 'container',
+        zoomType: "x",
+        // reflow: true,
+        marginTop: 10,
+        spacingTop: 0,
+        spacingRight: 0,
+        marginRight: 0
+
+      },
+      credits: {
+        enabled: false,
+      },
+      xAxis: {
+          type: 'category',
+          labels: {
+              // rotation: -30,
+              style: {
+                  // fontSize: '13px',
+                  // fontFamily: 'Verdana, sans-serif'
+              }
+          }
+      },
+      yAxis: {
+          title: {
+              text: 'Number of ads served'
+          }
+
+      },
+      tooltip: {
+        style: {
+          pointerEvents: "auto",
+        },
+        useHTML: true,
+        outside: true,
+        position: "bottom",
+        confine: true,
+        formatter: function () {
+          // return '<b>'+ this.point.name +'</b>: '+ this.point.y ;
+
+          var serie = this.series;
+          var index = this.series.data.indexOf(this.point);
+          var this_entry = serie.options.data[index];
+          let ret = '<span style="color:' + String(this_entry.color) + '">' + "<b>" + String(this_entry.name) + '</span>' + "</b>" + '<br/>'
+          ret += "Number of ads: " + "<b>" + String(this_entry.y) + "</b>" + "<br/>"
+          ret += "Ads served while visiting:<br/>"
+          if (this_entry.extra.length > 0) {
+            ret += "<ul>"
+            for (let item of this_entry.extra) {
+              ret += "<li>" + item[0] + " (" + item[1] + ")" + "</li>"
+            }
+            ret += "</ul>"
+          }
+
+
+          return ret;
+
+
+        },
+      },
+      series: [{
+          getExtremesFromAll: true,
+          dataSorting: {
+            enabled: true
+          },
+          showInLegend: false,  
+          name: "Number of ads served",
+          colorByPoint: false,
+          data: data.series_for_chart
+      }],
+
+    };
+
+    return <HighchartsReact highcharts={Highcharts} options={options} />;
+  }
+};
+
+/*
+  keepit
+  - https://www.wordstream.com/blog/ws/2017/07/05/online-advertising-costs
+  - https://www.wordstream.com/blog/ws/2016/02/29/google-adwords-industry-benchmarks
+  - https://www.businessofapps.com/ads/cpc/research/cpc-rates/
+  - https://www.wordstream.com/blog/ws/2022/05/18/search-advertising-benchmarks
+  - https://www.businessofapps.com/ads/cpc/research/cpc-rates/
 */
 const ads_overview_totalCount_cost = (data) => {
   let numEntries = data ? data.length : 0;
@@ -1841,25 +2074,34 @@ const ads_overview_totalCount_cost = (data) => {
                 width={{ max: "medium" }}
                 responsive={false}
               >
+
                 {" "}
                 <Text_grommet weight="bold" color="status-error">
-                  Estimated Cost
+                  Estimated Click Cost
                 </Text_grommet>{" "}
                 <Text_grommet size="small">
                   {" "}
                   Advertisers pay to serve you ads. It can cost an advertiser 
-                  as much as $6.73 per click for a a single ad. This pricing is
-                  dependent on many factors, including the type of ad being served, 
-                  whether the ad is served within a website or on google search results, 
-                  and the adavertisers' rating. Here, we
-                  assume the low-end cost of displaying an advertisement ($0.63)
-                  multiplied by the number of ads you've been served.{" "}
+                  as much as $50 per click for a single ad (an ad 
+                  in a competitive market, like legal services or insurance), 
+                  or as little as 
+                  $0.0065 to show an ad on a webiste (an impression). <br/><br/>
+                  Here, we show an assumed, low-end click cost: ($0.63)
+                  multiplied by the number of ads you've been served.
+                  <br/>
+                  <br/>
+                  <hr/>
+                  You may consider this final number to be how much it would cost an 
+                  advertiser if you clicked on every ad you've received.{" "}
+                  <hr/>
+                  <br/>
+
                 </Text_grommet>{" "}
               </Box>
             }
-            dropProps={{ align: { top: "bottom" } }}
+            dropProps={{ align: { bottom: "top" } }}
           >
-            <CircleInformation color="light-5" size="45px" />
+            <CircleInformation color="light-5" size="0px" />
           </Tip>
         </Stack>
       </Box>
@@ -1909,16 +2151,7 @@ const googleAdsSettings3_deepest_bars = (data, depth) => {
         type: "column",
         zoomType: "xy",
         backgroundColor: "rgba(0,0,0,0)",
-        // width: Math.max(((deepest_length * 200) - (deepest_length * 100) * .10), 500),
-        // height: Math.max(((deepest_length * 100) - (deepest_length * 100) * .40), 200),
-        // events: {
-        //   load: function () {
-        //     this.reflow()
-        //   },
-        //   // redraw: function () {
-        //   //   this.reflow()
-        //   // }
-        // }
+
         events: {
           // load() {
           //   setTimeout(this.reflow.bind(this), 0);
@@ -2025,23 +2258,11 @@ const googleAdsSettings3_deepest_bars = (data, depth) => {
         position: "bottom",
         confine: true,
         formatter: function () {
-          // return '<b>'+ this.point.name +'</b>: '+ this.point.y ;
 
           var serie = this.series;
-          //NOTE: may cause efficiency issue when we got lots of points, data in series
-          //should be change from [x, y] to {"x": x, "y": y, "index": index}
           var index = this.series.data.indexOf(this.point);
           var this_entry = serie.options.data[index];
-          // var title = Object.values(this_entry[2])
-          // var domain = Object.values(this_entry[3])
-          // var inference = Object.values(this_entry[4])
-          // var ret = '<b>' + String(moment(this.x).format("dddd, MMMM Do YYYY, h:mm:ss a")) + '</b>' + '<br/>'
-          // ret += '<br/>'
-          // ret += "Late night interest: " + inference + '<br/>'
-          // ret += "Webpage: " + title + '<br/>'
-          // ret += "Website: " + domain + '<br/>'
 
-          // let ret = JSON.stringify(this_entry)
           let ret = String(
             moment(this_entry.date).format("dddd, MMMM Do, hh:mm a")
           );
@@ -2059,17 +2280,6 @@ const googleAdsSettings3_deepest_bars = (data, depth) => {
 
           return ret;
 
-          // const tooltip_style = {
-          //     overflow: 'visible !important',
-          //     position: 'relative',
-          //     zIndex: '50',
-          //     border: '2px solid rgb(0, 108, 169)',
-          //     borderRadius: '5px',
-          //     backgroundColor: '#ffffff',
-          //     padding: '5px',
-          //     fontSize: '9pt',
-
-          //   };
         },
       },
 
@@ -2117,51 +2327,9 @@ const googleAdsSettings3_deepest_bars2 = (data, depth) => {
       chart: {
         type: "area",
         zoomType: "x",
-        // backgroundColor: 'rgba(0,0,0,0)',
-        // width: Math.max(((deepest_length * 200) - (deepest_length * 100) * .10), 500),
-        // height: Math.max(((deepest_length * 100) - (deepest_length * 100) * .40), 200),
-        // events: {
-        //   load: function () {
-        //     this.reflow()
-        //   },
-        //   // redraw: function () {
-        //   //   this.reflow()
-        //   // }
-        // }
-        // events: {
-        //   // load() {
-        //   //   setTimeout(this.reflow.bind(this), 0);
-        //   // },
-        // },
-        // marginBottom: 50
+
       },
-      // responsive: {
-      //     rules: [{
-      //         condition: {
-      //             maxWidth: 450
-      //         },
-      //         // Make the labels less space demanding on mobile
-      //         // chartOptions: {
-      //         //     xAxis: {
-      //         //         labels: {
-      //         //             formatter: function () {
-      //         //                 return this.value.charAt(0);
-      //         //             }
-      //         //         }
-      //         //     },
-      //         //     yAxis: {
-      //         //         labels: {
-      //         //             align: 'left',
-      //         //             x: 0,
-      //         //             y: -2
-      //         //         },
-      //         //         title: {
-      //         //             text: ''
-      //         //         }
-      //         //     }
-      //         // }
-      //     }]
-      // },
+
       credits: {
         enabled: false,
       },
@@ -2206,27 +2374,6 @@ const googleAdsSettings3_deepest_bars2 = (data, depth) => {
           threshold: null,
         },
 
-        // column: {
-        //   grouping: false,
-        //   pointPlacement: null,
-        //   // events: {
-        //   //   legendItemClick: function() {
-        //   //     if (!this.visible) {
-        //   //       this.chart.xAxis[0].update({
-        //   //         breaks: []
-        //   //       });
-        //   //     } else {
-        //   //       this.chart.xAxis[0].update({
-        //   //         breaks: [{
-        //   //           from: this.xData[0] - 0.5,
-        //   //           to: this.xData[0] + 0.5,
-        //   //           breakSize: 0
-        //   //         }]
-        //   //       });
-        //   //     }
-        //   //   }
-        //   // }
-        // },
       },
       xAxis: {
         labels: {
@@ -2242,21 +2389,6 @@ const googleAdsSettings3_deepest_bars2 = (data, depth) => {
           text: "Number of Interests",
         },
         tickInterval: 1,
-        // min: parseInt(min_y - (min_y * .20)),
-        // // visible: false,
-        // // gridLineColor: '#ffffff',
-        // // lineColor: '#ffffff',
-        // plotLines: [{
-        //     color: '#FF0000',
-        //     width: 2,
-        //     value: max_y,
-        //     label: {
-        //       text: String(max_y),
-        //       align: 'right',
-        //       rotation: 0,
-        //       // y: 3
-        //     }
-        // }]
       },
       tooltip: {
         style: {
@@ -2268,26 +2400,14 @@ const googleAdsSettings3_deepest_bars2 = (data, depth) => {
         position: "bottom",
         confine: true,
         formatter: function () {
-          // return '<b>'+ this.point.name +'</b>: '+ this.point.y ;
 
           var serie = this.series;
-          //NOTE: may cause efficiency issue when we got lots of points, data in series
-          //should be change from [x, y] to {"x": x, "y": y, "index": index}
+
           var index = this.series.data.indexOf(this.point);
           var this_entry = serie.options.data[index];
-          // var title = Object.values(this_entry[2])
-          // var domain = Object.values(this_entry[3])
-          // var inference = Object.values(this_entry[4])
-          // var ret = '<b>' + String(moment(this.x).format("dddd, MMMM Do YYYY, h:mm:ss a")) + '</b>' + '<br/>'
-          // ret += '<br/>'
-          // ret += "Late night interest: " + inference + '<br/>'
-          // ret += "Webpage: " + title + '<br/>'
-          // ret += "Website: " + domain + '<br/>'
-
-          // let ret = JSON.stringify(this_entry)
           let ret = String(
             moment(this_entry.date).format("dddd, MMMM Do, hh:mm a")
-          ); //entry.value.split("/")[entry.value.split("/").length-1]
+          ); 
           ret += "</br></br><b>" + this_entry.y + " Interests </b>";
           if (this_entry["diff"].length != 0) {
             ret += "<br/><br/>" + "<b>New:</b>" + "<br/>";
@@ -2318,17 +2438,6 @@ const googleAdsSettings3_deepest_bars2 = (data, depth) => {
 
           return ret;
 
-          // // const tooltip_style = {
-          // //     overflow: 'visible !important',
-          // //     position: 'relative',
-          // //     zIndex: '50',
-          // //     border: '2px solid rgb(0, 108, 169)',
-          // //     borderRadius: '5px',
-          // //     backgroundColor: '#ffffff',
-          // //     padding: '5px',
-          // //     fontSize: '9pt',
-
-          // //   };
         },
       },
 
@@ -2367,7 +2476,7 @@ const googleAdsSettings3 = (data) => {
       </Box>
     );
   } else {
-    const height_size = dataLength * 150;
+    const height_size = dataLength * 170;
 
     const optionsss = {
       title: {
@@ -2377,12 +2486,6 @@ const googleAdsSettings3 = (data) => {
         trigger: "item",
         triggerOn: "mousemove",
 
-        // formatter: function (params) {
-
-        //   return `${params.seriesName}<br />
-        //           ${params.name}: ${params.data.value} (${params.percent}%)<br />
-        //           ${params.data.name1}: ${params.data.value1}`;
-        // }
       },
 
       series: [
@@ -2396,7 +2499,7 @@ const googleAdsSettings3 = (data) => {
           bottom: "1%",
           right: "20%",
 
-          initialTreeDepth: 3,
+          initialTreeDepth: 7,
 
           symbolSize: 9,
 
@@ -2446,30 +2549,6 @@ const bedTimes_version2 = (data) => {
   } else {
 
     // if time less than 5AM, add 24 hours to it
-    // https://jsfiddle.net/BlackLabel/5e6sfcuq/
-    const thisssssdata = [
-      [1634099380052, new Date(1634099380052).getHours() + 24],
-      [1634174749441, new Date(1634174749441).getHours()],
-      [1634099381052, new Date(1634099381052).getHours() + 24],
-      [1634175669188, new Date(1634175669188).getHours()],
-      [1634177482596, new Date(1634177482596).getHours()],
-      [1634178241669, new Date(1634178241669).getHours()],
-      [1634180550522, new Date(1634180550522).getHours()],
-      [1634257349212, new Date(1634257349212).getHours()],
-      [1634263982732, new Date(1634263982732).getHours()],
-      [1634270485815, new Date(1634270485815).getHours() + 24],
-      [
-        1634270485815,
-        24,
-        {
-          title: "Speed Concept | Trek Bikes",
-        },
-        {
-          domain: "trekbikes.com",
-        },
-      ],
-    ];
-
     ///////////////////////////////////////////////////////////////
     // https://jsfiddle.net/BlackLabel/5e6sfcuq/
     //////////////////////////////////////////////////////////////
@@ -2555,7 +2634,7 @@ const bedTimes_version2 = (data) => {
         engagement_saying = "time";
       }
       engagement_str =
-        '<p style="font-size: 20;"> Go-To Late-Night Interest: <strong>' +
+        '<p style="font-size: 20;"> Late-Night Interest: <strong>' +
         top_activity +
         "</strong> (<em>happened " +
         engagement +
@@ -2610,23 +2689,14 @@ const bedTimes_version2 = (data) => {
         enabled: false,
       },
       title: {
-        text: "", //text: 'Trackers learn when you go to sleep at night'
+        text: "", 
       },
-      subtitle: {
-        text:
-          document.ontouchstart === undefined
-            ? "Click and drag in the plot area to zoom in"
-            : "Pinch the chart to zoom in",
-      },
+
       xAxis: {
         type: "datetime",
         tickInterval: 60 * 60 * 1000 * 24, // if problems in more-than-week stack-up happen, then it starts here
         labels: {
           formatter() {
-            // let day = new Date(this.value).getDay();
-
-            // return days[day]
-            // return JSON.stringify(this.value)
             return Highcharts.dateFormat("%b - %d (%a)", this.value);
           },
         },
@@ -2638,35 +2708,12 @@ const bedTimes_version2 = (data) => {
         startOnTick: true,
         endOnTick: true,
         showLastLabel: true,
-        // type: 'datetime',
-        // title: {
-        //   enabled: true,
-        //   text: 'Days'
-        // },
-        // startOnTick: true,
-        // endOnTick: true,
-        // showLastLabel: true,
-        // // Use the date format in the
-        // // labels property of the chart
-        // labels:{
-        //   formatter:function(){
-        //     return Highcharts.dateFormat('%b - %d (%a)',this.value);
-        //   }
-        // }
       },
-      // caption: {
-      //     text: engagement_str
-      // },
+
       yAxis: {
         title: {
           text: "Time of the Day",
         },
-        // type:'datetime',
-        // minorTickInterval: 7 * 24 * 3600 * 1000,
-        // minorTickPosition:'outside',
-        // minorTickLength:10,
-        // minorTickWidth: 1,
-        // minorGridLineWidth: 0,
         min: 18, // 6PM
         max: 29, // midnight + 5 = 5AM
         // tickAmount: 6,
@@ -2713,46 +2760,6 @@ const bedTimes_version2 = (data) => {
             },
           },
         ],
-        // plotBands: [{ // nice area
-        //           from: 19,
-        //           to: 21,
-        //           color: 'rgba(178, 239, 155, 0.2)',
-        //           label: {
-        //               text: `Good job, you're boring`,
-        //               style: {
-        //                   color: '#FFFFF',
-        //                   fontSize: 13,
-
-        //               }
-        //           },
-        //           zIndex: 3,
-        //       }, { // Light breeze
-        //           from: 21,
-        //           to: 25,
-        //           color: 'rgba(229, 79, 109, 0.2)',
-        //           label: {
-        //               text: 'Too late!',
-        //               style: {
-        //                   color: '#FFFFF',
-        //                   fontSize: 13,
-
-        //               }
-        //           },
-        //           zIndex: 3,
-        //       }, { // Gentle breeze
-        //           from: 25,
-        //           to: 29,
-        //           color: 'rgba(229, 79, 109, 0.6)',
-        //           label: {
-        //               text: 'Insanity',
-        //               style: {
-        //                   color: '#FFFFF',
-        //                   fontSize: 13,
-
-        //               }
-        //           },
-        //           zIndex: 3,
-        //       }],
       },
       legend: {
         enabled: false,
@@ -2800,24 +2807,17 @@ const bedTimes_version2 = (data) => {
 
       tooltip: {
         formatter: function () {
-          //return ( moment(this.x).format("dddd, MMMM Do YYYY, h:mm:ss a") + '<br/>' + point)
           var serie = this.series;
-          //NOTE: may cause efficiency issue when we got lots of points, data in series
-          //should be change from [x, y] to {"x": x, "y": y, "index": index}
           var index = this.series.data.indexOf(this.point);
           var this_entry = serie.options.data[index];
           var title = Object.values(this_entry[2]);
           var domain = Object.values(this_entry[3]);
           var inference = Object.values(this_entry[4]);
-          var ret =
-            "<b>" +
-            String(moment(this.x).format("dddd, MMMM Do YYYY, h:mm:ss a")) +
-            "</b>" +
-            "<br/>";
-          ret += "<br/>";
-          ret += "Late night interest: " + inference + "<br/>";
-          // ret += "Webpage: " + title + '<br/>'
-          // ret += "Website: " + domain + '<br/>'
+          var ret = "<b>" + String(moment(this.x).format("dddd, MMMM Do YYYY, h:mm:ss a")) + "</b>" + "<br/>";
+          if (inference != 'none') {
+            ret += "<br/>";
+            ret += "Late night interest: " + inference + "<br/>";
+          }
           return ret;
         },
       },
@@ -3041,10 +3041,11 @@ const bedTimes_version2 = (data) => {
 /*
   keepit
 */
-const demographics_version2 = (demograhpics, contact) => {
+const demographics_version2 = (demograhpics, contact, ipaddresses) => {
   let demo_dataLength = demograhpics ? demograhpics["children"].length : 0;
   let contact_numEntries = contact ? contact.length : 0;
   let contact_dataLength = contact ? contact["children"].length : 0;
+
 
   if (
     demo_dataLength == 0 ||
@@ -3119,17 +3120,49 @@ const demographics_version2 = (demograhpics, contact) => {
       }
     });
 
-    // let blocks = demographics['children']
+    ////////////// IP
+    let render_IP_string = []
+    if (ipaddresses != undefined) {
+      for (let entry of ipaddresses){
+        let this_IP = entry.ip 
+        let this_city = entry.city
+        let this_alternative_city = entry.alternative_ip 
+        let final_city_statement; 
+        if (this_alternative_city != undefined) {
+          if (this_alternative_city == ''){
+            final_city_statement = this_city + " area"
+          } else if (this_city !== this_alternative_city.split(",")[0]) {
+            final_city_statement = this_city + " or " + this_alternative_city + " area"
+          } else {
+            final_city_statement = this_city + " area"
+          }
+        } else {
+          final_city_statement = this_city + " area"
+        }
+        let this_isp = entry.isp 
+        let this_hostname = entry.hostname 
+        render_IP_string.push( 
+          <Text_grommet
+            alignSelf="start"
+            color="dark-1"
+            size="small"
+            margin={{ left: "40px", bottom: "0px" }}
+          >
+            IP Address: [<b>{final_city_statement}</b>] provided by: {this_isp} ({this_IP}) 
+          </Text_grommet>
+          )
+        }
+
+    }
+
     // get the matrix
     // make sure we end on 3 to keep a grid
     let size;
-    if (demo_dataLength % 3 == 0) {
-      size = demo_dataLength;
-    } else if (demo_dataLength % 2 == 0) {
-      size = demo_dataLength + 2;
-    } else if (demo_dataLength % 1 == 0) {
-      size = demo_dataLength + 1;
-    }
+
+    if (demo_dataLength % 3 == 1) {size = demo_dataLength + 2}
+    if (demo_dataLength % 3 == 2) {size = demo_dataLength + 1}
+    if (demo_dataLength % 3 == 0) {size = demo_dataLength + 0}
+
     let myArr = new Int16Array(size).map((curr, index) => (curr = index + 1));
     let myMatrix = myArr.reduce(
       (rows, key, index) =>
@@ -3168,6 +3201,7 @@ const demographics_version2 = (demograhpics, contact) => {
     for (let entry of demograhpics["children"]) {
       let value = entry.name;
       let source = entry.origin;
+      let timestamp= entry.pageId
 
       //////////////////////////////////////////////////////////////////////////////////////////////////////////// check tooltip direction
       let slide_direction;
@@ -3224,6 +3258,11 @@ const demographics_version2 = (demograhpics, contact) => {
         icon_add_in = "";
       }
 
+
+      let TOP_OFFSET = "40px"
+
+      // console.log(value)
+
       //////////////////////////////////////////////////////////////////////////////////////////////////////////// meter age
       if (value.includes(" years old")) {
         let age = value.split("years old")[0];
@@ -3249,7 +3288,7 @@ const demographics_version2 = (demograhpics, contact) => {
               <Meter
                 background="light-3"
                 round
-                margin={{ top: "100px" }}
+                margin={{ top: TOP_OFFSET }}
                 alignSelf="center"
                 size="xsmall"
                 type="circle"
@@ -3321,9 +3360,24 @@ const demographics_version2 = (demograhpics, contact) => {
         grid_entries.push(entry);
       }
 
-      //////////////////////////////////////////////////////////////////////////////////////////////////////////// icon language
-      else if (value.includes("Language:")) {
-        let language = value.split("Language: ")[1];
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////// sensitivity breakdown
+      else if (value.includes("Sensitivity:")) {
+        let sensitivity = value.split("Sensitivity:")[1];
+        let sensitive_list = JSON.parse(sensitivity)
+        // console.log(sensitive_list)
+        let sensitive_list_pretty = []
+
+        for (let obj of sensitive_list) {
+          let temp_category = obj['category']
+          let temp_permission = obj['permission']
+          let temp_permission_pretty;
+          if (temp_permission == "no") {
+            temp_permission_pretty = <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">{temp_category}</Text_grommet> <Text_grommet size="small">Google will not eliminate ads about {temp_category}, but does attempt to limit them. This setting is based on your preferences.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><Dislike size="medium" /></Tip> 
+          } else {
+            temp_permission_pretty = <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">{temp_category} </Text_grommet> <Text_grommet size="small">I'm happy (according to your settings) to receive ads about {temp_category}, thanks!</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><Favorite color='red' size="medium" /></Tip>
+          }
+          sensitive_list_pretty.push({"category": <Text_grommet size='small'>{temp_category}</Text_grommet>, "permission": temp_permission_pretty})
+        }
 
         let entry = (
           <Box
@@ -3334,7 +3388,89 @@ const demographics_version2 = (demograhpics, contact) => {
             <Stack
               anchor="bottom-right"
               alignSelf="center"
-              margin={{ top: "100px" }}
+              margin={{ top: TOP_OFFSET }}
+            >
+              <List_grommet
+                primaryKey="category"
+                secondaryKey="permission"
+                pad='xsmall'
+                data={sensitive_list_pretty}
+              />
+              {icon_add_in} 
+            </Stack>
+
+            <br />
+            <Text_grommet alignSelf="center" size="xsmall">
+              {" "} Your sensitivity {" "} 
+            </Text_grommet>
+            <Text_grommet alignSelf="center" size="xsmall">
+              <Text_grommet weight="normal" size="xsmall">{moment(timestamp).format("dddd, MMMM Do YYYY, h:mm a")}</Text_grommet>
+            </Text_grommet>
+              <Box alignSelf="center" height="large">
+                <Tip
+                  plain
+                  content={
+                    <Box
+                      pad="small"
+                      gap="small"
+                      width={{ max: "medium" }}
+                      round="small"
+                      background="background-front"
+                      animation={animation_direction}
+                      responsive={false}
+                    >
+                    
+                      <Text_grommet size="small" weight="normal">
+                        Google permits these types of ads to be served to you (potentially sensitive categories)! <br/><br/>
+                        <Dislike size="medium" /> <br/> means you've 'limited' but not completely eliminated the category. <br/><br/>
+                        <Favorite color="red" size="medium" /> <br/> means you are happy to recive ads related to these categories.<br/><br/>
+                        <hr/>
+                        <Text_grommet size="small" weight="normal">Change it! Click this button, scroll to the bottom, and turn on or off sensitive ad categories.</Text_grommet>
+                        <hr/>
+                      </Text_grommet>
+                    </Box>
+                  }
+                  dropProps={{ align: slide_direction }}
+                >
+                  <Button_grommet alignSelf='center' hoverIndicator={true} color="white" primary icon={<Google color="plain" size="small" />} size="small" label="Change this" target="_blank" href='https://adssettings.google.com/' onClick={() => {  }}  />
+                </Tip>
+              </Box>
+
+
+
+          </Box>
+        );
+
+        grid_entries.push(entry);
+      }
+
+
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////// icon language
+      else if (value.includes("Language:")) {
+        let language = value.split("Language: ")[1];
+        let already_known = language.split(" and")[0];
+
+        if (language.toLowerCase().includes("more")) {
+          let temp = language.split(",")
+          let factors_specific = []
+          for (let entry of temp) {
+            if (entry != already_known){
+              factors_specific.push(<Text_grommet> {String(entry)} <br/> </Text_grommet>)
+            }
+          }
+          language = factors_specific
+        }
+
+        let entry = (
+          <Box
+            gridArea={"box-" + String(counter)}
+            background="light-1"
+            round="medium"
+          >
+            <Stack
+              anchor="bottom-right"
+              alignSelf="center"
+              margin={{ top: TOP_OFFSET }}
             >
               <Globe size="xlarge" />
               {icon_add_in}
@@ -3346,6 +3482,47 @@ const demographics_version2 = (demograhpics, contact) => {
               {" "}
               Language{" "}
             </Text_grommet>
+
+              <Box alignSelf="center" height="large">
+                <Tip
+                  plain
+                  content={
+                    <Box
+                      pad="small"
+                      gap="small"
+                      width={{ max: "large" }}
+                      round="small"
+                      background="background-front"
+                      animation={animation_direction}
+                      responsive={false}
+                    >
+                      <Text_grommet weight="bold">
+                        Google thinks you speak (or know)
+                      </Text_grommet>
+                      <Text_grommet color="accent-2" size="small">
+                        {language}
+                      </Text_grommet>
+                      <Text_grommet size="small" weight="bold">
+                        There are many options for targeting individuals based on language, including:
+                      </Text_grommet>
+                      <List_grommet
+                        primaryKey={(item) => (
+                          <Text_grommet key={item} size="12px">
+                            {item}
+                          </Text_grommet>
+                        )}
+                        data={["Arabic", "Chinese (Simplified)", "Chinese (Traditional)", "Czech", "English (Australia, United Kingdom, and United States)", "Hebrew", "Japanese", "Korean", "Portuguese (Brazil and Portugal)", "Spanish (Latin American and European)", "Swedish", "Ukrainian"]}
+                      />
+                    </Box>
+                  }
+                  dropProps={{ align: slide_direction }}
+                >
+                  <CircleInformation color="light-4" size="medium" />
+                </Tip>
+              </Box>
+
+
+
           </Box>
         );
 
@@ -3368,6 +3545,18 @@ const demographics_version2 = (demograhpics, contact) => {
           num = 0;
         }
 
+        // check multiple factors
+        if (company.toLowerCase().includes("factors")) {
+          let temp = company.split(",")
+          let factors_specific = []
+          for (let entry of temp) {
+            factors_specific.push(<Text_grommet> {String(entry)} <br/> </Text_grommet>)
+          }
+          company = factors_specific
+          num = 0
+        }
+        
+
         let entry = (
           <Box
             gridArea={"box-" + String(counter)}
@@ -3378,7 +3567,7 @@ const demographics_version2 = (demograhpics, contact) => {
               <Meter
                 background="light-3"
                 round
-                margin={{ top: "100px" }}
+                margin={{ top: TOP_OFFSET }}
                 alignSelf="center"
                 size="xsmall"
                 type="circle"
@@ -3462,7 +3651,17 @@ const demographics_version2 = (demograhpics, contact) => {
         } else {
           num = 0;
         }
-
+        
+        // check multiple factors
+        if (education.toLowerCase().includes("factors")) {
+          let temp = education.split(",")
+          let factors_specific = []
+          for (let entry of temp) {
+            factors_specific.push(<Text_grommet> {String(entry)} <br/> </Text_grommet>)
+          }
+          education = factors_specific
+          num = 0
+        }
         let entry = (
           <Box
             gridArea={"box-" + String(counter)}
@@ -3473,7 +3672,7 @@ const demographics_version2 = (demograhpics, contact) => {
               <Meter
                 background="light-3"
                 round
-                margin={{ top: "100px" }}
+                margin={{ top: TOP_OFFSET }}
                 alignSelf="center"
                 size="xsmall"
                 type="circle"
@@ -3554,6 +3753,16 @@ const demographics_version2 = (demograhpics, contact) => {
           unknown = true;
         }
 
+        // check multiple factors
+        if (homeowner.toLowerCase().includes("factors")) {
+          let temp = homeowner.split(",")
+          let factors_specific = []
+          for (let entry of temp) {
+            factors_specific.push(<Text_grommet> {String(entry)} <br/> </Text_grommet>)
+          }
+          homeowner = factors_specific
+        }
+
         let entry;
         if (is_not == false && unknown == false) {
           entry = (
@@ -3565,7 +3774,7 @@ const demographics_version2 = (demograhpics, contact) => {
               <Stack
                 anchor="bottom-right"
                 alignSelf="center"
-                margin={{ top: "100px" }}
+                margin={{ top: TOP_OFFSET }}
               >
                 <Home size="xlarge" />
                 {icon_add_in}
@@ -3625,7 +3834,7 @@ const demographics_version2 = (demograhpics, contact) => {
               round="medium"
             >
               <Stack anchor="bottom-right" alignSelf="center">
-                <Box align="center" margin={{ top: "100px" }}>
+                <Box align="center" margin={{ top: TOP_OFFSET }}>
                   <Stack anchor="center">
                     <Home size="xlarge" />
                     <Close color="red" size="xlarge" />
@@ -3692,7 +3901,7 @@ const demographics_version2 = (demograhpics, contact) => {
               <Stack
                 anchor="bottom-right"
                 alignSelf="center"
-                margin={{ top: "100px" }}
+                margin={{ top: TOP_OFFSET }}
               >
                 <Home size="xlarge" />
                 {icon_add_in}
@@ -3762,7 +3971,7 @@ const demographics_version2 = (demograhpics, contact) => {
             <Stack
               anchor="bottom-right"
               alignSelf="center"
-              margin={{ top: "100px" }}
+              margin={{ top: TOP_OFFSET }}
             >
               <Money size="xlarge" />
               {icon_add_in}
@@ -3855,6 +4064,15 @@ const demographics_version2 = (demograhpics, contact) => {
         if (job.toLowerCase().includes("technology")) {
           icon_to_use = <Cli size="xlarge" />;
         }
+        if (job.toLowerCase().includes("factors")) {
+          icon_to_use = <ChapterAdd size="xlarge" />;
+       	  let temp = job.split(",")
+       	  let factors_specific = []
+       	  for (let entry of temp) {
+       	    factors_specific.push(<Text_grommet> {String(entry)} <br/> </Text_grommet>)
+       	  }
+       	  job = factors_specific
+        }
 
         let entry = (
           <Box
@@ -3865,7 +4083,7 @@ const demographics_version2 = (demograhpics, contact) => {
             <Stack
               anchor="bottom-right"
               alignSelf="center"
-              margin={{ top: "100px" }}
+              margin={{ top: TOP_OFFSET }}
             >
               {icon_to_use}
               {icon_add_in}
@@ -3942,7 +4160,7 @@ const demographics_version2 = (demograhpics, contact) => {
             <Stack
               anchor="bottom-right"
               alignSelf="center"
-              margin={{ top: "100px" }}
+              margin={{ top: TOP_OFFSET }}
             >
               <User size="xlarge" />
               {icon_add_in}
@@ -4008,7 +4226,7 @@ const demographics_version2 = (demograhpics, contact) => {
             <Stack
               anchor="bottom-right"
               alignSelf="center"
-              margin={{ top: "100px" }}
+              margin={{ top: TOP_OFFSET }}
             >
               <UserFemale size="xlarge" />
               {icon_add_in}
@@ -4074,7 +4292,7 @@ const demographics_version2 = (demograhpics, contact) => {
             <Stack
               anchor="bottom-right"
               alignSelf="center"
-              margin={{ top: "100px" }}
+              margin={{ top: TOP_OFFSET }}
             >
               <Help size="xlarge" />
               {icon_add_in}
@@ -4142,6 +4360,27 @@ const demographics_version2 = (demograhpics, contact) => {
           unknown = true;
         }
 
+        if (marital.toLowerCase().includes("factors")) {
+          let temp = marital.split(",")
+          let factors_specific = []
+          for (let entry of temp) {
+            factors_specific.push(<Text_grommet> {String(entry)} <br/> </Text_grommet>)
+          }
+          marital = factors_specific
+        }
+
+        let icon_married; 
+        if (marital == 'Single') {
+          icon_married = <Stack anchor="center">
+            <Favorite size="xlarge" />
+            <Close color="red" size="xlarge" />
+          </Stack>
+
+        } else {
+          icon_married = <Favorite size="xlarge" />
+        }
+
+
         let entry;
         if (is_not == false && unknown == false) {
           entry = (
@@ -4153,9 +4392,9 @@ const demographics_version2 = (demograhpics, contact) => {
               <Stack
                 anchor="bottom-right"
                 alignSelf="center"
-                margin={{ top: "100px" }}
+                margin={{ top: TOP_OFFSET }}
               >
-                <Favorite size="xlarge" />
+                {icon_married}
                 {icon_add_in}
               </Stack>
 
@@ -4213,7 +4452,7 @@ const demographics_version2 = (demograhpics, contact) => {
               round="medium"
             >
               <Stack anchor="bottom-right" alignSelf="center">
-                <Box align="center" margin={{ top: "100px" }}>
+                <Box align="center" margin={{ top: TOP_OFFSET }}>
                   <Stack anchor="center">
                     <Favorite size="xlarge" />
                     <Close color="red" size="xlarge" />
@@ -4278,7 +4517,7 @@ const demographics_version2 = (demograhpics, contact) => {
               <Stack
                 anchor="bottom-right"
                 alignSelf="center"
-                margin={{ top: "100px" }}
+                margin={{ top: TOP_OFFSET }}
               >
                 <Help size="xlarge" />
                 {icon_add_in}
@@ -4347,6 +4586,15 @@ const demographics_version2 = (demograhpics, contact) => {
         if (parental.toLowerCase().includes("unknown")) {
           unknown = true;
         }
+        
+        if (parental.toLowerCase().includes("factors")) {
+       	  let temp = parental.split(",")
+       	  let factors_specific = []
+       	  for (let entry of temp) {
+       	    factors_specific.push(<Text_grommet> {String(entry)} <br/> </Text_grommet>)
+       	  }
+       	  parental = factors_specific
+        }
 
         let entry;
         if (is_not == false && unknown == false) {
@@ -4359,7 +4607,7 @@ const demographics_version2 = (demograhpics, contact) => {
               <Stack
                 anchor="bottom-right"
                 alignSelf="center"
-                margin={{ top: "100px" }}
+                margin={{ top: TOP_OFFSET }}
               >
                 <Baby size="xlarge" />
                 {icon_add_in}
@@ -4426,7 +4674,7 @@ const demographics_version2 = (demograhpics, contact) => {
               round="medium"
             >
               <Stack anchor="bottom-right" alignSelf="center">
-                <Box align="center" margin={{ top: "100px" }}>
+                <Box align="center" margin={{ top: TOP_OFFSET }}>
                   <Stack anchor="center">
                     <Baby size="xlarge" />
                     <Close color="red" size="xlarge" />
@@ -4488,7 +4736,11 @@ const demographics_version2 = (demograhpics, contact) => {
               </Box>
             </Box>
           );
-        } else {
+        } 
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////// catch-all
+        else {
+
           entry = (
             <Box
               gridArea={"box-" + String(counter)}
@@ -4498,7 +4750,7 @@ const demographics_version2 = (demograhpics, contact) => {
               <Stack
                 anchor="bottom-right"
                 alignSelf="center"
-                margin={{ top: "100px" }}
+                margin={{ top: TOP_OFFSET }}
               >
                 <Help size="xlarge" />
                 {icon_add_in}
@@ -4561,6 +4813,7 @@ const demographics_version2 = (demograhpics, contact) => {
 
         grid_entries.push(entry);
       } else {
+
         let entry = (
           <Box
             gridArea={"box-" + String(counter)}
@@ -4570,7 +4823,7 @@ const demographics_version2 = (demograhpics, contact) => {
             <Stack
               anchor="bottom-right"
               alignSelf="center"
-              margin={{ top: "100px" }}
+              margin={{ top: TOP_OFFSET }}
             >
               <Help size="xlarge" />
               {icon_add_in}
@@ -4631,6 +4884,11 @@ const demographics_version2 = (demograhpics, contact) => {
           >
             Email: {render_emails_string}
           </Text_grommet>
+
+          {/*<br />*/}
+
+          {render_IP_string}
+
         </Box>
 
         {grid_entries}
@@ -4665,6 +4923,7 @@ const advertiser_ads_version2 = (
   } else {
     let data;
     data = data_all[type];
+
 
     const frame_style = {
       width: "100%",
@@ -4760,15 +5019,11 @@ const advertiser_ads_version2 = (
       if (this_entry.ad_domain_fuzzy_seen_in_history.length != 0) {
         ad_domain_fuzzy_seen_in_history =
           this_entry.ad_domain_fuzzy_seen_in_history;
-        // count_of_all += 1
-        // mapping['ad_domain_fuzzy_seen_in_history'] = count_of_all + 1
+
       }
 
 
-      // let blocks = demographics['children']
-      // get the matrix
-      // make sure we end on 3 to keep a grid
-      // this can be hardCoded, the max is 6
+
       let size;
       if (count_of_all == 1) {
         size = count_of_all + 2;
@@ -4838,13 +5093,13 @@ const advertiser_ads_version2 = (
             <Box alignSelf="center" margin={{ top: "20px" }}>
               <ContactInfo color="black" size="medium" />
             </Box>
-            <Text_grommet alignSelf="center" size="medium">
+            <Text_grommet alignSelf="center" size="small">
               {" "}
               The Ad's Category
             </Text_grommet>
             <List_grommet
               primaryKey={(item) => (
-                <Text_grommet key={item} size="11px">
+                <Text_grommet key={item} size="16px">
                   {item}
                 </Text_grommet>
               )}
@@ -4867,13 +5122,13 @@ const advertiser_ads_version2 = (
             <Box alignSelf="center" margin={{ top: "20px" }}>
               <Domain color="black" size="medium" />
             </Box>
-            <Text_grommet alignSelf="center" size="medium">
+            <Text_grommet alignSelf="center" size="small">
               {" "}
               The Ad's Owner
             </Text_grommet>
             <List_grommet
               primaryKey={(item) => (
-                <Text_grommet key={item} size="11px">
+                <Text_grommet key={item} size="16px">
                   {item}
                 </Text_grommet>
               )}
@@ -4899,29 +5154,25 @@ const advertiser_ads_version2 = (
             gridArea={
               "box-" + String(mapping["ad_category_matches_google_interests"])
             }
-            background="light-6"
+            background="status-warning"
             round="medium"
           >
             <Box alignSelf="center" margin={{ top: "20px" }}>
               <Google color="black" size="medium" />
             </Box>
-            <Text_grommet alignSelf="center" size="medium">
+            <Text_grommet alignSelf="center" size="small" color='white'>
               {" "}
-              Google says you're interested in
+              Google thinks you're interested in (top 3)
             </Text_grommet>
             <List_grommet
               primaryKey={(item) => (
-                <Text_grommet key={item} size="11px">
+                <Text_grommet key={item} size="16px" color='black'>
                   {item}
                 </Text_grommet>
               )}
               data={keepers}
             />
-            <br />
-            <Text_grommet alignSelf="center" color="dark-4" size="medium">
-              {" "}
-              (top 3)
-            </Text_grommet>
+          <br/>
           </Box>
         );
         grid_entries.push(entry);
@@ -4945,26 +5196,22 @@ const advertiser_ads_version2 = (
             background="light-6"
             round="medium"
           >
-            <Box alignSelf="center" margin={{ top: "20px" }}>
+            <Box alignSelf="center" margin={{ top: "20px"}}>
               <History color="black" size="medium" />
             </Box>
-            <Text_grommet alignSelf="center" size="medium">
+            <Text_grommet alignSelf="center" size="small">
               {" "}
-              Similar interests in history
+              Similar interests in history (top 3)
             </Text_grommet>
             <List_grommet
               primaryKey={(item) => (
-                <Text_grommet key={item} size="11px">
+                <Text_grommet key={item} size="16px">
                   {item}
                 </Text_grommet>
               )}
               data={keepers}
             />
-            <br />
-            <Text_grommet alignSelf="center" color="dark-4" size="medium">
-              {" "}
-              (top 3)
-            </Text_grommet>
+            <br/>
           </Box>
         );
         grid_entries.push(entry);
@@ -4986,29 +5233,25 @@ const advertiser_ads_version2 = (
             gridArea={
               "box-" + String(mapping["ad_domain_exactly_seen_in_history"])
             }
-            background="light-6"
+            background="status-warning"
             round="medium"
           >
             <Box alignSelf="center" margin={{ top: "20px" }}>
               <History color="black" size="medium" />
             </Box>
-            <Text_grommet alignSelf="center" size="medium">
+            <Text_grommet alignSelf="center" size="small" color="white">
               {" "}
-              Similar webpage visits
+              Similar webpage visits (top 3)
             </Text_grommet>
             <List_grommet
               primaryKey={(item) => (
-                <Text_grommet key={item} size="11px">
+                <Text_grommet key={item} size="16px" color="black">
                   {item}
                 </Text_grommet>
               )}
               data={keepers}
             />
-            <br />
-            <Text_grommet alignSelf="center" color="dark-4" size="medium">
-              {" "}
-              (top 3)
-            </Text_grommet>
+          <br/>
           </Box>
         );
         grid_entries.push(entry);
@@ -5035,23 +5278,19 @@ const advertiser_ads_version2 = (
               <Box alignSelf="center" margin={{ top: "20px" }}>
                 <Info color="black" size="medium" />
               </Box>
-              <Text_grommet alignSelf="center" size="medium">
+              <Text_grommet alignSelf="center" size="small">
                 {" "}
-                Provided ad explanation
+                Provided ad explanation (top 3)
               </Text_grommet>
               <List_grommet
                 primaryKey={(item) => (
-                  <Text_grommet key={item} size="11px">
+                  <Text_grommet key={item} size="16px">
                     {item}
                   </Text_grommet>
                 )}
                 data={keepers}
               />
-              <br />
-              <Text_grommet alignSelf="center" color="dark-4" size="medium">
-                {" "}
-                (top 3)
-              </Text_grommet>
+            <br/>
             </Box>
           );
           grid_entries.push(entry);
@@ -5084,7 +5323,7 @@ const advertiser_ads_version2 = (
               >
                 {this_entry.you_were_visiting}
               </Text_grommet>
-              <Text_grommet color="dark-4" size="13px" alignSelf="center">
+              <Text_grommet color="black" size="18px" alignSelf="center">
                 {" "}
                 visited by you (
                 {String(
@@ -5164,7 +5403,8 @@ const advertiser_ads_version2 = (
 
           <Carousel_grommet
             initialChild={0}
-            controls={false}
+            play={18000}
+            controls={true}
             fill={true}
             activeChild={current_slide}
             onChild={slide_updater}
@@ -5176,6 +5416,7 @@ const advertiser_ads_version2 = (
     );
   }
 };
+
 
 export class ProfilePage extends React.Component {
   constructor(props) {
@@ -5200,15 +5441,17 @@ export class ProfilePage extends React.Component {
     const google_demographics = background.queryDatabase('getGoogleInferencesTree_demographic', {})
     const google_contactInfo = background.queryDatabase('getGoogleInferencesTree_nameData', {})
     const google_interests = background.queryDatabase('getGoogleInferencesTree_interests', {})
-    const google_interests_bars = background.queryDatabase('getGoogleInferences_overview', {})
-    const allGoogleInferences = background.queryDatabase('getAllGoogleInferences', {})
+    const google_interests_bars = background.queryDatabase('getGoogleInferences_overview', {}) // SLOW
     const heat_map_newer_newer = background.queryDatabase('PageIdDataStructure_revisedHeatmap_version2', {})
-    const allAdDOMs = background.queryDatabase('getAdDOMs_version2', {})
+    const allAdDOMs = background.queryDatabase('getAdDOMs_version2', {}) // SLOW
+    const getAdDOMs_bars = background.queryDatabase('getAdDOMs_bars', {})
     const adDOM_overview = background.queryDatabase('getAdDOMs_overview', {})
-    const getTopicsOfInterest = background.queryDatabase('getTopicsOfInterest', {}) 
+    const getTopicsOfInterest = background.queryDatabase('getTopicsOfInterest', {}) // REALLY ---- SLOW
     const sensitive_info_v3 = background.queryDatabase('getInferencesMostSensitive_version3', {})
     const sensitive_info_bubbles_v2 = background.queryDatabase('getInferencesMostSensitive_bubbles_version2', {})
-    const bedtime_v2 = background.queryDatabase('getPagesByTime_bedtime', {})
+    const sensitive_info_bubbles_wordCloud = background.queryDatabase('getInferencesMostSensitive_bubbles_text', {})
+    const bedtime_v2 = background.queryDatabase('getPagesByTime_bedtime', {}) // SLOW
+    const IP_address = background.queryDatabase('getAllIP_info', {})
 
     google_demographics.then(n => this.setState({google_demographics: n}))
     google_contactInfo.then(n => this.setState({google_contactInfo: n}))
@@ -5217,8 +5460,11 @@ export class ProfilePage extends React.Component {
     heat_map_newer_newer.then(n => this.setState({heat_map_newer_newer: n}))
     getTopicsOfInterest.then(n => this.setState({getTopicsOfInterest: n}))
     sensitive_info_bubbles_v2.then(n => this.setState({sensitive_info_bubbles_v2: n}))
+    sensitive_info_bubbles_wordCloud.then(n => this.setState({sensitive_info_bubbles_wordCloud: n}))
     bedtime_v2.then(n => this.setState({bedtime_v2: n}))
     adDOM_overview.then(n => this.setState({adDOM_overview: n}))
+    getAdDOMs_bars.then(n => this.setState({getAdDOMs_bars: n}))
+    IP_address.then(n => this.setState({IP_address: n}))
 
     sensitive_info_v3.then(n => {
       this.setState({
@@ -5287,9 +5533,9 @@ export class ProfilePage extends React.Component {
           pages.push(value)
         }
       }
-      let activityType2 = 'load dashboard Sites page'
+      let activityType = 'load dashboard profile page'
       let sendDict = {'numDomainsShown': pages.length}
-      logging.logLoad(activityType2, sendDict)
+      logging.logLoad(activityType, sendDict)
 
 
   }
@@ -5335,62 +5581,305 @@ export class ProfilePage extends React.Component {
     const {   
             bedtime_v2, 
             adDOM_overview, 
+            getAdDOMs_bars,
             google_contactInfo, 
             getTopicsOfInterest, 
             sensitive_info_v3, 
-            sensitive_info_bubbles_v2, 
+            sensitive_info_bubbles_v2,
+            sensitive_info_bubbles_wordCloud,
             google_demographics, 
             graphCount, ad_type, 
             carousel_slide_count, 
             google_interests, 
             google_interests_bars, 
             allAdDOMs, 
-            heat_map_newer_newer
+            heat_map_newer_newer,
+            IP_address,
           } = this.state
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////// loaders and spinners: 1. google demographics 
+    let loader_1_google_demographics = {"no_data": false, "loading": false, "yes_data": false};
+    let loader_1_google_demographics_spinner_statement = <Spinner_grommet border={[ { side: "all", color: "transparent", size: "medium" }, { side: "horizontal", color: "brand", size: "medium" }, ]} />
 
+    if (google_demographics != null && google_contactInfo != null) {
+      loader_1_google_demographics.no_data = true;
+      loader_1_google_demographics.yes_data = false;
+      loader_1_google_demographics.loading = false;
+      if (google_demographics['children'].length != 0 && google_contactInfo['children'].length != 0) {
+        loader_1_google_demographics.yes_data = true;
+        loader_1_google_demographics_spinner_statement = <Checkmark size="medium" />
+        loader_1_google_demographics.loading = false;
+        loader_1_google_demographics.no_data = false;
+      } else {
+        loader_1_google_demographics.loading = false;
+        loader_1_google_demographics.yes_data = false;
+        loader_1_google_demographics.no_data = true;
+        loader_1_google_demographics_spinner_statement = <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Google adsSettings demographic information</Text_grommet> <Text_grommet size="small"> Available after you've signed into your google adsSettings page, assuming you have turned on adsSettings. Check out the "No Google data detected" banner above!</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><Alert size='medium'/></Tip>
+      }
+    } else {
+      loader_1_google_demographics.loading = true;
+      loader_1_google_demographics.yes_data = false;
+      loader_1_google_demographics.no_data = false;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////// loaders and spinners: 1. google interests
+    let loader_2_google_interests = {"no_data": false, "loading": false, "yes_data": false};
+    let loader_2_google_interests_spinner_statement = <Spinner_grommet border={[ { side: "all", color: "transparent", size: "medium" }, { side: "horizontal", color: "brand", size: "medium" }, ]} />
+
+    if (google_interests != null) {
+      loader_2_google_interests.no_data = true;
+      loader_2_google_interests.yes_data = false;
+      loader_2_google_interests.loading = false;
+      if (google_interests['tree']['children'].length != 0) {
+        loader_2_google_interests.yes_data = true;
+        loader_2_google_interests_spinner_statement = <Checkmark size="medium" />
+        loader_2_google_interests.loading = false;
+        loader_2_google_interests.no_data = false;
+      } else {
+        loader_2_google_interests.loading = false;
+        loader_2_google_interests.yes_data = false;
+        loader_2_google_interests.no_data = true;
+        loader_2_google_interests_spinner_statement = <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Google adsSettings interest information</Text_grommet> <Text_grommet size="small"> Available after you've signed into your google adsSettings page, assuming you have turned on adsSettings.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><Alert size='medium'/></Tip>
+      }
+    } else {
+      loader_2_google_interests.loading = true;
+      loader_2_google_interests.yes_data = false;
+      loader_2_google_interests.no_data = false;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////// loaders and spinners: 3. google interests over time
+    let loader_3_google_interests_over_time = {"no_data": false, "loading": false, "yes_data": false};
+    let loader_3_google_interests_over_time_spinner_statement = <Spinner_grommet border={[ { side: "all", color: "transparent", size: "medium" }, { side: "horizontal", color: "brand", size: "medium" }, ]} />
+
+    if (google_demographics != null && google_contactInfo != null) {
+      loader_3_google_interests_over_time.no_data = true;
+      loader_3_google_interests_over_time.yes_data = false;
+      loader_3_google_interests_over_time.loading = false;
+      if (google_demographics['children'].length != 0 && google_contactInfo['children'].length != 0) {
+        loader_3_google_interests_over_time.yes_data = true;
+        loader_3_google_interests_over_time_spinner_statement = <Checkmark size="medium" />
+        loader_3_google_interests_over_time.loading = false;
+        loader_3_google_interests_over_time.no_data = false;
+      } else {
+        loader_3_google_interests_over_time.loading = false;
+        loader_3_google_interests_over_time.yes_data = false;
+        loader_3_google_interests_over_time.no_data = true;
+        loader_3_google_interests_over_time_spinner_statement = <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Google adsSettings interest information</Text_grommet> <Text_grommet size="small"> Available after you've signed into your google adsSettings page, assuming you have turned on adsSettings. Check out the "No Google data detected" banner above!</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><Alert size='medium'/></Tip>
+      }
+    } else {
+      loader_3_google_interests_over_time.loading = true;
+      loader_3_google_interests_over_time.yes_data = false;
+      loader_3_google_interests_over_time.no_data = false;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////// loaders and spinners: 4. heatmap engagement
+    let loader_4_heatmap_engagement = {"no_data": false, "loading": false, "yes_data": false};
+    let loader_4_heatmap_engagement_spinner_statement = <Spinner_grommet border={[ { side: "all", color: "transparent", size: "medium" }, { side: "horizontal", color: "brand", size: "medium" }, ]} />
+
+    if (heat_map_newer_newer != null) {
+      loader_4_heatmap_engagement.no_data = true;
+      loader_4_heatmap_engagement.yes_data = false;
+      loader_4_heatmap_engagement.loading = false;
+      if (Object.keys(heat_map_newer_newer.all).length != 0) {
+        loader_4_heatmap_engagement.yes_data = true;
+        loader_4_heatmap_engagement_spinner_statement = <Checkmark size="medium" />
+        loader_4_heatmap_engagement.loading = false;
+        loader_4_heatmap_engagement.no_data = false;
+      } else {
+        loader_4_heatmap_engagement.loading = false;
+        loader_4_heatmap_engagement.yes_data = false;
+        loader_4_heatmap_engagement.no_data = true;
+        loader_4_heatmap_engagement_spinner_statement = <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Your engagement on the internet</Text_grommet> <Text_grommet size="small">This visualization will show up after you've browsed several webpages, allowing you to see when you are most 'engaged' online.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><Alert size='medium'/></Tip>
+      }
+    } else {
+      loader_4_heatmap_engagement.loading = true;
+      loader_4_heatmap_engagement.yes_data = false;
+      loader_4_heatmap_engagement.no_data = false;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////// loaders and spinners: 5. pie engagement
+    let loader_5_pie_engagement = {"no_data": false, "loading": false, "yes_data": false};
+    let loader_5_pie_engagement_spinner_statement = <Spinner_grommet border={[ { side: "all", color: "transparent", size: "medium" }, { side: "horizontal", color: "brand", size: "medium" }, ]} />
+
+    if (sensitive_info_v3 != null) {
+      loader_5_pie_engagement.no_data = true;
+      loader_5_pie_engagement.yes_data = false;
+      loader_5_pie_engagement.loading = false;
+      if (sensitive_info_v3['all '].outer_all.length != 0) {
+        loader_5_pie_engagement.yes_data = true;
+        loader_5_pie_engagement_spinner_statement = <Checkmark size="medium" />
+        loader_5_pie_engagement.loading = false;
+        loader_5_pie_engagement.no_data = false;
+      } else {
+        loader_5_pie_engagement.loading = false;
+        loader_5_pie_engagement.yes_data = false;
+        loader_5_pie_engagement.no_data = true;
+        loader_5_pie_engagement_spinner_statement = <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Engagement breakdown</Text_grommet> <Text_grommet size="small">This visualization changes depending on the "interest" classification of webpages you visit.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><Alert size='medium'/></Tip>
+      }
+    } else {
+      loader_5_pie_engagement.loading = true;
+      loader_5_pie_engagement.yes_data = false;
+      loader_5_pie_engagement.no_data = false;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////// loaders and spinners: 6. bedtimes
+    let loader_6_bedtimes = {"no_data": false, "loading": false, "yes_data": false};
+    let loader_6_bedtimes_spinner_statement = <Spinner_grommet border={[ { side: "all", color: "transparent", size: "medium" }, { side: "horizontal", color: "brand", size: "medium" }, ]} />
+
+    if (bedtime_v2 != null) {
+      loader_6_bedtimes.no_data = true;
+      loader_6_bedtimes.yes_data = false;
+      loader_6_bedtimes.loading = false;
+      if (bedtime_v2.length != 0) {
+        loader_6_bedtimes.yes_data = true;
+        loader_6_bedtimes_spinner_statement = <Checkmark size="medium" />
+        loader_6_bedtimes.loading = false;
+        loader_6_bedtimes.no_data = false;
+      } else {
+        loader_6_bedtimes.loading = false;
+        loader_6_bedtimes.yes_data = false;
+        loader_6_bedtimes.no_data = true;
+        loader_6_bedtimes_spinner_statement = <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Late-night activity</Text_grommet> <Text_grommet size="small">When you browse the web late at night, this visualization will 'guess' your bedtime, as a tracker might guess your bedtime!</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><Alert size='medium'/></Tip>
+
+      }
+    } else {
+      loader_6_bedtimes.loading = true;
+      loader_6_bedtimes.yes_data = false;
+      loader_6_bedtimes.no_data = false;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////// loaders and spinners: 7. search habits
+    let loader_7_search_habits = {"no_data": false, "loading": false, "yes_data": false};
+    let loader_7_search_habits_spinner_statement = <Spinner_grommet border={[ { side: "all", color: "transparent", size: "medium" }, { side: "horizontal", color: "brand", size: "medium" }, ]} />
+
+    if (getTopicsOfInterest != null) {
+      loader_7_search_habits.no_data = true;
+      loader_7_search_habits.yes_data = false;
+      loader_7_search_habits.loading = false;
+      if (getTopicsOfInterest.length != 0) {
+        loader_7_search_habits.yes_data = true;
+        loader_7_search_habits_spinner_statement = <Checkmark size="medium" />
+        loader_7_search_habits.loading = false;
+        loader_7_search_habits.no_data = false;
+      } else {
+        loader_7_search_habits.loading = false;
+        loader_7_search_habits.yes_data = false;
+        loader_7_search_habits.no_data = true;
+        loader_7_search_habits_spinner_statement = <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Search habits</Text_grommet> <Text_grommet size="small">Certain google searches are identifiable and repetitive, this visualization highlights those types of searches.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><Alert size='medium'/></Tip>
+
+      }
+    } else {
+      loader_7_search_habits.loading = true;
+      loader_7_search_habits.yes_data = false;
+      loader_7_search_habits.no_data = false;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////// loaders and spinners: 8. sensitive bubbles 
+    let loader_8_sensitive_bubbles = {"no_data": false, "loading": false, "yes_data": false};
+    let loader_8_sensitive_bubbles_spinner_statement = <Spinner_grommet border={[ { side: "all", color: "transparent", size: "medium" }, { side: "horizontal", color: "brand", size: "medium" }, ]} />
+
+    if (sensitive_info_bubbles_v2 != null) {
+      loader_8_sensitive_bubbles.no_data = true;
+      loader_8_sensitive_bubbles.yes_data = false;
+      loader_8_sensitive_bubbles.loading = false;
+      if (sensitive_info_bubbles_v2['outer'].length != 0) {
+        loader_8_sensitive_bubbles.yes_data = true;
+        loader_8_sensitive_bubbles_spinner_statement = <Checkmark size="medium" />
+        loader_8_sensitive_bubbles.loading = false;
+        loader_8_sensitive_bubbles.no_data = false;
+      } else {
+        loader_8_sensitive_bubbles.loading = false;
+        loader_8_sensitive_bubbles.yes_data = false;
+        loader_8_sensitive_bubbles.no_data = true;
+        loader_8_sensitive_bubbles_spinner_statement = <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Sensitive interests</Text_grommet> <Text_grommet size="small">Some of your interests might be sensitive; this visualization will show up if you are associated with 'sensitive' interests.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><Alert size='medium'/></Tip>
+
+      }
+    } else {
+      loader_8_sensitive_bubbles.loading = true;
+      loader_8_sensitive_bubbles.yes_data = false;
+      loader_8_sensitive_bubbles.no_data = false;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////// loaders and spinners: 9. ad overview
+    let loader_9_ad_overview = {"no_data": false, "loading": false, "yes_data": false};
+    let loader_9_ad_overview_spinner_statement = <Spinner_grommet border={[ { side: "all", color: "transparent", size: "medium" }, { side: "horizontal", color: "brand", size: "medium" }, ]} />
+
+    if (adDOM_overview != null) {
+      loader_9_ad_overview.no_data = true;
+      loader_9_ad_overview.yes_data = false;
+      loader_9_ad_overview.loading = false;
+      if (Object.values(adDOM_overview.breakdown).length != 0) {
+        loader_9_ad_overview.yes_data = true;
+        loader_9_ad_overview_spinner_statement = <Checkmark size="medium" />
+        loader_9_ad_overview.loading = false;
+        loader_9_ad_overview.no_data = false;
+      } else {
+        loader_9_ad_overview.loading = false;
+        loader_9_ad_overview.yes_data = false;
+        loader_9_ad_overview.no_data = true;
+        loader_9_ad_overview_spinner_statement = <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Ad overview</Text_grommet> <Text_grommet size="small">This visualization keeps track of the advertisements you've been shown and will appear if you visit webpages with advertisements.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><Alert size='medium'/></Tip>
+
+      }
+    } else {
+      loader_9_ad_overview.loading = true;
+      loader_9_ad_overview.yes_data = false;
+      loader_9_ad_overview.no_data = false;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////// loaders and spinners: 10. ad details
+    let loader_10_ad_details = {"no_data": false, "loading": false, "yes_data": false};
+    let loader_10_ad_details_spinner_statement = <Spinner_grommet border={[ { side: "all", color: "transparent", size: "medium" }, { side: "horizontal", color: "brand", size: "medium" }, ]} />
+
+    if (allAdDOMs != null) {
+      loader_10_ad_details.no_data = true;
+      loader_10_ad_details.yes_data = false;
+      loader_10_ad_details.loading = false;
+      if (Object.keys(allAdDOMs).length != 0) {
+        loader_10_ad_details.yes_data = true;
+        loader_10_ad_details_spinner_statement = <Checkmark size="medium" />
+        loader_10_ad_details.loading = false;
+        loader_10_ad_details.no_data = false;
+      } else {
+        loader_10_ad_details.loading = false;
+        loader_10_ad_details.yes_data = false;
+        loader_10_ad_details.no_data = true;
+        loader_10_ad_details_spinner_statement = <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Ad detail</Text_grommet> <Text_grommet size="small">This visualization captures ads you've been served, giving you information about those captured ads!</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><Alert size='medium'/></Tip>
+
+      }
+    } else {
+      loader_10_ad_details.loading = true;
+      loader_10_ad_details.yes_data = false;
+      loader_10_ad_details.no_data = false;
+    }
 
 
     return (
       <Grid>
-
         <GridRow>
           <GridCol>
             <Box background='white' round='small' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
-              {video_explain()}
-
-              {/*
-              <InView>
-                {({ inView, ref, entry }) => (
-                  <div ref={ref}>
-                    <h2>{`Header inside viewport ${inView}.`}</h2>
-                    {console.log("video")}
-                    {console.log(entry)}
-                    {store_state_global('hi')}
-                  </div>
-                )}
-              </InView>
-              */}
-
+              {video_explain(profile_video, profile_image, heat_map_newer_newer)}              
             </Box>
           </GridCol>
         </GridRow>
-        
 
+        {/*<HashLink to="/#Ads-you've-been-served-(breakdown)" >Ads you've been served (breakdown)</HashLink>*/}
 
-        {google_interests != null &&  google_interests['tree']['children'].length == 0 && 
+        {google_interests != null && google_demographics != null && (google_demographics['children'].length == 0) && 
         <GridRow>
           <GridCol>
             <Stack anchor="top-right">
-            <Box background='accent-4' round='large' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
+            <Box background="status-critical" hoverIndicator='background' onClick={() => { window.open("https://adssettings.google.com/", "_blank"); }} animation={{type: 'fadeIn', delay: 0, duration: 5000}} round='large' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
               <Box alignSelf="center" align="center" background='none' round='medium' pad="xxsmall" margin="xxsmall" gap="xxsmall" width={{ max: 'xlarge' }} responsive={true}> 
               <Alert size="large" />
-              <Text_grommet alignSelf='center' > No adsSettings data. Try clicking on the button on the right and then come back!</Text_grommet>
+              <Text_grommet alignSelf='center' > <LinkNext size='small'/><LinkNext size='small'/><LinkNext size='small'/> No Google data detected! <LinkPrevious size='small'/><LinkPrevious size='small'/><LinkPrevious size='small'/> </Text_grommet> 
+              <Text_grommet alignSelf='center' > Click me, sign in, and then refresh this page! </Text_grommet>
+              {
+              <InView threshold={1}>
+                {({ inView, ref, entry }) => (
+                  <div ref={ref}>
+                    {store_state_global({'visibility': inView, 'widget': 'profile page - viewing - (0) no adsettings data imported', 'entry': entry})}
+                  </div>
+                )}
+              </InView>
+              }
+
               </Box>
             </Box>
             <Box>
-            <Tip content="adssettings.google.com" dropProps={{ align:  { bottom: "top" } }}>
-            <Button_grommet alignSelf='center' hoverIndicator={true} color="white" primary icon={<Google color="plain" size="medium" />} label="" href='https://adssettings.google.com/' onClick={() => {  }}  />
+            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Import Google Data</Text_grommet> <Text_grommet size="small"> Import google data to learn more about how you are tracked! To import this data, click this banner, sign in (top right-hand corner of page) to Google, make sure adsSettings is turned on, and refresh this page!</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
+            <Button_grommet alignSelf='center' hoverIndicator={true} color="white" primary icon={<Help color="plain" size="small" />} label="" target="_blank" href='https://adssettings.google.com/' onClick={() => {  }}  />
             {/*<Text_grommet alignSelf='center' > Google adsSettings information not found. Try importing it by clicking the icon</Text_grommet>*/}
             </Tip>
             </Box>
@@ -5400,19 +5889,29 @@ export class ProfilePage extends React.Component {
         }
         
 
-        {heat_map_newer_newer != null && Object.keys(heat_map_newer_newer.all).length == 0 &&
+        {heat_map_newer_newer != null && Object.keys(heat_map_newer_newer.all).length == 0 && adDOM_overview != null && getAdDOMs_bars != null && Object.values(adDOM_overview.breakdown).length == 0 &&
         <GridRow>
           <GridCol>
             <Stack anchor="top-right">
-            <Box background='accent-4' round='large' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
+            <Box background="status-critical" hoverIndicator='background' onClick={() => { window.open("https://www.petsmart.com", "_blank"); }} animation={{type: 'fadeIn', delay: 0, duration: 5000}} round='large' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
               <Box alignSelf="center" align="center" background='none' round='medium' pad="xxsmall" margin="xxsmall" gap="xxsmall" width={{ max: 'xlarge' }} responsive={true}> 
               <Alert size="large" />
-              <Text_grommet alignSelf='center' > No website data. Try clicking the button on the right and then come back!</Text_grommet>
+              <Text_grommet alignSelf='center' > <LinkNext size='small'/><LinkNext size='small'/><LinkNext size='small'/> No website data detected! <LinkPrevious size='small'/><LinkPrevious size='small'/><LinkPrevious size='small'/> </Text_grommet>
+              <Text_grommet alignSelf='center' > Click me to open a demo tab (petsmart.com) and then refresh this page!</Text_grommet>
+              {
+              <InView threshold={1}>
+                {({ inView, ref, entry }) => (
+                  <div ref={ref}>
+                    {store_state_global({'visibility': inView, 'widget': 'profile page - viewing - (0) no website data', 'entry': entry})}
+                  </div>
+                )}
+              </InView>
+              }
               </Box>
             </Box>
             <Box>
-            <Tip content="petsmart.com" dropProps={{ align:  { bottom: "top" } }}>
-            <Button_grommet alignSelf='center' hoverIndicator={true} color="white" primary icon={<Magic size="medium" />} label="" href='https://www.petsmart.com' onClick={() => {  }}  />
+            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">No Website Data</Text_grommet> <Text_grommet size="small"> Browse a few pages on the web and head back to this page, which will populate as you continue browsing!</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
+            <Button_grommet alignSelf='center' hoverIndicator={true} color="white" primary icon={<Help size="small" />} label="" href='https://www.petsmart.com' onClick={() => {  }}  />
             </Tip>
             </Box>
             </Stack>
@@ -5421,8 +5920,53 @@ export class ProfilePage extends React.Component {
         </GridRow>
         }
 
-        {google_demographics != null && google_contactInfo != null &&  google_demographics['children'].length != 0 && google_contactInfo['children'].length != 0 &&
+
         <GridRow>
+          <GridCol>
+            <Box background='white' round='small' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
+
+              <GridCol>
+                <Box align="center" pad="large">
+                  <List_grommet
+                    primaryKey="name"
+                    secondaryKey="is_in_data"
+                    data={[
+                      { name: <Text_grommet weight='normal' color="light-5" size='xxlarge'>Visualization</Text_grommet>,                                                                                                          is_in_data: <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Table of contents</Text_grommet> <Text_grommet size="small"> The following hyperlinks will jump your browser to the location of each visualization on this page. Visualizations with data are noted with a checkmark; visualizations without data (i.e., no visualization) have a warning symbol.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><CircleInformation color='light-5' size="40px" /></Tip>},
+                      { name: loader_1_google_demographics.yes_data == true           && <HashLink to="/#your-demographics" >Your demographics</HashLink> || 'Your demographics',                                                 is_in_data: loader_1_google_demographics_spinner_statement},
+                      { name: loader_2_google_interests.yes_data == true              && <HashLink to="/#your-inferred-interests" >Your inferred interests</HashLink> || "Your inferred interests",                               is_in_data: loader_2_google_interests_spinner_statement},
+                      { name: loader_3_google_interests_over_time.yes_data == true    && <HashLink to="/#your-interests-over-time" >Your interests over time</HashLink> || 'Your interests over time',                            is_in_data: loader_3_google_interests_over_time_spinner_statement},
+                      { name: loader_4_heatmap_engagement.yes_data == true            && <HashLink to="/#when-you're-engaged" >When you're engaged</HashLink> || "When you're engaged",                                           is_in_data: loader_4_heatmap_engagement_spinner_statement},
+                      { name: loader_5_pie_engagement.yes_data == true                && <HashLink to="/#how-you-spend-your-time" >How you spend your time</HashLink> || "How you spend your time",                               is_in_data: loader_5_pie_engagement_spinner_statement},
+                      { name: loader_6_bedtimes.yes_data == true                      && <HashLink to="/#when-you-go-to-sleep" >When you go to sleep</HashLink> || "When you go to sleep",                                        is_in_data: loader_6_bedtimes_spinner_statement},
+                      { name: loader_7_search_habits.yes_data == true                 && <HashLink to="/#search-habits" >Search habits</HashLink> || "Search habits",                                                             is_in_data: loader_7_search_habits_spinner_statement},
+                      { name: loader_8_sensitive_bubbles.yes_data == true             && <HashLink to="/#possible-sensitive-interests" >Possible sensitive interests</HashLink> || "Possible sensitive interests",                is_in_data: loader_8_sensitive_bubbles_spinner_statement },  
+                      { name: loader_9_ad_overview.yes_data == true                   && <HashLink to="/#ads-you've-been-served-(overview)" >Ads you've been served (overview)</HashLink> || "Ads you've been served (overview)", is_in_data: loader_9_ad_overview_spinner_statement},
+                      { name: loader_10_ad_details.yes_data == true                   && <HashLink to="/#ad-explanations" >Ad explanations</HashLink> || "Ad explanations",                                                       is_in_data: loader_10_ad_details_spinner_statement},
+
+
+                    ]}
+                  />
+                </Box>
+
+                {
+                <InView threshold={1}>
+                  {({ inView, ref, entry }) => (
+                    <div ref={ref}>
+                      {store_state_global({'visibility': inView, 'widget': 'profile page - viewing - (--) table of contents', 'entry': entry})}
+                    </div>
+                  )}
+                </InView>
+                }
+
+
+              </GridCol>
+            </Box>
+          </GridCol>
+        </GridRow>
+
+
+        {google_demographics != null && google_contactInfo != null &&  google_demographics['children'].length != 0 && google_contactInfo['children'].length != 0 &&
+        <GridRow id='your-demographics'>
           <GridCol>
             <Stack anchor="top-right">
             <Box background='white' round='small' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
@@ -5430,10 +5974,10 @@ export class ProfilePage extends React.Component {
 
               <Box alignSelf="center" align="center">
               <Stack anchor="top-right">
-                <Box alignSelf="center" align="center" background='dark-2' round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
-                <Text_grommet color="white">Your Demographics</Text_grommet>
+                <Box alignSelf="center" align="center" background={header_color} round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
+                <Text_grommet color="white">{demographic_text}</Text_grommet>
                 </Box>
-                <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Demographics</Text_grommet> <Text_grommet size="small"> These attributes relate to <b> who you are</b>. As you browse the web, Google captures information like your age rage, gender, income level, and many others. </Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
+                <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Demographics</Text_grommet> <Text_grommet size="small"> These attributes relate to <b> who you are</b>. As you browse the web, Google captures information like your age rage, gender, income level, and many others. You may see repeat tiles, this occurs because Google is updating your information over time (and we've tracked the change!).</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
                 <CircleInformation color='light-3' size="45px" />
                 </Tip>
               </Stack>
@@ -5441,24 +5985,24 @@ export class ProfilePage extends React.Component {
 
 
               <GridCol >
-                {demographics_version2(this.state.google_demographics, this.state.google_contactInfo)}
+                {demographics_version2(this.state.google_demographics, this.state.google_contactInfo, this.state.IP_address)}
                 
-                {/*
-                <InView>
+                {
+                <InView threshold={1}>
                   {({ inView, ref, entry }) => (
                     <div ref={ref}>
-                      <h2>{`Header inside viewport ${inView}.`}</h2>
-                      {console.log("demographics")}
-                      {console.log(entry)}
+
+                      {store_state_global({'visibility': inView, 'widget': 'profile page - viewing - (1) google demographcis', 'entry': entry})}
                     </div>
                   )}
                 </InView>
-                */}
+                }
+
 
               </GridCol>
             </Box>
             <Box>
-            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Google</Text_grommet> <Text_grommet size="small"> Google learns these things about you as you browse the web. </Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
+            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Google</Text_grommet> <Text_grommet size="small"> Google learns attributes about you as you browse the web. </Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
               <Google color="plain" size="large" />
             </Tip>
             </Box>
@@ -5470,7 +6014,7 @@ export class ProfilePage extends React.Component {
 
 
         {google_interests != null && google_interests['tree']['children'].length != 0 &&
-        <GridRow>
+        <GridRow id='your-inferred-interests'>
           <GridCol>
             <Stack anchor="top-right">
             <Box background='white' round='small' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
@@ -5478,10 +6022,10 @@ export class ProfilePage extends React.Component {
 
               <Box alignSelf="center" align="center">
               <Stack anchor="top-right">
-                <Box alignSelf="center" align="center" background='dark-2' round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
-                <Text_grommet color="white">Your inferred interests</Text_grommet> 
+                <Box alignSelf="center" align="center" background={header_color} round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
+                <Text_grommet color="white">{google_interests_text}</Text_grommet> 
                 </Box>
-                <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Interests</Text_grommet> <Text_grommet size="small"> These attributes relate to <b>what you like</b>. As you browse the web, Google captures information related to your interests (e.g., competitive video gaming, greeting cards, horror films, and many others). </Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
+                <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Interests</Text_grommet> <Text_grommet size="small"> These attributes relate to <b>what you like</b>. As you browse the web, Google captures information related to your interests (e.g., competitive video gaming, greeting cards, horror films, and many others). <br/><br/> A colored blue circle means the tree may be expanded into further categories, click away!</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
                 <CircleInformation color='light-3' size="45px" />
                 </Tip>
               </Stack>
@@ -5521,10 +6065,21 @@ export class ProfilePage extends React.Component {
 
               <GridCol >
                 {googleAdsSettings3(this.state.google_interests)}
+
+                {
+                <InView threshold={1}>
+                  {({ inView, ref, entry }) => (
+                    <div ref={ref}>
+                      {store_state_global({'visibility': inView, 'widget': 'profile page - viewing - (2) google interests', 'entry': entry})}
+                    </div>
+                  )}
+                </InView>
+                }
+
               </GridCol>
             </Box>
             <Box>
-            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Google</Text_grommet> <Text_grommet size="small"> Google learns these things about you as you browse the web. </Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
+            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Google</Text_grommet> <Text_grommet size="small"> Google learns your interests as you browse the web. </Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
               <Google color="plain" size="large" />
             </Tip>
             </Box>
@@ -5537,17 +6092,17 @@ export class ProfilePage extends React.Component {
 
 
         {google_interests_bars != null && google_interests != null && google_interests['tree']['children'].length != 0 && 
-        <GridRow>
+        <GridRow id='your-interests-over-time'>
           <GridCol>
             <Stack anchor="top-right">
             <Box background='white' round='small' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
 
               <Box alignSelf="center" align="center">
               <Stack anchor="top-right">
-                <Box alignSelf="center" align="center" background='dark-2' round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
-                <Text_grommet color="white">Your interests over time</Text_grommet> 
+                <Box alignSelf="center" align="center" background={header_color} round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
+                <Text_grommet color="white">{google_interests_over_time_text}</Text_grommet> 
                 </Box>
-                <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Google's Watching</Text_grommet> <Text_grommet size="small"> As you browse the web, Google updates your "profile" of interests, adding and subtracting the things you are currently interested in. These interest include demographic details (e.g., your name, age, and gender) and interest details (e.g., puppies or butterflies). The count includes all types of interests together.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
+                <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Google's Watching</Text_grommet> <Text_grommet size="small"> As you browse the web, Google updates your "profile" of interests, adding and subtracting the things you are currently interested in. These interest include demographic details (e.g., your name, age, and gender) and interest details (e.g., interests like puppies or butterflies). The count includes all types of interests together.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
                 <CircleInformation color='light-3' size="45px" />
                 </Tip>
               </Stack>
@@ -5555,10 +6110,21 @@ export class ProfilePage extends React.Component {
 
               <GridCol >
                 {googleAdsSettings3_deepest_bars2(this.state.google_interests_bars, this.state.google_interests)}
+
+                {
+                <InView threshold={1}>
+                  {({ inView, ref, entry }) => (
+                    <div ref={ref}>
+                      {store_state_global({'visibility': inView, 'widget': 'profile page - viewing - (3) google interests over time', 'entry': entry})}
+                    </div>
+                  )}
+                </InView>
+                }
+
               </GridCol>
             </Box>
             <Box>
-            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Google</Text_grommet> <Text_grommet size="small"> Google learns these things about you as you browse the web. </Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
+            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Google</Text_grommet> <Text_grommet size="small"> Google is constantly updating your 'profile' in order to better target you with ads. As you browse the web, Google adjusts your interests and demographic information. </Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
               <Google color="plain" size="large" />
             </Tip>
             </Box>
@@ -5570,15 +6136,15 @@ export class ProfilePage extends React.Component {
 
 
         {heat_map_newer_newer != null && Object.keys(heat_map_newer_newer.all).length != 0 && 
-        <GridRow>
+        <GridRow id="when-you're-engaged">
           <GridCol>
             <Stack anchor="top-right">
             <Box background='white' round='small' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
 
               <Box alignSelf="center" align="center">
               <Stack anchor="top-right">
-                <Box alignSelf="center" align="center" background='dark-2' round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
-                <Text_grommet color="white"> When you're engaged </Text_grommet> 
+                <Box alignSelf="center" align="center" background={header_color} round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
+                <Text_grommet color="white">{engagement_text}</Text_grommet> 
                 </Box>
                 <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Online engagement</Text_grommet> <Text_grommet size="small"> Trackers learn when you're most active online.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
                 <CircleInformation color='light-3' size="45px" />
@@ -5588,6 +6154,17 @@ export class ProfilePage extends React.Component {
 
               <GridCol>
                 {heatMap_newer(this.state.graphCount, this.state.heat_map_newer_newer)}
+
+                {
+                <InView threshold={1}>
+                  {({ inView, ref, entry }) => (
+                    <div ref={ref}>
+                      {store_state_global({'visibility': inView, 'widget': 'profile page - viewing - (4) heatmap engagement', 'entry': entry})}
+                    </div>
+                  )}
+                </InView>
+                }
+
               </GridCol>
 
 
@@ -5616,7 +6193,7 @@ export class ProfilePage extends React.Component {
               </Grid_grommet>
             </Box>
             <Box>
-            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Trackers</Text_grommet> <Text_grommet size="small"> Trackers learns these things about you as you browse the web. Thanks for sharing!</Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
+            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Trackers</Text_grommet> <Text_grommet size="small"> Trackers learn when you are (most) engaged (i.e., active online) as you browse the web. Thanks for sharing!</Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
               <View color="status-critical" size="large" />
             </Tip>
             </Box>
@@ -5626,7 +6203,7 @@ export class ProfilePage extends React.Component {
         }
 
         {sensitive_info_v3 != null && sensitive_info_v3['all '].outer_all.length != 0 && 
-        <GridRow>
+        <GridRow id="how-you-spend-your-time">
           <GridCol>
             <Stack anchor="top-right">
             <Box background='white' round='small' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
@@ -5634,8 +6211,8 @@ export class ProfilePage extends React.Component {
 
               <Box alignSelf="center" align="center">
               <Stack anchor="top-right">
-                <Box alignSelf="center" align="center" background='dark-2' round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
-                <Text_grommet color="white"> How you spend your time</Text_grommet> 
+                <Box alignSelf="center" align="center" background={header_color} round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
+                <Text_grommet color="white">{time_pie_text}</Text_grommet> 
                 </Box>
                 <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Online engagement</Text_grommet> <Text_grommet size="small"> Trackers learn what you most often do when online. Click on a slice for a breakdown.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
                 <CircleInformation color='light-3' size="45px" />
@@ -5645,6 +6222,16 @@ export class ProfilePage extends React.Component {
 
               <GridCol>
                 {sensitive_info_pie(this.state.pieCount, this.state.sensitive_info_v3)}
+                {
+                <InView threshold={1}>
+                  {({ inView, ref, entry }) => (
+                    <div ref={ref}>
+                      {store_state_global({'visibility': inView, 'widget': 'profile page - viewing - (5) pie engagement', 'entry': entry})}
+                    </div>
+                  )}
+                </InView>
+                }
+
               </GridCol>
 
               <Box align="center" background='light-2' round='medium' pad="xsmall" full={false} margin="xsmall" gap="xsmall" width={{ max: 'xxlarge' }} responsive={true}> 
@@ -5656,7 +6243,7 @@ export class ProfilePage extends React.Component {
 
             </Box>
             <Box>
-            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Trackers</Text_grommet> <Text_grommet size="small"> Trackers learns these things about you as you browse the web. Thanks for sharing!</Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
+            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Trackers</Text_grommet> <Text_grommet size="small"> Trackers learn what you do when you are online by observing your online habits. Thanks for sharing!</Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
               <View color="status-critical" size="large" />
             </Tip>
             </Box>
@@ -5665,8 +6252,9 @@ export class ProfilePage extends React.Component {
         </GridRow>
         }
 
+
         {bedtime_v2 != null && bedtime_v2.length != 0 && 
-        <GridRow>
+        <GridRow id="when-you-go-to-sleep">
           <GridCol>
             <Stack anchor="top-right">
             <Box background='white' round='small' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
@@ -5674,10 +6262,10 @@ export class ProfilePage extends React.Component {
 
               <Box alignSelf="center" align="center">
               <Stack anchor="top-right">
-                <Box alignSelf="center" align="center" background='dark-2' round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
-                <Text_grommet color="white"> When you go to sleep</Text_grommet> 
+                <Box alignSelf="center" align="center" background={header_color} round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
+                <Text_grommet color="white">{bedtime_text}</Text_grommet> 
                 </Box> 
-                <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Online engagement</Text_grommet> <Text_grommet size="small"> Trackers can make assumptions about when you go to bed based on your periods of latest online engagement. Trackers also know what you're doing during these times.</Text_grommet> </Box> } dropProps={{ align:  { bottom: "top" } }}>
+                <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Online engagement</Text_grommet> <Text_grommet size="small"> Trackers can make assumptions about when you go to bed based on your periods of latest online engagement. Trackers also know what you're doing during these times. <br/> <br/> Hover over a dot (or click and drag to zoom in) to see more!</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
                 <CircleInformation color='light-3' size="45px" />
                 </Tip>
               </Stack>
@@ -5685,10 +6273,20 @@ export class ProfilePage extends React.Component {
 
               <GridCol >
                 {bedTimes_version2(this.state.bedtime_v2)}
+                {
+                <InView threshold={1}>
+                  {({ inView, ref, entry }) => (
+                    <div ref={ref}>
+                      {store_state_global({'visibility': inView, 'widget': 'profile page - viewing - (6) bedtimes', 'entry': entry})}
+                    </div>
+                  )}
+                </InView>
+                }
+
               </GridCol>
             </Box>
             <Box>
-            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Trackers</Text_grommet> <Text_grommet size="small"> Trackers learns these things about you as you browse the web. Thanks for sharing!</Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
+            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Trackers</Text_grommet> <Text_grommet size="small"> Trackers make inferences about you as you browse the web, like what time you are likely to go to bed (i.e., stop engaging) and what you are doing around that time. Thanks for sharing!</Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
               <View color="status-critical" size="large" />
             </Tip>
             </Box>
@@ -5698,7 +6296,7 @@ export class ProfilePage extends React.Component {
         }
 
         {getTopicsOfInterest != null && getTopicsOfInterest.length != 0 && 
-        <GridRow>
+        <GridRow id='search-habits'>
           <GridCol>
             <Stack anchor="top-right">
             <Box background='white' round='small' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
@@ -5706,10 +6304,10 @@ export class ProfilePage extends React.Component {
 
               <Box alignSelf="center" align="center">
               <Stack anchor="top-right">
-                <Box alignSelf="center" align="center" background='dark-2' round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
-                <Text_grommet color="white">Your search habits</Text_grommet> 
+                <Box alignSelf="center" align="center" background={header_color} round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
+                <Text_grommet color="white">{search_habits_text}</Text_grommet> 
                 </Box>
-                <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Online engagement</Text_grommet> <Text_grommet size="small"> Trackers are able to look for popular search topics, like relationships and dating or diet. <br/><br/> Click and drag on a timeslice for zoom.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
+                <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Online engagement</Text_grommet> <Text_grommet size="small"> Trackers are able to look for popular search topics, like relationships and dating or diet. <br/><br/> This visualization groups similar search habits in terms of total time (e.g., the total time is added up from each individual page visit time). Click and drag on a timeslice for zoom.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
                 <CircleInformation color='light-3' size="45px" />
                 </Tip>
               </Stack>
@@ -5717,12 +6315,22 @@ export class ProfilePage extends React.Component {
 
             <GridRow>
               <GridCol>
-                  {visual_activity(getTopicsOfInterest)}
+                {visual_activity(getTopicsOfInterest)}
+                {
+                <InView threshold={1}>
+                  {({ inView, ref, entry }) => (
+                    <div ref={ref}>
+                      {store_state_global({'visibility': inView, 'widget': 'profile page - viewing - (7) search habits', 'entry': entry})}
+                    </div>
+                  )}
+                </InView>
+                }
+
               </GridCol>
             </GridRow>
             </Box>
             <Box>
-            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Trackers</Text_grommet> <Text_grommet size="small"> Trackers learns these things about you as you browse the web. Thanks for sharing!</Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
+            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Trackers</Text_grommet> <Text_grommet size="small"> Trackers categorize your behavior online based on your browsing history. Some popular behaviors are repetative and easy to identify. Thanks for sharing!</Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
               <View color="status-critical" size="large" />
             </Tip>
             </Box>
@@ -5732,7 +6340,7 @@ export class ProfilePage extends React.Component {
         }
 
         {sensitive_info_bubbles_v2 != null && sensitive_info_bubbles_v2['outer'].length != 0 && 
-        <GridRow>
+        <GridRow id='possible-sensitive-interests'>
           <GridCol>
             <Stack anchor="top-right">
             <Box background='white' round='small' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
@@ -5740,19 +6348,29 @@ export class ProfilePage extends React.Component {
 
               <Box alignSelf="center" align="center">
               <Stack anchor="top-right">
-                <Box alignSelf="center" align="center" background='dark-2' round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
-                <Text_grommet color="white">Possible sensitive interests</Text_grommet>
+                <Box alignSelf="center" align="center" background={header_color} round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
+                <Text_grommet color="white">{sensitive_bubbles_text}</Text_grommet>
                 </Box>
-                <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Online engagement</Text_grommet> <Text_grommet size="small"> Trackers may group your interests by sensitive, learning what interests you have that might be uncomfortable, embarassing, or unique.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
+                <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Online engagement (pages visited)</Text_grommet> <Text_grommet size="small"> Trackers may group your interests by sensitivity, learning what interests you have that might be uncomfortable, embarrassing, or unique. These interests come from web pages you've visited, thanks for sharing :)</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
                 <CircleInformation color='light-3' size="45px" />
                 </Tip>
               </Stack>
               </Box>
+                {sensitive_bubbles_v2(sensitive_info_bubbles_v2)}
+                {sensitive_bubbles_wordCloud(this.state.sensitive_info_bubbles_wordCloud)}
+                {
+                <InView threshold={1}>
+                  {({ inView, ref, entry }) => (
+                    <div ref={ref}>
 
-              {sensitive_bubbles_v2(sensitive_info_bubbles_v2)}
-            </Box>
+                      {store_state_global({'visibility': inView, 'widget': 'profile page - viewing - (8) sensitive bubbles', 'entry': entry})}
+                    </div>
+                  )}
+                </InView>
+                }
+              </Box>
             <Box>
-            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Trackers</Text_grommet> <Text_grommet size="small"> Trackers learns these things about you as you browse the web. Thanks for sharing!</Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
+            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Trackers</Text_grommet> <Text_grommet size="small"> Trackers learn more than you might be willing to share based on categorizing certain webpages you've visited into 'sensitive' topics. Thanks for sharing!</Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
               <View color="status-critical" size="large" />
             </Tip>
             </Box>
@@ -5760,9 +6378,9 @@ export class ProfilePage extends React.Component {
           </GridCol>
         </GridRow>
         }
-        
+
         {adDOM_overview != null && Object.values(adDOM_overview.breakdown).length != 0 &&
-        <GridRow>
+        <GridRow id="ads-you've-been-served-(overview)">
           <GridCol>
             <Stack anchor="top-right">
             <Box background='white' round='small' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
@@ -5770,8 +6388,8 @@ export class ProfilePage extends React.Component {
 
               <Box alignSelf="center" align="center">
               <Stack anchor="top-right">
-                <Box alignSelf="center" align="center" background='dark-2' round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
-                <Text_grommet color="white">Ads you've been served (overview)</Text_grommet> 
+                <Box alignSelf="center" align="center" background={header_color} round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
+                <Text_grommet color="white">{ads_overview_text}</Text_grommet> 
                 </Box> 
                 <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Advertisements</Text_grommet> <Text_grommet size="small"> Advertisers attempt to serve you ads you are interested in, using your profile to learn how to target you.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}>
                 <CircleInformation color='light-3' size="45px" />
@@ -5780,33 +6398,61 @@ export class ProfilePage extends React.Component {
               </Box>
 
               <Grid_grommet
-                rows={['flex', 'flex']}
+                rows={['auto', 'auto', 'auto']}
                 columns={['flex', 'flex', ]}
                 gap="small"
                 areas={[
                   { name: 'nav', start: [0, 0], end: [0, 1] },
                   { name: 'main1', start: [1, 0], end: [1, 0] },
                   { name: 'main2', start: [1, 1], end: [1, 1] },
+                  { name: 'main3', start: [0, 2], end: [1, 2] },
                 ]}
               >
 
 
               <Box gridArea="nav" align="center" background='light-2' round='medium' pad="xsmall" full={true} margin="xsmall" gap="xsmall" width={{ max: 'xxlarge' }} responsive={true}> 
-              <Text_grommet alignSelf="center"> Ad Categories (Top 10) </Text_grommet>
+              <Text_grommet alignSelf="center"> Ad Category Counts <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Categories</Text_grommet><Text_grommet size="small">Top five advertisement categories&#8212;and top five most sensitive categories&#8212;you've been served. Uncategorized ads (e.g., an ad that our machine learning model could not classify) are not included in this list.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><CircleInformation color='light-5' size="25px" /></Tip></Text_grommet>
+              
               <br/>
               {ads_overview_breakDown(this.state.adDOM_overview)}
               </Box>
               
               <Box gridArea="main1" align="center" background='light-2' round='medium' pad="xsmall" full={true} margin="xsmall" gap="xsmall" width={{ max: 'xxlarge' }} responsive={true}> 
-              <Text_grommet align='center' alignContent='center' alignSelf="center"> Ads Served</Text_grommet>
+              <Text_grommet align='center' alignContent='center' alignSelf="center"> Estimated Total Ads Served<Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Total counts</Text_grommet><Text_grommet size="small">Count of all advertisements served (of successful captures—the extension does not succesfully grab all ads). Uncategorized ads (e.g., an ad that our machine learning model could not classify) are included in this list.</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><CircleInformation color='light-5' size="25px" /></Tip></Text_grommet>
               <Box>
-              {/*{googleAdsSettings3_deepest_bars(this.state.google_interests_bars, this.state.google_interests)}*/}
               {ads_overview_totalCount_count(this.state.adDOM_overview)}
+              {
+              <InView threshold={1}>
+                {({ inView, ref, entry }) => (
+                  <div ref={ref}>
+
+                    {store_state_global({'visibility': inView, 'widget': 'profile page - viewing - (9) ad overview', 'entry': entry})}
+                  </div>
+                )}
+              </InView>
+              }
               </Box>
               </Box>
 
               <Box gridArea="main2" align="center" background='light-2' round='medium' pad="xsmall" full={true} margin="xsmall" gap="xsmall" width={{ max: 'xxlarge' }} responsive={true}> 
-              <Text_grommet align='center' alignContent='center' alignSelf="center"> Estimated Ad Serving Costs</Text_grommet>
+              <Text_grommet align='center' alignContent='center' alignSelf="center"> Estimated Ad Click Costs<Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Ad click cost</Text_grommet>                <Text_grommet size="small">
+                  {" "}
+                  Advertisers pay to serve you ads. It can cost an advertiser 
+                  as much as $50 per click for a single ad (an ad 
+                  in a competitive market, like legal services or insurance), 
+                  or as little as 
+                  $0.0065 to show an ad on a webiste (an impression). <br/><br/>
+                  Here, we show an assumed, low-end click cost: ($0.63)
+                  multiplied by the number of ads you've been served.
+                  <br/>
+                  <br/>
+                  <hr/>
+                  You may consider this final number to be how much it would cost an 
+                  advertiser if you clicked on every ad you've received.{" "}
+                  <hr/>
+                  <br/>
+
+                </Text_grommet>{" "}</Box> } dropProps={{ align:  { top: "bottom" } }}><CircleInformation color='light-5' size="25px" /></Tip></Text_grommet>
               <Box>
               {/*{googleAdsSettings3_deepest_bars(this.state.google_interests_bars, this.state.google_interests)}*/}
               {ads_overview_totalCount_cost(this.state.adDOM_overview)}
@@ -5814,14 +6460,19 @@ export class ProfilePage extends React.Component {
               </Box>
 
 
-
+              <Box gridArea="main3" align="center" background='light-2' round='medium' pad="xsmall" full={true} margin="xsmall" gap="xsmall" width={{ max: 'xxlarge' }} responsive={true}> 
+              <Text_grommet alignSelf="center"> Ad Categories Breakdown<Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Categories</Text_grommet><Text_grommet size="small">Advertisements served to you broken up into categories. Click and drag in an area to zoom in!</Text_grommet> </Box> } dropProps={{ align:  { top: "bottom" } }}><CircleInformation color='light-5' size="25px" /></Tip></Text_grommet>
+              <Box>
+              {ads_overview_category_bars(this.state.getAdDOMs_bars)}
+              </Box>
+              </Box>
 
               </Grid_grommet>
 
             </Box>
             <Box>
-            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Google</Text_grommet> <Text_grommet size="small"> Google learns these things about you as you browse the web. </Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
-              <Google color="plain" size="large" />
+            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Trackers</Text_grommet> <Text_grommet size="small"> Trackers help 'personalize' the web, shaping what you see while you browse the web. </Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
+              <View color="status-critical" size="large" />
             </Tip>
             </Box>
             </Stack>
@@ -5831,11 +6482,9 @@ export class ProfilePage extends React.Component {
 
 
 
-
-        {/* do a radio selector like for slices of time except as all, health, adult, and other sensitive options if they exist  */}
-        {/*<Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Online engagement</Text_grommet> <Text_grommet size="small"> Trackers may group your interests by sensitive, learning what interests you have that might be uncomfortable, embarassing, or unique.</Text_grommet> </Box> } dropProps={{ align:  { bottom: "top" } }}>*/}
         {allAdDOMs != null && Object.keys(allAdDOMs).length != 0 && 
-        <GridRow>
+        <GridRow id="ad-explanations">
+        {/*<GridRow id= "Ads-you've-been-served-(breakdown)">*/}
           <GridCol>
             <Stack anchor="top-right">
 
@@ -5843,10 +6492,10 @@ export class ProfilePage extends React.Component {
 
               <Box alignSelf="center" align="center">
               <Stack anchor="top-right">
-                <Box alignSelf="center" align="center" background='dark-2' round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
-                <Text_grommet color="white">Ads you've been served (breakdown)</Text_grommet> 
+                <Box alignSelf="center" align="center" background={header_color} round='medium' pad="small" margin="medium" gap="small" width={{ max: 'medium' }} responsive={true}> 
+                <Text_grommet color="white">{ads_breakdown_text}</Text_grommet> 
                 </Box>
-                <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Advertisements</Text_grommet> <Text_grommet size="small"> After learning your interests, trackers sell that information to ad providers, who pay to target you specifically. The following ads show the ways you've been targeted, providing additional information about why you may have seen this ad. <br/><br/> Scroll to the right to see more ad categories.</Text_grommet> </Box> } dropProps={{ align:   { top: "bottom" } }}>
+                <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">Ad explanations</Text_grommet> <Text_grommet size="small"> After learning your interests, trackers sell that information to ad providers, who pay to target you specifically. The following ads show the ways you've been targeted, providing additional information about why you may have seen this ad. <br/><br/> Scroll to the right to see more ad categories. <br/> Only the top ten ads are shown in each category.</Text_grommet> </Box> } dropProps={{ align:   { top: "bottom" } }}>
                 <CircleInformation color='light-3' size="45px" />
                 </Tip>
               </Stack>
@@ -5855,19 +6504,26 @@ export class ProfilePage extends React.Component {
               <Box background='light-2' round='medium' pad="xsmall" full={false} margin="xsmall" gap="xsmall" width={{ max: 'xxlarge' }} responsive={true}> 
               <Text_grommet alignSelf="center"> Ad category</Text_grommet>
               <Text_grommet size='12px'> 
-              <RadioButtonGroup background='none' direction='row' pad='xmall' margin='xsmall' flex overflow='scroll' name="slice" options={Object.keys(allAdDOMs)} value={this.state.ad_type} onChange={this.updateAd_type} />
+              <RadioButtonGroup background='none' direction='column' pad='xmall' margin='xsmall' flex overflow='scroll' name="slice" options={Object.keys(allAdDOMs)} value={this.state.ad_type} onChange={this.updateAd_type} />
               </Text_grommet>
               </Box>
 
 
-
               {advertiser_ads_version2(this.state.ad_type, allAdDOMs, this.state.carousel_slide_count, this.updateCarousel_slide_count)}
-
+              {
+              <InView threshold={1}>
+                {({ inView, ref, entry }) => (
+                  <div ref={ref}>
+                    {store_state_global({'visibility': inView, 'widget': 'profile page - viewing - (10) ad details', 'entry': entry})}
+                  </div>
+                )}
+              </InView>
+              }
 
 
             </Box>
             <Box>
-            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Trackers</Text_grommet> <Text_grommet size="small"> Trackers learns these things about you as you browse the web. Thanks for sharing!</Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
+            <Tip plain content={  <Box background='light-1' round='medium' pad="small" margin="small" gap="small" width={{ max: 'medium' }} responsive={false} > <Text_grommet weight="bold" color="status-error">This information comes from Trackers</Text_grommet> <Text_grommet size="small"> Trackers don't just serve you any old advertisement, most advertisements are tailored to your specific interests or demographics, which are based on your browsing history. Thanks for sharing!</Text_grommet> </Box> } dropProps={{ align:  { right: "left" } }}>
               <View color="status-critical" size="large" />
             </Tip>
             </Box>

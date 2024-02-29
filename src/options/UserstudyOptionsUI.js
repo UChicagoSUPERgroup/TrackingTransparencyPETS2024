@@ -20,8 +20,8 @@ export default class UserstudyOptionsUI extends React.Component {
       showInferenceContent: true,
       showHistoryContent: true,
       // popupVariant: 'default',
-      showProfile: false,
-      showTakeAction: false,
+      showProfile: true,
+      showTakeAction: true,
       userstudyCondtion: 'everything'
     }
 
@@ -77,6 +77,10 @@ export default class UserstudyOptionsUI extends React.Component {
           <p><strong>User ID: {id}</strong></p>
           <p><Link href='/dist/welcome.html'>Open welcome page</Link></p>
         </Text>
+
+
+        {/*no access to changing settings */}
+        {/*        
         <FormFieldGroup
           name='displayOptions'
           description='Display options'
@@ -149,6 +153,9 @@ export default class UserstudyOptionsUI extends React.Component {
           />
         </FormFieldGroup>
         <br />
+        */}
+
+
         {/* <RadioInputGroup
           name='popupVariant'
           description='Popup variant'
@@ -161,6 +168,9 @@ export default class UserstudyOptionsUI extends React.Component {
           <RadioInput label='Static' value='static' context='off' />
           <RadioInput label='Ghostery' value='ghostery' context='off' />
         </RadioInputGroup> */}
+        
+        {/*no access to changing settings */}
+        {/*
         <RadioInputGroup
           name='userstudyCondition'
           description='User study condition'
@@ -174,6 +184,9 @@ export default class UserstudyOptionsUI extends React.Component {
           <RadioInput value='noInferences' label='Everything minus inferences' />
           <RadioInput value='everything' label='Everything' />
         </RadioInputGroup>
+        */}
+
+
       </div>
     )
   }

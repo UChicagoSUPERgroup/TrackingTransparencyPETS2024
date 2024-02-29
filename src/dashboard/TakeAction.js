@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 
 import Button from '@instructure/ui-buttons/lib/components/Button'
 import Heading from '@instructure/ui-elements/lib/components/Heading'
-import Link from '@instructure/ui-elements/lib/components/Link'
+// import Link from '@instructure/ui-elements/lib/components/Link'
 import Text from '@instructure/ui-elements/lib/components/Text'
 
 import logging from './dashboardLogging'
@@ -61,6 +61,7 @@ import {
 } from 'grommet';
 import { 
   AidOption,
+  Alert,
   Atm,
   BlockQuote,
   Bug,
@@ -73,6 +74,7 @@ import {
   Compliance,
   Google,
   Info,
+  Link,
   Money,
   More,
   MapLocation,
@@ -110,6 +112,10 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import TakeAction from "./video_takeAction_1.mp4";
 import ReactPlayer from 'react-player'
 
+import iconGhost from "./icon-ghost.png";
+import iconABP from "./icon-abp.png";
+import iconTrackTHIS from "./icon-trackTHIS.png";
+import iconUblock from "./icon-ublock.png";
 
 // const get_state_global = (data) => {
 //   let val;
@@ -163,7 +169,7 @@ export class TakeActionPage extends React.Component {
 
     let d = this.getData()
 
-    let activityType = 'load dashboard good actors page'
+    let activityType = 'load dashboard take action page'
     logging.logLoad(activityType, {})
   }
 
@@ -172,7 +178,6 @@ export class TakeActionPage extends React.Component {
 
 
   render () {
-
 
 
     return (
@@ -190,15 +195,96 @@ export class TakeActionPage extends React.Component {
           </GridCol>
         </GridRow>
 
+        <GridRow>
+          <GridCol>
+            <Grid_grommet
+              rows={['flex', 'flex',]}
+              columns={['flex', 'flex',]}
+              gap="xsmall"
+              areas={[
+                { name: 'one', start: [0, 0], end: [1, 0] },
+                { name: 'two', start: [1, 0], end: [1, 0] },
+                { name: 'three', start: [0, 1], end: [0, 1] },
+                { name: 'four', start: [1, 1], end: [1, 1] },
+              ]}
+            >
+              <Box gridArea="one" background='white' round='large' pad="xsmall" margin="xsmall" gap="xsmall"  responsive={true}>
+                    <Box background='white' round='large' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
+                      <Box alignSelf="center" align="center" background='none' round='medium' pad="xxsmall" margin="xxsmall" gap="xxsmall" width={{ max: 'xlarge' }} responsive={true}> 
+                      {/*<Alert size="large" />*/}
+                      <Box height="xsmall" width="xsmall">
+                        <Image
+                          fit="cover"
+                          src={iconGhost}
+                        />
+                      </Box>
+                      <Text_grommet alignSelf='center' > Tools like <Anchor href="https://www.ghostery.com/ghostery-browser-extension" target="_blank" label="Ghostery"/> block trackers (and advertisements) as you browse the web. </Text_grommet>
+                      </Box>
+                    </Box>
+              </Box>
+
+
+              <Box gridArea="two" background='white' round='large' pad="xsmall" margin="xsmall" gap="xsmall"  responsive={true}>
+                    <Box background='white' round='large' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
+                      <Box alignSelf="center" align="center" background='none' round='medium' pad="xxsmall" margin="xxsmall" gap="xxsmall" width={{ max: 'xlarge' }} responsive={true}> 
+                      {/*<Alert size="large" />*/}
+                      <Box height="xsmall" width="xsmall">
+                        <Image
+                          fit="cover"
+                          src={iconABP}
+                        />
+                      </Box>
+                      <Text_grommet alignSelf='center' > Tools like <Anchor href="https://adblockplus.org" target="_blank" label="Ad Block Plus"/> block ads as you browse the web. </Text_grommet>
+                      </Box>
+                    </Box>
+              </Box>
+
+
+
+
+              <Box gridArea="three" background='white' round='large' pad="xsmall" margin="xsmall" gap="xsmall"  responsive={true}>
+                    <Box background='white' round='large' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
+                      <Box alignSelf="center" align="center" background='none' round='medium' pad="xxsmall" margin="xxsmall" gap="xxsmall" width={{ max: 'xlarge' }} responsive={true}> 
+                      {/*<Alert size="large" />*/}
+                      <Box height="xsmall" width="xsmall">
+                        <Image
+                          fit="cover"
+                          src={iconTrackTHIS}
+                        />
+                      </Box>
+                      <Text_grommet alignSelf='center' > Tools like <Anchor href="https://trackthis.link" target="_blank" label="TrackTHIS"/> try to fool trackers by flooding your browsing history with random websites. Expect this dashboard to get weird! </Text_grommet>
+                      </Box>
+                    </Box>
+              </Box>
+
+
+
+
+              <Box gridArea="four" background='white' round='large' pad="xsmall" margin="xsmall" gap="xsmall"  responsive={true}>
+                    <Box background='white' round='large' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
+                      <Box alignSelf="center" align="center" background='none' round='medium' pad="xxsmall" margin="xxsmall" gap="xxsmall" width={{ max: 'xlarge' }} responsive={true}> 
+                      {/*<Alert size="large" />*/}
+                      <Box height="xsmall" width="xsmall">
+                        <Image
+                          fit="cover"
+                          src={iconUblock}
+                        />
+                      </Box>
+                      <Text_grommet alignSelf='center' >Tools like <Anchor href="https://ublockorigin.com" target="_blank" label="uBlock Origin"/> focus on blocking ads and trackers across the web. </Text_grommet>
+                      </Box>
+                    </Box>
+              </Box>
+            </Grid_grommet>
+          </GridCol>
+        </GridRow>
+
+
 
 
 
 
       </Grid>
 
-
-
-        
     )
 
 

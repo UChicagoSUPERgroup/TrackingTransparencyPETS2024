@@ -44,8 +44,16 @@ async function onMessage (m) {
       store.storePage(m.data.info);
       break;
 
-    case 'update_page':
-      store.updatePage(m.data.info);
+    // case 'update_page':
+    //   store.updatePage(m.data.info);
+    //   break
+
+    case 'update_page2':
+      store.updatePage2(m.data.info);
+      break
+
+    case 'updatePage_search_habits':
+      store.updatePage_search_habits(m.data.info);
       break
 
     case 'store_tracker_array':
@@ -60,12 +68,17 @@ async function onMessage (m) {
       store.storeGoogleInference(m.data.info);
       break;
 
+    case 'store_IPAddress':
+      // console.log(m.data.info)
+      store.storeIPAddress(m.data.info);
+      break;
+
     case 'store_inference':
       store.storeInference(m.data.info);
       break;
 
     case 'import_data':
-      store.importData(m.data.data);
+      store.importData2(m.data.data);
       break;
 
     case 'empty_db':
@@ -73,7 +86,7 @@ async function onMessage (m) {
       break;
 
     default:
-      console.log('database worker recieved bad message');
+      console.warn('database worker recieved bad message');
   }
 }
 /**
@@ -112,10 +125,18 @@ async function emptyDB () {
   const ttDb = await primaryDbPromise;
   const Inferences = primarySchemaBuilder.getSchema().table('Inferences');
   const Trackers = primarySchemaBuilder.getSchema().table('Trackers');
+  const Ads = primarySchemaBuilder.getSchema().table('Ads');
+  const GoogleInference = primarySchemaBuilder.getSchema().table('GoogleInference');
   const Pages = primarySchemaBuilder.getSchema().table('Pages');
+  const IPAddresses = primarySchemaBuilder.getSchema().table('IPAddress');
 
   let emptyInferences = ttDb.delete().from(Inferences).exec();
   let emptyTrackers = ttDb.delete().from(Trackers).exec();
+  let emptyAds = ttDb.delete().from(Ads).exec();
+  let emptyGoogleInference = ttDb.delete().from(GoogleInference).exec();
   let emptyPages = ttDb.delete().from(Pages).exec();
-  await Promise.all([emptyInferences, emptyTrackers, emptyPages]);
+  let emptyIPAddresses = ttDb.delete().from(IPAddresses).exec();
+  // console.log(emptyPages)
+  // console.log(emptyAds)
+  await Promise.all([emptyInferences, emptyTrackers, emptyPages, emptyAds, emptyGoogleInference, emptyIPAddresses]);
 }

@@ -76,7 +76,7 @@ export default class InfoPage extends React.Component {
               <Heading level='h2'>Who we are</Heading>
               <Text>
                 <p>The {EXT.NAME} extension was built by a research collaboration between researchers at the University of Chicago and University of Maryland. The project is advised by Professor Blase Ur at the University of Chicago and Professor Michelle Mazurek at the University of Maryland.</p>
-                <p>Should you have any questions about the extension or our associated research, you may email the research team at <Link href='mailto:trackingtransparency@super.cs.uchicago.edu'>trackingtransparency@lists.uchicago.edu</Link>.</p>
+                <p>Should you have any questions about the extension or our associated research, you may email the research team at <Link href='mailto:trackingtransparency@gmail.com'>trackingtransparency@gmail.com</Link>.</p>
               </Text>
             </TTPanel>
           </GridCol>
