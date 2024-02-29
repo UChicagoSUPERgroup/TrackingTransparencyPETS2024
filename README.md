@@ -1,6 +1,6 @@
 # Tracking Transparency
 
-<img src="extension/icons/logo.svg" data-canonical-src="extension/icons/logo.svg" width="100" height="100" align="center"  />
+<p align="center"><img src="extension/icons/logo.svg" data-canonical-src="extension/icons/logo.svg" width="100" height="100"/></p>
 
 # About
 
