@@ -61,7 +61,7 @@ cd TrackingTransparencyPETS2024
 2. **use the correct *node* (14.17.2) and *npm* (6.14.13) and *python* (tested on 3.7.12)**
 
 ```bash
-nvm use 14.17.2
+nvm use 14.17.2 // (may need to install `nvm`)(this will set the node version to use)
 sudo npm install npm@6.14.13 -g
 ~~~~ make sure python 3.7.12 is being used (python3 --version)~~~~ 
 ```
@@ -110,7 +110,7 @@ sudo npm run build:watch
 - (Optional for development) Build using `$ npm run build` for a single run. The `watch` launches Webpack in watch mode and automatically re-runs whenever you change any marked files. For development, we recommended to leave this running in a background terminal.
 
 
-### Extension (Chrome)
+### Add the Extension (Chrome)
 
 1. Visit `chrome://extensions` in your browser \(or open up the Chrome menu by clicking the icon to the far right of the window, and select **Extensions** under the **More Tools** menu to get to the same place\).
 
