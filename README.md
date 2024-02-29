@@ -1,6 +1,6 @@
 # Tracking Transparency
 
-<img src="/Users/hugo/MEGA/Work/- UMD/research/- trackingTransparency2/trackingtransparency/extension/icons/logo.svg" alt="logo" style="zoom:50%;" />
+<img src="extension/icons/logo.svg" alt="logo" style="zoom:50%;" />
 
 # About
 
@@ -156,11 +156,11 @@ sudo npm run dist
 
 After pinning the extension in the browser, you can visit the extension's dashboard by clicking on its icon: 
 
-<img src="/Users/hugo/MEGA/Work/- UMD/research/- trackingTransparency2/trackingtransparency/media/popup.svg" alt="popup" style="zoom:150%;" />
+<img src="media/popup.svg" alt="popup" style="zoom:150%;" />
 
 You will then be taken to the extension's home: the dashboard. 
 
-<img src="/Users/hugo/MEGA/Work/- UMD/research/- trackingTransparency2/trackingtransparency/media/dashboard.svg" alt="dashboard" style="zoom:150%;" />
+<img src="media/dashboard.svg" alt="dashboard" style="zoom:150%;" />
 
 # Architecture
 
