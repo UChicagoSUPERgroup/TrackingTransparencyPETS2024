@@ -49,7 +49,7 @@ The Tracking Transaprency extesion has played a primary role in the following pa
 
 # Install
 
-1. Clone the repo! 
+1. **Clone the repo!** 
 
 ```bash
 git clone https://github.com/UChicagoSUPERgroup/TrackingTransparencyPETS2024.git
@@ -58,7 +58,7 @@ cd TrackingTransparencyPETS2024
 
 - you should not see `package-lock.json` only `package.json` 
 
-2. use the correct *node* (14.17.2) and *npm* (6.14.13) and *python* (tested on 3.7.12)
+2. **use the correct *node* (14.17.2) and *npm* (6.14.13) and *python* (tested on 3.7.12)**
 
 ```bash
 nvm use 14.17.2
@@ -66,7 +66,7 @@ sudo npm install npm@6.14.13 -g
 ~~~~ make sure python 3.7.12 is being used (python3 --version)~~~~ 
 ```
 
-3. Install dependencies (run once and when any dependencies are changed):
+3. **Install dependencies (run once and when any dependencies are changed):**
 
 ```bash
 sudo npm install
@@ -76,7 +76,7 @@ sudo npm install
   - node-gyp may do some rebuilding or throw some errors, this should be OK
 - you will see warnings about deprecated packages 
 
-4. Increase buffer size for inference model
+4. **Increase buffer size for inference model**
 
 
 > :warning: **Note**: This is a necessary step for extension inferencing to work! You will be able to load the model at this step, but unless you increase the buffer length as stated below the inference model will not work and the extension will throw errors..
@@ -101,7 +101,7 @@ sudo npm install
 
 ---
 
-5. Build the code
+5. **Build the code**
 
 ```bash
 sudo npm run build:watch
