@@ -22,20 +22,14 @@ The Tracking Transaprency extesion has played a primary role in the following pa
 # Table of Contents
 
 - [Install](#install)
-  
-      + [Extension (Chrome)](#extension-chrome)
-          - [Opera ](#opera)
-          - [Brave ](#brave)
-          -  [Firefox (under development!)](#firefox-under-development)
-          
-          + [Other browsers ](#other-browsers)
-  
+  + [Extension (Chrome)](#extension-chrome)
+  + [Opera ](#opera)
+  + [Brave ](#brave)
+  +  [Firefox (under development!)](#firefox-under-development)
+  + [Other browsers ](#other-browsers)
 - [Building for Production](#building-for-production)
-
 - [Dashboard ](#dashboard)
-
 - [Architecture](#architecture)
-
 - [Database structure ](#database-structure)
    * [Example data](#example-data)
 
