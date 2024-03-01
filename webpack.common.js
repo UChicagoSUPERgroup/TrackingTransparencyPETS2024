@@ -24,11 +24,7 @@ module.exports = {
     dashboard: './src/dashboard/App.js',
     options: './src/options/index.js',
     welcome: './src/welcome/index.js',
-
     lightbeam: './src/lightbeam/lightbeam.js',
-
-    // tester2: './src/content_scripts/tester2.js',
-    // feeler: './src/content_scripts/feeler.js',
     adGrab: './src/content_scripts/adGrab.js',
     instrumentation: './src/background/instrumentation.js'
 
@@ -122,8 +118,7 @@ module.exports = {
           options: 'options',
           welcome: 'welcome',
           lightbeam: 'lightbeam',
-          tester2: 'tester2',
-          feeler: 'feeler',
+          adGrab: 'adGrab',
           instrumentation: 'instrumentation',
         }
       }),
