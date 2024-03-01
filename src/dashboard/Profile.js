@@ -5845,8 +5845,11 @@ export class ProfilePage extends React.Component {
 
 
     return (
+
+      // this is a grid, so you have to add a grid item to make an edit (grids allow the page layout to change dynamically)
       <Grid>
         <GridRow>
+          {/* hewroo, this is a test comment! */}
           <GridCol>
             <Box background='white' round='small' pad="small" margin="small" gap="small" width={{ max: 'xxlarge' }} responsive={true}>
               {video_explain(profile_video, profile_image, heat_map_newer_newer)}              

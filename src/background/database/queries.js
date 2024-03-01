@@ -6100,11 +6100,6 @@ async function getGoogleInferencesTree_demographic (args) {
     let known_types = ["years old", "Male", "Female", "Language", "Company Size", "Education Status", "Household Income", "Job Industry", "Marital Status", "Parental Status", "Sensitivity:", "Homeownership Status"]
 
     for (let p = 0; p < inference_group.length; p ++) {
-      // console.log(inference_group[p].value)
-      // console.log(inference_group[p].value.includes("video from") == false)
-      // console.log(inference_group[p].value.includes("videos from") == false)
-                                                  ///////////////////////////// demographic video patch
-                                                  // heavy patch on known demographics only (else errrors)
       let is_known_type = false 
       for (let known of known_types) {
         if (inference_group[p].value.includes(known)) {
@@ -6113,8 +6108,6 @@ async function getGoogleInferencesTree_demographic (args) {
         }
       }
       if (inference_group[p].type == "demographic" && (inference_group[p].value.includes("video from") != true && inference_group[p].value.includes("videos from") != true) && is_known_type == true) {
-
-        // todo == append the email onto the matching attribute
 
         if (Object.keys(seen_it2).includes(inference_group[p].value)) {
           if (!seen_it2[inference_group[p].value].includes(origin)) {

@@ -992,7 +992,7 @@ function runtimeOnMessage (message, sender, sendResponse) {
     	}
     	return true;
 
-    case 'testing_test':
+    case 'adGrabber':
 
       let id_to_update;
       let good_match_do_update = false
@@ -1708,31 +1708,36 @@ async function update_google_ads_settings(path=null) {
 
         var demographics_main = htmlDoc.getElementsByClassName("LCZ6Wc"); // all interest tiles
         var demographics_main_type = htmlDoc.getElementsByClassName("BUHCWd"); // all interest tiles
-        for(var i = 0;i < demographics_main.length; i++){
+        for (var i = 0;i < demographics_main.length; i++){
           // alert(JSON.stringify(interests_all[i].innerText))
           var entry = new Object();
           let value;
           let type = demographics_main_type[i].innerText
-          if (type.includes("Age")) {
-            let temp = demographics_main[i].innerText.replace(" years", "");
-            value = temp + " years old"
-          }
-          if (type.includes("Language")) {
-            value = "Language: " + demographics_main[i].innerText
-          }
-          if (value) {
-            entry = {
-              "type": "demographic",
-              "value": value,
+          let val = demographics_main[i].innerText
+          console.log("demo main" + val)
+          if (!val.includes('enough info')) {
+            if (type.includes("Age")) {
+              let temp = demographics_main[i].innerText.replace(" years", "");
+              value = temp + " years old"
             }
-          } else{
-            entry = {
-              "type": "demographic",
-              "value": demographics_main[i].innerText,
+            if (type.includes("Language")) {
+              value = "Language: " + demographics_main[i].innerText
             }
+            if (value) {
+              entry = {
+                "type": "demographic",
+                "value": value,
+              }
+            } else{
+              entry = {
+                "type": "demographic",
+                "value": demographics_main[i].innerText,
+              }
+            }
+
+            info.push(entry)
           }
 
-          info.push(entry)
         }
 
         var demographics_secondary = htmlDoc.getElementsByClassName("jHksfd"); // all interest tiles
@@ -1741,41 +1746,49 @@ async function update_google_ads_settings(path=null) {
           var entry = new Object();
           let value; 
           let type = demographics_secondary_type[i].innerText
-          if (type.includes('Relationships')) {
-            value = "Marital Status: " + demographics_secondary[i].innerText
-          }
-          if (type.includes("Employer Size")) {
-            value = "Company Size: " + demographics_secondary[i].innerText
-          }
-          if (type.includes("Education")) {
-            value = "Education Status: " + demographics_secondary[i].innerText
-          }
-          if (type.includes("Homeownership")) {
-            value = "Homeownership Status: " + demographics_secondary[i].innerText
-          }
-          if (type.includes("Household Income")) {
-            value = "Household Income: " + demographics_secondary[i].innerText
-          }
-          if (type.includes("Industry")) {
-            value = "Job Industry: " + demographics_secondary[i].innerText
-          }
-          if (type.includes("Parenting")) {
-            value = "Parental Status: " + demographics_secondary[i].innerText
+          let val = demographics_secondary[i].innerText
+          console.log("demo main secondary" + val)
+
+          if (!val.includes('enough info')) {
+
+            if (type.includes('Relationships')) {
+              value = "Marital Status: " + demographics_secondary[i].innerText
+            }
+            if (type.includes("Employer Size")) {
+              value = "Company Size: " + demographics_secondary[i].innerText
+            }
+            if (type.includes("Education")) {
+              value = "Education Status: " + demographics_secondary[i].innerText
+            }
+            if (type.includes("Homeownership")) {
+              value = "Homeownership Status: " + demographics_secondary[i].innerText
+            }
+            if (type.includes("Household Income")) {
+              value = "Household Income: " + demographics_secondary[i].innerText
+            }
+            if (type.includes("Industry")) {
+              value = "Job Industry: " + demographics_secondary[i].innerText
+            }
+            if (type.includes("Parenting")) {
+              value = "Parental Status: " + demographics_secondary[i].innerText
+            }
+
+            if (value) {
+              entry = {
+                "type": "demographic",
+                "value": value,
+              }
+            } else {
+              entry = {
+                "type": "demographic",
+                "value": demographics_secondary[i].innerText,
+              }
+            }
+
+            info.push(entry)
+
           }
 
-          if (value) {
-            entry = {
-              "type": "demographic",
-              "value": value,
-            }
-          } else {
-            entry = {
-              "type": "demographic",
-              "value": demographics_secondary[i].innerText,
-            }
-          }
-
-          info.push(entry)
         }
 
         // then fetch interests and brands and sensitive

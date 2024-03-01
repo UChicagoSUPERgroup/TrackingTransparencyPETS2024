@@ -19,7 +19,7 @@ try {
 ifvisible.setIdleDuration(30);
 ifvisible.on('statusChanged', function(e){
     if (title_to_send != undefined) {
-        chrome.runtime.sendMessage({ type: 'testing_test', article: {"type": e.status, "title": title_to_send, 'more': JSON.stringify(e)} });
+        chrome.runtime.sendMessage({ type: 'adGrabber', article: {"type": e.status, "title": title_to_send, 'more': JSON.stringify(e)} });
     }
 });
 
