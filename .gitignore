@@ -35,6 +35,8 @@ node_modules
 .idea
 .vscode
 
+PETS_artifact.md
+
 # jsdoc generated
 doc/jsdoc
 docs
