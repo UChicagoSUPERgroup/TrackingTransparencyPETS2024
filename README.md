@@ -83,7 +83,7 @@ npm at 6.14.13
     - `npm install npm@6.14.13 -g`
     - `npm -v` to confirm `6.14.13`
 - **Ubuntu**
-  -  get nvm (https://tecadmin.net/how-to-install-nvm-on-ubuntu-20-04/) (tested on Ubuntu 22.04.3 LTS)
+  -  get nvm (https://tecadmin.net/how-to-install-nvm-on-ubuntu-20-04/) (tested on Ubuntu 22.04 LTS)
     - `nvm install 14.17.2`
     - `nvm use 14.17.2`
     - `node -v` to confirm 
