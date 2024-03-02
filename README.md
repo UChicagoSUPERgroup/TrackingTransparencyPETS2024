@@ -64,15 +64,42 @@ git clone https://github.com/UChicagoSUPERgroup/TrackingTransparencyPETS2024.git
 cd TrackingTransparencyPETS2024
 ```
 
-- you should not see `package-lock.json` only `package.json` 
+
 
 2. **use the correct *node* (14.17.2) and *npm* (6.14.13) and *python* (tested on 3.7.12)**
 
 ```bash
-nvm use 14.17.2 // (may need to install `nvm`)(this will set the node version to use)
-sudo npm install npm@6.14.13 -g
-~~~~ make sure python 3.7.12 is being used (python3 --version)~~~~ 
+node at 14.17.2
+npm at 6.14.13
+~~~~ TESTED ON Python 3.7.12 ~~~~ 
 ```
+
+- **macOS**
+  - get nvm using homebrew (https://tecadmin.net/install-nvm-macos-with-homebrew/)
+    - `nvm install 14.17.2`
+    - `nvm use 14.17.2`
+    - `node -v` to confirm 
+  - set npm
+    - `npm install npm@6.14.13 -g`
+    - `npm -v` to confirm `6.14.13`
+- **Ubuntu**
+  -  get nvm (https://tecadmin.net/how-to-install-nvm-on-ubuntu-20-04/) (tested on Ubuntu 22.04.3 LTS)
+    - `nvm install 14.17.2`
+    - `nvm use 14.17.2`
+    - `node -v` to confirm 
+  - set npm
+    - `npm install npm@6.14.13 -g`
+    - `npm -v` to confirm `6.14.13`
+- **Windows**
+  - get nvm (https://github.com/coreybutler/nvm-windows)
+    - `nvm install 14.17.2`
+    - `nvm use 14.17.2`
+    - `node -v` to confirm 
+  - set npm 
+    - `npm install npm@6.14.13` 
+    - `npm -v` to confirm `6.14.13`
+
+
 
 3. **Install dependencies (run once and when any dependencies are changed):**
 
@@ -80,16 +107,16 @@ sudo npm install npm@6.14.13 -g
 sudo npm install
 ```
 
-- this might take a while (~15 mins) 
+- this might take a while on a low-powered VM (~30 mins) 
   - node-gyp may do some rebuilding or throw some errors, this should be OK
 - you will see warnings about deprecated packages 
+
+
 
 4. **Increase buffer size for inference model**
 
 
 > :warning: **Note**: This is a necessary step for extension inferencing to work! You will be able to load the model at this step, but unless you increase the buffer length as stated below the inference model will not work and the extension will throw errors..
-
-
 
 - in `node_modules/dexie-export-import/dist/dexie-export-import.js`  make the following change: 
   - clarinet.MAX_BUFFER_LENGTH = 10 * 1024 * 1024; ==> clarinet.MAX_BUFFER_LENGTH = 1024 * 1024 * 1024; 
@@ -109,12 +136,15 @@ sudo npm install
 
 ---
 
+
+
 5. **Build the code**
 
 ```bash
 sudo npm run build:watch
 ```
 
+- takes longer on first run (~10 mins on a slow VM)
 - (Optional for development) Build using `$ npm run build` for a single run. The `watch` launches Webpack in watch mode and automatically re-runs whenever you change any marked files. For development, we recommended to leave this running in a background terminal.
 
 
