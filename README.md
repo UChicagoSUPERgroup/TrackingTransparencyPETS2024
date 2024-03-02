@@ -21,26 +21,22 @@ The Tracking Transaprency extesion has played a primary role in the following pa
 
 # Table of Contents
 
-<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+<!-- TOC start -->
 
-- [Tracking Transparency](#tracking-transparency)
-- [About](#about)
-- [Papers ](#papers)
-- [Table of Contents](#table-of-contents)
 - [Install](#install)
-      + [Add the Extension (Chrome)](#add-the-extension-chrome)
-      + [Other browsers ](#other-browsers)
-         - [Opera ](#opera)
-         - [Brave ](#brave)
-         - [Firefox (under development!)](#firefox-under-development)
+    + [Add the Extension (Chrome)](#add-the-extension--chrome-)
+    + [Other browsers](#other-browsers)
+      - [Opera](#opera)
+      - [Brave](#brave)
+      - [Firefox (under development!)](#firefox--under-development--)
 - [Building for Production](#building-for-production)
-- [Dashboard ](#dashboard)
+- [Dashboard](#dashboard)
 - [Architecture](#architecture)
-- [Database structure ](#database-structure)
-   * [Example data](#example-data)
+- [Database structure](#database-structure)
+  * [Example data](#example-data)
 - [Developing](#developing)
-   * [A sample edit ](#a-sample-edit)
-   * [Sample tasks](#sample-tasks)
+  * [A sample edit](#a-sample-edit)
+  * [Sample tasks](#sample-tasks)
 
 <!-- TOC end -->
 
