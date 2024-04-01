@@ -106,7 +106,6 @@
   - this might take a while on a low-powered VM (~30 mins) 
     - node-gyp may do some rebuilding or throw some errors, this should be OK
   - you will see warnings about deprecated packages 
-  - > **if you are using node 18 and npm 9, use sudo npm install --force**
   
   
   
