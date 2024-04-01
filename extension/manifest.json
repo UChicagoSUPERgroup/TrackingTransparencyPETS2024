@@ -3,7 +3,7 @@
     "content_security_policy": "script-src 'self' http://xxxx 'unsafe-inline' 'unsafe-eval' data: https://json.geoiplookup.io/",
 
     "name": "Tracking Transparency",
-    "version": "2.0.19",
+    "version": "2.0.20",
     "applications": {
         "gecko": {
             "id": "trackingtransparency@super.cs.uchicago.edu",
@@ -18,7 +18,6 @@
         "downloads",
         "tabs",
         "management",
-        "notifications",
         "privacy",
         "webRequest",
         "webNavigation",
@@ -66,7 +65,7 @@
     },
     
     "externally_connectable": {
-      "matches": ["https://umdsurvey.umd.edu/jfe/form/SV_d6luJbwumkBXpGe*", "https://umdsurvey.umd.edu/jfe/form/SV_8nNzMdt9gXCT2T4*"]
+      "matches": []
     }
 
 }

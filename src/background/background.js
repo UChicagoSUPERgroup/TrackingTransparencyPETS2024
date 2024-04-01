@@ -38,8 +38,8 @@ function load_list2() {
 		fetch('https://easylist-downloads.adblockplus.org/easylist.txt'),
 		fetch('https://adaway.org/hosts.txt'),
 		fetch('https://pgl.yoyo.org/adservers/serverlist.php?hostformat=webclean'),
-		fetch('https://sos-ch-dk-2.exo.io/noblt/RPZ/Hosts-database/full-alive.txt') // TODO slim me -- large, but looks like a really good list
-    // fetch('https://raw.githubusercontent.com/badmojr/1Hosts/master/Pro/domains.txt')
+		// fetch('https://sos-ch-dk-2.exo.io/noblt/RPZ/Hosts-database/full-alive.txt') // out of service
+    fetch('https://raw.githubusercontent.com/badmojr/1Hosts/master/Pro/domains.txt')
 	]).then(function (responses) {
 		// Get a JSON object from each of the responses
 		return Promise.all(responses.map(function (response) {
@@ -50,8 +50,8 @@ function load_list2() {
 		let easylist = data[0]
 		let adaway = data[1]
 		let yoyo = data[2]
-    let sos = data[3]
-    // let onehosts = data[4]
+    // let sos = data[3]
+    let onehosts = data[3]
 
     console.log("[-] starting adaway grab...")
 		var arr = adaway.split("\n")
@@ -100,38 +100,38 @@ function load_list2() {
 		}
     console.log("[+] DONE yoyo grab")
 
-    console.log("[-] starting sos grab...")
-    var arr = sos.split("\n")
-    for (let i = 0; i < arr.length; i++) {
-        let line = arr[i]
-        if (line[0] != ' ' && line[0] != ';') {
+    // console.log("[-] starting sos grab...")
+    // var arr = sos.split("\n")
+    // for (let i = 0; i < arr.length; i++) {
+    //     let line = arr[i]
+    //     if (line[0] != ' ' && line[0] != ';') {
             
-            let matcher4 = line.split(" CNAME .")[0]
-            // custom removals on noticed errors (going through top websites and looking for errors)
-            if (!matcher4.includes('asacp')) {
-              href_blocklist.push(matcher4)
-            }
+    //         let matcher4 = line.split(" CNAME .")[0]
+    //         // custom removals on noticed errors (going through top websites and looking for errors)
+    //         if (!matcher4.includes('asacp')) {
+    //           href_blocklist.push(matcher4)
+    //         }
             
-        }
-    }
-    console.log("[+] ... ending sos grab")
+    //     }
+    // }
+    // console.log("[+] ... ending sos grab")
 
     /// too heavy
-    // console.log("[-] starting onehosts grab...")
-    // var arr = onehosts.split("\n")
-    // for (let i = 0; i < arr.length; i++) {
-    //   let line = arr[i]
-    //   if (line !== '' && line[0] !== '#' && line[0] !== ':') {
-    //     let matcher = line
+    console.log("[-] starting onehosts grab...")
+    var arr = onehosts.split("\n")
+    for (let i = 0; i < arr.length; i++) {
+      let line = arr[i]
+      if (line !== '' && line[0] !== '#' && line[0] !== ':') {
+        let matcher = line
 
-    //     if (matcher !== ' localhost') {
-    //       href_blocklist.push(matcher)
-    //       // console.log(matcher)
-    //     }
+        if (matcher !== ' localhost') {
+          href_blocklist.push(matcher)
+          // console.log(matcher)
+        }
         
-    //   }
-    // }
-    // console.log("[+] ... ending onehosts grab")
+      }
+    }
+    console.log("[+] ... ending onehosts grab")
 
 
 		// other common (top tranco) additions
@@ -992,7 +992,7 @@ function runtimeOnMessage (message, sender, sendResponse) {
     	}
     	return true;
 
-    case 'adGrabber':
+    case 'testing_test':
 
       let id_to_update;
       let good_match_do_update = false
@@ -1708,36 +1708,31 @@ async function update_google_ads_settings(path=null) {
 
         var demographics_main = htmlDoc.getElementsByClassName("LCZ6Wc"); // all interest tiles
         var demographics_main_type = htmlDoc.getElementsByClassName("BUHCWd"); // all interest tiles
-        for (var i = 0;i < demographics_main.length; i++){
+        for(var i = 0;i < demographics_main.length; i++){
           // alert(JSON.stringify(interests_all[i].innerText))
           var entry = new Object();
           let value;
           let type = demographics_main_type[i].innerText
-          let val = demographics_main[i].innerText
-          console.log("demo main" + val)
-          if (!val.includes('enough info')) {
-            if (type.includes("Age")) {
-              let temp = demographics_main[i].innerText.replace(" years", "");
-              value = temp + " years old"
+          if (type.includes("Age")) {
+            let temp = demographics_main[i].innerText.replace(" years", "");
+            value = temp + " years old"
+          }
+          if (type.includes("Language")) {
+            value = "Language: " + demographics_main[i].innerText
+          }
+          if (value) {
+            entry = {
+              "type": "demographic",
+              "value": value,
             }
-            if (type.includes("Language")) {
-              value = "Language: " + demographics_main[i].innerText
+          } else{
+            entry = {
+              "type": "demographic",
+              "value": demographics_main[i].innerText,
             }
-            if (value) {
-              entry = {
-                "type": "demographic",
-                "value": value,
-              }
-            } else{
-              entry = {
-                "type": "demographic",
-                "value": demographics_main[i].innerText,
-              }
-            }
-
-            info.push(entry)
           }
 
+          info.push(entry)
         }
 
         var demographics_secondary = htmlDoc.getElementsByClassName("jHksfd"); // all interest tiles
@@ -1746,49 +1741,41 @@ async function update_google_ads_settings(path=null) {
           var entry = new Object();
           let value; 
           let type = demographics_secondary_type[i].innerText
-          let val = demographics_secondary[i].innerText
-          console.log("demo main secondary" + val)
-
-          if (!val.includes('enough info')) {
-
-            if (type.includes('Relationships')) {
-              value = "Marital Status: " + demographics_secondary[i].innerText
-            }
-            if (type.includes("Employer Size")) {
-              value = "Company Size: " + demographics_secondary[i].innerText
-            }
-            if (type.includes("Education")) {
-              value = "Education Status: " + demographics_secondary[i].innerText
-            }
-            if (type.includes("Homeownership")) {
-              value = "Homeownership Status: " + demographics_secondary[i].innerText
-            }
-            if (type.includes("Household Income")) {
-              value = "Household Income: " + demographics_secondary[i].innerText
-            }
-            if (type.includes("Industry")) {
-              value = "Job Industry: " + demographics_secondary[i].innerText
-            }
-            if (type.includes("Parenting")) {
-              value = "Parental Status: " + demographics_secondary[i].innerText
-            }
-
-            if (value) {
-              entry = {
-                "type": "demographic",
-                "value": value,
-              }
-            } else {
-              entry = {
-                "type": "demographic",
-                "value": demographics_secondary[i].innerText,
-              }
-            }
-
-            info.push(entry)
-
+          if (type.includes('Relationships')) {
+            value = "Marital Status: " + demographics_secondary[i].innerText
+          }
+          if (type.includes("Employer Size")) {
+            value = "Company Size: " + demographics_secondary[i].innerText
+          }
+          if (type.includes("Education")) {
+            value = "Education Status: " + demographics_secondary[i].innerText
+          }
+          if (type.includes("Homeownership")) {
+            value = "Homeownership Status: " + demographics_secondary[i].innerText
+          }
+          if (type.includes("Household Income")) {
+            value = "Household Income: " + demographics_secondary[i].innerText
+          }
+          if (type.includes("Industry")) {
+            value = "Job Industry: " + demographics_secondary[i].innerText
+          }
+          if (type.includes("Parenting")) {
+            value = "Parental Status: " + demographics_secondary[i].innerText
           }
 
+          if (value) {
+            entry = {
+              "type": "demographic",
+              "value": value,
+            }
+          } else {
+            entry = {
+              "type": "demographic",
+              "value": demographics_secondary[i].innerText,
+            }
+          }
+
+          info.push(entry)
         }
 
         // then fetch interests and brands and sensitive

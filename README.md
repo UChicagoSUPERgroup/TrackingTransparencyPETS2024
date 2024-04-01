@@ -1,4 +1,4 @@
-# Tracking Transparency
+- # Tracking Transparency
 
   <p align="center"><img src="extension/icons/logo.svg" data-canonical-src="extension/icons/logo.svg" width="100" height="100"/></p>
   
@@ -65,9 +65,9 @@
   2. **use the correct *node* (14.17.2) and *npm* (6.14.13) and *python* (tested on 3.7.12)**
   
   ```bash
-  node at 14.17.2
-  npm at 6.14.13
-  ~~~~ TESTED ON Python 3.7.12 ~~~~ 
+  node at 14.17.2 >> alternatively node at v18.16.0
+  npm at 6.14.13 >>> alternatively npm at 9.5.1
+  ~~~~ TESTED ON Python 3.7.12 and 3.11.0 ~~~~ 
   ```
   
   - **macOS**
@@ -142,6 +142,7 @@
   
   - takes longer on first run (~10 mins on a slow VM)
   - (Optional for development) Build using `$ npm run build` for a single run. The `watch` launches Webpack in watch mode and automatically re-runs whenever you change any marked files. For development, we recommended to leave this running in a background terminal.
+  - > **if you are using node 18 and npm 9, you need to relax SSL settings (https://stackoverflow.com/a/69699772/9534147) and also run this without sudo**
   
   
   ### Add the Extension (Chrome)

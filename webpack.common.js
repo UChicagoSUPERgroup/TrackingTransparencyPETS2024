@@ -24,7 +24,9 @@ module.exports = {
     dashboard: './src/dashboard/App.js',
     options: './src/options/index.js',
     welcome: './src/welcome/index.js',
+
     lightbeam: './src/lightbeam/lightbeam.js',
+
     adGrab: './src/content_scripts/adGrab.js',
     instrumentation: './src/background/instrumentation.js'
 
