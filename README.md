@@ -149,28 +149,6 @@ sudo npm run build:watch
 
 
 
-6. testing on ubuntu terminal 
-
-   1. install chromium 
-
-      1. ```bash
-         sudo snap install chromium 
-         sudo apt-get install xorg openbox
-         ```
-
-   2. launch chromium from terminal 
-
-      1. ```bash
-         chromium --load-extension=extension/
-         ```
-
-   3. ```
-      ```
-
-   4. 
-
-
-
 ### Add the Extension (Chrome)
 
 1. Visit `chrome://extensions` in your browser \(or open up the Chrome menu by clicking the icon to the far right of the window, and select **Extensions** under the **More Tools** menu to get to the same place\).
