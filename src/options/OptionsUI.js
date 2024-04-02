@@ -156,7 +156,7 @@ export default class Options extends React.Component {
         </div>}
         <Heading level='h2' margin='medium 0 medium 0'>Danger zone</Heading>
         {this.resetInfo()}
-         {this.optOutInfo()} 
+         {/*{this.optOutInfo()} */}
         <Text>
           <p><strong>User ID: {id}</strong></p>
         </Text>
