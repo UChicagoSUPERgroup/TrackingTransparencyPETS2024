@@ -1,14 +1,15 @@
 # Releasing
 
-- `npm version patch` (or `major` or `minor`)
+The extension can be uploaded to the Chrome Web Store, but it must be packaged before that can happen. Please first update the patch number in the manifest and packages
+
+- edit extension/`manifest.json` and `package-lock.json` and `package.json` for the right version number
+
+Then run
+
 - `npm run dist`
 
-## Firefox
+To create a zip file in the `web-ext-artifacts` folder. This is the file you will upload to the Chrome Web Store, along with listing the other information on the Chrome Web Store for evaluation. 
 
-*directions for self-hosting, will change when publish to addons.mozilla.org*
 
-- go to `https://addons.mozilla.org/en-US/developers/` and upload and sign a new version
-    - make sure to upload a zip with the source code when they give you a chance
-- download the signed extension
-- upload signed extension to server
-- update `updates.json` on server to have latest version
+
+Chrome will conduct an automated review of the extension and let you know of any errors. The current extension lives at: https://chromewebstore.google.com/detail/tracking-transparency/jeoddidpffcjecfojbjpjnjnbjeenhai
