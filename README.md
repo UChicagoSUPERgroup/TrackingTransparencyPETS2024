@@ -4,11 +4,10 @@
 
 # About
 
-A browser extension to provide transparency about online tracking. Unlike other privacy-focused tools (e.g., tracker blockers or ad blockers) the Tracking Transparency extension observes the activities of trackers and reports them back to you—using **machine learning** and other sophisticated techniques to provide you with a **Tracker's Perspective** of your online habits.  
+A browser extension to provide transparency about online tracking. Unlike other privacy-focused tools (e.g., tracker blockers or ad blockers) the Tracking Transparency extension observes the activities of trackers and reports them back to you—using **machine learning** and other sophisticated techniques to provide you with a **Tracker's Perspective** of your online habits. 
 
-
-
-<video src="src/dashboard/video_profile_3.mp4"></video>
+<a href="https://osf.io/45kgc/">
+  <img src="https://user-images.githubusercontent.com/17742733/44998710-4e382f80-afd5-11e8-9a9c-d9b38c903325.png" alt="OSF!" style="zoom:25%;"/></a><a href="https://chromewebstore.google.com/detail/tracking-transparency/jeoddidpffcjecfojbjpjnjnbjeenhai"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Google_Chrome_Web_Store_icon_2022.svg/512px-Google_Chrome_Web_Store_icon_2022.svg.png" alt="chrome extension!" style="zoom:12%;"/></a>
 
 # Papers 
 
