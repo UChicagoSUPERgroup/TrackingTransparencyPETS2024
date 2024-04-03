@@ -18,6 +18,7 @@
   | ------------------------------------------------------------ | ----- | ---- |
   | Oh, the Places You’ve Been! User Reactions to Longitudinal Transparency About Third-Party Web Tracking and Inferencing ([link](https://doi.org/10.1145/3319535.3363200)) | CCS   | 2019 |
   | Analysis of Google Ads Settings Over Time: Updated, Individualized, Accurate, and Filtered ([link](https://doi.org/10.1145/3603216.3624968)) | WPES  | 2023 |
+  | What Does It Mean to Be Creepy? Responses to Visualizations of Personal Browsing Activity, Online Tracking, and Targeted Ads (link pending) | PETS  | 2024 |
   
   # Table of Contents
   
@@ -44,8 +45,10 @@
   
   
   > :warning: **Apple silicone**: Apple silicone affects the extension in Chrome, we are working on a patch! You should still be able to build and run the repo as a developer, but interacting with the extension in Chrome using Apple silicone might be slow.
-  
+  >
   > :warning: **MANIFEST V2**: This extension operates on manifest v2; Google is set to restrict extensions to manifest v3 in June 2024.
+  >
+  > :warning: **Older Packages**: Some of the NPM packages in this repo are outdated. These packages were necessary for the first iteration of this extension. Please remove them if you are developing a new version of the extension!
   
   ---
   
@@ -105,7 +108,7 @@
   
   - this might take a while on a low-powered VM (~30 mins) 
     - node-gyp may do some rebuilding or throw some errors, this should be OK
-      - see also https://stackoverflow.com/a/60860951/9534147
+      - see also https://stackoverflow.com/a/60860951/9534147 to fix the errors related to node-gyp on Mac
   - you will see warnings about deprecated packages 
   
   
@@ -142,8 +145,12 @@
   ```
   
   - takes longer on first run (~10 mins on a slow VM)
-  - (Optional for development) Build using `$ npm run build` for a single run. The `watch` launches Webpack in watch mode and automatically re-runs whenever you change any marked files. For development, we recommended to leave this running in a background terminal.
-  - > **if you are using node 18 and npm 9, you need to relax SSL settings (https://stackoverflow.com/a/69699772/9534147) and also run this without sudo**
+  - (Optional for development) Build using `npm run build` for a single run. The `watch` launches Webpack in watch mode and automatically re-runs whenever you change any marked files. For development, we recommended to leave this running in a background terminal.
+  
+    - > **if you are using node 18 and npm 9, you need to relax SSL settings (https://stackoverflow.com/a/69699772/9534147) and also run this without sudo**
+      >
+      > if you then are reverting to an older npm, you need to unset that SSL change with `unset NODE_OPTIONS`
+  
   
   
   ### Add the Extension (Chrome)
@@ -252,7 +259,9 @@
   
   The database uses Google's Lovefield library, which provides a relational database using IndexedDB in the browser. 
   
-  We use six tables. Some of the information in the tables is experimental! 
+  For detailed information on each table, please see the `database.md` file in the `doc` folder. 
+  
+  
   
   - **Ads**: data about ads served to user 
   - **GoogleInference**: my ad center information (companies, interests, demographics, and videos)
@@ -563,7 +572,7 @@
   1. install and load the extension in Chrome 
   2. open the extension's dashboard page
   3. open `src/dashboard/Profile.js`
-  4. find the test comment `{/* hewroo, this is a test comment! */}`
+  4. find the test comment `{/* heroo, this is a test comment! */}`
   5. uncomment it by dropping the `{/*`
   6. refresh the chrome dashboard page
   7. you should now see your comment appear next to the opening video! 
